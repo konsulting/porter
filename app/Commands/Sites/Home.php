@@ -2,7 +2,7 @@
 
 namespace App\Commands\Sites;
 
-use Illuminate\Console\Scheduling\Schedule;
+use App\Setting;
 use LaravelZero\Framework\Commands\Command;
 use App\Porter;
 
@@ -31,6 +31,6 @@ class Home extends Command
     {
         $path = $this->argument('path') ?: getcwd();
 
-        app(Porter::class)->changeSetting('path', $path);
+        Setting::firstOrCreate(['name' => 'home'], ['value' => $path]);
     }
 }

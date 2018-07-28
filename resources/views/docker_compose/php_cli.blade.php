@@ -1,10 +1,10 @@
-  php_cli_{{ $version }}:
+  php_cli_{{ $version->safe }}:
     build:
       context: .
-      dockerfile: docker/php_cli_{{ $version }}/Dockerfile
+      dockerfile: docker/php_cli_{{ $version->safe }}/Dockerfile
     networks:
       - porter
     volumes:
-      - {{ $path }}:/srv/app
+      - {{ $home }}:/srv/app
     environment:
        - DB_HOST={{ $db_host }}

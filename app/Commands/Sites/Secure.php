@@ -3,6 +3,7 @@
 namespace App\Commands\Sites;
 
 use App\Porter;
+use App\Site;
 use App\Ssl\CertificateBuilder;
 use Illuminate\Console\Scheduling\Schedule;
 use LaravelZero\Framework\Commands\Command;
@@ -30,15 +31,13 @@ class Secure extends Command
      */
     public function handle(): void
     {
-        $site = $this->argument('site');
+        $name = $this->argument('site') ?: site_from_cwd();
 
-        if (! $site && $project = app(Porter::class)->resolveProject()) {
-            $site = $project['name'];
+        if (! $name) {
+            throw new \Exception("Site '{$name}' not found.");
         }
 
-        (new CertificateBuilder(storage_path('ssl')))
-            ->build($site.'.'.settings('tld'));
-
-        app(Porter::class)->updateProject($site, ['secure' => true]);
+        $site = Site::firstOrCreateForName($name);
+        $site->secure();
     }
 }

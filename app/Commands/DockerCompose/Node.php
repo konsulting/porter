@@ -2,8 +2,6 @@
 
 namespace App\Commands\DockerCompose;
 
-use App\Porter;
-use Illuminate\Console\Scheduling\Schedule;
 use LaravelZero\Framework\Commands\Command;
 
 class Node extends Command
@@ -29,12 +27,8 @@ class Node extends Command
      */
     public function handle(): void
     {
-        $workingDir = "";
-        $project = app(Porter::class)->resolveProject();
-
-        if ($project && ! empty($project['name'])) {
-            $workingDir = '-w /srv/app/'.$project['name'];
-        }
+        $name = site_from_cwd();
+        $workingDir = $name ? '-w /srv/app/'.$name : '';
 
         passthru(docker_compose("run {$workingDir} node bash"));
     }

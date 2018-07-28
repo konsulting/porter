@@ -2,6 +2,7 @@
 
 namespace App\Commands\DockerCompose;
 
+use App\Porter;
 use Illuminate\Console\Scheduling\Schedule;
 use LaravelZero\Framework\Commands\Command;
 
@@ -28,6 +29,6 @@ class Stop extends Command
      */
     public function handle(): void
     {
-        exec(docker_compose("down"));
+        app(Porter::class)->stop();
     }
 }

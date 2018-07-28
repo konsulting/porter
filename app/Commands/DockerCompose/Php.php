@@ -2,8 +2,8 @@
 
 namespace App\Commands\DockerCompose;
 
-use App\Porter;
-use Illuminate\Console\Scheduling\Schedule;
+use App\PhpVersion;
+use App\Site;
 use LaravelZero\Framework\Commands\Command;
 
 class Php extends Command
@@ -29,15 +29,11 @@ class Php extends Command
      */
     public function handle(): void
     {
-        $workingDir = "";
-        $version = $this->argument('version') ?: settings('default_cli_version');
+        $name = site_from_cwd();
+        $workingDir = $name ? '-w /srv/app/'.$name : '';
 
-        $project = app(Porter::class)->resolveProject();
-
-        if ($project && ! empty($project['php'])) {
-            $version = $project['php'];
-            $workingDir = '-w /srv/app/'.$project['name'];
-        }
+        $site = Site::where('name', $name)->first();
+        $version = optional($site->php_version->safe, PhpVersion::defaultVersion()->safe);
 
         passthru(docker_compose("run {$workingDir} php_cli_{$version} bash"));
     }

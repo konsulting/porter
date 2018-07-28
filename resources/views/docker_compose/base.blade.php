@@ -3,7 +3,7 @@ networks:
   porter:
     driver: bridge
 services:
-@foreach(settings('php_versions') as list($version, $port))
+@foreach($activePhpVersions as $key => $version)
   @include('docker_compose.php_fpm')
   @include('docker_compose.php_cli')
 @endforeach
@@ -20,13 +20,13 @@ services:
       - ./storage/nginx/conf.d:/etc/nginx/conf.d
       - ./storage/ssl:/etc/ssl
       - ./storage/log:/var/log
-      - {{ $path }}:/srv/app
+      - {{ $home }}:/srv/app
   node:
     build:
       context: .
       dockerfile: docker/node/Dockerfile
     user: node
     volumes:
-      - {{ $path }}:/srv/app
+      - {{ $home }}:/srv/app
     networks:
       - porter

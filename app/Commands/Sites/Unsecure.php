@@ -3,6 +3,7 @@
 namespace App\Commands\Sites;
 
 use App\Porter;
+use App\Site;
 use App\Ssl\CertificateBuilder;
 use Illuminate\Console\Scheduling\Schedule;
 use LaravelZero\Framework\Commands\Command;
@@ -30,14 +31,13 @@ class Unsecure extends Command
      */
     public function handle(): void
     {
-        $site = $this->argument('site');
+        $name = $this->argument('site') ?: site_from_cwd();
 
-        if (! $site && $project = app(Porter::class)->resolveProject()) {
-            $site = $project['name'];
+        if (! $name) {
+            throw new \Exception("Site '{$name}' not found.");
         }
 
-        // remove certs
-
-        app(Porter::class)->updateProject($site, ['secure' => false]);
+        $site = Site::firstOrCreateForName($name);
+        $site->unsecure();
     }
 }

@@ -2,10 +2,8 @@
 
 namespace App\Commands;
 
-use App\DockerCompose\YamlBuilder;
-use App\Nginx\SiteConfBuilder;
 use App\Porter;
-use Illuminate\Console\Scheduling\Schedule;
+use App\Site;
 use LaravelZero\Framework\Commands\Command;
 
 class MakeFiles extends Command
@@ -31,33 +29,22 @@ class MakeFiles extends Command
      */
     public function handle(): void
     {
-        $wasUp = app(Porter::class)->isUp();
+        $porter = app(Porter::class);
+
+        $wasUp = $porter->isUp();
 
         if ($wasUp) {
             $this->call('stop');
         }
 
-        app(YamlBuilder::class)->build();
+        $porter->compose();
 
-        // Build Nginx Files
-        foreach(app(Porter::class)->getSettings()->get('projects') as $project) {
-            app(SiteConfBuilder::class)->build($project);
+        foreach(Site::all() as $site) {
+            $site->buildFiles();
         }
 
         if ($wasUp) {
             $this->call('start');
         }
-    }
-
-    /**
-     * Define the command's schedule.
-     *
-     * @param  \Illuminate\Console\Scheduling\Schedule $schedule
-     *
-     * @return void
-     */
-    public function schedule(Schedule $schedule): void
-    {
-        // $schedule->command(static::class)->everyMinute();
     }
 }

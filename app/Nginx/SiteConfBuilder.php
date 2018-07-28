@@ -2,6 +2,7 @@
 
 namespace App\Nginx;
 
+use App\Site;
 use Illuminate\Config\Repository;
 
 class SiteConfBuilder
@@ -16,17 +17,17 @@ class SiteConfBuilder
         $this->stubsPath = $config->get('nginx.stubs_path');
     }
 
-    public function build($project)
+    public function build(Site $site)
     {
-        $conf = 'nginx.base.domain' . (($project['secure'] ?? false) ? '_secure' : '');
+        $conf = 'nginx.base.domain' . (($site->secure ?? false) ? '_secure' : '');
 
         file_put_contents(
-            storage_path("nginx/conf.d/{$project['name']}.conf"),
+            storage_path("nginx/conf.d/{$site->name}.conf"),
             view($conf)
                 ->with([
-                    'site' => $project['name'].'.'.settings('tld'),
-                    'name' => $project['name'],
-                    'version' => $project['php']
+                    'site' => $site->url,
+                    'name' => $site->name,
+                    'version' => $site->php_version->safe
                 ])
                 ->render()
         );

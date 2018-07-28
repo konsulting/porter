@@ -1,12 +1,12 @@
-  php_fpm_{{ $version }}:
+  php_fpm_{{ $version->safe }}:
     build:
       context: .
-      dockerfile: docker/php_fpm_{{ $version }}/Dockerfile
+      dockerfile: docker/php_fpm_{{ $version->safe }}/Dockerfile
     networks:
       - porter
     ports:
-      - {{ $port }}:9000
+      - {{ $version->port }}:9000
     volumes:
-      - {{ $path }}:/srv/app
+      - {{ $home }}:/srv/app
     environment:
        - DB_HOST={{ $db_host }}

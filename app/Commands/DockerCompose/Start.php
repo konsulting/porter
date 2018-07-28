@@ -2,6 +2,7 @@
 
 namespace App\Commands\DockerCompose;
 
+use App\Porter;
 use Illuminate\Console\Scheduling\Schedule;
 use LaravelZero\Framework\Commands\Command;
 
@@ -28,6 +29,6 @@ class Start extends Command
      */
     public function handle(): void
     {
-        exec(docker_compose("up -d"));
+        app(Porter::class)->start();
     }
 }
