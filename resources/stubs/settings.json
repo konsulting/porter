@@ -1,0 +1,20 @@
+{
+    "path": "\/Users\/keoghan\/Code",
+    "tld": "test",
+    "db_host": "docker.for.mac.localhost",
+    "default_cli_version": "70",
+    "projects" : [
+        {
+            "name": "porter",
+            "php": "70"
+        },
+        {
+            "name": "sample",
+            "php": "56"
+        }
+    ],
+    "php_versions": [
+        ["56", "9002"],
+        ["70", "9001"]
+    ]
+}
