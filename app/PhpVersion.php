@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class PhpVersion extends Model
 {
+    protected $guarded = [];
+
     public static function defaultVersion()
     {
         return static::where('default', true)->first();

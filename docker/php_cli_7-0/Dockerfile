@@ -13,6 +13,6 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-COPY storage/php_fpm_70/php.ini /usr/local/etc/php/php.ini
+COPY storage/php_cli_7-0/php.ini /usr/local/etc/php/php.ini
 
 WORKDIR /srv/app/

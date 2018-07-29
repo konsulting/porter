@@ -2,25 +2,24 @@
 
 namespace App\Commands\Sites;
 
-use App\Setting;
-use Illuminate\Support\Facades\Artisan;
+use App\Site;
 use LaravelZero\Framework\Commands\Command;
 
-class Home extends Command
+class Remove extends Command
 {
     /**
      * The signature of the command.
      *
      * @var string
      */
-    protected $signature = 'sites:home {path?}';
+    protected $signature = 'remove {site?}';
 
     /**
      * The description of the command.
      *
      * @var string
      */
-    protected $description = 'Set the home directory for Porter sites';
+    protected $description = 'Remove a site';
 
     /**
      * Execute the console command.
@@ -29,10 +28,13 @@ class Home extends Command
      */
     public function handle(): void
     {
-        $path = $this->argument('path') ?: getcwd();
+        $name = $this->argument('site') ?: site_from_cwd();
 
-        Setting::where('name', 'home')->first()->update(['value' => $path]);
+        if (! $name) {
+            throw new \Exception("Site '{$name}' not found.");
+        }
 
-        Artisan::call('make-files');
+        $site = Site::firstOrCreateForName($name);
+        $site->remove();
     }
 }

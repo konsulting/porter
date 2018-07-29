@@ -2,24 +2,25 @@
 
 namespace App\Commands\Sites;
 
+use App\PhpVersion;
 use App\Site;
 use LaravelZero\Framework\Commands\Command;
 
-class Unsecure extends Command
+class Php extends Command
 {
     /**
      * The signature of the command.
      *
      * @var string
      */
-    protected $signature = 'unsecure {site?}';
+    protected $signature = 'sites:php {site?}';
 
     /**
      * The description of the command.
      *
      * @var string
      */
-    protected $description = 'Unsecure a site';
+    protected $description = 'Set the php version for a site.';
 
     /**
      * Execute the console command.
@@ -35,6 +36,16 @@ class Unsecure extends Command
         }
 
         $site = Site::firstOrCreateForName($name);
-        $site->unsecure();
+
+        $option = $this->menu(
+            'Available PHP versions',
+            PhpVersion::pluck('version_number', 'id')->toArray()
+        )->open();
+
+        if (! $option) {
+            return;
+        }
+
+        $site->setPhpVersion($option);
     }
 }

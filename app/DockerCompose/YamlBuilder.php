@@ -2,6 +2,8 @@
 
 namespace App\DockerCompose;
 
+use App\PhpVersion;
+
 class YamlBuilder
 {
     public function build()
@@ -12,9 +14,14 @@ class YamlBuilder
                 ->with([
                     'home' => setting('home'),
                     'db_host' => setting('db_host'),
-                    'activePhpVersions' = PhpVersion::active()->get(),
+                    'activePhpVersions' => PhpVersion::active()->get(),
                 ])
                 ->render()
         );
+    }
+
+    public function destroy()
+    {
+        @unlink(base_path('docker-compose.yaml'));
     }
 }

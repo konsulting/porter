@@ -33,8 +33,10 @@ class Php extends Command
         $workingDir = $name ? '-w /srv/app/'.$name : '';
 
         $site = Site::where('name', $name)->first();
-        $version = optional($site->php_version->safe, PhpVersion::defaultVersion()->safe);
+        $version = optional($site)->php_version ?: PhpVersion::defaultVersion();
 
-        passthru(docker_compose("run {$workingDir} php_cli_{$version} bash"));
+        $this->info("PHP Version: {$version->version_number}");
+
+        passthru(docker_compose("run {$workingDir} php_cli_{$version->safe} bash"));
     }
 }

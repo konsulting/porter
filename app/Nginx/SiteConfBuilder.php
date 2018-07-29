@@ -32,4 +32,9 @@ class SiteConfBuilder
                 ->render()
         );
     }
+
+    public function destroy(Site $site)
+    {
+        @unlink(storage_path("nginx/conf.d/{$site->name}.conf"));
+    }
 }

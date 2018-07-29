@@ -3,5 +3,5 @@
 /.vscode
 /.vagrant
 /storage
-.docker-compose.yaml
+docker-compose.yaml
 /database/database.sqlite

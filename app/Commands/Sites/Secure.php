@@ -2,10 +2,7 @@
 
 namespace App\Commands\Sites;
 
-use App\Porter;
 use App\Site;
-use App\Ssl\CertificateBuilder;
-use Illuminate\Console\Scheduling\Schedule;
 use LaravelZero\Framework\Commands\Command;
 
 class Secure extends Command

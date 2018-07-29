@@ -5,9 +5,17 @@ namespace App;
 use App\Nginx\SiteConfBuilder;
 use App\Ssl\CertificateBuilder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Artisan;
 
 class Site extends Model
 {
+    protected $guarded = [];
+
+    public function php_version()
+    {
+        return $this->belongsTo(PhpVersion::class);
+    }
+
     public function resolve()
     {
         if (! $name = site_from_cwd()) {
@@ -32,13 +40,34 @@ class Site extends Model
         (new CertificateBuilder(storage_path('ssl')))->build($this->url);
 
         $this->update(['secure' => true]);
+
+        Artisan::call('make-files');
     }
 
     public function unsecure()
     {
-        (new CertificateBuilder(storage_path('ssl')))->destroy();
+        (new CertificateBuilder(storage_path('ssl')))->destroy($this->url);
 
         $this->update(['secure' => false]);
+
+        Artisan::call('make-files');
+    }
+
+    public function remove()
+    {
+        app(SiteConfBuilder::class)->destroy($this);
+
+        $this->unsecure();
+        $this->delete();
+
+        Artisan::call('make-files');
+    }
+
+    public function setPhpVersion($phpVersionId)
+    {
+        $this->update(['php_version_id' => $phpVersionId ?: PhpVersion::defaultVersion()->id]);
+
+        Artisan::call('make-files');
     }
 
     public static function firstOrCreateForName($name)

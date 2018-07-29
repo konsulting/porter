@@ -76,20 +76,20 @@ class CertificateBuilder
     public function createCertificate($url)
     {
         $paths = $this->paths($url);
-        $caSrlPath = $this->caPaths()->srl;
+        $caPaths = $this->caPaths();
 
         $this->createConf($paths->conf, $url);
         $this->createPrivateKey($paths->key);
         $this->createSigningRequest($url, $paths->key, $paths->csr, $paths->conf);
 
         $caSrlParam = ' -CAcreateserial';
-        if (file_exists($caSrlPath)) {
-            $caSrlParam = ' -CAserial ' . $caSrlPath;
+        if (file_exists($caPaths->srl)) {
+            $caSrlParam = ' -CAserial ' . $caPaths->srl;
         }
 
         exec(sprintf(
             'openssl x509 -req -sha256 -days 730 -CA %s -CAkey %s%s -in %s -out %s -extensions v3_req -extfile %s',
-            $this->caPemPath, $this->caKeyPath, $caSrlParam, $paths->csr, $paths->crt, $paths->conf
+            $caPaths->pem, $caPaths->key, $caSrlParam, $paths->csr, $paths->crt, $paths->conf
         ));
     }
 
@@ -128,7 +128,7 @@ class CertificateBuilder
     {
         exec(sprintf(
             'openssl req -new -key %s -out %s -subj "/C=/ST=/O=/localityName=/commonName=%s/organizationalUnitName=/emailAddress=%s%s/" -config %s',
-            $keyPath, $csrPath, $url, $url, '@', $this->domain, $confPath
+            $keyPath, $csrPath, $url, $url, '@'.$this->domain, $confPath
         ));
     }
 }

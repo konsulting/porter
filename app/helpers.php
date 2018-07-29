@@ -10,10 +10,10 @@ use App\Setting;
  */
 function setting($key = null) {
     if (! $key) {
-        return Setting::all();
+        return Setting::all()->pluck('value', 'name');
     }
 
-    return Setting::where('name', $key)->first();
+    return optional(Setting::where('name', $key)->first())->value;
 }
 
 /**
