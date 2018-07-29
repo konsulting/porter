@@ -7,29 +7,11 @@ services:
   @include('docker_compose.php_fpm')
   @include('docker_compose.php_cli')
 @endforeach
-  nginx:
-    build:
-      context: .
-      dockerfile: docker/nginx/Dockerfile
-    image: konsulting/porter-nginx
-    networks:
-      - porter
-    ports:
-      - 80:80
-      - 443:443
-    volumes:
-      - ./storage/config/nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./storage/config/nginx/conf.d:/etc/nginx/conf.d
-      - ./storage/ssl:/etc/ssl
-      - ./storage/log:/var/log
-      - {{ $home }}:/srv/app
-  node:
-    build:
-      context: .
-      dockerfile: docker/node/Dockerfile
-    image: konsulting/porter-node
-    user: node
-    volumes:
-      - {{ $home }}:/srv/app
-    networks:
-      - porter
+  @include('docker_compose.nginx')
+  @include('docker_compose.node')
+@if($useMysql)
+  @include('docker_compose.mysql')
+@endif
+@if($useRedis)
+  @include('docker_compose.redis')
+@endif

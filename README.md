@@ -40,7 +40,7 @@ Add porter to $PATH for simplicity.
  - `porter sites:home {dir?}` - set the home dir for sites, run in the dir to use it directly
  - `porter sites:default-php` - select the default php version to use
  
- ### Site settings
+### Site settings
  
  - `porter sites:unsecure {site}` - add an unsecured site
  - `porter sites:secure {site}` - add a secured site
@@ -50,4 +50,15 @@ Add porter to $PATH for simplicity.
 
 ### Working on the cli (composer/npm etc.)
  - `porter php {version?}` - enter the php cli container for the project, run in project dir, or set version.
- - `porter node` - run in project dir
+ - `porter node` - enter the cli for node container, run in project dir
+ - `porter mysql` - enter mysql container using mysql cli
+ - `porter redis` - enter the redis container in redis-cli
+
+### Enable/disable Mysql (5.7) and Redis
+
+Both are enabled by default.  Port localhost:13306 for mysql and localhost:16379 for redis to connect from the host machine.
+
+ - `porter mysql:on`
+ - `porter mysql:off`
+ - `porter redis:on`
+ - `porter redis:off`

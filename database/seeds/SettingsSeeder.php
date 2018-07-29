@@ -14,6 +14,8 @@ class SettingsSeeder extends Seeder
     {
         Setting::create(['name' => 'home', 'value' => '']);
         Setting::create(['name' => 'tld', 'value' => 'test']);
+        Setting::create(['name' => 'use_mysql', 'value' => 'on']);
+        Setting::create(['name' => 'use_redis', 'value' => 'on']);
         Setting::create(['name' => 'db_host', 'value' => 'docker.for.mac.localhost']);
     }
 }

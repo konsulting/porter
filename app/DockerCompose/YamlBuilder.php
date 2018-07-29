@@ -15,6 +15,8 @@ class YamlBuilder
                     'home' => setting('home'),
                     'db_host' => setting('db_host'),
                     'activePhpVersions' => PhpVersion::active()->get(),
+                    'useMysql' => setting('use_mysql') == 'on',
+                    'useRedis' => setting('use_redis') == 'on',
                 ])
                 ->render()
         );
