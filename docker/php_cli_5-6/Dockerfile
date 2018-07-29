@@ -13,6 +13,4 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-COPY storage/php_cli_5-6/php.ini /usr/local/etc/php/php.ini
-
 WORKDIR /srv/app/

@@ -21,5 +21,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(Porter::class);
+
+        $this->publishes([resource_path('stubs/config') => storage_path('config')]);
     }
 }

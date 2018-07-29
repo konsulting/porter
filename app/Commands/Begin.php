@@ -2,7 +2,9 @@
 
 namespace App\Commands;
 
+use App\Providers\AppServiceProvider;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use LaravelZero\Framework\Commands\Command;
 
 class Begin extends Command
@@ -37,6 +39,7 @@ class Begin extends Command
             return;
         }
 
+        $this->call('vendor:publish', ['--provider' => AppServiceProvider::class]);
         $this->call('migrate:fresh', ['--seed' => true]);
         $this->call('sites:home', [$home]);
     }

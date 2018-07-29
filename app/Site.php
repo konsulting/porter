@@ -92,7 +92,7 @@ class Site extends Model
     {
         return static::create([
             'name' => $name,
-            'type' => 'default',
+            'nginx_type' => 'default',
             'php_version_id' => PhpVersion::defaultVersion()->id,
             'secure' => false,
         ]);

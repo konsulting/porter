@@ -8,8 +8,9 @@ use App\Setting;
  * @param null $key
  * @return mixed
  */
-function setting($key = null) {
-    if (! $key) {
+function setting($key = null)
+{
+    if (!$key) {
         return Setting::all()->pluck('value', 'name');
     }
 
@@ -23,7 +24,7 @@ function setting($key = null) {
  */
 function docker_compose($command = null)
 {
-    return 'docker-compose -f '.base_path('docker-compose.yaml').($command ? ' '.$command : '');
+    return 'docker-compose -f ' . base_path('docker-compose.yaml') . ($command ? ' ' . $command : '');
 }
 
 
@@ -38,7 +39,7 @@ function site_from_cwd()
     $currentPath = getcwd();
     $home = setting('home');
 
-    if (! str_start($currentPath, $home)) {
+    if (!str_start($currentPath, $home)) {
         return null;
     }
 

@@ -23,7 +23,7 @@ class SiteConfBuilder
         $conf = "nginx.{$type}.domain" . (($site->secure ?? false) ? '_secure' : '');
 
         file_put_contents(
-            storage_path("nginx/conf.d/{$site->name}.conf"),
+            storage_path("config/nginx/conf.d/{$site->name}.conf"),
             view($conf)
                 ->with([
                     'site' => $site->url,
@@ -36,6 +36,6 @@ class SiteConfBuilder
 
     public function destroy(Site $site)
     {
-        @unlink(storage_path("nginx/conf.d/{$site->name}.conf"));
+        @unlink(storage_path("config/nginx/conf.d/{$site->name}.conf"));
     }
 }
