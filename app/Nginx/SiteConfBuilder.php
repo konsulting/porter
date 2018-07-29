@@ -19,7 +19,8 @@ class SiteConfBuilder
 
     public function build(Site $site)
     {
-        $conf = 'nginx.base.domain' . (($site->secure ?? false) ? '_secure' : '');
+        $type = $site->nginx_type ?? 'default';
+        $conf = "nginx.{$type}.domain" . (($site->secure ?? false) ? '_secure' : '');
 
         file_put_contents(
             storage_path("nginx/conf.d/{$site->name}.conf"),

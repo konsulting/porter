@@ -1,30 +1,21 @@
 server {
     listen 80;
-    server_name {{ $site }} www.{{ $site }} *.{{ $site }};
-    return 302 https://$host$request_uri;
-}
+    server_name {{ $site }} www.{{ $site}} *.{{ $site }};
 
-server {
-    listen 443 ssl http2;
-    server_name {{ $site }} www.{{ $site }} *.{{ $site }};
+    root /srv/app/{{ $name }}/public;
 
-    root /srv/app/{{ $name }};
-
-    index index.php;
+    index index.php index.html;
 
     server_tokens off;
 
     charset utf-8;
     client_max_body_size 128M;
 
-    ssl_certificate /etc/ssl/{{ $site }}.crt;
-    ssl_certificate_key /etc/ssl/{{ $site }}.key;
-
     location = /favicon.ico { log_not_found off; access_log off; }
     location = /robots.txt  { log_not_found off; access_log off; }
 
     location / {
-        try_files $uri index.php$is_args$args;
+        try_files $uri $uri/ index.php$is_args$args;
     }
 
     location ~ \.php$ {

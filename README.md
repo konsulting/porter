@@ -19,6 +19,7 @@ Add porter to $PATH for simplicity.
  - `porter sites:secure {site}` - add a secured site
  - `porter sites:remove {site}` - remove a site 
  - `porter sites:php {site?}` - choose php version for site
+ - `porter sites:nginx-type {site?}` - choose nginx conf type to use, ships with default (project root) and public (/public - such as Laravel apps)
 
  - `porter php {version?}` - enter the php cli container for the project, run in project dir, or set version.
  - `porter node` - run in project dir

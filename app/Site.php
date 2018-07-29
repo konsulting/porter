@@ -70,6 +70,13 @@ class Site extends Model
         Artisan::call('make-files');
     }
 
+    public function setNginxType($type)
+    {
+        $this->update(['nginx_type' => $type ?? 'default']);
+
+        Artisan::call('make-files');
+    }
+
     public static function firstOrCreateForName($name)
     {
         $result = static::where('name', $name)->first();
@@ -85,6 +92,7 @@ class Site extends Model
     {
         return static::create([
             'name' => $name,
+            'type' => 'default',
             'php_version_id' => PhpVersion::defaultVersion()->id,
             'secure' => false,
         ]);
