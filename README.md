@@ -11,9 +11,15 @@ Add porter to $PATH for simplicity.
 
  - `porter start`
  - `porter stop`
+ - `porter build` - (re)build the containers
+
+### Basic settings
 
  - `porter sites:tld {tld}` - set tld
  - `porter sites:home {dir?}` - set the home dir for sites, run in the dir to use it directly
+ - `porter sites:default-php` - select the default php version to use
+ 
+ ### Site settings
  
  - `porter sites:unsecure {site}` - add an unsecured site
  - `porter sites:secure {site}` - add a secured site
@@ -21,5 +27,6 @@ Add porter to $PATH for simplicity.
  - `porter sites:php {site?}` - choose php version for site
  - `porter sites:nginx-type {site?}` - choose nginx conf type to use, ships with default (project root) and public (/public - such as Laravel apps)
 
+### Working on the cli (composer/npm etc.)
  - `porter php {version?}` - enter the php cli container for the project, run in project dir, or set version.
  - `porter node` - run in project dir

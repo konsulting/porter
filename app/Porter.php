@@ -27,4 +27,9 @@ class Porter
     {
         exec(docker_compose("down"));
     }
+
+    public function build()
+    {
+        exec(docker_compose("build"));
+    }
 }

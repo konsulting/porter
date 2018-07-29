@@ -27,4 +27,10 @@ class PhpVersion extends Model
     {
         return $scope->where('default', true)->orWhereIn('id', Site::all()->pluck('php_version_id'));
     }
+
+    public static function setDefaultVersion($id)
+    {
+        static::where('default', true)->update(['default' => false]);
+        static::find($id)->update(['default' => true]);
+    }
 }
