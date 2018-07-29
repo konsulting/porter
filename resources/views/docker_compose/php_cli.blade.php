@@ -2,6 +2,7 @@
     build:
       context: .
       dockerfile: docker/php_cli_{{ $version->safe }}/Dockerfile
+    image: konsulting/porter-php_cli_{{ $version->safe }}
     networks:
       - porter
     volumes:

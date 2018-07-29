@@ -2,6 +2,7 @@
     build:
       context: .
       dockerfile: docker/php_fpm_{{ $version->safe }}/Dockerfile
+    image: konsulting/porter-php_fpm_{{ $version->safe }}
     networks:
       - porter
     ports:

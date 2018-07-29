@@ -11,6 +11,7 @@ services:
     build:
       context: .
       dockerfile: docker/nginx/Dockerfile
+    image: konsulting/porter-nginx
     networks:
       - porter
     ports:
@@ -26,6 +27,7 @@ services:
     build:
       context: .
       dockerfile: docker/node/Dockerfile
+    image: konsulting/porter-node
     user: node
     volumes:
       - {{ $home }}:/srv/app
