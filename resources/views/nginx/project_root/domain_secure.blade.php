@@ -8,7 +8,7 @@ server {
     listen 443 ssl http2;
     server_name {{ $site }} www.{{ $site }} *.{{ $site }};
 
-    root /srv/app/{{ $name }}/public;
+    root /srv/app/{{ $name }};
 
     index index.php index.html;
 

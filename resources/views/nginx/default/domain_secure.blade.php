@@ -8,7 +8,7 @@ server {
     listen 443 ssl http2;
     server_name {{ $site }} www.{{ $site }} *.{{ $site }};
 
-    root /srv/app/{{ $name }};
+    root /srv/app/{{ $name }}/public;
 
     index index.php index.html;
 
@@ -24,7 +24,7 @@ server {
     location = /robots.txt  { log_not_found off; access_log off; }
 
     location / {
-        try_files $uri $uri/ index.php$is_args$args;
+        try_files $uri $uri/ /index.php?$query_string;
     }
 
     location ~ \.php$ {

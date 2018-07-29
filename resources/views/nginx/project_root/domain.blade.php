@@ -2,7 +2,7 @@ server {
     listen 80;
     server_name {{ $site }} www.{{ $site}} *.{{ $site }};
 
-    root /srv/app/{{ $name }}/public;
+    root /srv/app/{{ $name }};
 
     index index.php index.html;
 
