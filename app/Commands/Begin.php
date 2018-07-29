@@ -4,7 +4,6 @@ namespace App\Commands;
 
 use App\Providers\AppServiceProvider;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use LaravelZero\Framework\Commands\Command;
 
 class Begin extends Command
