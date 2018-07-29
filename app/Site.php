@@ -55,9 +55,9 @@ class Site extends Model
 
     public function remove()
     {
+        (new CertificateBuilder(storage_path('ssl')))->destroy($this->url);
         app(SiteConfBuilder::class)->destroy($this);
 
-        $this->unsecure();
         $this->delete();
 
         Artisan::call('make-files');

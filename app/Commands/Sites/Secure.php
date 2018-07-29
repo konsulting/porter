@@ -12,7 +12,7 @@ class Secure extends Command
      *
      * @var string
      */
-    protected $signature = 'secure {site?}';
+    protected $signature = 'sites:secure {site?}';
 
     /**
      * The description of the command.

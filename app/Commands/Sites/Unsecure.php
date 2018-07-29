@@ -12,7 +12,7 @@ class Unsecure extends Command
      *
      * @var string
      */
-    protected $signature = 'unsecure {site?}';
+    protected $signature = 'sites:unsecure {site?}';
 
     /**
      * The description of the command.

@@ -12,7 +12,7 @@ class Remove extends Command
      *
      * @var string
      */
-    protected $signature = 'remove {site?}';
+    protected $signature = 'sites:remove {site?}';
 
     /**
      * The description of the command.
