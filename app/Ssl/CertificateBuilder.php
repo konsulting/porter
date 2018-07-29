@@ -20,6 +20,11 @@ class CertificateBuilder
         $this->email = 'rootcertificate@'.$this->domain;
     }
 
+    /**
+     * List the certificate authority paths
+     *
+     * @return object
+     */
     public function caPaths()
     {
         return (object) [
@@ -29,6 +34,12 @@ class CertificateBuilder
         ];
     }
 
+    /**
+     * List paths based on the certificate url
+     *
+     * @param $url
+     * @return object
+     */
     public function paths($url)
     {
         return (object) [
@@ -39,6 +50,11 @@ class CertificateBuilder
         ];
     }
 
+    /**
+     * Build a certificate based on the url.  Create CA if needed.
+     *
+     * @param $url
+     */
     public function build($url)
     {
         $this->destroy($url);
@@ -46,6 +62,11 @@ class CertificateBuilder
         $this->createCertificate($url);
     }
 
+    /**
+     * Destroy certificate for site based on url
+     *
+     * @param $url
+     */
     public function destroy($url)
     {
         foreach ($this->paths($url) as $path) {
@@ -53,6 +74,9 @@ class CertificateBuilder
         }
     }
 
+    /**
+     * Create certificate authority
+     */
     public function createCa()
     {
         $paths = $this->caPaths();

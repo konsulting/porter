@@ -6,6 +6,11 @@ use App\PhpVersion;
 
 class YamlBuilder
 {
+    /**
+     * Build the docker-compose.yaml file
+     *
+     * @throws \Throwable
+     */
     public function build()
     {
         file_put_contents(
@@ -22,6 +27,9 @@ class YamlBuilder
         );
     }
 
+    /**
+     * Destroy the docker-compose.yaml file
+     */
     public function destroy()
     {
         @unlink(base_path('docker-compose.yaml'));
