@@ -28,7 +28,6 @@ We use Macs for development - and therefore only tested on there.
 ## Commands:
 
  - `porter begin` - Initial set up (migrations etc), run in code home to set immediately
-
  - `porter start`
  - `porter stop`
  - `porter build` - (Re)build the containers
