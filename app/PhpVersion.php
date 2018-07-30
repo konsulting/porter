@@ -36,7 +36,18 @@ class PhpVersion extends Model
      */
     public function getSafeAttribute()
     {
-        return preg_replace('/[^\d]/', '-', $this->version_number);
+        return static::cleanVersionNumber($this->version_number);
+    }
+
+    /**
+     * Find by a user input version number
+     *
+     * @param $number
+     * @return static|null
+     */
+    public static function findByDirtyVersionNumber($number)
+    {
+        return static::where('version_number', static::cleanVersionNumber($number, '.'))->first();
     }
 
     /**
@@ -58,5 +69,17 @@ class PhpVersion extends Model
     public function scopeActive($scope)
     {
         return $scope->where('default', true)->orWhereIn('id', Site::all()->pluck('php_version_id'));
+    }
+
+
+    /**
+     * Clean php version number for file naming
+     *
+     * @param $number
+     * @return null|string
+     */
+    public static function cleanVersionNumber($number, $separator = '-')
+    {
+        return preg_replace('/[^\d]/', $separator, $number);
     }
 }

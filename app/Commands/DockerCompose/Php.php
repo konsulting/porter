@@ -32,8 +32,12 @@ class Php extends Command
         $name = site_from_cwd();
         $workingDir = $name ? '-w /srv/app/'.$name : '';
 
-        $site = Site::where('name', $name)->first();
-        $version = optional($site)->php_version ?: PhpVersion::defaultVersion();
+        if ($version = $this->argument('version')) {
+            $version = PhpVersion::findByDirtyVersionNumber($version);
+        } else {
+            $site = Site::where('name', $name)->first();
+            $version = optional($site)->php_version ?: PhpVersion::defaultVersion();
+        }
 
         $this->info("PHP Version: {$version->version_number}");
 
