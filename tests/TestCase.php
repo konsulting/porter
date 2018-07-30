@@ -52,7 +52,7 @@ abstract class TestCase extends BaseTestCase
                 continue;
             }
 
-            $current = $dir.DIRECTORY_SEPARATOR.$item;
+            $current = $dir . DIRECTORY_SEPARATOR . $item;
 
             if (is_dir($current)) {
                 $this->removeDir($current);
@@ -65,12 +65,12 @@ abstract class TestCase extends BaseTestCase
 
     protected function removeDir($dir)
     {
-        if (!file_exists($dir)) {
+        if (! file_exists($dir)) {
             return true;
         }
 
-        if (!is_dir($dir)) {
-            throw new \Exception($dir.' is not a directory');
+        if (! is_dir($dir)) {
+            throw new \Exception($dir . ' is not a directory');
         }
 
         $this->cleanseDir($dir);
