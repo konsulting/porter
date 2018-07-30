@@ -7,14 +7,14 @@ use App\Site;
 use LaravelZero\Framework\Commands\Command;
 use Symfony\Component\Finder\Finder;
 
-class NginxType extends Command
+class NginxConfig extends Command
 {
     /**
      * The signature of the command.
      *
      * @var string
      */
-    protected $signature = 'sites:nginx-type {site?}';
+    protected $signature = 'sites:nginx-config {site?}';
 
     /**
      * The description of the command.
