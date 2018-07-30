@@ -32,7 +32,8 @@ class Tld extends Command
         $tld = $this->argument('tld');
 
         if (! $tld) {
-            throw new \Exception('You must set a tld. The default is \'test\'.');
+            $this->info(sprintf("The current tld is '%s'", setting('tld')));
+            return;
         }
 
         Setting::where('name', 'tld')->first()->update(['value' => $tld]);

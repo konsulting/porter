@@ -13,7 +13,7 @@ class Home extends Command
      *
      * @var string
      */
-    protected $signature = 'home {path?}';
+    protected $signature = 'home {path?} {--show}';
 
     /**
      * The description of the command.
@@ -29,10 +29,16 @@ class Home extends Command
      */
     public function handle(): void
     {
+        if ($this->option('show')) {
+            $this->info("Home is currently: ". setting('home'));
+            return;
+        }
+
         $path = realpath($this->argument('path') ?: getcwd());
 
-        Setting::where('name', 'home')->first()->update(['value' => $path]);
+        $this->info('Setting home to ' . $path);
 
+        Setting::where('name', 'home')->first()->update(['value' => $path]);
         Artisan::call('make-files');
     }
 }

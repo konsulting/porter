@@ -40,7 +40,8 @@ We use Macs for development - and therefore only tested on there.
  - `porter home {dir?}` - Set the home dir for sites, run in the dir to use it directly - or set it specifically
  
 ### Site settings
- 
+
+ - `porter sites:list` 
  - `porter sites:unsecure {site}` - Set up a site to use http
  - `porter sites:secure {site}` - Set up a site to use https
  - `porter sites:remove {site}` - Remove a site 
@@ -49,6 +50,7 @@ We use Macs for development - and therefore only tested on there.
 
 ### PHP
  - `porter php:default` - Set default PHP version
+ - `porter php:list` - List the available PHP versions
  - `porter php:open {version?}` - Open the PHP cli for the project, run in project dir, or run a specific version
 
 ### Node (npm/yarn)
