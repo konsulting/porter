@@ -92,9 +92,7 @@ Site NGINX config files are created programmatically using the templates in `res
  - `porter node:open` - Open Node cli, run in project dir
 
 ### MySQL
-Enabled by default. Available on the host machine on port 13306`. 
-
-The user is `root` and the password `secret`. You can connect with your favourite GUI if you want to.
+Enabled by default. Available on the host machine on port 13306. The user is `root` and the password `secret`. You can connect with your favourite GUI if you want to.
 
  - `porter mysql:on`
  - `porter mysql:off`
