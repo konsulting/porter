@@ -52,7 +52,7 @@ We use Macs for development - and therefore only tested on there.
  - `porter php:open {version?}` - Open the PHP cli for the project, run in project dir, or run a specific version
 
 ### Node (npm/yarn)
- - `porter node` - Open Node cli, run in project dir
+ - `porter node:open` - Open Node cli, run in project dir
 
 ### MySQL
 Enabled by default available on the host machine @ localhost:13306. 
@@ -67,4 +67,4 @@ Enabled by default.  Available on the host machine @ localhost:16379.
 
  - `porter redis:on`
  - `porter redis:off`
- - `porter redis` - Open Redis cli
+ - `porter redis:open` - Open Redis cli
