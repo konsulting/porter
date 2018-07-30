@@ -13,11 +13,18 @@ We use Macs for development - and therefore only tested on there.
  - Porter binds to ports 80 and 443, so you need to turn Valet off [or any other services that are bound to them] before using it.)
  - Clone Porter to a directory.
  
-    `git clone git@github.com:konsulting/porter.git`
+    ```
+        git clone git@github.com:konsulting/porter.git
+        cd porter
+        composer install
+    ```
  
  - Add Porter to your $PATH (e.g. in .bash_profile)
  
-    `export PATH="[path to porter]:$PATH"`
+    ```
+    export PATH="[path to porter]:$PATH" 
+    source .bash_profile
+    ```
  
  - In your terminal `cd` to your Code directory where your sites are located, and run `porter begin`
  

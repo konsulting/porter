@@ -40,6 +40,6 @@ class Begin extends Command
 
         $this->call('vendor:publish', ['--provider' => AppServiceProvider::class]);
         $this->call('migrate:fresh', ['--seed' => true]);
-        $this->call('sites:home', [$home]);
+        $this->call('home', [$home]);
     }
 }
