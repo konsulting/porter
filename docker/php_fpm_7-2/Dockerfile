@@ -1,11 +1,12 @@
 FROM php:7.2-fpm
 
-RUN docker-php-ext-install mbstring pdo pdo_mysql opcache mysqli
+RUN docker-php-ext-install mbstring pdo pdo_mysql opcache mysqli && \
+    docker-php-ext-enable mysqli && \
+    apt-get update -y && apt-get install -y libpng-dev zlib1g-dev git zip unzip && \
+    docker-php-ext-install zip gd
 
-RUN apt-get update -y && apt-get install -y libpng-dev zlib1g-dev
-
-RUN docker-php-ext-install mbstring zip gd
-
-RUN docker-php-ext-enable mysqli
+RUN apt-get -y autoremove && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 WORKDIR /srv/app/

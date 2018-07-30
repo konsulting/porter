@@ -2,6 +2,7 @@
 
 namespace App\Commands;
 
+use App\Porter;
 use App\Providers\AppServiceProvider;
 use Illuminate\Support\Facades\DB;
 use LaravelZero\Framework\Commands\Command;
@@ -32,14 +33,24 @@ class Begin extends Command
         $force = $this->option('force');
         $home = getcwd();
 
-        if (! $force && DB::table('migrations')->count() > 0) {
+        try {
+            $migrationCount = DB::table('migrations')->count();
+        } catch (\Exception $e) {
+            $migrationCount = 0;
+        }
+
+        if (! $force && $migrationCount > 0) {
             $this->error('Already began. If you definitely want to continue, you can force with the --force flag.');
 
             return;
         }
 
+        touch(database_path('database.sqlite'));
+
         $this->call('vendor:publish', ['--provider' => AppServiceProvider::class]);
         $this->call('migrate:fresh', ['--seed' => true]);
         $this->call('home', [$home]);
+
+        app(Porter::class)->pullImages();
     }
 }

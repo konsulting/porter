@@ -2,6 +2,8 @@
     build:
       context: .
       dockerfile: docker/nginx/Dockerfile
+      cache_from:
+        - konsulting/porter-nginx:latest
     image: konsulting/porter-nginx
     networks:
       - porter

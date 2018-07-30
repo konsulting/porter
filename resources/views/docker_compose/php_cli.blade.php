@@ -2,6 +2,8 @@
     build:
       context: .
       dockerfile: docker/php_cli_{{ $version->safe }}/Dockerfile
+      cache_from:
+        - konsulting/porter-php_cli_{{ $version->safe }}:latest
     image: konsulting/porter-php_cli_{{ $version->safe }}
     networks:
       - porter

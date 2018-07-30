@@ -2,6 +2,8 @@
     build:
       context: .
       dockerfile: docker/php_fpm_{{ $version->safe }}/Dockerfile
+      cache_from:
+        - konsulting/porter-php_fpm_{{ $version->safe }}:latest
     image: konsulting/porter-php_fpm_{{ $version->safe }}
     networks:
       - porter
