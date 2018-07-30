@@ -20,7 +20,7 @@ class Off extends Command
      *
      * @var string
      */
-    protected $description = 'Turn redis off';
+    protected $description = 'Turn Redis off';
 
     /**
      * Execute the console command.

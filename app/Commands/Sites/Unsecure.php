@@ -19,7 +19,7 @@ class Unsecure extends Command
      *
      * @var string
      */
-    protected $description = 'Unsecure a site';
+    protected $description = 'Set up a site to use http';
 
     /**
      * Execute the console command.

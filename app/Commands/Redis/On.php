@@ -20,7 +20,7 @@ class On extends Command
      *
      * @var string
      */
-    protected $description = 'Turn redis on';
+    protected $description = 'Turn Redis on';
 
     /**
      * Execute the console command.

@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Commands\DockerCompose;
+namespace App\Commands\Php;
 
 use App\PhpVersion;
 use App\Site;
 use LaravelZero\Framework\Commands\Command;
 
-class Php extends Command
+class Open extends Command
 {
     /**
      * The signature of the command.
      *
      * @var string
      */
-    protected $signature = 'php {version?}';
+    protected $signature = 'php:open {version?}';
 
     /**
      * The description of the command.

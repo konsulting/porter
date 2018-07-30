@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Commands\DockerCompose;
+namespace App\Commands\Node;
 
 use LaravelZero\Framework\Commands\Command;
 
-class Node extends Command
+class Open extends Command
 {
     /**
      * The signature of the command.
      *
      * @var string
      */
-    protected $signature = 'node';
+    protected $signature = 'node:open';
 
     /**
      * The description of the command.

@@ -20,7 +20,7 @@ class Php extends Command
      *
      * @var string
      */
-    protected $description = 'Set the php version for a site.';
+    protected $description = 'Choose the PHP version for a site';
 
     /**
      * Execute the console command.

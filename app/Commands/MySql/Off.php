@@ -20,7 +20,7 @@ class Off extends Command
      *
      * @var string
      */
-    protected $description = 'Turn mysql off';
+    protected $description = 'Turn MySQL off';
 
     /**
      * Execute the console command.

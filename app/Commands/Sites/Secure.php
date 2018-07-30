@@ -19,7 +19,7 @@ class Secure extends Command
      *
      * @var string
      */
-    protected $description = 'Secure a site';
+    protected $description = 'Set up a site to use https';
 
     /**
      * Execute the console command.

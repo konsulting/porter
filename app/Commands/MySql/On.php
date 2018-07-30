@@ -20,7 +20,7 @@ class On extends Command
      *
      * @var string
      */
-    protected $description = 'Turn mysql on';
+    protected $description = 'Turn MySQL on';
 
     /**
      * Execute the console command.

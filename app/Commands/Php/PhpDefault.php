@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Commands\Sites;
+namespace App\Commands\Php;
 
 use App\PhpVersion;
 use App\Setting;
@@ -8,21 +8,21 @@ use App\Site;
 use Illuminate\Support\Facades\Artisan;
 use LaravelZero\Framework\Commands\Command;
 
-class DefaultPhp extends Command
+class PhpDefault extends Command
 {
     /**
      * The signature of the command.
      *
      * @var string
      */
-    protected $signature = 'sites:default-php';
+    protected $signature = 'php:default';
 
     /**
      * The description of the command.
      *
      * @var string
      */
-    protected $description = 'Set the default php version for Porter.';
+    protected $description = 'Set the default PHP version';
 
     /**
      * Execute the console command.

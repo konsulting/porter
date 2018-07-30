@@ -7,21 +7,21 @@ use App\Site;
 use LaravelZero\Framework\Commands\Command;
 use Symfony\Component\Finder\Finder;
 
-class NginxConfig extends Command
+class Nginx extends Command
 {
     /**
      * The signature of the command.
      *
      * @var string
      */
-    protected $signature = 'sites:nginx-config {site?}';
+    protected $signature = 'sites:nginx {site?}';
 
     /**
      * The description of the command.
      *
      * @var string
      */
-    protected $description = 'Set the nginx config for a site.';
+    protected $description = 'Choose the NGiNX config template for a site';
 
     /**
      * Execute the console command.

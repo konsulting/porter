@@ -1,26 +1,26 @@
 <?php
 
-namespace App\Commands\Sites;
+namespace App\Commands;
 
 use App\Setting;
 use Illuminate\Support\Facades\Artisan;
 use LaravelZero\Framework\Commands\Command;
 
-class Tld extends Command
+class Home extends Command
 {
     /**
      * The signature of the command.
      *
      * @var string
      */
-    protected $signature = 'sites:tld {tld?}';
+    protected $signature = 'home {path?}';
 
     /**
      * The description of the command.
      *
      * @var string
      */
-    protected $description = 'Set the tld for Porter sites';
+    protected $description = 'Set the root directory for Porter sites';
 
     /**
      * Execute the console command.
@@ -29,13 +29,9 @@ class Tld extends Command
      */
     public function handle(): void
     {
-        $tld = $this->argument('tld');
+        $path = realpath($this->argument('path') ?: getcwd());
 
-        if (! $tld) {
-            throw new \Exception('You must set a tld. The default is \'test\'.');
-        }
-
-        Setting::where('name', 'tld')->first()->update(['value' => $tld]);
+        Setting::where('name', 'home')->first()->update(['value' => $path]);
 
         Artisan::call('make-files');
     }

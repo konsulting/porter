@@ -26,39 +26,45 @@ We use Macs for development - and therefore only tested on there.
  - Change the php version for a site with `porter sites:php {site}`
  
 ## Commands:
-Add porter to $PATH for simplicity.
 
- - `porter begin` - initial set up (migrations etc), run in code home to set immediately
+ - `porter begin` - Initial set up (migrations etc), run in code home to set immediately
 
  - `porter start`
  - `porter stop`
- - `porter build` - (re)build the containers
+ - `porter build` - (Re)build the containers
+ - `porter make-files` - (Re)make all the files and restart. Run after changing config files.
 
 ### Basic settings
 
- - `porter sites:tld {tld}` - set tld
- - `porter sites:home {dir?}` - set the home dir for sites, run in the dir to use it directly
- - `porter sites:default-php` - select the default php version to use
+ - `porter tld {tld}` - Set tld ('test' is the default for domains such as sample.test)
+ - `porter home {dir?}` - Set the home dir for sites, run in the dir to use it directly - or set it specifically
  
 ### Site settings
  
- - `porter sites:unsecure {site}` - add an unsecured site
- - `porter sites:secure {site}` - add a secured site
- - `porter sites:remove {site}` - remove a site 
- - `porter sites:php {site?}` - choose php version for site
- - `porter sites:nginx-config {site?}` - choose nginx conf type to use, ships with default (/public such as Laravel) and project_root
+ - `porter sites:unsecure {site}` - Set up a site to use http
+ - `porter sites:secure {site}` - Set up a site to use https
+ - `porter sites:remove {site}` - Remove a site 
+ - `porter sites:php {site?}` - Choose the PHP version for site
+ - `porter sites:nginx-config {site?}` - Choose NGiNX config template for a site, ships with default (/public such as Laravel) and project_root
 
-### Working on the cli (composer/npm etc.)
- - `porter php {version?}` - enter the php cli container for the project, run in project dir, or set version.
- - `porter node` - enter the cli for node container, run in project dir
- - `porter mysql` - enter mysql container using mysql cli
- - `porter redis` - enter the redis container in redis-cli
+### PHP
+ - `porter php:default` - Set default PHP version
+ - `porter php:open {version?}` - Open the PHP cli for the project, run in project dir, or run a specific version
 
-### Enable/disable Mysql (5.7) and Redis
+### Node (npm/yarn)
+ - `porter node` - Open Node cli, run in project dir
 
-Both are enabled by default.  Port localhost:13306 for mysql and localhost:16379 for redis to connect from the host machine.
+### MySQL
+Enabled by default available on the host machine @ localhost:13306. 
 
  - `porter mysql:on`
  - `porter mysql:off`
+ - `porter mysql:open` - Open MySQL cli
+
+### Redis
+
+Enabled by default.  Available on the host machine @ localhost:16379.
+
  - `porter redis:on`
  - `porter redis:off`
+ - `porter redis` - Open Redis cli

@@ -1,24 +1,24 @@
 <?php
 
-namespace App\Commands\DockerCompose;
+namespace App\Commands\MySql;
 
 use LaravelZero\Framework\Commands\Command;
 
-class MySqlCli extends Command
+class Open extends Command
 {
     /**
      * The signature of the command.
      *
      * @var string
      */
-    protected $signature = 'mysql';
+    protected $signature = 'mysql:open';
 
     /**
      * The description of the command.
      *
      * @var string
      */
-    protected $description = 'Open MySql Cli';
+    protected $description = 'Open MySQL cli';
 
     /**
      * Execute the console command.
