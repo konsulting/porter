@@ -18,7 +18,7 @@ class YamlBuilder
             view('docker_compose.base')
                 ->with([
                     'home' => setting('home'),
-                    'db_host' => setting('db_host'),
+                    'host_machine_name' => setting('host_machine_name'),
                     'activePhpVersions' => PhpVersion::active()->get(),
                     'useMysql' => setting('use_mysql') == 'on',
                     'useRedis' => setting('use_redis') == 'on',

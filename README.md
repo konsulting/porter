@@ -13,7 +13,7 @@ Contributions are welcome.  We are a small agency, so please be patient if your 
 ## Installation
 
  - Install [Docker](https://www.docker.com/community-edition)
- - Set up routing. Use `/etc/hosts` or optionally install DMSmasq (or similar) to handle directing traffic to the Porter services.
+ - Set up routing. Use `/etc/hosts` or optionally install DNSmasq (or similar) to handle directing traffic to the Porter services.
    
    We are currently using the DNSmasq setup from Valet - but wish to offer an automated setup for each OS.
    
@@ -33,11 +33,24 @@ Contributions are welcome.  We are a small agency, so please be patient if your 
     source .bash_profile
     ```
  
- - In your terminal `cd` to your Code directory where your sites are located, and run `porter begin`
+ - In your terminal `cd` to the directory where your sites are located, and run `porter begin`
  
- ## Notes
- - Sites are added manually for use with Porter. It means we can set up Nginx sites neatly.  Add them by heading to the directory and running `porter sites:unsecure` or `porter sites:secure`. Alternative run `porter sites:unsecure {site}` or `porter sites:secure {site}` from anywhere.
- - Change the php version for a site with `porter sites:php {site}`
+## Usage
+
+Porter uses a simple set of commands for interaction (see below).
+
+Sites are added manually. This allows us to set up each one up with its own NGiNX config. To add your first site, move to its directory and run `porter unsecure`.
+
+Porter adds two simple environment variables to the PHP containers. 
+
+1. `RUNNING_ON_PORTER=true` allowing you to identify when a site is running on Porter. 
+2. `HOST_MACHINE_NAME=host.docker.internal` allowing you to resolve to services running directly on the host machine. The value for this changes every now and then, so this means you have less to remember.
+
+Access them in PHP using:
+```php
+getenv('RUNNING_ON_PORTER)
+getenv('HOST_MACHINE_NAME')
+```
  
 ## Commands:
 
@@ -56,32 +69,46 @@ Contributions are welcome.  We are a small agency, so please be patient if your 
  
 ### Site settings
 
+Site commands will pick up the current working directory automatically.  They also allow you to specify the site by the directory name.
+
  - `porter sites:list` 
- - `porter sites:unsecure {site}` - Set up a site to use http
- - `porter sites:secure {site}` - Set up a site to use https
- - `porter sites:remove {site}` - Remove a site 
+ - `porter sites:unsecure {site?}` - Set up a site to use http
+ - `porter sites:secure {site?}` - Set up a site to use https
+ - `porter sites:remove {site?}` - Remove a site 
  - `porter sites:php {site?}` - Choose the PHP version for site
  - `porter sites:nginx-config {site?}` - Choose NGiNX config template for a site, ships with default (/public such as Laravel) and project_root
 
+Site NGINX config files are created programmatically using the templates in `resources/views/nginx`. The config files are stored in `storage/config/nginx/conf.d`.
+
 ### PHP
+
  - `porter php:default` - Set default PHP version
  - `porter php:list` - List the available PHP versions
  - `porter php:open {version?}` - Open the PHP cli for the project, run in project dir, or run a specific version
+
+`php.ini` files are stored in `storage/config` by container. If you change one, you'll need to run `porter php:restart` for changes to be picked up.
 
 ### Node (npm/yarn)
  - `porter node:open` - Open Node cli, run in project dir
 
 ### MySQL
-Enabled by default available on the host machine @ localhost:13306. 
+Enabled by default. Available on the host machine on port 13306`. 
+
+The user is `root` and the password `secret`. You can connect with your favourite GUI if you want to.
 
  - `porter mysql:on`
  - `porter mysql:off`
  - `porter mysql:open` - Open MySQL cli
 
+MySQL data is stored in `storage/data/mysql`.
+Logs are stored in `storage/logs/mysql`.
+
 ### Redis
 
-Enabled by default.  Available on the host machine @ localhost:16379.
+Enabled by default. Available on the host machine on port 16379`.
 
  - `porter redis:on`
  - `porter redis:off`
  - `porter redis:open` - Open Redis cli
+
+Redis data is stored in `storage/data/redis`.
