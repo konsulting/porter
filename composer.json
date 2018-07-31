@@ -1,18 +1,22 @@
 {
-    "name": "laravel-zero/laravel-zero",
-    "description": "The Laravel Zero Framework.",
-    "keywords": ["framework", "laravel", "laravel zero", "console", "cli"],
-    "homepage": "https://laravel-zero.com",
+    "name": "konsulting/porter",
+    "description": "A docker based multi-site setup for local PHP development. ",
+    "keywords": ["PHP", "Docker", "Laravel", "Laravel Zero", "Multi-site", "Development"],
+    "homepage": "https://github.com/konsulting/porter",
     "type": "project",
     "license": "MIT",
     "support": {
-        "issues": "https://github.com/laravel-zero/laravel-zero/issues",
-        "source": "https://github.com/laravel-zero/laravel-zero"
+        "issues": "https://github.com/konsulting/porter/issues",
+        "source": "https://github.com/konsulting/porter"
     },
     "authors": [
         {
-            "name": "Nuno Maduro",
-            "email": "enunomaduro@gmail.com"
+            "name": "Keoghan Litchfield",
+            "email": "keoghan@klever.co.uk"
+        },
+        {
+            "name": "Robin D'Arcy",
+            "email": "robin@klever.co.uk"
         }
     ],
     "require": {
