@@ -6,6 +6,6 @@
       MYSQL_ROOT_PASSWORD: secret
     volumes:
       - ./storage/data/mysql:/var/lib/mysql
-      - ./storage/log/mysql:/var/log/mysql
+      - ./storage/logs/mysql:/var/log/mysql
     networks:
       - porter

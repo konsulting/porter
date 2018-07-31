@@ -14,5 +14,5 @@
       - ./storage/config/nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./storage/config/nginx/conf.d:/etc/nginx/conf.d
       - ./storage/ssl:/etc/ssl
-      - ./storage/log:/var/log
+      - ./storage/logs:/var/log
       - {{ $home }}:/srv/app

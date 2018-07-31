@@ -78,7 +78,9 @@ Site commands will pick up the current working directory automatically.  They al
  - `porter sites:php {site?}` - Choose the PHP version for site
  - `porter sites:nginx-config {site?}` - Choose NGiNX config template for a site, ships with default (/public such as Laravel) and project_root
 
-Site NGINX config files are created programmatically using the templates in `resources/views/nginx`. The config files are stored in `storage/config/nginx/conf.d`.
+Site NGiNX config files are created programmatically using the templates in `resources/views/nginx`. The config files are stored in `storage/config/nginx/conf.d`.
+
+NGiNX logs are stored in `storage/logs/nginx`
 
 ### PHP
 
