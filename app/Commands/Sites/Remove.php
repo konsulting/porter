@@ -30,11 +30,10 @@ class Remove extends Command
     {
         $name = $this->argument('site') ?: site_from_cwd();
 
-        if (! $name) {
+        if (! $site = Site::where('name', $name)->first()) {
             throw new \Exception("Site '{$name}' not found.");
         }
 
-        $site = Site::firstOrCreateForName($name);
         $site->remove();
     }
 }
