@@ -8,7 +8,7 @@ Our aim is to use this for day-to-day development with simple, portable usage. W
 
 Porter is developed using [Laravel-Zero](https://laravel-zero.com/).
 
-Contributions are welcome.  We are a small agency, so please be patient if your question or pull request need to wait a little.
+Contributions are welcome.  We are a small company, so please be patient if your question or pull request need to wait a little.
 
 ## Installation
 
