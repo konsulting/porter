@@ -88,7 +88,9 @@ NGiNX logs are stored in `storage/logs/nginx`
  - `porter php:list` - List the available PHP versions
  - `porter php:open {version?}` - Open the PHP cli for the project, run in project dir, or run a specific version
 
-`php.ini` files are stored in `storage/config` by container. If you change one, you'll need to run `porter php:restart` for changes to be picked up.
+`php.ini` files are stored in `storage/config` by PHP version. If you change one, you'll need to run `porter php:restart` for changes to be picked up. 
+
+We currently ship with containers for PHP 5.6, 7.0, 7.1 and 7.2.
 
 ### Node (npm/yarn)
  - `porter node:open` - Open Node cli, run in project dir
@@ -119,3 +121,27 @@ We have a [MailHog](https://github.com/mailhog/MailHog) container, all emails ar
 
 You can review received emails in MailHog's UI at [http://localhost:8025](http://localhost:8025/). Or, you can use the MailHog API to inspect received emails.
 
+## PHP Extensions
+
+We have added a number of PHP extensions to the containers that we use frequently. These include:
+
+- GD
+ - Imagick
+ - MbString
+ - MySQLi [& MySQL on 5.6]
+ - Opcache [defaulted to off as we're using the setup for development]
+ - PDO with PDO_MySQL PDO_PGSQL 
+ - SOAP
+ - Xdebug
+ - Zip
+
+### Xdebug
+
+Xdebug is available on each PHP container. `xdebug.ini` files are stored in `storage/config` by PHP version. Each version uses a different port, the fpm and cli containers use the same port for any given PHP version.
+
+|PHP Version|Port|
+|---|---|
+|5.6|9501|
+|7.0|9502|
+|7.1|9503|
+|7.2|9504|
