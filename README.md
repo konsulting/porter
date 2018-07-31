@@ -48,7 +48,7 @@ Porter adds two simple environment variables to the PHP containers.
 
 Access them in PHP using:
 ```php
-getenv('RUNNING_ON_PORTER)
+getenv('RUNNING_ON_PORTER')
 getenv('HOST_MACHINE_NAME')
 ```
  
