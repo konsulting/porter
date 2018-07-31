@@ -46,6 +46,38 @@ class Site extends Model
     }
 
     /**
+     * Get the scheme for this site
+     *
+     * @return string
+     */
+    public function getSchemeAttribute()
+    {
+        return ($this->secure ? 'https' : 'http').'://';
+    }
+
+    /**
+     * Return the path for the NGiNX config file
+     *
+     * @return string
+     */
+    public function getNginxConfPathAttribute()
+    {
+        return config('app.config_storage_path')."/nginx/conf.d/{$this->name}.conf";
+    }
+
+    /**
+     * Return the full NGiNX template to use
+     *
+     * @return string
+     */
+    public function getNginxConfTemplateAttribute()
+    {
+        $type = $this->nginx_type ?? 'default';
+
+        return "nginx.{$type}.domain" . (($this->secure ?? false) ? '_secure' : '');
+    }
+
+    /**
      * Build the files for this site (e.g. nginx conf)
      *
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
@@ -60,7 +92,7 @@ class Site extends Model
      */
     public function secure()
     {
-        (new CertificateBuilder(storage_path('ssl')))->build($this->url);
+        $this->getCertificateBuilder()->build($this->url);
 
         $this->update(['secure' => true]);
 
@@ -72,7 +104,7 @@ class Site extends Model
      */
     public function unsecure()
     {
-        (new CertificateBuilder(storage_path('ssl')))->destroy($this->url);
+        $this->getCertificateBuilder()->destroy($this->url);
 
         $this->update(['secure' => false]);
 
@@ -86,7 +118,7 @@ class Site extends Model
      */
     public function remove()
     {
-        (new CertificateBuilder(storage_path('ssl')))->destroy($this->url);
+        $this->getCertificateBuilder()->destroy($this->url);
         app(SiteConfBuilder::class)->destroy($this);
 
         $this->delete();
@@ -149,5 +181,10 @@ class Site extends Model
             'php_version_id' => PhpVersion::defaultVersion()->id,
             'secure' => false,
         ]);
+    }
+
+    protected function getCertificateBuilder()
+    {
+        return app(CertificateBuilder::class);
     }
 }

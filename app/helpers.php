@@ -24,7 +24,7 @@ function setting($key = null)
  */
 function docker_compose($command = null)
 {
-    return 'docker-compose -f ' . base_path('docker-compose.yaml') . ($command ? ' ' . $command : '');
+    return 'docker-compose -f ' . config('app.docker-compose-file') . ($command ? ' ' . $command : '');
 }
 
 

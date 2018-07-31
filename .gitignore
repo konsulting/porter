@@ -4,6 +4,7 @@
 /.vagrant
 /docker-compose.yaml
 /database/database.sqlite
+/database/testing.sqlite
 
 /storage/config/*
 /storage/data/*

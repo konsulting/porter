@@ -18,5 +18,4 @@ return [
             'database' => database_path('database.sqlite'),
         ],
     ],
-
 ];

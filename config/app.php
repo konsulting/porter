@@ -53,4 +53,9 @@ return [
         Intonate\TinkerZero\TinkerZeroServiceProvider::class,
         \Illuminate\View\ViewServiceProvider::class,
     ],
+
+    // Allow these to be overridden for testing
+    'docker-compose-file' => base_path('docker-compose.yaml'),
+    'config_storage_path' => storage_path('config'),
+    'ssl_storage_path' => storage_path('ssl'),
 ];

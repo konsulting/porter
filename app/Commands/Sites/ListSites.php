@@ -39,7 +39,7 @@ class ListSites extends Command
                     $site->name,
                     $site->php_version->version_number,
                     $site->nginx_type,
-                    'http'.($site->secure ? 's' : '').'://'.$site->url,
+                    $site->scheme.$site->url,
                 ];
             });
 

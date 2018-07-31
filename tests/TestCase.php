@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use Illuminate\Support\Facades\Artisan;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
@@ -21,6 +22,27 @@ abstract class TestCase extends BaseTestCase
     protected function setUp(): void
     {
         $this->app = $this->createApplication();
+
+        touch(database_path('testing.sqlite'));
+
+        @mkdir(storage_path('test_ssl'));
+        @mkdir(storage_path('test_config/nginx/conf.d/'), 0777, true);
+
+        $this->app['config']->set('database.connections.default.database', database_path('testing.sqlite'));
+        $this->app['config']->set('app.docker-compose-file', storage_path('test_config/docker-compose-test.yaml'));
+        $this->app['config']->set('app.config_storage_path', storage_path('test_config'));
+        $this->app['config']->set('app.ssl_storage_path', storage_path('test_ssl'));
+
+        Artisan::call('migrate:fresh');
+        Artisan::call('vendor:publish', ['--provider' => TestingServiceProvider::class]);
+    }
+
+    public function tearDown()
+    {
+        parent::tearDown();
+
+        $this->cleanseDir(storage_path('test_ssl'));
+        $this->cleanseDir(storage_path('test_config'));
     }
 
     protected function cleanseDir($dir)

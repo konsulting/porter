@@ -16,7 +16,7 @@ RUN apt-get update -y && \
         --with-jpeg-dir=/usr/include/ && \
     docker-php-ext-install \
         mbstring \
-        pdo pdo_mysql pdo_pgsql mysqli \
+        pdo pdo_mysql pdo_pgsql mysqli mysql\
         opcache \
         zip \
         gd \

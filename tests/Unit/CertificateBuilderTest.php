@@ -12,20 +12,16 @@ class CertificateBuilderTest extends TestCase
     {
         $dir = storage_path('test_ssl');
 
-        @mkdir($dir);
-
         $builder = new CertificateBuilder($dir);
         $builder->build('klever.test');
 
-        $this->assertFileExists($dir.DIRECTORY_SEPARATOR.'klever.test.conf');
-        $this->assertFileExists($dir.DIRECTORY_SEPARATOR.'klever.test.crt');
-        $this->assertFileExists($dir.DIRECTORY_SEPARATOR.'klever.test.csr');
-        $this->assertFileExists($dir.DIRECTORY_SEPARATOR.'klever.test.key');
+        $this->assertFileExists($dir.'/klever.test.conf');
+        $this->assertFileExists($dir.'/klever.test.crt');
+        $this->assertFileExists($dir.'/klever.test.csr');
+        $this->assertFileExists($dir.'/klever.test.key');
 
-        $this->assertFileExists($dir.DIRECTORY_SEPARATOR.'KleverPorterSelfSigned.key');
-        $this->assertFileExists($dir.DIRECTORY_SEPARATOR.'KleverPorterSelfSigned.pem');
-        $this->assertFileExists($dir.DIRECTORY_SEPARATOR.'KleverPorterSelfSigned.srl');
-
-        $this->cleanseDir($dir);
+        $this->assertFileExists($dir.'/KleverPorterSelfSigned.key');
+        $this->assertFileExists($dir.'/KleverPorterSelfSigned.pem');
+        $this->assertFileExists($dir.'/KleverPorterSelfSigned.srl');
     }
 }
