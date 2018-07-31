@@ -51,7 +51,7 @@ Access them in PHP using:
 getenv('RUNNING_ON_PORTER')
 getenv('HOST_MACHINE_NAME')
 ```
- 
+
 ## Commands:
 
  - `porter begin` - Migrate and seed the sqlite database, and publish config files to `storage/config`. It will set Porter home to the working directory when you run the command.  It will also download the required docker images.
@@ -112,3 +112,10 @@ Enabled by default. Available on the host machine on port 16379`.
  - `porter redis:open` - Open Redis cli
 
 Redis data is stored in `storage/data/redis`.
+
+## Email
+
+We have a [MailHog](https://github.com/mailhog/MailHog) container, all emails are routed to this container from PHP when using the `mail()` function. 
+
+You can review received emails in MailHog's UI at [http://localhost:8025](http://localhost:8025/). Or, you can use the MailHog API to inspect received emails.
+

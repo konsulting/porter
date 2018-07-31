@@ -12,6 +12,7 @@
     volumes:
       - {{ $home }}:/srv/app
       - ./storage/config/php_fpm_{{ $version->safe }}/php.ini:/usr/local/etc/php/php.ini
+      - ./storage/config/php_fpm_{{ $version->safe }}/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
     environment:
-       - HOST_MACHINE_NAME={{ $host_machine_name }}
-       - RUNNING_ON_PORTER=true
+      - HOST_MACHINE_NAME={{ $host_machine_name }}
+      - RUNNING_ON_PORTER=true
