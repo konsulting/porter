@@ -2,8 +2,11 @@
 /.idea
 /.vscode
 /.vagrant
-/storage
+/storage/*
+!/storage/framework
+/storage/framework/*
 !/storage/framework/views
 /storage/framework/views/*
+!/storage/framework/views/.gitkeep
 docker-compose.yaml
 /database/database.sqlite
