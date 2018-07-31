@@ -5,20 +5,10 @@
 /docker-compose.yaml
 /database/database.sqlite
 
-/storage/*
-
-!/storage/framework
-storage/framework/*
-!/storage/framework/views
+/storage/config/*
+/storage/data/*
 /storage/framework/views/*
-!/storage/framework/views/.gitkeep
-
-!/storage/logs
 /storage/logs/*
-!/storage/logs/mysql
-/storage/logs/mysql/*
-!/storage/logs/mysql/.gitkeep
-!/storage/logs/nginx
-/storage/logs/nginx/*
-!/storage/logs/nginx/.gitkeep
+/storage/ssl/*
 
+!.gitkeep
