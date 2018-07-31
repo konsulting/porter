@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Ssl;
+namespace Tests\Unit\Ssl;
 
 use App\Ssl\CertificateBuilder;
 use Tests\TestCase;
