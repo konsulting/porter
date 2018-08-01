@@ -51,16 +51,6 @@ class PhpVersion extends Model
     }
 
     /**
-     * Get the port to use for php fpm
-     *
-     * @return int|mixed
-     */
-    public function getPortAttribute()
-    {
-        return 9000+$this->id;
-    }
-
-    /**
      * Scope for the active PHP versions for porter - any used in sites plus default
      *
      * @param $scope

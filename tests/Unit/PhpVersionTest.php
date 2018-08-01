@@ -42,16 +42,6 @@ class PhpVersionTest extends TestCase
     }
 
     /** @test */
-    public function it_returns_an_appropriate_port()
-    {
-        factory(PhpVersion::class, 5)->create();
-
-        foreach (PhpVersion::all() as $version) {
-            $this->assertEquals(9000 + $version->id, $version->port);
-        }
-    }
-
-    /** @test */
     public function it_returns_the_active_versions()
     {
         $v5 = factory(PhpVersion::class)->create(['version_number' => '5.6']);

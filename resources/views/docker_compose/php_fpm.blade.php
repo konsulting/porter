@@ -7,8 +7,6 @@
     image: konsulting/porter-php_fpm_{{ $version->safe }}
     networks:
       - porter
-    ports:
-      - {{ $version->port }}:9000
     volumes:
       - {{ $home }}:/srv/app
       - ./storage/config/php_fpm_{{ $version->safe }}/php.ini:/usr/local/etc/php/php.ini
