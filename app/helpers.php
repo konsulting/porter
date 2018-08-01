@@ -1,6 +1,7 @@
 <?php
 
 use App\Setting;
+use App\Support\ConsoleWriter;
 
 /**
  * Get a setting, or all settings
@@ -46,4 +47,26 @@ function site_from_cwd()
     $currentPath = trim(str_after($currentPath, $home), DIRECTORY_SEPARATOR);
 
     return str_before($currentPath, DIRECTORY_SEPARATOR);
+}
+
+/**
+ * Return the console writer for use outside commands. Optionally output an info message;
+ *
+ * @param null $msg
+ * @param null $level
+ * @return \Illuminate\Foundation\Application|mixed
+ */
+function console_writer($msg = null, $level = null)
+{
+    $writer = app(ConsoleWriter::class);
+
+    if ($msg) {
+        if (! in_array($level, ['alert', 'warn', 'error', 'info'])) {
+            $level = 'info';
+        }
+
+        $writer->{$level}($msg);
+    }
+
+    return $writer;
 }

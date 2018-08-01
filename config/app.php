@@ -55,6 +55,7 @@ return [
     ],
 
     // Allow these to be overridden for testing
+    'env' => env('APP_ENV', 'local'),
     'docker-compose-file' => base_path('docker-compose.yaml'),
     'config_storage_path' => storage_path('config'),
     'ssl_storage_path' => storage_path('ssl'),

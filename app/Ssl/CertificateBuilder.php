@@ -2,6 +2,8 @@
 
 namespace App\Ssl;
 
+use App\Ssl\Trust\ChooseMechanic;
+
 class CertificateBuilder
 {
     protected $certificatesPath;
@@ -89,6 +91,8 @@ class CertificateBuilder
             'openssl req -new -newkey rsa:2048 -days 730 -nodes -x509 -subj "/C=/ST=/O=%s/localityName=/commonName=%s/organizationalUnitName=Developers/emailAddress=%s/" -keyout %s -out %s',
             $this->oName, $this->cName, $this->email, $paths->key, $paths->pem
         ));
+
+        ChooseMechanic::forOS()->trustCA($paths->pem);
     }
 
     /**
@@ -115,6 +119,8 @@ class CertificateBuilder
             'openssl x509 -req -sha256 -days 730 -CA %s -CAkey %s%s -in %s -out %s -extensions v3_req -extfile %s',
             $caPaths->pem, $caPaths->key, $caSrlParam, $paths->csr, $paths->crt, $paths->conf
         ));
+
+        ChooseMechanic::forOS()->trustCertificate($paths->crt);
     }
 
     /**

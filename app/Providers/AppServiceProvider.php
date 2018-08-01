@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Porter;
 use App\Ssl\CertificateBuilder;
+use App\Support\ConsoleWriter;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -25,6 +26,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(CertificateBuilder::class, function () {
             return new CertificateBuilder(config('app.ssl_storage_path'));
         });
+        $this->app->singleton(ConsoleWriter::class);
 
         $this->publishes([resource_path('stubs/config') => storage_path('config')]);
     }
