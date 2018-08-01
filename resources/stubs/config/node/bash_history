@@ -1,0 +1,3 @@
+cat /home/node/.bash_history 
+history
+exit
