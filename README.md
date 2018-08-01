@@ -71,11 +71,7 @@ getenv('HOST_MACHINE_NAME')
  - `porter start`
  - `porter stop`
  - `porter restart` - Restart existing containers (e.g. pick up config changes for PHP FPM).
- - `porter build` - (Re)build the containers.
- - `porter make-files` - (Re)make all the files and restart.
- - `porter pull-images` - Pull the Konsulting, MySQL and Redis images - which will then be used by docker-compose rather than building (unless you tweak the DockerFiles).
- - `porter build-images` - Build the Konsulting images.
- 
+  
 ### Basic settings
 
  - `porter domain {domain}` - Set tld ('test' is the default for domains such as sample.test)
@@ -160,3 +156,18 @@ Xdebug is available on each PHP container. `xdebug.ini` files are stored in `sto
 |7.0|9502|
 |7.1|9503|
 |7.2|9504|
+
+## Tweaking things
+
+As Porter is based on Docker, it is easy to add new containers as required or to adjust the way the existing containers are built. 
+
+The docker-compose.yaml file is built using the views in `resources/views/docker-compose`.
+
+The NGiNX config templates are in `resources/views/nginx`.
+
+The following commands will be useful if you change these items.
+
+ - `porter build` - (Re)build the containers.
+ - `porter build-images` - Build the Konsulting container images.
+ - `porter make-files` - (Re)make the docker-compose.yaml, and the NGiNX config files.
+ - `porter pull-images` - Pull the Konsulting, MySQL and Redis images - which will then be used by docker-compose rather than building (unless you tweak the DockerFiles).
