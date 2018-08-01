@@ -70,8 +70,9 @@ getenv('HOST_MACHINE_NAME')
  - `porter begin` - Migrate and seed the sqlite database, and publish config files to `storage/config`. It will set Porter home to the working directory when you run the command.  It will also download the required docker images.
  - `porter start`
  - `porter stop`
- - `porter build` - (Re)build the containers
- - `porter make-files` - (Re)make all the files and restart. Run after changing config files.
+ - `porter restart` - Restart existing containers (e.g. pick up config changes for PHP FPM).
+ - `porter build` - (Re)build the containers.
+ - `porter make-files` - (Re)make all the files and restart.
  - `porter pull-images` - Pull the Konsulting, MySQL and Redis images - which will then be used by docker-compose rather than building (unless you tweak the DockerFiles).
  - `porter build-images` - Build the Konsulting images.
  

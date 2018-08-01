@@ -47,6 +47,16 @@ class Porter
     }
 
     /**
+     * Restart Porter containers
+     *
+     * @param null $service
+     */
+    public function restart($service = null)
+    {
+        exec(docker_compose(trim("restart [$service}")));
+    }
+
+    /**
      * (Re)build Porter containers
      */
     public function build()
