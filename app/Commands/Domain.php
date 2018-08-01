@@ -43,7 +43,7 @@ class Domain extends Command
 
         (new DnsmasqContainer)->updateDomain($old, $domain);
 
-        Artisan::call('site:renew-certificates');
+        Artisan::call('site:renew-certs');
         Artisan::call('make-files');
     }
 }
