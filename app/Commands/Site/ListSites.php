@@ -38,7 +38,7 @@ class ListSites extends Command
                 return [
                     $site->name,
                     $site->php_version->version_number,
-                    $site->nginx_type,
+                    $site->nginx_conf,
                     $site->scheme.$site->url,
                 ];
             });

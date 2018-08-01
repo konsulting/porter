@@ -6,6 +6,8 @@
 /database/database.sqlite
 /database/testing.sqlite
 
+/resources/views/nginx/klever_*
+
 /storage/config/*
 /storage/data/*
 /storage/framework/views/*

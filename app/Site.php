@@ -72,7 +72,7 @@ class Site extends Model
      */
     public function getNginxConfTemplateAttribute()
     {
-        $type = $this->nginx_type ?? 'default';
+        $type = $this->nginx_conf ?? 'default';
 
         return "nginx.{$type}.domain" . (($this->secure ?? false) ? '_secure' : '');
     }
@@ -156,7 +156,7 @@ class Site extends Model
      */
     public function setNginxType($type)
     {
-        $this->update(['nginx_type' => $type ?? 'default']);
+        $this->update(['nginx_conf' => $type ?? 'default']);
 
         Artisan::call('make-files');
     }
@@ -188,7 +188,7 @@ class Site extends Model
     {
         return static::create([
             'name' => $name,
-            'nginx_type' => 'default',
+            'nginx_conf' => 'default',
             'php_version_id' => PhpVersion::defaultVersion()->id,
             'secure' => false,
         ]);

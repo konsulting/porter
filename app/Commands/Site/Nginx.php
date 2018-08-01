@@ -38,9 +38,9 @@ class Nginx extends Command
 
         $types = collect(iterator_to_array(
             Finder::create()
-            ->in(resource_path('views/nginx'))
-            ->directories()
-
+                ->in(resource_path('views/nginx'))
+                ->sortByName()
+                ->directories()
         ))->mapWithKeys(function (\SplFileInfo $file) {
             return [$file->getFilename() => $file->getFilename()];
         })->toArray();

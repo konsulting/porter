@@ -16,7 +16,7 @@ class CreateSitesTable extends Migration
         Schema::create('sites', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('nginx_type');
+            $table->string('nginx_conf');
             $table->integer('php_version_id');
             $table->boolean('secure');
             $table->timestamps();
