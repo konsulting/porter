@@ -120,7 +120,8 @@ class CertificateBuilder
             $caPaths->pem, $caPaths->key, $caSrlParam, $paths->csr, $paths->crt, $paths->conf
         ));
 
-        ChooseMechanic::forOS()->trustCertificate($paths->crt);
+        // Trusting the certificate shouldn't be necessary once the CA is trusted.
+        // ChooseMechanic::forOS()->trustCertificate($paths->crt);
     }
 
     /**
