@@ -88,11 +88,21 @@ class Site extends Model
     }
 
     /**
+     * Destroy the files for this site (e.g. nginx conf)
+     *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
+    public function destroyFiles()
+    {
+        app(SiteConfBuilder::class)->destroy($this);
+    }
+
+    /**
      * Secure the site. Build certs.
      */
     public function secure()
     {
-        $this->getCertificateBuilder()->build($this->url);
+        $this->buildCertificate();
 
         $this->update(['secure' => true]);
 
@@ -104,7 +114,7 @@ class Site extends Model
      */
     public function unsecure()
     {
-        $this->getCertificateBuilder()->destroy($this->url);
+        $this->destroyCertificate();
 
         $this->update(['secure' => false]);
 
@@ -118,7 +128,8 @@ class Site extends Model
      */
     public function remove()
     {
-        $this->getCertificateBuilder()->destroy($this->url);
+        $this->destroyCertificate();
+
         app(SiteConfBuilder::class)->destroy($this);
 
         $this->delete();
@@ -183,8 +194,31 @@ class Site extends Model
         ]);
     }
 
+    /**
+     * Get Certificate builder
+     *
+     * @return \Illuminate\Foundation\Application|mixed
+     */
     protected function getCertificateBuilder()
     {
         return app(CertificateBuilder::class);
+    }
+
+    /**
+     * Build Certificate for site
+     *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
+    public function buildCertificate()
+    {
+        $this->getCertificateBuilder()->build($this->url);
+    }
+
+    /**
+     * Destroy Certificate for site
+     */
+    public function destroyCertificate()
+    {
+        $this->getCertificateBuilder()->destroy($this->url);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Commands;
 use App\Setting;
 use Illuminate\Support\Facades\Artisan;
 use LaravelZero\Framework\Commands\Command;
+use App\Dnsmasq\Container as DnsmasqContainer;
 
 class Tld extends Command
 {
@@ -36,8 +37,13 @@ class Tld extends Command
             return;
         }
 
+        $old = setting('tld');
+
         Setting::where('name', 'tld')->first()->update(['value' => $tld]);
 
+        (new DnsmasqContainer)->updateDomain($old, $tld);
+
+        Artisan::call('sites:renew-certificates');
         Artisan::call('make-files');
     }
 }

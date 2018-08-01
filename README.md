@@ -13,11 +13,6 @@ Contributions are welcome.  We are a small company, so please be patient if your
 ## Installation
 
  - Install [Docker](https://www.docker.com/community-edition)
- - Set up routing. Use `/etc/hosts` or optionally install DNSmasq (or similar) to handle directing traffic to the Porter services.
-   
-   We are currently using the DNSmasq setup from Valet - but wish to offer an automated setup for each OS.
-   
- - Porter binds to ports 80 and 443, so you need to turn Valet off (or any other services that are bound to them) before using it.
  - Clone Porter to a directory and install it's dependencies.
  
     ```
@@ -32,6 +27,18 @@ Contributions are welcome.  We are a small company, so please be patient if your
     export PATH="[path to porter]:$PATH" 
     source .bash_profile
     ```
+ 
+ - Set up routing... you have some options.
+   
+   1. Use the DNS container shipped with Porter.  Update your machine's network DNS settings to point to 127.0.0.1. The container will resolve the domain for Porter and it will forward other request to Cloudflare's DNS (1.1.1.1). You will need to turn off locally any installed DNSmasq since the DNS container opens to port 53 on localhost. (e.g. `brew services stop dnsmasq`)
+   
+   2. Use your existing Laravel Valet domain - which uses DNSmasq installed locally on a Mac.
+   
+   3. Manually edit your `/etc/hosts` file for each domain.
+   
+   4. Roll your own solution.
+
+ - Porter binds to ports 80 and 443, so you need to turn Valet off (`valet stop`) or any other services that are bound to them before using it.
  
  - In your terminal `cd` to the directory where your sites are located, and run `porter begin`
  

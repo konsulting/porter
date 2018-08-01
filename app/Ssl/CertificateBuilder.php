@@ -162,4 +162,28 @@ class CertificateBuilder
             $keyPath, $csrPath, $url, $url, '@'.$this->domain, $confPath
         ));
     }
+
+    /**
+     * Clear generated certs. Optionally clear CA too.
+     *
+     * @param bool $dropCA
+     */
+    public function clearDirectory($dropCA = false)
+    {
+        $caPaths = (array) $this->caPaths();
+
+        foreach (scandir($this->certificatesPath) as $item) {
+            if ($item == '.' || $item == '..' || $item == '.gitkeep') {
+                continue;
+            }
+
+            $current = $this->certificatesPath.'/'.$item;
+
+            if (! $dropCA && in_array($current, $caPaths)) {
+                continue;
+            }
+
+            unlink($current);
+        }
+    }
 }
