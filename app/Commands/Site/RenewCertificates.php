@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Commands\Sites;
+namespace App\Commands\Site;
 
 use App\Site;
 use App\Ssl\CertificateBuilder;
@@ -13,7 +13,7 @@ class RenewCertificates extends Command
      *
      * @var string
      */
-    protected $signature = 'sites:renew-certs {--clear-ca}';
+    protected $signature = 'site:renew-certs {--clear-ca}';
 
     /**
      * The description of the command.

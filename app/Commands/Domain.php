@@ -7,21 +7,21 @@ use Illuminate\Support\Facades\Artisan;
 use LaravelZero\Framework\Commands\Command;
 use App\Dnsmasq\Container as DnsmasqContainer;
 
-class Tld extends Command
+class Domain extends Command
 {
     /**
      * The signature of the command.
      *
      * @var string
      */
-    protected $signature = 'tld {tld?}';
+    protected $signature = 'domain {domain?}';
 
     /**
      * The description of the command.
      *
      * @var string
      */
-    protected $description = 'Set the tld for Porter sites';
+    protected $description = 'Set the domain for Porter sites';
 
     /**
      * Execute the console command.
@@ -30,20 +30,20 @@ class Tld extends Command
      */
     public function handle(): void
     {
-        $tld = $this->argument('tld');
+        $domain = $this->argument('domain');
 
-        if (! $tld) {
-            $this->info(sprintf("The current tld is '%s'", setting('tld')));
+        if (! $domain) {
+            $this->info(sprintf("The current domain is '%s'", setting('domain')));
             return;
         }
 
-        $old = setting('tld');
+        $old = setting('domain');
 
-        Setting::where('name', 'tld')->first()->update(['value' => $tld]);
+        Setting::where('name', 'domain')->first()->update(['value' => $domain]);
 
-        (new DnsmasqContainer)->updateDomain($old, $tld);
+        (new DnsmasqContainer)->updateDomain($old, $domain);
 
-        Artisan::call('sites:renew-certificates');
+        Artisan::call('site:renew-certificates');
         Artisan::call('make-files');
     }
 }

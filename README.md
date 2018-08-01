@@ -10,6 +10,12 @@ Porter is developed using [Laravel-Zero](https://laravel-zero.com/).
 
 Contributions are welcome.  We are a small company, so please be patient if your question or pull request need to wait a little.
 
+## Requirements
+
+ - Docker 18.06+
+ - Docker Compose (1.22+)
+ - PHP 7.1+ on host machine
+
 ## Installation
 
  - Install [Docker](https://www.docker.com/community-edition)
@@ -71,20 +77,20 @@ getenv('HOST_MACHINE_NAME')
  
 ### Basic settings
 
- - `porter tld {tld}` - Set tld ('test' is the default for domains such as sample.test)
+ - `porter domain {domain}` - Set tld ('test' is the default for domains such as sample.test)
  - `porter home {dir?}` - Set the home dir for sites, run in the dir to use it directly - or set it specifically
  
 ### Site settings
 
 Site commands will pick up the current working directory automatically.  They also allow you to specify the site by the directory name.
 
- - `porter sites:list` 
- - `porter sites:unsecure {site?}` - Set up a site to use http
- - `porter sites:secure {site?}` - Set up a site to use https.
- - `porter sites:remove {site?}` - Remove a site 
- - `porter sites:php {site?}` - Choose the PHP version for site
- - `porter sites:nginx-config {site?}` - Choose NGiNX config template for a site, ships with default (/public such as Laravel) and project_root
- - `porter sites:renew-certs {--clear-ca}` - Renew the certificates for secured sites, optionally rebuild CA.s
+ - `porter site:list` 
+ - `porter site:unsecure {site?}` - Set up a site to use http
+ - `porter site:secure {site?}` - Set up a site to use https.
+ - `porter site:remove {site?}` - Remove a site 
+ - `porter site:php {site?}` - Choose the PHP version for site
+ - `porter site:nginx-config {site?}` - Choose NGiNX config template for a site, ships with default (/public such as Laravel) and project_root
+ - `porter site:renew-certs {--clear-ca}` - Renew the certificates for all secured sites, optionally rebuild CA.s
 
 Site NGiNX config files are created programmatically using the templates in `resources/views/nginx`. The config files are stored in `storage/config/nginx/conf.d`.
 

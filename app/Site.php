@@ -42,7 +42,7 @@ class Site extends Model
      */
     public function getUrlAttribute()
     {
-        return $this->name.'.'.setting('tld');
+        return $this->name.'.'.setting('domain');
     }
 
     /**

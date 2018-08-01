@@ -1,25 +1,25 @@
 <?php
 
-namespace App\Commands\Sites;
+namespace App\Commands\Site;
 
 use App\Site;
 use LaravelZero\Framework\Commands\Command;
 
-class Remove extends Command
+class Secure extends Command
 {
     /**
      * The signature of the command.
      *
      * @var string
      */
-    protected $signature = 'sites:remove {site?}';
+    protected $signature = 'site:secure {site?}';
 
     /**
      * The description of the command.
      *
      * @var string
      */
-    protected $description = 'Remove a site';
+    protected $description = 'Set up a site to use https';
 
     /**
      * Execute the console command.
@@ -30,10 +30,11 @@ class Remove extends Command
     {
         $name = $this->argument('site') ?: site_from_cwd();
 
-        if (! $site = Site::where('name', $name)->first()) {
+        if (! $name) {
             throw new \Exception("Site '{$name}' not found.");
         }
 
-        $site->remove();
+        $site = Site::firstOrCreateForName($name);
+        $site->secure();
     }
 }

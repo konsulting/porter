@@ -21,7 +21,7 @@ class SiteTest extends TestCase
     /** @test */
     public function it_returns_additional_attributes()
     {
-        factory(Setting::class)->create(['name' => 'tld', 'value' => 'test']);
+        factory(Setting::class)->create(['name' => 'domain', 'value' => 'test']);
 
         $site = factory(Site::class)->create(['name' => 'klever']);
 

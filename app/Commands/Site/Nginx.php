@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Commands\Sites;
+namespace App\Commands\Site;
 
 use App\PhpVersion;
 use App\Site;
@@ -14,7 +14,7 @@ class Nginx extends Command
      *
      * @var string
      */
-    protected $signature = 'sites:nginx {site?}';
+    protected $signature = 'site:nginx {site?}';
 
     /**
      * The description of the command.

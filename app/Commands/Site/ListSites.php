@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Commands\Sites;
+namespace App\Commands\Site;
 
 use App\PhpVersion;
 use App\Site;
@@ -13,7 +13,7 @@ class ListSites extends Command
      *
      * @var string
      */
-    protected $signature = 'sites:list';
+    protected $signature = 'site:list';
 
     /**
      * The description of the command.

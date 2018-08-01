@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Commands\Sites;
+namespace App\Commands\Site;
 
 use App\PhpVersion;
 use App\Site;
@@ -13,7 +13,7 @@ class Php extends Command
      *
      * @var string
      */
-    protected $signature = 'sites:php {site?}';
+    protected $signature = 'site:php {site?}';
 
     /**
      * The description of the command.

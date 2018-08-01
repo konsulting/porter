@@ -1,25 +1,25 @@
 <?php
 
-namespace App\Commands\Sites;
+namespace App\Commands\Site;
 
 use App\Site;
 use LaravelZero\Framework\Commands\Command;
 
-class Secure extends Command
+class Unsecure extends Command
 {
     /**
      * The signature of the command.
      *
      * @var string
      */
-    protected $signature = 'sites:secure {site?}';
+    protected $signature = 'site:unsecure {site?}';
 
     /**
      * The description of the command.
      *
      * @var string
      */
-    protected $description = 'Set up a site to use https';
+    protected $description = 'Set up a site to use http';
 
     /**
      * Execute the console command.
@@ -35,6 +35,6 @@ class Secure extends Command
         }
 
         $site = Site::firstOrCreateForName($name);
-        $site->secure();
+        $site->unsecure();
     }
 }
