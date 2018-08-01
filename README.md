@@ -125,7 +125,7 @@ You can review received emails in MailHog's UI at [http://localhost:8025](http:/
 
 We have added a number of PHP extensions to the containers that we use frequently. These include:
 
-- GD
+ - GD
  - Imagick
  - MbString
  - MySQLi [& MySQL on 5.6]
