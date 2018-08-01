@@ -53,7 +53,7 @@ class Porter
      */
     public function restart($service = null)
     {
-        exec(docker_compose(trim("restart [$service}")));
+        exec(docker_compose(trim("restart {$service}")));
     }
 
     /**
