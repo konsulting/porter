@@ -6,3 +6,4 @@
       - 16379:6379
     networks:
       - porter
+    restart: unless-stopped

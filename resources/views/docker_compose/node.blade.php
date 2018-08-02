@@ -11,3 +11,4 @@
       - ./storage/config/node/bash_history:/home/node/.bash_history
     networks:
       - porter
+    restart: unless-stopped

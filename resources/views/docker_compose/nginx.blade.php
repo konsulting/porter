@@ -16,3 +16,4 @@
       - ./storage/ssl:/etc/ssl
       - ./storage/logs:/var/log
       - {{ $home }}:/srv/app
+    restart: unless-stopped

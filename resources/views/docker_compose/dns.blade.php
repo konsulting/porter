@@ -11,3 +11,4 @@
     volumes:
       - ./storage/config/dnsmasq/dnsmasq.conf:/etc/dnsmasq.conf
       - ./storage/config/dnsmasq/dnsmasq.d:/etc/dnsmasq.d
+    restart: unless-stopped

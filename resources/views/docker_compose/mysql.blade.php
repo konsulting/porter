@@ -12,3 +12,4 @@
       - MYSQL_HISTFILE=/root/.mysql_history/history
     networks:
       - porter
+    restart: unless-stopped

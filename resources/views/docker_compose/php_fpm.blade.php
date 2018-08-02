@@ -14,3 +14,4 @@
     environment:
       - HOST_MACHINE_NAME={{ $host_machine_name }}
       - RUNNING_ON_PORTER=true
+    restart: unless-stopped
