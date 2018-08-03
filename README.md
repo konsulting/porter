@@ -134,17 +134,7 @@ You can review received emails in MailHog's UI at [http://localhost:8025](http:/
 
 ## PHP Extensions
 
-We have added a number of PHP extensions to the containers that we use frequently. These include:
-
- - GD
- - Imagick
- - MbString
- - MySQLi [& MySQL on 5.6]
- - Opcache [defaulted to off as we're using the setup for development]
- - PDO with PDO_MySQL PDO_PGSQL 
- - SOAP
- - Xdebug
- - Zip
+We have added a number of PHP extensions to the containers that we use frequently. Notable ones are Imagick and Xdebug. 
 
 ### Xdebug
 
@@ -157,6 +147,8 @@ Xdebug is available on each PHP container. `xdebug.ini` files are stored in `sto
 |7.1|9503|
 |7.2|9504|
 
+Xdebug is set up for use with PHPSTORM, and on demand - you can use an extension such as Xdebug helper in Chrome to send the Cookie required to activate a debugging session ([Jetbrains article](https://confluence.jetbrains.com/display/PhpStorm/Configure+Xdebug+Helper+for+Chrome+to+be+used+with+PhpStorm)).
+
 ## Tweaking things
 
 As Porter is based on Docker, it is easy to add new containers as required or to adjust the way the existing containers are built. 
@@ -168,6 +160,7 @@ The NGiNX config templates are in `resources/views/nginx`.
 The following commands will be useful if you change these items.
 
  - `porter build` - (Re)build the containers.
- - `porter build-images` - Build the Konsulting container images.
+ - `porter build-images` - Build the current container images.
+ - `porter docker-image-set` - Change the image set used for Porter. The default is `konsulting/porter-alpine`.
  - `porter make-files` - (Re)make the docker-compose.yaml, and the NGiNX config files.
- - `porter pull-images` - Pull the Konsulting, MySQL and Redis images - which will then be used by docker-compose rather than building (unless you tweak the DockerFiles).
+ - `porter pull-images` - Pull the current images - which will then be used by docker-compose where it can.

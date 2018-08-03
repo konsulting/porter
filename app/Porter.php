@@ -27,7 +27,7 @@ class Porter
      */
     public function compose()
     {
-        app(YamlBuilder::class)->build();
+        app(YamlBuilder::class)->build($this->getDockerImageSet());
     }
 
     /**
@@ -77,27 +77,26 @@ class Porter
     }
 
     /**
-     * Our images in the Konsulting repo
+     * Current images that are being pulled when we install, as they're used
+     * when starting porter, rather than waiting for them at that point.
      *
      * @return array
      */
     protected function ourImages()
     {
-        $images = [
-            'konsulting/porter-nginx:latest',
-            'konsulting/porter-node:latest',
-        ];
+        $images = [];
+        $imagesDir = base_path('docker/'.$this->getDockerImageSet());
 
-        foreach (PhpVersion::all() as $version) {
-            $images[] = 'konsulting/porter-php_cli_'.$version->safe.':latest';
-            $images[] = 'konsulting/porter-php_fpm_'.$version->safe.':latest';
+        foreach (Finder::create()->in($imagesDir)->directories() as $dir) {
+            $images[] = $this->getDockerImageSet().'-'.$dir->getFileName().':latest';
         }
 
         return $images;
     }
 
     /**
-     * Third Party images
+     * Third Party images. A list of images to pull when we install, as they're
+     * used when starting porter, rather than waiting for them at that point.
      *
      * @return array
      */
@@ -106,26 +105,38 @@ class Porter
         return [
             'mysql:5.7',
             'redis:alpine',
+            'andyshinn/dnsmasq',
+            'mailhog/mailhog:v1.0.0',
         ];
     }
 
     /**
-     * Build the Konsulting images
+     * Build the current images
      */
     public function buildImages()
     {
-        foreach (Finder::create()->in(base_path('docker'))->directories() as $dir) {
-            passthru("docker build -t konsulting/porter-{$dir->getFileName()}:latest --rm {$dir->getRealPath()} --");
+        $imagesDir = base_path('docker/'.$this->getDockerImageSet());
+
+        foreach (Finder::create()->in($imagesDir)->directories() as $dir) {
+            passthru("docker build -t {$this->getDockerImageSet()}-{$dir->getFileName()}:latest --rm {$dir->getRealPath()} --");
         }
     }
 
     /**
-     * Push the Konsulting images
+     * Push the current images
      */
     public function pushImages()
     {
         foreach ($this->ourImages() as $image) {
             passthru("docker push {$image}");
         }
+    }
+
+    /**
+     * Get the current image set to use.
+     */
+    public function getDockerImageSet()
+    {
+        return setting('docker_image_set', config('app.default-docker-image-set'));
     }
 }

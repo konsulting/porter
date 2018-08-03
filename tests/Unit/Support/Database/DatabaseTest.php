@@ -15,6 +15,7 @@ class DatabaseTest extends TestCase
     {
         parent::setUp();
 
+        @mkdir(storage_path('temp'));
         $this->cleanseDir(storage_path('temp'));
     }
 

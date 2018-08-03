@@ -1,10 +1,10 @@
   nginx:
     build:
-      context: .
-      dockerfile: docker/nginx/Dockerfile
+      context: ./docker/{{ $imageSet }}
+      dockerfile: nginx/Dockerfile
       cache_from:
-        - konsulting/porter-nginx:latest
-    image: konsulting/porter-nginx
+        - {{ $imageSet }}-nginx:latest
+    image: {{ $imageSet }}-nginx
     networks:
       - porter
     ports:

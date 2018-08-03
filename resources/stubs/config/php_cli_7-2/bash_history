@@ -5,3 +5,9 @@ cat /root/.bash_history
 history
 exit
 exit
+php --ini
+php -a
+exit
+ls
+exit
+exit

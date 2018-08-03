@@ -9,13 +9,13 @@ use App\Support\ConsoleWriter;
  * @param null $key
  * @return mixed
  */
-function setting($key = null)
+function setting($key = null, $default = null)
 {
     if (!$key) {
         return Setting::all()->pluck('value', 'name');
     }
 
-    return optional(Setting::where('name', $key)->first())->value;
+    return Setting::where('name', $key)->value('value') ?? $default;
 }
 
 /**
