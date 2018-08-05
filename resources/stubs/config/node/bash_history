@@ -1,8 +1,0 @@
-cat /home/node/.bash_history 
-history
-exit
-npm
-yarn
-ls
-pwd
-exit

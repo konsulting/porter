@@ -160,7 +160,7 @@ The browser container can be turned on and off (default on), in case it is not r
 
 Notes for your test setup...
 
- - Dusk and Testbench Dusk use a PHP based server running from the command line. With Porter, the server must be run at 0.0.0.0:8000 for it to be available to the browser container
+ - Dusk and Testbench Dusk use a PHP based server running from the command line. With Porter, the server must be run at `0.0.0.0:8000` for it to be available to the browser container
  - The remote web-driver must point to the browser container at `http://browser:9515`
  - The url for testing needs to be the hostname of the PHP CLI container (where the tests are running) - which can be retrieved through `getenv('HOSTNAME')`
  - Finally, we need to add `--no-sandbox` to the options for Chrome and it should run '--headless'.
