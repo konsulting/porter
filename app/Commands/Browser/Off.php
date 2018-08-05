@@ -1,26 +1,26 @@
 <?php
 
-namespace App\Commands\Redis;
+namespace App\Commands\Browser;
 
 use App\Setting;
 use Illuminate\Support\Facades\Artisan;
 use LaravelZero\Framework\Commands\Command;
 
-class On extends Command
+class Off extends Command
 {
     /**
      * The signature of the command.
      *
      * @var string
      */
-    protected $signature = 'redis:on';
+    protected $signature = 'browser:off';
 
     /**
      * The description of the command.
      *
      * @var string
      */
-    protected $description = 'Turn Redis on';
+    protected $description = 'Turn Browser off';
 
     /**
      * Execute the console command.
@@ -29,11 +29,11 @@ class On extends Command
      */
     public function handle(): void
     {
-        if (setting('use_redis') == 'on') {
+        if (setting('use_browser') == 'off') {
             return;
         }
 
-        Setting::updateOrCreate('use_redis', 'on');
+        Setting::updateOrCreate('use_browser', 'off');
 
         Artisan::call('make-files');
     }

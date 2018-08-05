@@ -33,7 +33,7 @@ class Off extends Command
             return;
         }
 
-        Setting::where('name', 'use_mysql')->update(['value' => 'off']);
+        Setting::updateOrCreate('use_mysql', 'off');
 
         Artisan::call('make-files');
     }

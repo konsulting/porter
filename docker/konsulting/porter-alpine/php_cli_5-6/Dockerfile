@@ -56,3 +56,5 @@ RUN # php -r "readfile('http://getcomposer.org/installer');" | php -- --install-
     chmod +x /usr/local/bin/mhsendmail
 
 WORKDIR /srv/app
+
+EXPOSE 8000

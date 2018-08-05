@@ -2,7 +2,7 @@ FROM alpine:3.7
 
 ARG uid=1000
 
-RUN apk add --update \
+RUN apk add --update --no-cache \
     bash \
 	nodejs \ 
 	yarn

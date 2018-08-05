@@ -33,7 +33,7 @@ class Off extends Command
             return;
         }
 
-        Setting::where('name', 'use_redis')->update(['value' => 'off']);
+        Setting::updateOrCreate('use_redis', 'off');
 
         Artisan::call('make-files');
     }

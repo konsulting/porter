@@ -33,7 +33,7 @@ class On extends Command
             return;
         }
 
-        Setting::where('name', 'use_mysql')->update(['value' => 'on']);
+        Setting::updateOrCreate('use_mysql', 'on');
 
         Artisan::call('make-files');
     }

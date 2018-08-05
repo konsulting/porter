@@ -1,24 +1,26 @@
 <?php
 
-namespace App\Commands\Redis;
+namespace App\Commands\Browser;
 
+use App\Setting;
+use Illuminate\Support\Facades\Artisan;
 use LaravelZero\Framework\Commands\Command;
 
-class Open extends Command
+class On extends Command
 {
     /**
      * The signature of the command.
      *
      * @var string
      */
-    protected $signature = 'redis:open';
+    protected $signature = 'browser:on';
 
     /**
      * The description of the command.
      *
      * @var string
      */
-    protected $description = 'Open Redis cli';
+    protected $description = 'Turn Browser on';
 
     /**
      * Execute the console command.
@@ -27,11 +29,12 @@ class Open extends Command
      */
     public function handle(): void
     {
-        if (setting('use_redis') != 'on') {
-            $this->error('Not using docker redis');
+        if (setting('use_browser') == 'on') {
             return;
         }
 
-        passthru(docker_compose("run redis redis-cli -h redis"));
+        Setting::updateOrCreate('use_browser', 'on');
+
+        Artisan::call('make-files');
     }
 }

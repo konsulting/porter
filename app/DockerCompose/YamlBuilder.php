@@ -22,6 +22,7 @@ class YamlBuilder
                 'activePhpVersions' => PhpVersion::active()->get(),
                 'useMysql' => setting('use_mysql') == 'on',
                 'useRedis' => setting('use_redis') == 'on',
+                'useBrowser' => setting('use_browser') == 'on',
                 'imageSet' => $imageSet,
             ])->render()
         );

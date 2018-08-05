@@ -149,6 +149,22 @@ Xdebug is available on each PHP container. `xdebug.ini` files are stored in `sto
 
 Xdebug is set up for use with PHPSTORM, and on demand - you can use an extension such as Xdebug helper in Chrome to send the Cookie required to activate a debugging session ([Jetbrains article](https://confluence.jetbrains.com/display/PhpStorm/Configure+Xdebug+Helper+for+Chrome+to+be+used+with+PhpStorm)).
 
+## Browser Testing
+
+We like [Laravel Dusk](https://laravel.com/docs/5.6/dusk), and also help with [Orchestra Testbench Dusk](https://github.com/orchestral/testbench-dusk) for package development. Porter provides a browser container with Chrome and Chromedriver for browser testing.
+
+The browser container can be turned on and off (default on), in case it is not required.
+
+- `porter browser:on`
+- `porter browser:off`
+
+Notes for your test setup...
+
+ - Dusk and Testbench Dusk use a PHP based server running from the command line. With Porter, the server must be run at 0.0.0.0:8000 for it to be available to the browser container
+ - The remote web-driver must point to the browser container at `http://browser:9515`
+ - The url for testing needs to be the hostname of the PHP CLI container (where the tests are running) - which can be retrieved through `getenv('HOSTNAME')`
+ - Finally, we need to add `--no-sandbox` to the options for Chrome and it should run '--headless'.
+ 
 ## Tweaking things
 
 As Porter is based on Docker, it is easy to add new containers as required or to adjust the way the existing containers are built. 

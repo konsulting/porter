@@ -31,3 +31,7 @@ services:
 @if($useRedis)
   @include("docker_compose.{$imageSet}.redis")
 @endif
+
+@if ($useBrowser)
+  @include("docker_compose.{$imageSet}.browser")
+@endif

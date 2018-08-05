@@ -56,3 +56,5 @@ RUN ln -s /usr/bin/php7 /usr/bin/php && \
     chmod +x /usr/local/bin/mhsendmail
 
 WORKDIR /srv/app
+
+EXPOSE 8000
