@@ -48,6 +48,8 @@ Contributions are welcome.  We are a small company, so please be patient if your
  
  - In your terminal `cd` to the directory where your sites are located, and run `porter begin`
  
+ - Finally run `porter start`
+ 
 ## Usage
 
 Porter uses a simple set of commands for interaction (see below).
