@@ -43,6 +43,6 @@ class Open extends Command
 
         $run = $this->argument('run') ? sprintf('-c "%s"', $this->argument('run')): '';
 
-        passthru(docker_compose("run {$workingDir} php_cli_{$version->safe} bash {$run}"));
+        passthru(docker_compose("run {$workingDir} --rm php_cli_{$version->safe} bash {$run}"));
     }
 }

@@ -101,7 +101,8 @@ NGiNX logs are stored in `storage/logs/nginx`
  - `porter php:default` - Set default PHP version
  - `porter php:list` - List the available PHP versions
  - `porter php:open {run?} {--p|php-version?}` - Open the PHP cli for the project, if run from a project directory, it will select the associated version. Otherwise, you can select a version or use the default. Optionally run a command, such as `vendor/bin/phpunit` (if you need to pass arguments, wrap in quotes). 
-
+ - `porter php:tinker` - Run Artisan Tinker in the project directory
+  
 `php.ini` files are stored in `storage/config` by PHP version. If you change one, you'll need to run `porter php:restart` for changes to be picked up. 
 
 We currently ship with containers for PHP 5.6, 7.0, 7.1 and 7.2.

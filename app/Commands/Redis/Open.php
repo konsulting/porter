@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Commands\MySql;
+namespace App\Commands\Redis;
 
 use LaravelZero\Framework\Commands\Command;
 
@@ -11,14 +11,14 @@ class Open extends Command
      *
      * @var string
      */
-    protected $signature = 'mysql:open';
+    protected $signature = 'redis:open';
 
     /**
      * The description of the command.
      *
      * @var string
      */
-    protected $description = 'Open MySQL cli';
+    protected $description = 'Open Redis cli';
 
     /**
      * Execute the console command.
@@ -27,11 +27,11 @@ class Open extends Command
      */
     public function handle(): void
     {
-        if (setting('use_mysql') != 'on') {
-            $this->error('Not using docker mysql');
+        if (setting('use_redis') != 'on') {
+            $this->error('Not using docker redis');
             return;
         }
 
-        passthru(docker_compose("run --rm mysql mysql -h mysql -uroot -psecret"));
+        passthru(docker_compose("run --rm redis redis-cli -h redis"));
     }
 }
