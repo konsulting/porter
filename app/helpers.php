@@ -25,7 +25,7 @@ function setting($key = null, $default = null)
  */
 function docker_compose($command = null)
 {
-    return escapeshellcmd('docker-compose -f ' . config('app.docker-compose-file') . ($command ? ' ' . $command : ''));
+    return 'docker-compose -f ' . config('app.docker-compose-file') . ($command ? ' ' . $command : '');
 }
 
 

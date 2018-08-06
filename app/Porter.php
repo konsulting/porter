@@ -15,6 +15,7 @@ class Porter
     public function isUp($service = null)
     {
         $output = [];
+        dump(docker_compose("ps | grep porter_{$service}"));
         exec(docker_compose("ps | grep porter_{$service}"), $output);
 
         return ! empty($output);
