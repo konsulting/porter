@@ -71,6 +71,7 @@ getenv('HOST_MACHINE_NAME')
 
  - `porter begin` - Migrate and seed the sqlite database, and publish config files to `storage/config`. It will set Porter home to the working directory when you run the command.  It will also download the required docker images.
  - `porter start`
+ - `porter status` - show the status of containers
  - `porter stop`
  - `porter restart` - Restart existing containers (e.g. pick up config changes for PHP FPM).
   
@@ -99,14 +100,14 @@ NGiNX logs are stored in `storage/logs/nginx`
 
  - `porter php:default` - Set default PHP version
  - `porter php:list` - List the available PHP versions
- - `porter php:open {version?}` - Open the PHP cli for the project, run in project dir, or run a specific version
+ - `porter php:open {run?} {--p|php-version?}` - Open the PHP cli for the project, if run from a project directory, it will select the associated version. Otherwise, you can select a version or use the default. Optionally run a command, such as `vendor/bin/phpunit` (if you need to pass arguments, wrap in quotes). 
 
 `php.ini` files are stored in `storage/config` by PHP version. If you change one, you'll need to run `porter php:restart` for changes to be picked up. 
 
 We currently ship with containers for PHP 5.6, 7.0, 7.1 and 7.2.
 
 ### Node (npm/yarn)
- - `porter node:open` - Open Node cli, run in project dir
+ - `porter node:open {run?}` - Open Node cli, run in project dir. Optionally run a command, such as `npm run production` (if you need to pass arguments, wrap in quotes). 
 
 ### MySQL
 Enabled by default. Available on the host machine on port 13306. The user is `root` and the password `secret`. You can connect with your favourite GUI if you want to.

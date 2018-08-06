@@ -11,7 +11,7 @@ class Open extends Command
      *
      * @var string
      */
-    protected $signature = 'node:open';
+    protected $signature = 'node:open {run?}';
 
     /**
      * The description of the command.
@@ -30,6 +30,8 @@ class Open extends Command
         $name = site_from_cwd();
         $workingDir = $name ? '-w /srv/app/'.$name : '';
 
-        passthru(docker_compose("run {$workingDir} node bash"));
+        $run = $this->argument('run') ? sprintf('-c "%s"', $this->argument('run')): '';
+
+        passthru(docker_compose("run {$workingDir} node bash {$run}"));
     }
 }

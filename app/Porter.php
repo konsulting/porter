@@ -139,4 +139,20 @@ class Porter
     {
         return setting('docker_image_set', config('app.default-docker-image-set'));
     }
+
+    /**
+     * Show container status
+     */
+    public function status()
+    {
+        passthru(docker_compose("ps"));
+    }
+
+    /**
+     * Show container logs
+     */
+    public function logs()
+    {
+        passthru(docker_compose("logs"));
+    }
 }
