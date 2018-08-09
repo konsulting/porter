@@ -17,6 +17,7 @@ RUN apt-get update \
     && add-apt-repository -y ppa:ondrej/php \
     && apt-get install -y \
           php7.0-fpm \
+          php7.0-curl \
           php7.0-gd \
           php7.0-mysql \
           php7.0-pgsql \
@@ -29,6 +30,7 @@ RUN apt-get update \
           php7.0-xdebug \
           php7.0-xml \
           php7.0-zip \
+          libfontconfig1 libxrender1 \
     && mkdir /run/php \
     && apt-get remove -y --purge software-properties-common \
     && apt-get autoremove -y \

@@ -17,6 +17,7 @@ RUN apt-get update \
     && add-apt-repository -y ppa:ondrej/php \
     && apt-get install -y \
            php5.6-cli \
+           php5.6-curl \
            php5.6-gd \
            php5.6-mysql \
            php5.6-pgsql \
@@ -29,6 +30,8 @@ RUN apt-get update \
            php5.6-xdebug \
            php5.6-xml \
            php5.6-zip \
+           libfontconfig1 libxrender1 \
+           vim \
     && mkdir /run/php \
     && apt-get remove -y --purge software-properties-common \
     && apt-get autoremove -y \
