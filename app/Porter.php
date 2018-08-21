@@ -1,7 +1,9 @@
 <?php
 namespace App;
 
+use App\DockerCompose\CliCommand as DockerCompose;
 use App\DockerCompose\YamlBuilder;
+use App\Support\Cli;
 use Symfony\Component\Finder\Finder;
 
 class Porter
@@ -14,11 +16,7 @@ class Porter
      */
     public function isUp($service = null)
     {
-        $output = [];
-
-        exec(docker_compose("ps"), $output);
-
-        return stristr(implode($output), "porter_{$service}");
+        return stristr(DockerCompose::command('ps')->perform(), "porter_{$service}");
     }
 
     /**
@@ -36,7 +34,7 @@ class Porter
      */
     public function start()
     {
-        exec(docker_compose("up -d"));
+        DockerCompose::command('up -d')->realTime()->perform();
     }
 
     /**
@@ -44,7 +42,7 @@ class Porter
      */
     public function stop()
     {
-        exec(docker_compose("down"));
+        DockerCompose::command('down')->realTime()->perform();
     }
 
     /**
@@ -54,7 +52,7 @@ class Porter
      */
     public function restart($service = null)
     {
-        exec(docker_compose(trim("restart {$service}")));
+        DockerCompose::command("restart {$service}")->realTime()->perform();
     }
 
     /**
@@ -62,7 +60,7 @@ class Porter
      */
     public function build()
     {
-        exec(docker_compose("build"));
+        DockerCompose::command('build')->perform();
     }
 
     /**
@@ -73,7 +71,7 @@ class Porter
         $images = collect($this->ourImages())->merge($this->thirdPartyImages());
 
         foreach ($images as $image) {
-            passthru("docker pull {$image}", $output);
+            $this->getCli()->passthru("docker pull {$image}");
         }
     }
 
@@ -119,7 +117,8 @@ class Porter
         $imagesDir = base_path('docker/'.$this->getDockerImageSet());
 
         foreach (Finder::create()->in($imagesDir)->directories() as $dir) {
-            passthru("docker build -t {$this->getDockerImageSet()}-{$dir->getFileName()}:latest --rm {$dir->getRealPath()} --");
+            /** @var $dir \SplFileInfo */
+            $this->getCli()->passthru("docker build -t {$this->getDockerImageSet()}-{$dir->getFileName()}:latest --rm {$dir->getRealPath()} --");
         }
     }
 
@@ -129,7 +128,7 @@ class Porter
     public function pushImages()
     {
         foreach ($this->ourImages() as $image) {
-            passthru("docker push {$image}");
+            $this->getCli()->passthru("docker push {$image}");
         }
     }
 
@@ -146,7 +145,7 @@ class Porter
      */
     public function status()
     {
-        passthru(docker_compose("ps"));
+        echo DockerCompose::command('ps')->perform();
     }
 
     /**
@@ -154,6 +153,16 @@ class Porter
      */
     public function logs()
     {
-        passthru(docker_compose("logs"));
+        echo DockerCompose::command('logs')->perform();
+    }
+
+    /**
+     * Get the Cli class
+     *
+     * @return Cli
+     */
+    protected function getCli()
+    {
+        return app(Cli::class);
     }
 }

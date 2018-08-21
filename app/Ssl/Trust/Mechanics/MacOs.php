@@ -3,6 +3,7 @@
 namespace App\Ssl\Trust\Mechanics;
 
 use App\Ssl\Trust\Mechanic;
+use App\Support\Cli;
 
 class MacOs extends Untrained implements Mechanic
 {
@@ -24,7 +25,7 @@ class MacOs extends Untrained implements Mechanic
             return;
         }
 
-        passthru($command);
+        app(Cli::class)->passthru($command);
     }
 
     /**
@@ -45,6 +46,6 @@ class MacOs extends Untrained implements Mechanic
             return;
         }
 
-        passthru($command);
+        app(Cli::class)->passthru($command);
     }
 }

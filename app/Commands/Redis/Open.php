@@ -2,6 +2,7 @@
 
 namespace App\Commands\Redis;
 
+use App\DockerCompose\CliCommand as DockerCompose;
 use LaravelZero\Framework\Commands\Command;
 
 class Open extends Command
@@ -32,6 +33,9 @@ class Open extends Command
             return;
         }
 
-        passthru(docker_compose("run --rm redis redis-cli -h redis"));
+        DockerCompose::runContainer("redis")
+            ->append("redis-cli -h redis")
+            ->interactive()
+            ->perform();
     }
 }

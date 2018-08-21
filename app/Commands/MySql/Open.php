@@ -2,6 +2,7 @@
 
 namespace App\Commands\MySql;
 
+use App\DockerCompose\CliCommand as DockerCompose;
 use LaravelZero\Framework\Commands\Command;
 
 class Open extends Command
@@ -32,6 +33,9 @@ class Open extends Command
             return;
         }
 
-        passthru(docker_compose("run --rm mysql mysql -h mysql -uroot -psecret"));
+        DockerCompose::runContainer("mysql")
+            ->append("mysql -h mysql -uroot -psecret")
+            ->interactive()
+            ->perform();
     }
 }

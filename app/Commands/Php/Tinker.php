@@ -2,6 +2,7 @@
 
 namespace App\Commands\Php;
 
+use App\DockerCompose\CliCommand as DockerCompose;
 use App\PhpVersion;
 use App\Site;
 use LaravelZero\Framework\Commands\Command;
@@ -30,8 +31,6 @@ class Tinker extends Command
     public function handle(): void
     {
         $name = site_from_cwd();
-        $workingDir = $name ? '-w /srv/app/'.$name : '';
-
         $site = Site::where('name', $name)->first();
 
         if (! $site) {
@@ -43,6 +42,8 @@ class Tinker extends Command
 
         $this->info("PHP Version: {$version->version_number}");
 
-        passthru(docker_compose("run {$workingDir} --rm php_cli_{$version->safe} bash -c \"php artisan tinker\""));
+        DockerCompose::runContainer("php_cli_{$version->safe}")
+            ->bash("php artisan tinker")
+            ->perform();
     }
 }

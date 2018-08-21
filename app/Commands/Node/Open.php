@@ -2,6 +2,7 @@
 
 namespace App\Commands\Node;
 
+use App\DockerCompose\CliCommand as DockerCompose;
 use LaravelZero\Framework\Commands\Command;
 
 class Open extends Command
@@ -27,11 +28,8 @@ class Open extends Command
      */
     public function handle(): void
     {
-        $name = site_from_cwd();
-        $workingDir = $name ? '-w /srv/app/'.$name : '';
-
-        $run = $this->argument('run') ? sprintf('-c "%s"', $this->argument('run')): '';
-
-        passthru(docker_compose("run {$workingDir} --rm node bash {$run}"));
+        DockerCompose::runContainer("node")
+            ->bash($this->argument('run'))
+            ->perform();
     }
 }
