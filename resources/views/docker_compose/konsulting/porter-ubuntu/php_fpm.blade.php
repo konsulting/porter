@@ -7,6 +7,8 @@
     image: {{ $imageSet }}-php_fpm_{{ $version->safe }}
     networks:
       - porter
+    ports:
+      - 95{{ $version->short_form }}:9001
     volumes:
       - {{ $home }}:/srv/app
       - ./storage/config/php_fpm_{{ $version->safe }}/php.ini:/etc/php/{{ $version->version_number }}/fpm/php.ini

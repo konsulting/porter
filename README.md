@@ -142,16 +142,11 @@ We have added a number of PHP extensions to the containers that we use frequentl
 
 ### Xdebug
 
-Xdebug is available on each PHP container. `xdebug.ini` files are stored in `storage/config` by PHP version. Each version uses a different port, the fpm and cli containers use the same port for any given PHP version.
+Xdebug is available on each PHP container. `xdebug.ini` files are stored in `storage/config` by PHP version.
 
-|PHP Version|Port|
-|---|---|
-|5.6|9501|
-|7.0|9502|
-|7.1|9503|
-|7.2|9504|
+It is set up for use with PHPSTORM, and on demand - you can use an extension such as Xdebug helper in Chrome to send the Cookie required to activate a debugging session ([Jetbrains article](https://confluence.jetbrains.com/display/PhpStorm/Configure+Xdebug+Helper+for+Chrome+to+be+used+with+PhpStorm)).
 
-Xdebug is set up for use with PHPSTORM, and on demand - you can use an extension such as Xdebug helper in Chrome to send the Cookie required to activate a debugging session ([Jetbrains article](https://confluence.jetbrains.com/display/PhpStorm/Configure+Xdebug+Helper+for+Chrome+to+be+used+with+PhpStorm)).
+Xdebug is set up to communicate with the host machine on port 9001 to avoid clashes with any locally installed PHP-fpm.
 
 ## Browser Testing
 

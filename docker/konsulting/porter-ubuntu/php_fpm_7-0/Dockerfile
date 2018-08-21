@@ -37,7 +37,7 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN sed -i -e "s|xdebug.so|/usr/lib/php/20170718/xdebug.so|" /etc/php/7.0/mods-available/xdebug.ini && \
+RUN sed -i -e "s|xdebug.so|/usr/lib/php/20151012/xdebug.so|" /etc/php/7.0/mods-available/xdebug.ini && \
     sed -i -e "s|listen\s*=.*|listen = 9000|" -e "s|;clear_env = no|clear_env = no|" /etc/php/7.0/fpm/pool.d/www.conf
 
 # Add MailHogSend

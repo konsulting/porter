@@ -43,6 +43,8 @@ RUN php -r "readfile('http://getcomposer.org/installer');" | php -- --install-di
     curl -sSL "https://github.com/mailhog/mhsendmail/releases/download/v0.2.0/mhsendmail_linux_amd64" -o /usr/local/bin/mhsendmail && \
     chmod +x /usr/local/bin/mhsendmail
 
+RUN sed -i -e "s|xdebug.so|/usr/lib/php/20160303/xdebug.so|" /etc/php/7.1/mods-available/xdebug.ini
+
 WORKDIR /srv/app
 
 EXPOSE 8000

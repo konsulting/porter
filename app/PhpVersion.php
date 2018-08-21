@@ -40,6 +40,26 @@ class PhpVersion extends Model
     }
 
     /**
+     * Get a major version number
+     *
+     * @return null|string
+     */
+    public function getMajorAttribute()
+    {
+        return str_before($this->version_number, '.');
+    }
+
+    /**
+     * Get a short form version number with no separators
+     *
+     * @return null|string
+     */
+    public function getShortFormAttribute()
+    {
+        return static::cleanVersionNumber($this->version_number, '');
+    }
+
+    /**
      * Find by a user input version number
      *
      * @param $number

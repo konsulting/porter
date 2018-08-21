@@ -7,6 +7,8 @@
     image: {{ $imageSet }}-php_cli_{{ $version->safe }}
     networks:
       - porter
+    ports:
+      - 96{{ $version->short_form }}:9001
     volumes:
       - {{ $home }}:/srv/app
       - ./storage/config/user/ssh:/root/.ssh
