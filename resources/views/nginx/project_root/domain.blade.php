@@ -11,6 +11,12 @@ server {
     charset utf-8;
     client_max_body_size 128M;
 
+    fastcgi_buffers 8 16k;
+    fastcgi_buffer_size 32k;
+
+    error_log /var/log/nginx/{{ $site }}.error.log;
+    access_log /var/log/nginx/{{ $site }}.access.log;
+
     location = /favicon.ico { log_not_found off; access_log off; }
     location = /robots.txt  { log_not_found off; access_log off; }
 

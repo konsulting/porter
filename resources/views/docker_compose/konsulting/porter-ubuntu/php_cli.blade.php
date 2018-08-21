@@ -10,8 +10,8 @@
     volumes:
       - {{ $home }}:/srv/app
       - ./storage/config/user/ssh:/root/.ssh
-      - ./storage/config/php_cli_{{ $version->safe }}/php.ini:/etc/php{{ $version->safe[0] }}/php.ini
-      - ./storage/config/php_cli_{{ $version->safe }}/xdebug.ini:/etc/php{{ $version->safe[0] }}/conf.d/xdebug.ini
+      - ./storage/config/php_cli_{{ $version->safe }}/php.ini:/etc/php/{{ $version->version_number }}/cli/php.ini
+      - ./storage/config/php_cli_{{ $version->safe }}/xdebug.ini:/etc/php/{{ $version->version_number }}/cli/conf.d/xdebug.ini
       - ./storage/config/php_cli_{{ $version->safe }}/bash_history:/root/.bash_history
     environment:
       - HOST_MACHINE_NAME={{ $host_machine_name }}

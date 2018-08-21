@@ -57,7 +57,7 @@ return [
     /*
      | The default set of images to use when installing porter
      */
-    'default-docker-image-set' => 'konsulting/porter-alpine',
+    'default-docker-image-set' => 'konsulting/porter-ubuntu',
 
     /*
      |  Allow these to be overridden for testing
