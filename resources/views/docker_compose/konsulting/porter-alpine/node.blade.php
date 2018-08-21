@@ -8,6 +8,7 @@
     user: node
     volumes:
       - {{ $home }}:/srv/app
+      - ./storage/config/user/ssh:/root/.ssh
       - ./storage/config/node/bash_history:/home/node/.bash_history
     networks:
       - porter

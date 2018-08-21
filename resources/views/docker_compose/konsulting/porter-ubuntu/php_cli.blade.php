@@ -9,6 +9,7 @@
       - porter
     volumes:
       - {{ $home }}:/srv/app
+      - ./storage/config/user/ssh:/root/.ssh
       - ./storage/config/php_cli_{{ $version->safe }}/php.ini:/etc/php/{{ $version->version_number }}/cli/php.ini
       - ./storage/config/php_cli_{{ $version->safe }}/xdebug.ini:/etc/php/{{ $version->version_number }}/cli/conf.d/xdebug.ini
       - ./storage/config/php_cli_{{ $version->safe }}/bash_history:/root/.bash_history

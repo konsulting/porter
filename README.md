@@ -168,6 +168,12 @@ Notes for your test setup...
  - The remote web-driver must point to the browser container at `http://browser:9515`
  - The url for testing needs to be the hostname of the PHP CLI container (where the tests are running) - which can be retrieved through `getenv('HOSTNAME')`
  - Finally, we need to add `--no-sandbox` to the options for Chrome and it should run '--headless'.
+
+## SSH Keys
+
+Porter include a `storage/config/user/ssh` directory which is linked to the root user `.ssh` dir in the PHP cli containers and the Node container.
+
+This means you can add the ssh keys you want to use in your dev environment specifically (if any).
  
 ## Tweaking things
 
