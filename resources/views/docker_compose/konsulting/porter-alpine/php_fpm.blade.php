@@ -10,7 +10,7 @@
     ports:
       - 95{{ $version->short_form }}:9001
     volumes:
-      - {{ $home }}:/srv/app:cached
+      - {{ $home }}:/srv/app:delegated
       - ./storage/config/php_fpm_{{ $version->safe }}/php.ini:/etc/php{{ $version->major }}/php.ini
       - ./storage/config/php_fpm_{{ $version->safe }}/xdebug.ini:/etc/php{{ $version->major }}/conf.d/xdebug.ini
     environment:

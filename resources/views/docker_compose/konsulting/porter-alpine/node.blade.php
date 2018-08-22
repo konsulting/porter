@@ -7,7 +7,7 @@
     image: {{ $imageSet }}-node
     user: node
     volumes:
-      - {{ $home }}:/srv/app:cached
+      - {{ $home }}:/srv/app:delegated
       - ./storage/config/user/ssh:/root/.ssh
       - ./storage/config/node/bash_history:/home/node/.bash_history
     networks:
