@@ -27,6 +27,7 @@ RUN apt-get update \
           php5.6-mbstring \
           php5.6-opcache \
           php5.6-soap \
+          php5.6-sqlite \
           php5.6-xdebug \
           php5.6-xml \
           php5.6-zip \

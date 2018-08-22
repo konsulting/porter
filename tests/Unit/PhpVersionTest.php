@@ -19,6 +19,26 @@ class PhpVersionTest extends TestCase
     }
 
     /** @test */
+    public function it_returns_a_major_version_number()
+    {
+        $version = factory(PhpVersion::class)->create([
+            'version_number' => "7.2",
+        ]);
+
+        $this->assertEquals("7", $version->major);
+    }
+
+    /** @test */
+    public function it_returns_a_short_form_version_number()
+    {
+        $version = factory(PhpVersion::class)->create([
+            'version_number' => "7.2",
+        ]);
+
+        $this->assertEquals("72", $version->short_form);
+    }
+
+    /** @test */
     public function we_can_set_the_default_version()
     {
         factory(PhpVersion::class, 4)->create();

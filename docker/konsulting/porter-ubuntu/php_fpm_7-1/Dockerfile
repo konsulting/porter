@@ -27,6 +27,7 @@ RUN apt-get update \
           php7.1-mbstring \
           php7.1-opcache \
           php7.1-soap \
+          php7.1-sqlite \
           php7.1-xdebug \
           php7.1-xml \
           php7.1-zip \
