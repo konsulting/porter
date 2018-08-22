@@ -7,12 +7,10 @@
     image: {{ $imageSet }}-php_fpm_{{ $version->safe }}
     networks:
       - porter
-    ports:
-      - 95{{ $version->short_form }}:9001
     volumes:
       - {{ $home }}:/srv/app:delegated
-      - ./storage/config/php_fpm_{{ $version->safe }}/php.ini:/etc/php/{{ $version->version_number }}/fpm/php.ini
-      - ./storage/config/php_fpm_{{ $version->safe }}/xdebug.ini:/etc/php/{{ $version->version_number }}/fpm/conf.d/xdebug.ini
+      - ./storage/config/{{ $version->fpm_name }}/php.ini:/etc/php/{{ $version->version_number }}/fpm/php.ini
+      - ./storage/config/{{ $version->fpm_name }}/xdebug.ini:/etc/php/{{ $version->version_number }}/fpm/conf.d/xdebug.ini
     environment:
       - HOST_MACHINE_NAME={{ $host_machine_name }}
       - RUNNING_ON_PORTER=true

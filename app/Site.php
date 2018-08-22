@@ -5,7 +5,6 @@ namespace App;
 use App\Nginx\SiteConfBuilder;
 use App\Ssl\CertificateBuilder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Artisan;
 
 class Site extends Model
 {
@@ -89,8 +88,6 @@ class Site extends Model
 
     /**
      * Destroy the files for this site (e.g. nginx conf)
-     *
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function destroyFiles()
     {
@@ -106,7 +103,9 @@ class Site extends Model
 
         $this->update(['secure' => true]);
 
-        Artisan::call('make-files');
+        $this->buildFiles();
+
+        app(Porter::class)->restartServing();
     }
 
     /**
@@ -118,7 +117,9 @@ class Site extends Model
 
         $this->update(['secure' => false]);
 
-        Artisan::call('make-files');
+        $this->buildFiles();
+
+        app(Porter::class)->restartServing();
     }
 
     /**
@@ -134,31 +135,39 @@ class Site extends Model
 
         $this->delete();
 
-        Artisan::call('make-files');
+        $this->buildFiles();
+
+        app(Porter::class)->restartServing();
     }
 
     /**
      * Set the PHP version for the site
      *
      * @param $phpVersionId
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function setPhpVersion($phpVersionId)
     {
         $this->update(['php_version_id' => $phpVersionId ?: PhpVersion::defaultVersion()->id]);
 
-        Artisan::call('make-files');
+        $this->buildFiles();
+
+        app(Porter::class)->restartServing();
     }
 
     /**
      * Set the nginx type for the site (we have different template configs we can use)
      *
      * @param $type
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function setNginxType($type)
     {
         $this->update(['nginx_conf' => $type ?? 'default']);
 
-        Artisan::call('make-files');
+        $this->buildFiles();
+
+        app(Porter::class)->restartServing();
     }
 
     /**

@@ -60,6 +60,26 @@ class PhpVersion extends Model
     }
 
     /**
+     * Get cli container name
+     *
+     * @return null|string
+     */
+    public function getCliNameAttribute()
+    {
+        return 'php_cli_'.$this->safe;
+    }
+
+    /**
+     * Get fpm container name
+     *
+     * @return null|string
+     */
+    public function getFpmNameAttribute()
+    {
+        return 'php_fpm_'.$this->safe;
+    }
+
+    /**
      * Find by a user input version number
      *
      * @param $number
@@ -86,6 +106,7 @@ class PhpVersion extends Model
      * Clean php version number for file naming
      *
      * @param $number
+     * @param string $separator
      * @return null|string
      */
     public static function cleanVersionNumber($number, $separator = '-')

@@ -39,6 +39,26 @@ class PhpVersionTest extends TestCase
     }
 
     /** @test */
+    public function it_returns_the_cli_container_name()
+    {
+        $version = factory(PhpVersion::class)->create([
+            'version_number' => "7.2",
+        ]);
+
+        $this->assertEquals("php_cli_7-2", $version->cli_name);
+    }
+
+    /** @test */
+    public function it_returns_the_fpm_container_name()
+    {
+        $version = factory(PhpVersion::class)->create([
+            'version_number' => "7.2",
+        ]);
+
+        $this->assertEquals("php_fpm_7-2", $version->fpm_name);
+    }
+
+    /** @test */
     public function we_can_set_the_default_version()
     {
         factory(PhpVersion::class, 4)->create();

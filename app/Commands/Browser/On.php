@@ -2,8 +2,7 @@
 
 namespace App\Commands\Browser;
 
-use App\Setting;
-use Illuminate\Support\Facades\Artisan;
+use App\Porter;
 use LaravelZero\Framework\Commands\Command;
 
 class On extends Command
@@ -29,12 +28,6 @@ class On extends Command
      */
     public function handle(): void
     {
-        if (setting('use_browser') == 'on') {
-            return;
-        }
-
-        Setting::updateOrCreate('use_browser', 'on');
-
-        Artisan::call('make-files');
+        app(Porter::class)->turnOnService('browser');
     }
 }

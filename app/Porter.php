@@ -30,19 +30,31 @@ class Porter
     }
 
     /**
-     * Start Porter containers
+     * Start Porter containers, optionally start a specific service, and force them to be recreated
+     *
+     * @param null $service
+     * @param bool $recreate
      */
-    public function start()
+    public function start($service = null, $recreate = false)
     {
-        DockerCompose::command('up -d')->realTime()->perform();
+        $recreate = $recreate ? '--force-recreate ' : '';
+
+        DockerCompose::command("up -d {$recreate}--remove-orphans {$service}")->realTime()->perform();
     }
 
     /**
      * Stop Porter containers
+     * @param null $service
      */
-    public function stop()
+    public function stop($service = null)
     {
-        DockerCompose::command('down')->realTime()->perform();
+        if ($service) {
+            DockerCompose::command("stop {$service}")->realTime()->perform();
+
+            return;
+        }
+
+        DockerCompose::command("down --remove-orphans")->realTime()->perform();
     }
 
     /**
@@ -52,7 +64,67 @@ class Porter
      */
     public function restart($service = null)
     {
-        DockerCompose::command("restart {$service}")->realTime()->perform();
+        if ($this->isUp($service)) {
+            $this->stop($service);
+        }
+
+        // If we're restarting something it's probably because config changed - so force recreation
+        $this->start($service, true);
+    }
+
+    /**
+     * Restart serving, picking up changes in used PHP versions and NGiNX
+     */
+    public function restartServing()
+    {
+        // Build up docker-compose again - so we pick up any new PHP containers to be used
+        app(Porter::class)->compose();
+
+        PhpVersion::active()
+            ->get()
+            ->reject(function ($phpVersion) {
+                return $this->isUp($phpVersion->fpm_name);
+            })
+            ->each(function ($phpVersion) {
+                $this->start($phpVersion->fpm_name);
+                $this->start($phpVersion->cli_name);
+            });
+
+        app(Porter::class)->restart('nginx');
+    }
+
+    /**
+     * Turn a service on
+     *
+     * @param $service
+     */
+    public function turnOnService($service)
+    {
+        if (setting("use_{$service}") == 'on') {
+            return;
+        }
+
+        Setting::updateOrCreate("use_{$service}", 'on');
+
+        app(Porter::class)->compose();
+        app(Porter::class)->start($service);
+    }
+
+    /**
+     * Turn a service off
+     *
+     * @param $service
+     */
+    public function turnOffService($service)
+    {
+        if (setting("use_{$service}") == 'off') {
+            return;
+        }
+
+        Setting::updateOrCreate("use_{$service}", 'off');
+
+        app(Porter::class)->stop($service);
+        app(Porter::class)->compose();
     }
 
     /**
