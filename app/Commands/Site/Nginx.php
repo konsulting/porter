@@ -36,16 +36,19 @@ class Nginx extends Command
             throw new \Exception("Site '{$name}' not found.");
         }
 
+        $site = Site::firstOrCreateForName($name);
+        $currentNginxConf = $site->nginx_conf;
+
         $types = collect(iterator_to_array(
             Finder::create()
                 ->in(resource_path('views/nginx'))
                 ->sortByName()
                 ->directories()
-        ))->mapWithKeys(function (\SplFileInfo $file) {
-            return [$file->getFilename() => $file->getFilename()];
+        ))->mapWithKeys(function (\SplFileInfo $file) use ($currentNginxConf) {
+            $conf = $file->getFilename();
+            return [$conf => $conf . ($conf == $currentNginxConf ? ' (current)' : '')];
         })->toArray();
 
-        $site = Site::firstOrCreateForName($name);
 
         $option = $this->menu(
             'Available Nginx Types',

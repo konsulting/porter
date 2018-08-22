@@ -36,10 +36,14 @@ class Php extends Command
         }
 
         $site = Site::firstOrCreateForName($name);
+        $currentVersion = $site->php_version->version_number;
 
         $option = $this->menu(
             'Available PHP versions',
-            PhpVersion::pluck('version_number', 'id')->toArray()
+            PhpVersion::pluck('version_number', 'id')
+                ->map(function ($version) use ($currentVersion) {
+                    return $version . ($version == $currentVersion ? ' (current)' : '');
+                })->toArray()
         )->open();
 
         if (! $option) {
