@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Commands;
+namespace App\Commands\Images;
 
 use App\Porter;
 use App\Providers\AppServiceProvider;
@@ -10,21 +10,21 @@ use Illuminate\Support\Facades\Artisan;
 use LaravelZero\Framework\Commands\Command;
 use Symfony\Component\Finder\Finder;
 
-class DockerImageSet extends Command
+class UseSet extends Command
 {
     /**
      * The signature of the command.
      *
      * @var string
      */
-    protected $signature = 'docker-image-set {--show}';
+    protected $signature = 'images:set {--show}';
 
     /**
      * The description of the command.
      *
      * @var string
      */
-    protected $description = 'Change the image set to use';
+    protected $description = 'Change the set of container images use';
 
     /**
      * Execute the console command.

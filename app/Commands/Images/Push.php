@@ -1,25 +1,25 @@
 <?php
 
-namespace App\Commands;
+namespace App\Commands\Images;
 
 use App\Porter;
 use LaravelZero\Framework\Commands\Command;
 
-class PushImages extends Command
+class Push extends Command
 {
     /**
      * The signature of the command.
      *
      * @var string
      */
-    protected $signature = 'push-images';
+    protected $signature = 'images:push';
 
     /**
      * The description of the command.
      *
      * @var string
      */
-    protected $description = 'Push all our container images';
+    protected $description = 'Push the selected set of container images';
 
     /**
      * Execute the console command.

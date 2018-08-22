@@ -73,12 +73,13 @@ getenv('HOST_MACHINE_NAME')
  - `porter start`
  - `porter status` - show the status of containers
  - `porter stop`
- - `porter restart` - Restart existing containers (e.g. pick up config changes for PHP FPM).
+ - `porter restart` - Restart existing containers (e.g. pick up config changes for PHP FPM)
+ - `porter logs` - Show container logs
   
 ### Basic settings
 
  - `porter domain {domain}` - Set tld ('test' is the default for domains such as sample.test)
- - `porter home {dir?}` - Set the home dir for sites, run in the dir to use it directly - or set it specifically
+ - `porter home {dir?} {--show}` - Set the home dir for sites, run in the dir to use it directly - or set it specifically. Use `--show` to see the current setting.
  
 ### Site settings
 
@@ -181,7 +182,11 @@ The NGiNX config templates are in `resources/views/nginx`.
 The following commands will be useful if you change these items.
 
  - `porter build` - (Re)build the containers.
- - `porter build-images` - Build the current container images.
- - `porter docker-image-set` - Change the image set used for Porter. The default is `konsulting/porter-alpine`.
+ 
+ 
+ - `porter images:build` - Build the current container images.
+ - `porter images:pull` - Pull the current images - which will then be used by docker-compose where it can.
+ - `porter images:set` - Change the image set used for Porter. The default is `konsulting/porter-alpine`.
+ 
+ 
  - `porter make-files` - (Re)make the docker-compose.yaml, and the NGiNX config files.
- - `porter pull-images` - Pull the current images - which will then be used by docker-compose where it can.

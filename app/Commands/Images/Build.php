@@ -1,25 +1,25 @@
 <?php
 
-namespace App\Commands;
+namespace App\Commands\Images;
 
 use App\Porter;
 use LaravelZero\Framework\Commands\Command;
 
-class BuildImages extends Command
+class Build extends Command
 {
     /**
      * The signature of the command.
      *
      * @var string
      */
-    protected $signature = 'build-images';
+    protected $signature = 'images:build';
 
     /**
      * The description of the command.
      *
      * @var string
      */
-    protected $description = 'Build all our container images';
+    protected $description = 'Build the selected set of container images';
 
     /**
      * Execute the console command.

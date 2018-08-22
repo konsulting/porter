@@ -1,25 +1,25 @@
 <?php
 
-namespace App\Commands;
+namespace App\Commands\Images;
 
 use App\Porter;
 use LaravelZero\Framework\Commands\Command;
 
-class PullImages extends Command
+class Pull extends Command
 {
     /**
      * The signature of the command.
      *
      * @var string
      */
-    protected $signature = 'pull-images';
+    protected $signature = 'images:pull';
 
     /**
      * The description of the command.
      *
      * @var string
      */
-    protected $description = 'Pull all the container images';
+    protected $description = 'Pull the selected set of container images';
 
     /**
      * Execute the console command.
