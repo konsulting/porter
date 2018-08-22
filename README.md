@@ -36,7 +36,7 @@ Contributions are welcome.  We are a small company, so please be patient if your
  
  - Set up routing... you have some options.
    
-   1. Use the DNS container shipped with Porter.  Update your machine's network DNS settings to point to 127.0.0.1. The container will resolve the domain for Porter and it will forward other request to Cloudflare's DNS (1.1.1.1). You will need to turn off locally any installed DNSmasq since the DNS container opens to port 53 on localhost. (e.g. `brew services stop dnsmasq`)
+   1. Use the DNS container shipped with Porter.  Update your machine's network DNS settings to point to 127.0.0.1 before other name servers. The container will resolve the domain for Porter. You will need to turn off locally any installed DNSmasq since the DNS container opens to port 53 on localhost. (e.g. `brew services stop dnsmasq`)
    
    2. Use your existing Laravel Valet domain - which uses DNSmasq installed locally on a Mac.
    
