@@ -19,6 +19,9 @@ Contributions are welcome.  We are a small company, so please be patient if your
 ## Installation
 
  - Install [Docker](https://www.docker.com/community-edition)
+ 
+ - Login to docker (this will allow Porter to pull the images it needs). `docker login`
+ 
  - Clone Porter to a directory and install it's dependencies.
  
     ```
