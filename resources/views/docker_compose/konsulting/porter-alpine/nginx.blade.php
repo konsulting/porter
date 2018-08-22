@@ -15,5 +15,5 @@
       - ./storage/config/nginx/conf.d:/etc/nginx/conf.d
       - ./storage/ssl:/etc/ssl
       - ./storage/logs:/var/log
-      - {{ $home }}:/srv/app
+      - {{ $home }}:/srv/app:cached
     restart: unless-stopped

@@ -10,7 +10,7 @@
     ports:
       - 96{{ $version->short_form }}:9001
     volumes:
-      - {{ $home }}:/srv/app
+      - {{ $home }}:/srv/app:cached
       - ./storage/config/user/ssh:/root/.ssh
       - ./storage/config/php_cli_{{ $version->safe }}/php.ini:/etc/php{{ $version->major }}/php.ini
       - ./storage/config/php_cli_{{ $version->safe }}/xdebug.ini:/etc/php{{ $version->major }}/conf.d/xdebug.ini
