@@ -3,11 +3,12 @@
 namespace Tests;
 
 use Illuminate\Support\Facades\Artisan;
+use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
 {
-    use CreatesApplication;
+    use CreatesApplication, MockeryPHPUnitIntegration;
 
     /**
      * Holds an application instance.

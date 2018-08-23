@@ -2,7 +2,7 @@
 
 namespace App\DockerCompose;
 
-use App\Support\Cli;
+use App\Support\Contracts\Cli;
 
 class CliCommand
 {
@@ -10,49 +10,15 @@ class CliCommand
     protected $interactive = false;
     protected $realTime = false;
 
-    public function __construct($command)
+    /**
+     * @var Cli
+     */
+    protected $cli;
+
+    public function __construct(Cli $cli, $command)
     {
         $this->command = trim($command);
-    }
-
-    /**
-     * Construct a docker-compose run {$container} command
-     *
-     * @param string|null $container
-     *
-     * @return CliCommand
-     */
-    public static function runContainer($container = null)
-    {
-        $site = site_from_cwd();
-
-        $workingDir = $site ? '-w /srv/app/'.$site : '';
-
-        return new static("run {$workingDir} --rm {$container}");
-    }
-
-    /**
-     * Construct a docker-compose exec {$container} command
-     *
-     * @param string|null $container
-     *
-     * @return CliCommand
-     */
-    public static function execContainer($container = null)
-    {
-        return new static("exec {$container}");
-    }
-
-    /**
-     * Construct a docker-compose command
-     *
-     * @param string|null $command
-     *
-     * @return CliCommand
-     */
-    public static function command($command = null)
-    {
-        return new static($command);
+        $this->cli = $cli;
     }
 
     /**
@@ -163,9 +129,9 @@ class CliCommand
     {
         return trim(
             'docker-compose -f '
-                . config('app.docker-compose-file')
-                . ' '
-                . $this->command
+            . config('app.docker-compose-file')
+            . ' '
+            . $this->command
         );
     }
 
@@ -177,23 +143,13 @@ class CliCommand
     public function perform()
     {
         if ($this->isInteractive()) {
-            return $this->getCli()->passthru($this->prepare());
+            return $this->cli->passthru($this->prepare());
         }
 
         if ($this->isRealTime()) {
-            return $this->getCli()->execRealTime($this->prepare());
+            return $this->cli->execRealTime($this->prepare());
         }
 
-        return $this->getCli()->exec($this->prepare());
-    }
-
-    /**
-     * Get the Cli class
-     *
-     * @return Cli
-     */
-    protected function getCli()
-    {
-        return app(Cli::class);
+        return $this->cli->exec($this->prepare());
     }
 }
