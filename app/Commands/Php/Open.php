@@ -2,7 +2,7 @@
 
 namespace App\Commands\Php;
 
-use App\DockerCompose\CliCommand as DockerCompose;
+use App\DockerCompose\CliCommandFactory;
 use App\PhpVersion;
 use App\Site;
 use LaravelZero\Framework\Commands\Command;
@@ -40,7 +40,8 @@ class Open extends Command
 
         $this->info("PHP Version: {$version->version_number}");
 
-        DockerCompose::runContainer("php_cli_{$version->safe}")
+        app(CliCommandFactory::class)
+            ->runContainer("php_cli_{$version->safe}")
             ->bash($this->argument('run'))
             ->perform();
     }

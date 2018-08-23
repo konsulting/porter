@@ -2,7 +2,7 @@
 
 namespace App\Commands\Node;
 
-use App\DockerCompose\CliCommand as DockerCompose;
+use App\DockerCompose\CliCommandFactory;
 use LaravelZero\Framework\Commands\Command;
 
 class Open extends Command
@@ -28,7 +28,8 @@ class Open extends Command
      */
     public function handle(): void
     {
-        DockerCompose::runContainer("node")
+        app(CliCommandFactory::class)
+            ->runContainer("node")
             ->bash($this->argument('run'))
             ->perform();
     }
