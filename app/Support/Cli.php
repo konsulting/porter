@@ -2,11 +2,11 @@
 
 namespace App\Support;
 
-
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
+use App\Support\Contracts\Cli as CliContract;
 
-class Cli
+class Cli implements CliContract
 {
     public function exec($command)
     {

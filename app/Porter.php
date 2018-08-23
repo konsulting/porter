@@ -1,13 +1,44 @@
 <?php
+
 namespace App;
 
-use App\DockerCompose\CliCommand as DockerCompose;
+use App\DockerCompose\CliCommandFactory;
 use App\DockerCompose\YamlBuilder;
-use App\Support\Cli;
+use App\Support\Contracts\Cli;
+use App\Support\Contracts\ImageRepository;
 use Symfony\Component\Finder\Finder;
+
 
 class Porter
 {
+    /**
+     * The docker images used by Porter to serve sites.
+     *
+     * @var ImageRepository
+     */
+    protected $images;
+
+    /**
+     * The CLI class that executes commands.
+     *
+     * @var Cli
+     */
+    protected $cli;
+
+    /**
+     * The Docker composer command factory.
+     *
+     * @var CliCommandFactory
+     */
+    protected $dockerCompose;
+
+    public function __construct(ImageRepository $images, Cli $cli, CliCommandFactory $commandFactory)
+    {
+        $this->images = $images;
+        $this->cli = $cli;
+        $this->dockerCompose = $commandFactory;
+    }
+
     /**
      * Check if the Porter containers are running
      *
@@ -16,7 +47,7 @@ class Porter
      */
     public function isUp($service = null)
     {
-        return stristr(DockerCompose::command('ps')->perform(), "porter_{$service}");
+        return stristr($this->dockerCompose->command('ps')->perform(), "porter_{$service}");
     }
 
     /**
@@ -39,22 +70,23 @@ class Porter
     {
         $recreate = $recreate ? '--force-recreate ' : '';
 
-        DockerCompose::command("up -d {$recreate}--remove-orphans {$service}")->realTime()->perform();
+        $this->dockerCompose->command("up -d {$recreate}--remove-orphans {$service}")->realTime()->perform();
     }
 
     /**
      * Stop Porter containers
+     *
      * @param null $service
      */
     public function stop($service = null)
     {
         if ($service) {
-            DockerCompose::command("stop {$service}")->realTime()->perform();
+            $this->dockerCompose->command("stop {$service}")->realTime()->perform();
 
             return;
         }
 
-        DockerCompose::command("down --remove-orphans")->realTime()->perform();
+        $this->dockerCompose->command("down --remove-orphans")->realTime()->perform();
     }
 
     /**
@@ -132,7 +164,7 @@ class Porter
      */
     public function build()
     {
-        DockerCompose::command('build')->perform();
+        $this->dockerCompose->command('build')->perform();
     }
 
     /**
@@ -140,45 +172,11 @@ class Porter
      */
     public function pullImages()
     {
-        $images = collect($this->ourImages())->merge($this->thirdPartyImages());
+        $images = collect($this->images->firstParty($this->getDockerImageSet()))->merge($this->images->thirdParty());
 
         foreach ($images as $image) {
-            $this->getCli()->passthru("docker pull {$image}");
+            $this->cli->passthru("docker pull {$image}");
         }
-    }
-
-    /**
-     * Current images that are being pulled when we install, as they're used
-     * when starting porter, rather than waiting for them at that point.
-     *
-     * @return array
-     */
-    protected function ourImages()
-    {
-        $images = [];
-        $imagesDir = base_path('docker/'.$this->getDockerImageSet());
-
-        foreach (Finder::create()->in($imagesDir)->directories() as $dir) {
-            $images[] = $this->getDockerImageSet().'-'.$dir->getFileName().':latest';
-        }
-
-        return $images;
-    }
-
-    /**
-     * Third Party images. A list of images to pull when we install, as they're
-     * used when starting porter, rather than waiting for them at that point.
-     *
-     * @return array
-     */
-    protected function thirdPartyImages()
-    {
-        return [
-            'mysql:5.7',
-            'redis:alpine',
-            'andyshinn/dnsmasq',
-            'mailhog/mailhog:v1.0.0',
-        ];
     }
 
     /**
@@ -186,11 +184,11 @@ class Porter
      */
     public function buildImages()
     {
-        $imagesDir = base_path('docker/'.$this->getDockerImageSet());
+        $imagesDir = base_path('docker/' . $this->getDockerImageSet());
 
         foreach (Finder::create()->in($imagesDir)->directories() as $dir) {
             /** @var $dir \SplFileInfo */
-            $this->getCli()->passthru("docker build -t {$this->getDockerImageSet()}-{$dir->getFileName()}:latest --rm {$dir->getRealPath()} --");
+            $this->cli->passthru("docker build -t {$this->getDockerImageSet()}-{$dir->getFileName()}:latest --rm {$dir->getRealPath()} --");
         }
     }
 
@@ -199,8 +197,8 @@ class Porter
      */
     public function pushImages()
     {
-        foreach ($this->ourImages() as $image) {
-            $this->getCli()->passthru("docker push {$image}");
+        foreach ($this->images->firstParty($this->getDockerImageSet()) as $image) {
+            $this->cli->passthru("docker push {$image}");
         }
     }
 
@@ -217,7 +215,7 @@ class Porter
      */
     public function status()
     {
-        echo DockerCompose::command('ps')->perform();
+        echo $this->dockerCompose->command('ps')->perform();
     }
 
     /**
@@ -225,16 +223,6 @@ class Porter
      */
     public function logs()
     {
-        echo DockerCompose::command('logs')->perform();
-    }
-
-    /**
-     * Get the Cli class
-     *
-     * @return Cli
-     */
-    protected function getCli()
-    {
-        return app(Cli::class);
+        echo $this->dockerCompose->command('logs')->perform();
     }
 }
