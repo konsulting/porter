@@ -3,7 +3,6 @@
 namespace App\Commands;
 
 use App\Setting;
-use Illuminate\Support\Facades\Artisan;
 use App\Dnsmasq\Container as DnsmasqContainer;
 
 class Domain extends BaseCommand
@@ -42,7 +41,7 @@ class Domain extends BaseCommand
 
         (new DnsmasqContainer)->updateDomain($old, $domain);
 
-        Artisan::call('site:renew-certs');
-        Artisan::call('make-files');
+        $this->call('site:renew-certs');
+        $this->call('make-files');
     }
 }

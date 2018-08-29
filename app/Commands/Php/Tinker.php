@@ -3,7 +3,6 @@
 namespace App\Commands\Php;
 
 use App\Commands\BaseCommand;
-use App\DockerCompose\CliCommandFactory;
 use App\PhpVersion;
 use App\Site;
 
@@ -42,7 +41,7 @@ class Tinker extends BaseCommand
 
         $this->info("PHP Version: {$version->version_number}");
 
-        app(CliCommandFactory::class)
+        $this->dockerCompose
             ->runContainer("php_cli_{$version->safe}")
             ->bash("php artisan tinker")
             ->perform();

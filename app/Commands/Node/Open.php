@@ -3,7 +3,6 @@
 namespace App\Commands\Node;
 
 use App\Commands\BaseCommand;
-use App\DockerCompose\CliCommandFactory;
 
 class Open extends BaseCommand
 {
@@ -28,7 +27,7 @@ class Open extends BaseCommand
      */
     public function handle(): void
     {
-        app(CliCommandFactory::class)
+        $this->dockerCompose
             ->runContainer("node")
             ->bash($this->argument('run'))
             ->perform();

@@ -38,6 +38,6 @@ class Home extends BaseCommand
         $this->info('Setting home to ' . $path);
 
         Setting::where('name', 'home')->first()->update(['value' => $path]);
-        Artisan::call('make-files');
+        $this->call('make-files');
     }
 }
