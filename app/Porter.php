@@ -110,7 +110,11 @@ class Porter
     public function restartServing()
     {
         // Build up docker-compose again - so we pick up any new PHP containers to be used
-        app(Porter::class)->compose();
+        $this->compose();
+
+        if (! $this->isUp()) {
+            return;
+        }
 
         PhpVersion::active()
             ->get()
@@ -122,7 +126,7 @@ class Porter
                 $this->start($phpVersion->cli_name);
             });
 
-        app(Porter::class)->restart('nginx');
+        $this->restart('nginx');
     }
 
     /**
@@ -138,8 +142,11 @@ class Porter
 
         Setting::updateOrCreate("use_{$service}", 'on');
 
-        app(Porter::class)->compose();
-        app(Porter::class)->start($service);
+        $this->compose();
+
+        if ($this->isUp()) {
+            $this->start($service);
+        }
     }
 
     /**
@@ -155,8 +162,10 @@ class Porter
 
         Setting::updateOrCreate("use_{$service}", 'off');
 
-        app(Porter::class)->stop($service);
-        app(Porter::class)->compose();
+        if ($this->isUp()) {
+            $this->stop($service);
+        }
+        $this->compose();
     }
 
     /**
