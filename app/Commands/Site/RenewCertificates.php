@@ -2,11 +2,11 @@
 
 namespace App\Commands\Site;
 
+use App\Commands\BaseCommand;
 use App\Site;
 use App\Ssl\CertificateBuilder;
-use LaravelZero\Framework\Commands\Command;
 
-class RenewCertificates extends Command
+class RenewCertificates extends BaseCommand
 {
     /**
      * The signature of the command.

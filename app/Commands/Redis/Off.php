@@ -2,10 +2,9 @@
 
 namespace App\Commands\Redis;
 
-use App\Porter;
-use LaravelZero\Framework\Commands\Command;
+use App\Commands\BaseCommand;
 
-class Off extends Command
+class Off extends BaseCommand
 {
     /**
      * The signature of the command.
@@ -28,6 +27,6 @@ class Off extends Command
      */
     public function handle(): void
     {
-        app(Porter::class)->turnOffService('redis');
+        $this->porter->turnOffService('redis');
     }
 }

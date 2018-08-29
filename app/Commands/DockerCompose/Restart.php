@@ -2,11 +2,9 @@
 
 namespace App\Commands\DockerCompose;
 
-use App\Porter;
-use Illuminate\Console\Scheduling\Schedule;
-use LaravelZero\Framework\Commands\Command;
+use App\Commands\BaseCommand;
 
-class Restart extends Command
+class Restart extends BaseCommand
 {
     /**
      * The signature of the command.
@@ -29,6 +27,6 @@ class Restart extends Command
      */
     public function handle(): void
     {
-        app(Porter::class)->restart($this->argument('service'));
+        $this->porter->restart($this->argument('service'));
     }
 }

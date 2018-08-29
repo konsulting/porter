@@ -4,10 +4,9 @@ namespace App\Commands;
 
 use App\Setting;
 use Illuminate\Support\Facades\Artisan;
-use LaravelZero\Framework\Commands\Command;
 use App\Dnsmasq\Container as DnsmasqContainer;
 
-class Domain extends Command
+class Domain extends BaseCommand
 {
     /**
      * The signature of the command.

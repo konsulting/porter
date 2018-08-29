@@ -2,13 +2,10 @@
 
 namespace App\Commands\Php;
 
+use App\Commands\BaseCommand;
 use App\PhpVersion;
-use App\Setting;
-use App\Site;
-use Illuminate\Support\Facades\Artisan;
-use LaravelZero\Framework\Commands\Command;
 
-class PhpDefault extends Command
+class PhpDefault extends BaseCommand
 {
     /**
      * The signature of the command.
@@ -42,6 +39,6 @@ class PhpDefault extends Command
 
         PhpVersion::setDefaultVersion($option);
 
-        Artisan::call('make-files');
+        $this->call('make-files');
     }
 }

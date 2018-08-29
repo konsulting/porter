@@ -2,10 +2,9 @@
 
 namespace App\Commands\Images;
 
-use App\Porter;
-use LaravelZero\Framework\Commands\Command;
+use App\Commands\BaseCommand;
 
-class Build extends Command
+class Build extends BaseCommand
 {
     /**
      * The signature of the command.
@@ -28,6 +27,6 @@ class Build extends Command
      */
     public function handle(): void
     {
-        app(Porter::class)->buildImages();
+        $this->porter->buildImages();
     }
 }

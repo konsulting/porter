@@ -4,9 +4,8 @@ namespace App\Commands;
 
 use App\Setting;
 use Illuminate\Support\Facades\Artisan;
-use LaravelZero\Framework\Commands\Command;
 
-class Home extends Command
+class Home extends BaseCommand
 {
     /**
      * The signature of the command.

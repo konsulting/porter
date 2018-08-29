@@ -2,10 +2,10 @@
 
 namespace App\Commands\Site;
 
+use App\Commands\BaseCommand;
 use App\Site;
-use LaravelZero\Framework\Commands\Command;
 
-class Remove extends Command
+class Remove extends BaseCommand
 {
     /**
      * The signature of the command.

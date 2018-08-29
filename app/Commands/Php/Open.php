@@ -2,12 +2,12 @@
 
 namespace App\Commands\Php;
 
+use App\Commands\BaseCommand;
 use App\DockerCompose\CliCommandFactory;
 use App\PhpVersion;
 use App\Site;
-use LaravelZero\Framework\Commands\Command;
 
-class Open extends Command
+class Open extends BaseCommand
 {
     /**
      * The signature of the command.

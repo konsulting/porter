@@ -2,10 +2,10 @@
 
 namespace App\Commands\Images;
 
-use App\Porter;
-use LaravelZero\Framework\Commands\Command;
 
-class Pull extends Command
+use App\Commands\BaseCommand;
+
+class Pull extends BaseCommand
 {
     /**
      * The signature of the command.
@@ -28,6 +28,6 @@ class Pull extends Command
      */
     public function handle(): void
     {
-        app(Porter::class)->pullImages();
+        $this->porter->pullImages();
     }
 }

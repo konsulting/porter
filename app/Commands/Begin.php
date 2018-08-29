@@ -2,12 +2,10 @@
 
 namespace App\Commands;
 
-use App\Porter;
 use App\Providers\AppServiceProvider;
 use App\Support\Database\Database;
-use LaravelZero\Framework\Commands\Command;
 
-class Begin extends Command
+class Begin extends BaseCommand
 {
     /**
      * The signature of the command.
@@ -44,6 +42,6 @@ class Begin extends Command
         $this->call('vendor:publish', ['--provider' => AppServiceProvider::class]);
         $this->call('home', [$home]);
 
-        app(Porter::class)->pullImages();
+        $this->porter->pullImages();
     }
 }
