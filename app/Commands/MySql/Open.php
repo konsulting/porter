@@ -3,7 +3,6 @@
 namespace App\Commands\MySql;
 
 use App\Commands\BaseCommand;
-use App\DockerCompose\CliCommandFactory;
 
 class Open extends BaseCommand
 {
@@ -33,7 +32,7 @@ class Open extends BaseCommand
             return;
         }
 
-        app(CliCommandFactory::class)
+        $this->dockerCompose
             ->runContainer("mysql")
             ->append("mysql -h mysql -uroot -psecret")
             ->interactive()

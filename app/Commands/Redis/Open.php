@@ -3,7 +3,6 @@
 namespace App\Commands\Redis;
 
 use App\Commands\BaseCommand;
-use App\DockerCompose\CliCommandFactory;
 
 class Open extends BaseCommand
 {
@@ -33,7 +32,7 @@ class Open extends BaseCommand
             return;
         }
 
-        app(CliCommandFactory::class)
+        $this->dockerCompose
             ->runContainer("redis")
             ->append("redis-cli -h redis")
             ->interactive()
