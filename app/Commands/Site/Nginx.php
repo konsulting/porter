@@ -2,12 +2,11 @@
 
 namespace App\Commands\Site;
 
-use App\PhpVersion;
+use App\Commands\BaseCommand;
 use App\Site;
-use LaravelZero\Framework\Commands\Command;
 use Symfony\Component\Finder\Finder;
 
-class Nginx extends Command
+class Nginx extends BaseCommand
 {
     /**
      * The signature of the command.

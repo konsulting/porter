@@ -2,11 +2,9 @@
 
 namespace App\Commands\DockerCompose;
 
-use App\Porter;
-use Illuminate\Console\Scheduling\Schedule;
-use LaravelZero\Framework\Commands\Command;
+use App\Commands\BaseCommand;
 
-class Start extends Command
+class Start extends BaseCommand
 {
     /**
      * The signature of the command.
@@ -29,6 +27,6 @@ class Start extends Command
      */
     public function handle(): void
     {
-        app(Porter::class)->start();
+        $this->porter->start();
     }
 }

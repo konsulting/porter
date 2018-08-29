@@ -2,10 +2,9 @@
 
 namespace App\Commands\Images;
 
-use App\Porter;
-use LaravelZero\Framework\Commands\Command;
+use App\Commands\BaseCommand;
 
-class Push extends Command
+class Push extends BaseCommand
 {
     /**
      * The signature of the command.
@@ -28,6 +27,6 @@ class Push extends Command
      */
     public function handle(): void
     {
-        app(Porter::class)->pushImages();
+        $this->porter->pushImages();
     }
 }

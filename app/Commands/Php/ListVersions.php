@@ -2,11 +2,10 @@
 
 namespace App\Commands\Php;
 
+use App\Commands\BaseCommand;
 use App\PhpVersion;
-use App\Site;
-use LaravelZero\Framework\Commands\Command;
 
-class ListVersions extends Command
+class ListVersions extends BaseCommand
 {
     /**
      * The signature of the command.

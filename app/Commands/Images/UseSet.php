@@ -2,15 +2,12 @@
 
 namespace App\Commands\Images;
 
-use App\Porter;
-use App\Providers\AppServiceProvider;
+use App\Commands\BaseCommand;
 use App\Setting;
-use App\Support\Database\Database;
 use Illuminate\Support\Facades\Artisan;
-use LaravelZero\Framework\Commands\Command;
 use Symfony\Component\Finder\Finder;
 
-class UseSet extends Command
+class UseSet extends BaseCommand
 {
     /**
      * The signature of the command.
@@ -33,7 +30,7 @@ class UseSet extends Command
      */
     public function handle(): void
     {
-        $current = app(Porter::class)->getDockerImageSet();
+        $current = $this->porter->getDockerImageSet();
 
         if ($this->option('show')) {
             $this->info("The current image set is: ".$current);

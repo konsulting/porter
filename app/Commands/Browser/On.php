@@ -2,10 +2,9 @@
 
 namespace App\Commands\Browser;
 
-use App\Porter;
-use LaravelZero\Framework\Commands\Command;
+use App\Commands\BaseCommand;
 
-class On extends Command
+class On extends BaseCommand
 {
     /**
      * The signature of the command.
@@ -28,6 +27,6 @@ class On extends Command
      */
     public function handle(): void
     {
-        app(Porter::class)->turnOnService('browser');
+        $this->porter->turnOnService('browser');
     }
 }

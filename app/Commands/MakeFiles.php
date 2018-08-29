@@ -2,11 +2,9 @@
 
 namespace App\Commands;
 
-use App\Porter;
 use App\Site;
-use LaravelZero\Framework\Commands\Command;
 
-class MakeFiles extends Command
+class MakeFiles extends BaseCommand
 {
     /**
      * The signature of the command.
@@ -29,15 +27,13 @@ class MakeFiles extends Command
      */
     public function handle(): void
     {
-        $porter = app(Porter::class);
-
-        $wasUp = $porter->isUp();
+        $wasUp = $this->porter->isUp();
 
         if ($wasUp) {
             $this->call('stop');
         }
 
-        $porter->compose();
+        $this->porter->compose();
 
         foreach(Site::all() as $site) {
             $site->buildFiles();

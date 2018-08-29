@@ -2,10 +2,10 @@
 
 namespace App\Commands\Site;
 
+use App\Commands\BaseCommand;
 use App\Site;
-use LaravelZero\Framework\Commands\Command;
 
-class Secure extends Command
+class Secure extends BaseCommand
 {
     /**
      * The signature of the command.
