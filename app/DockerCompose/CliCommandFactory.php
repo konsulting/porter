@@ -2,6 +2,7 @@
 
 namespace App\DockerCompose;
 
+use App\Site;
 use App\Support\Contracts\Cli;
 
 class CliCommandFactory
@@ -46,8 +47,8 @@ class CliCommandFactory
      */
     public function runContainer($container = null)
     {
-        $site = site_from_cwd();
-        $workingDir = $site ? '-w /srv/app/' . $site : '';
+        $site = Site::resolveFromPathOrCurrentWorkingDirectory();
+        $workingDir = $site ? '-w /srv/app/' . $site->name : '';
 
         return new CliCommand($this->cli, "run {$workingDir} --rm {$container}");
     }

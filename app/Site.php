@@ -4,6 +4,7 @@ namespace App;
 
 use App\Nginx\SiteConfBuilder;
 use App\Ssl\CertificateBuilder;
+use App\Support\Contracts\Cli;
 use Illuminate\Database\Eloquent\Model;
 
 class Site extends Model
@@ -23,15 +24,37 @@ class Site extends Model
     /**
      * Resolve the site from the current working directory
      *
+     * @param null $path
      * @return null
      */
-    public function resolve()
+    public function resolveFromPathOrCurrentWorkingDirectory($path = null)
     {
-        if (! $name = site_from_cwd()) {
+        $name = static::nameFromPath($path ?: app(Cli::class)->currentWorkingDirectory());
+
+        if (! $name) {
             return null;
         }
 
-        return static::where('name', $name)->first();
+        return static::where('name', $name)->firstOrFail();
+    }
+
+    /**
+     * Resolve the site from the current working directory
+     * Fail if not found.
+     *
+     * @param null $path
+     * @return null
+     * @throws \Exception
+     */
+    public function resolveFromPathOrCurrentWorkingDirectoryOrFail($path = null)
+    {
+        $site = $this->resolveFromPathOrCurrentWorkingDirectory($path);
+
+        if (! $site) {
+            throw new \Exception("Site not found.");
+        }
+
+        return $site;
     }
 
     /**
@@ -79,19 +102,19 @@ class Site extends Model
     /**
      * Build the files for this site (e.g. nginx conf)
      *
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     * @throws \Throwable
      */
     public function buildFiles()
     {
-        app(SiteConfBuilder::class)->build($this);
+        $this->getSiteConfigBuilder()->build($this);
     }
 
     /**
-     * Destroy the files for this site (e.g. nginx conf)
+     * Destroy the files for this site (e.g. NGiNX conf)
      */
     public function destroyFiles()
     {
-        app(SiteConfBuilder::class)->destroy($this);
+        $this->getSiteConfigBuilder()->destroy($this);
     }
 
     /**
@@ -105,7 +128,7 @@ class Site extends Model
 
         $this->buildFiles();
 
-        app(Porter::class)->restartServing();
+        $this->getPorter()->restartServing();
     }
 
     /**
@@ -119,32 +142,33 @@ class Site extends Model
 
         $this->buildFiles();
 
-        app(Porter::class)->restartServing();
+        $this->getPorter()->restartServing();
     }
 
     /**
      * Remove this site and associated files
      *
      * @throws \Exception
+     * @throws \Throwable
      */
     public function remove()
     {
         $this->destroyCertificate();
 
-        app(SiteConfBuilder::class)->destroy($this);
+        $this->getSiteConfigBuilder()->destroy($this);
 
         $this->delete();
 
         $this->buildFiles();
 
-        app(Porter::class)->restartServing();
+        $this->getPorter()->restartServing();
     }
 
     /**
      * Set the PHP version for the site
      *
      * @param $phpVersionId
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     * @throws \Throwable
      */
     public function setPhpVersion($phpVersionId)
     {
@@ -152,14 +176,14 @@ class Site extends Model
 
         $this->buildFiles();
 
-        app(Porter::class)->restartServing();
+        $this->getPorter()->restartServing();
     }
 
     /**
      * Set the nginx type for the site (we have different template configs we can use)
      *
      * @param $type
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     * @throws \Throwable
      */
     public function setNginxType($type)
     {
@@ -167,11 +191,12 @@ class Site extends Model
 
         $this->buildFiles();
 
-        app(Porter::class)->restartServing();
+        $this->getPorter()->restartServing();
     }
 
     /**
-     * Get the first site based on name, or create a new record
+     * Get the first site based on name, or create a new record.
+     *
      *
      * @param $name
      * @return mixed
@@ -206,7 +231,7 @@ class Site extends Model
     /**
      * Get Certificate builder
      *
-     * @return \Illuminate\Foundation\Application|mixed
+     * @return CertificateBuilder
      */
     protected function getCertificateBuilder()
     {
@@ -214,9 +239,27 @@ class Site extends Model
     }
 
     /**
-     * Build Certificate for site
+     * Get Site Config Builder
      *
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     * @return SiteConfBuilder
+     */
+    protected function getSiteConfigBuilder()
+    {
+        return app(SiteConfBuilder::class);
+    }
+
+    /**
+     * Get Porter
+     *
+     * @return Porter
+     */
+    protected function getPorter()
+    {
+        return app(Porter::class);
+    }
+
+    /**
+     * Build Certificate for site
      */
     public function buildCertificate()
     {
@@ -229,5 +272,25 @@ class Site extends Model
     public function destroyCertificate()
     {
         $this->getCertificateBuilder()->destroy($this->url);
+    }
+
+    /**
+     * Return a site directory name from a path, after checking it is within the
+     * home directory.
+     *
+     * @param $path
+     * @return null|string
+     */
+    public static function nameFromPath($path)
+    {
+        $home = setting('home');
+
+        if (! str_start($path, $home)) {
+            return null;
+        }
+
+        $path = trim(str_after($path, $home), DIRECTORY_SEPARATOR);
+
+        return str_before($path, DIRECTORY_SEPARATOR);
     }
 }

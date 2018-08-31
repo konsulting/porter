@@ -15,13 +15,13 @@ class MacOs extends Untrained implements Mechanic
      */
     public function trustCA($pem)
     {
-        console_writer('Auto Trust CA Certificate, needs sudo privilege.');
+        $this->console->info('Auto Trust CA Certificate, needs sudo privilege.');
 
         $command = "sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain {$pem}";
         $this->commands[] = $command;
 
         if($this->isTesting()) {
-            console_writer("Did not trust CA during testing.");
+            $this->console->info("Did not trust CA during testing.");
             return;
         }
 
@@ -36,13 +36,13 @@ class MacOs extends Untrained implements Mechanic
      */
     public function trustCertificate($crt)
     {
-        console_writer('Auto Trust Certificate, needs sudo privilege.');
+        $this->console->info('Auto Trust Certificate, needs sudo privilege.');
 
         $command = "sudo security add-trusted-cert -d -r trustAsRoot -k /Library/Keychains/System.keychain {$crt}";
         $this->commands[] = $command;
 
         if($this->isTesting()) {
-            console_writer("Did not trust Certificate during testing.");
+            $this->console->info("Did not trust Certificate during testing.");
             return;
         }
 

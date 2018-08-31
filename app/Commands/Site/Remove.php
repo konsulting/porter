@@ -25,15 +25,10 @@ class Remove extends BaseCommand
      * Execute the console command.
      *
      * @return void
+     * @throws \Exception
      */
     public function handle(): void
     {
-        $name = $this->argument('site') ?: site_from_cwd();
-
-        if (! $site = Site::where('name', $name)->first()) {
-            throw new \Exception("Site '{$name}' not found.");
-        }
-
-        $site->remove();
+        Site::resolveFromPathOrCurrentWorkingDirectoryOrFail($this->argument('site'))->remove();
     }
 }

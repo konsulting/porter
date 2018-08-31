@@ -29,10 +29,7 @@ class Tinker extends BaseCommand
      */
     public function handle(): void
     {
-        $name = site_from_cwd();
-        $site = Site::where('name', $name)->first();
-
-        if (! $site) {
+        if (! $site = Site::resolveFromPathOrCurrentWorkingDirectory()) {
             $this->error('Please run this command in a project directory');
             return;
         }

@@ -26,16 +26,12 @@ class Nginx extends BaseCommand
      * Execute the console command.
      *
      * @return void
+     * @throws \Exception
      */
     public function handle(): void
     {
-        $name = $this->argument('site') ?: site_from_cwd();
+        $site = Site::resolveFromPathOrCurrentWorkingDirectoryOrFail($this->argument('site'));
 
-        if (! $name) {
-            throw new \Exception("Site '{$name}' not found.");
-        }
-
-        $site = Site::firstOrCreateForName($name);
         $currentNginxConf = $site->nginx_conf;
 
         $types = collect(iterator_to_array(
@@ -47,7 +43,6 @@ class Nginx extends BaseCommand
             $conf = $file->getFilename();
             return [$conf => $conf . ($conf == $currentNginxConf ? ' (current)' : '')];
         })->toArray();
-
 
         $option = $this->menu(
             'Available Nginx Types',
