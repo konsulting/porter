@@ -27,4 +27,11 @@ interface Cli
      * @return void
      */
     public function passthru($command);
+
+    /**
+     * Return the current working directory
+     *
+     * @return string
+     */
+    public function currentWorkingDirectory();
 }

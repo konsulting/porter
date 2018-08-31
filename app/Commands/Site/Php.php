@@ -26,16 +26,12 @@ class Php extends BaseCommand
      * Execute the console command.
      *
      * @return void
+     * @throws \Exception
      */
     public function handle(): void
     {
-        $name = $this->argument('site') ?: site_from_cwd();
+        $site = Site::resolveFromPathOrCurrentWorkingDirectoryOrFail($this->argument('site'));
 
-        if (! $name) {
-            throw new \Exception("Site '{$name}' not found.");
-        }
-
-        $site = Site::firstOrCreateForName($name);
         $currentVersion = $site->php_version->version_number;
 
         $option = $this->menu(

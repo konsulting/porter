@@ -25,10 +25,11 @@ class Unsecure extends BaseCommand
      * Execute the console command.
      *
      * @return void
+     * @throws \Exception
      */
     public function handle(): void
     {
-        $name = $this->argument('site') ?: site_from_cwd();
+        $name = $this->argument('site') ?: Site::nameFromPath($this->cli->currentWorkingDirectory());
 
         if (! $name) {
             throw new \Exception("Site '{$name}' not found.");

@@ -8,6 +8,12 @@ use App\Support\Contracts\Cli as CliContract;
 
 class Cli implements CliContract
 {
+    /**
+     * Execute a command.
+     *
+     * @param string $command
+     * @return string
+     */
     public function exec($command)
     {
         $process = new Process($command);
@@ -16,6 +22,12 @@ class Cli implements CliContract
         return $process->getOutput();
     }
 
+    /**
+     * Execute a command in real time.
+     *
+     * @param string $command
+     * @return string
+     */
     public function execRealTime($command)
     {
         $process = new Process($command);
@@ -29,6 +41,12 @@ class Cli implements CliContract
         }
     }
 
+    /**
+     * Execute a command and allow the user to interact with it.
+     *
+     * @param string $command
+     * @return void
+     */
     public function passthru($command)
     {
         $process = new Process($command);
@@ -41,5 +59,15 @@ class Cli implements CliContract
         } catch (ProcessFailedException $e) {
             echo $e->getMessage();
         }
+    }
+
+    /**
+     * Return the current working directory
+     *
+     * @return string
+     */
+    public function currentWorkingDirectory()
+    {
+        return getcwd();
     }
 }

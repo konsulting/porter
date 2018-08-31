@@ -32,9 +32,7 @@ class Open extends BaseCommand
         if ($version = $this->option('php-version')) {
             $version = PhpVersion::findByDirtyVersionNumber($version);
         } else {
-            $name = site_from_cwd();
-            $site = Site::where('name', $name)->first();
-            $version = optional($site)->php_version ?: PhpVersion::defaultVersion();
+            $version = optional(Site::resolveFromPathOrCurrentWorkingDirectory())->php_version ?: PhpVersion::defaultVersion();
         }
 
         $this->info("PHP Version: {$version->version_number}");

@@ -4,10 +4,25 @@ namespace App\Ssl\Trust\Mechanics;
 
 
 use App\Ssl\Trust\Mechanic;
+use App\Support\ConsoleWriter;
 
 class Untrained implements Mechanic
 {
+    /** @var array */
     protected $commands = [];
+
+    /** @var ConsoleWriter */
+    protected $console;
+
+    /**
+     * Untrained constructor.
+     *
+     * @param ConsoleWriter $console
+     */
+    public function __construct(ConsoleWriter $console)
+    {
+        $this->console = $console;
+    }
 
     /**
      * Trust the given root certificate file in the Keychain.

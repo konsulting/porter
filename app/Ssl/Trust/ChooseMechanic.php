@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: keoghan
- * Date: 01/08/2018
- * Time: 08:57
- */
 
 namespace App\Ssl\Trust;
 
@@ -19,12 +13,12 @@ class ChooseMechanic
 
         switch (true) {
             case stristr($os, 'DAR'):
-                return new MacOs;
+                return app(MacOs::class);
 
             case stristr($os, 'WIN'):
             case stristr($os, 'LINUX'):
             default :
-                return new Untrained();
+                return app(Untrained::class);
         }
     }
 }
