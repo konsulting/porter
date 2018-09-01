@@ -34,15 +34,19 @@ class Nginx extends BaseCommand
 
         $currentNginxConf = $site->nginx_conf;
 
+        $nginxFileLocations = collect(view()->getFinder()->getPaths())
+            ->map(function ($location) {
+                return $location.'/nginx';
+            })->toArray();
+
         $types = collect(iterator_to_array(
             Finder::create()
-                ->in(resource_path('views/nginx'))
-                ->sortByName()
+                ->in($nginxFileLocations)
                 ->directories()
         ))->mapWithKeys(function (\SplFileInfo $file) use ($currentNginxConf) {
             $conf = $file->getFilename();
             return [$conf => $conf . ($conf == $currentNginxConf ? ' (current)' : '')];
-        })->toArray();
+        })->sort()->toArray();
 
         $option = $this->menu(
             'Available Nginx Types',

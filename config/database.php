@@ -15,7 +15,7 @@ return [
     'connections' => [
         'default' => [
             'driver'   => env('DB_CONNECTION', 'sqlite'),
-            'database' => env('LIBRARY_PATH', storage_path('test_library')).'/database.sqlite',
+            'database' => determineLibraryPath().'/database.sqlite',
         ],
     ],
 ];
