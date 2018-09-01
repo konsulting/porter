@@ -18,7 +18,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        view()->getFinder()->prependLocation(config('porter.library_path').'/views');
     }
 
     /**

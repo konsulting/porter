@@ -27,7 +27,7 @@ class Site extends Model
      * @param null $path
      * @return null
      */
-    public function resolveFromPathOrCurrentWorkingDirectory($path = null)
+    public static function resolveFromPathOrCurrentWorkingDirectory($path = null)
     {
         $name = static::nameFromPath($path ?: app(Cli::class)->currentWorkingDirectory());
 
@@ -46,9 +46,9 @@ class Site extends Model
      * @return null
      * @throws \Exception
      */
-    public function resolveFromPathOrCurrentWorkingDirectoryOrFail($path = null)
+    public static function resolveFromPathOrCurrentWorkingDirectoryOrFail($path = null)
     {
-        $site = $this->resolveFromPathOrCurrentWorkingDirectory($path);
+        $site = static::resolveFromPathOrCurrentWorkingDirectory($path);
 
         if (! $site) {
             throw new \Exception("Site not found.");
