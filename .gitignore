@@ -7,13 +7,9 @@
 /database/testing.sqlite
 
 /resources/views/nginx/klever_*
+/resources/views/nginx/custom_*
 
-/storage/config/*
-/storage/data/*
 /storage/framework/views/*
-/storage/logs/*
-/storage/ssl/*
-
-/storage/user/ssh/*
+/storage/test_library
 
 !.gitkeep

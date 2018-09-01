@@ -8,19 +8,37 @@ use Symfony\Component\Finder\SplFileInfo;
 
 class ImageRepository implements ImageRepositoryContract
 {
+    /** @var string */
+    protected $path;
+
+    /** @var string */
+    protected $name;
+
+    /**
+     * ImageRepository constructor.
+     *
+     * @param $path
+     * @param $name
+     */
+    public function __construct($path, $name)
+    {
+        $this->path = $path;
+        $this->name = $name;
+    }
+
     /**
      * Get the docker images that are pulled on install. A custom image set name may be specified.
      *
-     * @param string $imageSetName
      * @return array
+     * @throws \Exception
      */
-    public function firstParty($imageSetName)
+    public function firstParty()
     {
         $images = [];
-        $imagesDir = base_path('docker/' . $imageSetName);
 
-        foreach ((new Finder)->in($imagesDir)->directories() as $directory) {
-            $images[] = $this->getImageName($directory, $imageSetName);
+        foreach ((new Finder)->in($this->path)->directories() as $directory) {
+            /** @var $directory \Symfony\Component\Finder\SplFileInfo */
+            $images[] = new Image($this->getImageName($directory, $this->name), $directory->getRealPath());
         }
 
         return $images;
@@ -34,11 +52,42 @@ class ImageRepository implements ImageRepositoryContract
     public function thirdParty()
     {
         return [
-            'mysql:5.7',
-            'redis:alpine',
-            'andyshinn/dnsmasq',
-            'mailhog/mailhog:v1.0.0',
+            new Image('mysql:5.7'),
+            new Image('redis:alpine'),
+            new Image('andyshinn/dnsmasq'),
+            new Image('mailhog/mailhog:v1.0.0'),
         ];
+    }
+
+    /**
+     * Return a full listing of images
+     *
+     * @return array
+     * @throws \Exception
+     */
+    public function all()
+    {
+        return array_merge($this->firstParty(), $this->thirdParty());
+    }
+
+    /**
+     * Return the path
+     *
+     * @return string
+     */
+    public function getPath()
+    {
+        return $this->path;
+    }
+
+    /**
+     * Return the name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 
     /**

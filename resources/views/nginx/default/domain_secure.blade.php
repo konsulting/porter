@@ -23,8 +23,8 @@ server {
     ssl_certificate /etc/ssl/{{ $site }}.crt;
     ssl_certificate_key /etc/ssl/{{ $site }}.key;
 
-    error_log /var/log/nginx/{{ $site }}.error.log;
-    access_log /var/log/nginx/{{ $site }}.access.log;
+    error_log /proc/self/fd/2;
+    access_log /proc/self/fd/2;
 
     location = /favicon.ico { log_not_found off; access_log off; }
     location = /robots.txt  { log_not_found off; access_log off; }

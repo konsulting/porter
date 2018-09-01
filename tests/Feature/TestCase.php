@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests;
+namespace Tests\Feature;
 
-use Illuminate\Support\Facades\Artisan;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase as BaseTestCase;
+use Tests\CreatesApplication;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -24,18 +24,7 @@ abstract class TestCase extends BaseTestCase
     {
         $this->app = $this->createApplication();
 
-        touch(database_path('testing.sqlite'));
-
-        @mkdir(storage_path('test_library'));
-        @mkdir(storage_path('test_library/ssl'));
-        @mkdir(storage_path('test_library/config/nginx/conf.d/'), 0777, true);
-
-        $this->app['config']->set('database.connections.default.database', database_path('testing.sqlite'));
-        $this->app['config']->set('porter.docker-compose-file', storage_path('test_library/docker-compose.yaml'));
         $this->app['config']->set('porter.library_path', storage_path('test_library'));
-
-        Artisan::call('migrate:fresh');
-        Artisan::call('vendor:publish', ['--provider' => TestingServiceProvider::class]);
     }
 
     public function tearDown()

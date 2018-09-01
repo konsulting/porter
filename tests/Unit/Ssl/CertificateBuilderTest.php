@@ -10,7 +10,7 @@ class CertificateBuilderTest extends TestCase
     /** @test */
     public function it_creates_a_certificate()
     {
-        $dir = storage_path('test_ssl');
+        $dir = storage_path('test_library/ssl');
 
         $builder = new CertificateBuilder($dir);
         $builder->build('klever.test');

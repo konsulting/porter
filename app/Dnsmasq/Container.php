@@ -7,7 +7,7 @@ class Container
 {
     public function updateDomain($from, $to)
     {
-        $filePath = config('app.config_storage_path').'/dnsmasq/dnsmasq.conf';
+        $filePath = config('porter.library_path').'/config/dnsmasq/dnsmasq.conf';
 
         $newConfig = preg_replace("/\/.{$from}\//", "/.{$to}/", file_get_contents($filePath));
 

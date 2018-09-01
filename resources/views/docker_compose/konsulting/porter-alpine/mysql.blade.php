@@ -6,9 +6,9 @@
       - MYSQL_ROOT_PASSWORD=secret
       - MYSQL_HISTFILE=/root/.mysql_history/history
     volumes:
-      - ./storage/data/mysql:/var/lib/mysql
-      - ./storage/logs/mysql:/var/log/mysql
-      - ./storage/config/mysql/history:/root/.mysql_history
+      - {{ $libraryPath }}/data/mysql:/var/lib/mysql
+      - {{ $libraryPath }}/config/mysql/history:/root/.mysql_history
+      - {{ $libraryPath }}/config/mysql/mysql.cnf:/etc/mysql/conf.d/mysql.cnf
     networks:
       - porter
     restart: unless-stopped

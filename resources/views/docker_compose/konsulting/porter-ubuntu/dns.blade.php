@@ -9,6 +9,6 @@
       - NET_ADMIN
     command: --log-facility=-
     volumes:
-      - ./storage/config/dnsmasq/dnsmasq.conf:/etc/dnsmasq.conf
-      - ./storage/config/dnsmasq/dnsmasq.d:/etc/dnsmasq.d
+      - {{ $libraryPath }}/config/dnsmasq/dnsmasq.conf:/etc/dnsmasq.conf
+      - {{ $libraryPath }}/config/dnsmasq/dnsmasq.d:/etc/dnsmasq.d
     restart: unless-stopped

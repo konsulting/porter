@@ -3,9 +3,12 @@
 namespace Tests\Unit;
 
 use App\DockerCompose\CliCommandFactory;
+use App\DockerCompose\YamlBuilder;
 use App\Porter;
 use App\Support\Contracts\Cli;
 use App\Support\Contracts\ImageRepository as ImageRepositoryContract;
+use App\Support\Contracts\ImageSetRepository as ImageSetRepositoryContract;
+use App\Support\Images\Image;
 use Mockery\MockInterface;
 use Tests\TestCase;
 
@@ -25,8 +28,13 @@ class PorterTest extends TestCase
         parent::setUp();
         $this->cli = \Mockery::mock(Cli::class);
 
-        $this->porter = new Porter(new TestImageRepository, $this->cli, new CliCommandFactory($this->cli));
-        $this->composeFile = config('app.docker-compose-file');
+        $this->porter = new Porter(
+            new TestImageSetRepository,
+            $this->cli,
+            new CliCommandFactory($this->cli),
+            new YamlBuilder
+        );
+        $this->composeFile = config('porter.docker-compose-file');
     }
 
     /**
@@ -94,6 +102,7 @@ class PorterTest extends TestCase
     public function it_pulls_the_docker_images()
     {
         $images = ['konsulting/image', 'konsulting/image2', 'another/image', 'another/image2'];
+
         foreach ($images as $image) {
             $this->cli->shouldReceive('passthru')->with('docker pull ' . $image)->once();
         }
@@ -110,15 +119,48 @@ class PorterTest extends TestCase
     }
 }
 
+class TestImageSetRepository implements ImageSetRepositoryContract
+{
+    public function addLocation($location)
+    {
+        //
+    }
+
+    public function getImageRepository($imageSetName)
+    {
+        return new TestImageRepository;
+    }
+
+    public function availableImageSets()
+    {
+        return ['konsulting'];
+    }
+}
+
 class TestImageRepository implements ImageRepositoryContract
 {
-    public function firstParty($imageSetName)
+    public function firstParty()
     {
-        return ['konsulting/image', 'konsulting/image2'];
+        return [new Image('konsulting/image'), new Image('konsulting/image2')];
     }
 
     public function thirdParty()
     {
-        return ['another/image', 'another/image2'];
+        return [new Image('another/image'), new Image('another/image2')];
+    }
+
+    public function all()
+    {
+        return array_merge($this->firstParty(), $this->thirdParty());
+    }
+
+    public function getPath()
+    {
+        return base_path('docker');
+    }
+
+    public function getName()
+    {
+        return 'konsulting/porter-ubuntu';
     }
 }

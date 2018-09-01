@@ -129,7 +129,7 @@ class CliCommand
     {
         return trim(
             'docker-compose -f '
-            . config('app.docker-compose-file')
+            . config('porter.docker-compose-file')
             . ' '
             . $this->command
         );

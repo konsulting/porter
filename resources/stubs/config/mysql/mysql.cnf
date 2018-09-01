@@ -1,0 +1,12 @@
+[mysqld_safe]
+log_error=/proc/self/fd/2
+
+[mysqld]
+log_error=/proc/self/fd/2
+
+general_log_file        = /proc/self/fd/2
+general_log             = 1
+
+log_slow_queries       = /proc/self/fd/2
+long_query_time = 2
+log-queries-not-using-indexes

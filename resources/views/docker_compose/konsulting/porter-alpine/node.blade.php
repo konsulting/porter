@@ -1,6 +1,6 @@
   node:
     build:
-      context: ./docker/{{ $imageSet }}
+      context: {{ $imageSetPath }}
       dockerfile: node/Dockerfile
       cache_from:
         - {{ $imageSet }}-node:latest
@@ -8,7 +8,7 @@
     user: node
     volumes:
       - {{ $home }}:/srv/app:delegated
-      - ./storage/config/user/ssh:/root/.ssh
-      - ./storage/config/node/bash_history:/home/node/.bash_history
+      - {{ $libraryPath }}/config/user/ssh:/root/.ssh
+      - {{ $libraryPath }}/config/node/bash_history:/home/node/.bash_history
     networks:
       - porter

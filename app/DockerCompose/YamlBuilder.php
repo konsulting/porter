@@ -3,6 +3,7 @@
 namespace App\DockerCompose;
 
 use App\PhpVersion;
+use App\Support\Contracts\ImageRepository;
 
 class YamlBuilder
 {
@@ -12,18 +13,20 @@ class YamlBuilder
      * @param $imageSet
      * @throws \Throwable
      */
-    public function build($imageSet)
+    public function build(ImageRepository $imageSet)
     {
         file_put_contents(
-            config('app.docker-compose-file'),
-            view("docker_compose.{$imageSet}.base")->with([
+            config('porter.docker-compose-file'),
+            view("docker_compose.{$imageSet->getName()}.base")->with([
                 'home' => setting('home'),
                 'host_machine_name' => setting('host_machine_name'),
                 'activePhpVersions' => PhpVersion::active()->get(),
                 'useMysql' => setting('use_mysql') == 'on',
                 'useRedis' => setting('use_redis') == 'on',
                 'useBrowser' => setting('use_browser') == 'on',
-                'imageSet' => $imageSet,
+                'imageSet' => $imageSet->getName(),
+                'imageSetPath' => $imageSet->getPath(),
+                'libraryPath' => config('porter.library_path'),
             ])->render()
         );
     }
@@ -33,6 +36,6 @@ class YamlBuilder
      */
     public function destroy()
     {
-        @unlink(config('app.docker-compose-file'));
+        @unlink(config('porter.docker-compose-file'));
     }
 }

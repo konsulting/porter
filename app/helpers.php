@@ -12,7 +12,7 @@ use App\Setting;
  */
 function setting($key = null, $default = null)
 {
-    if (!$key) {
+    if (! $key) {
         return Setting::all()->pluck('value', 'name');
     }
 

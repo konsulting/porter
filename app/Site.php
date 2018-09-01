@@ -84,7 +84,7 @@ class Site extends Model
      */
     public function getNginxConfPathAttribute()
     {
-        return config('app.config_storage_path')."/nginx/conf.d/{$this->name}.conf";
+        return config('porter.library_path')."/config/nginx/conf.d/{$this->name}.conf";
     }
 
     /**
