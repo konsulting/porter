@@ -6,17 +6,16 @@ use App\DockerCompose\CliCommandFactory;
 use App\DockerCompose\YamlBuilder;
 use App\Support\Contracts\Cli;
 use App\Support\Contracts\ImageRepository;
-use Symfony\Component\Finder\Finder;
-
+use App\Support\Contracts\ImageSetRepository;
 
 class Porter
 {
     /**
-     * The docker images used by Porter to serve sites.
+     * The docker images sets used by Porter to serve sites.
      *
-     * @var ImageRepository
+     * @var ImageSetRepository
      */
-    protected $images;
+    protected $imageSets;
 
     /**
      * The CLI class that executes commands.
@@ -32,11 +31,31 @@ class Porter
      */
     protected $dockerCompose;
 
-    public function __construct(ImageRepository $images, Cli $cli, CliCommandFactory $commandFactory)
-    {
-        $this->images = $images;
+    /**
+     * The DockerCompose YAML file builder
+     *
+     * @var YamlBuilder
+     */
+    protected $yamlBuilder;
+
+    /**
+     * Porter constructor.
+     *
+     * @param ImageSetRepository $imageSets
+     * @param Cli $cli
+     * @param CliCommandFactory $commandFactory
+     * @param YamlBuilder $yamlBuilder
+     */
+    public function __construct(
+        ImageSetRepository $imageSets,
+        Cli $cli,
+        CliCommandFactory $commandFactory,
+        YamlBuilder $yamlBuilder
+    ){
+        $this->imageSets = $imageSets;
         $this->cli = $cli;
         $this->dockerCompose = $commandFactory;
+        $this->yamlBuilder = $yamlBuilder;
     }
 
     /**
@@ -47,17 +66,15 @@ class Porter
      */
     public function isUp($service = null)
     {
-        return stristr($this->dockerCompose->command('ps')->perform(), "porter_{$service}");
+        return (bool) stristr($this->dockerCompose->command('ps')->perform(), "porter_{$service}");
     }
 
     /**
      * Create the docker-compose.yaml file
-     *
-     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function compose()
     {
-        app(YamlBuilder::class)->build($this->getDockerImageSet());
+        $this->yamlBuilder->build($this->getDockerImageSet());
     }
 
     /**
@@ -181,10 +198,8 @@ class Porter
      */
     public function pullImages()
     {
-        $images = collect($this->images->firstParty($this->getDockerImageSet()))->merge($this->images->thirdParty());
-
-        foreach ($images as $image) {
-            $this->cli->passthru("docker pull {$image}");
+        foreach ($this->getDockerImageSet()->all() as $image) {
+            $this->cli->passthru("docker pull {$image->name}");
         }
     }
 
@@ -193,11 +208,8 @@ class Porter
      */
     public function buildImages()
     {
-        $imagesDir = base_path('docker/' . $this->getDockerImageSet());
-
-        foreach (Finder::create()->in($imagesDir)->directories() as $dir) {
-            /** @var $dir \SplFileInfo */
-            $this->cli->passthru("docker build -t {$this->getDockerImageSet()}-{$dir->getFileName()}:latest --rm {$dir->getRealPath()} --");
+        foreach ($this->getDockerImageSet()->firstParty() as $image) {
+            $this->cli->passthru("docker build -t {$image->name} --rm {$image->localPath} --");
         }
     }
 
@@ -206,17 +218,21 @@ class Porter
      */
     public function pushImages()
     {
-        foreach ($this->images->firstParty($this->getDockerImageSet()) as $image) {
-            $this->cli->passthru("docker push {$image}");
+        foreach ($this->getDockerImageSet()->firstParty() as $image) {
+            $this->cli->passthru("docker push {$image->name}");
         }
     }
 
     /**
      * Get the current image set to use.
+     *
+     * @return ImageRepository
      */
     public function getDockerImageSet()
     {
-        return setting('docker_image_set', config('app.default-docker-image-set'));
+        return $this->imageSets->getImageRepository(
+            setting('docker_image_set', config('porter.default-docker-image-set'))
+        );
     }
 
     /**

@@ -11,23 +11,10 @@ class DatabaseTest extends TestCase
 {
     protected $databasePath;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        @mkdir(storage_path('temp'));
-        $this->cleanseDir(storage_path('temp'));
-    }
-
-    public function tearDown()
-    {
-        $this->cleanseDir(storage_path('temp'));
-    }
-
     /** @test */
     public function it_creates_a_database_file_if_one_does_not_exist()
     {
-        $this->databasePath = storage_path('temp/testing.sqlite');
+        $this->databasePath = storage_path('test_library/testing.sqlite');
         $this->app->config['database.connections.default.database'] = $this->databasePath;
 
         $this->assertFileNotExists($this->databasePath);

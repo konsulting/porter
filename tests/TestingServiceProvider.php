@@ -20,6 +20,6 @@ class TestingServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->publishes([resource_path('stubs/config') => storage_path('test_config')]);
+        $this->publishes([resource_path('stubs/config') => config('porter.library_path')]);
     }
 }

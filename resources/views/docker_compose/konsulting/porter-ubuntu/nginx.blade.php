@@ -1,6 +1,6 @@
   nginx:
     build:
-      context: ./docker/{{ $imageSet }}
+      context: {{ $imageSetPath }}
       dockerfile: nginx/Dockerfile
       cache_from:
         - {{ $imageSet }}-nginx:latest
@@ -11,9 +11,8 @@
       - 80:80
       - 443:443
     volumes:
-      - ./storage/config/nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./storage/config/nginx/conf.d:/etc/nginx/conf.d
-      - ./storage/ssl:/etc/ssl
-      - ./storage/logs:/var/log
+      - {{ $libraryPath }}/config/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - {{ $libraryPath }}/config/nginx/conf.d:/etc/nginx/conf.d
+      - {{ $libraryPath }}/ssl:/etc/ssl
       - {{ $home }}:/srv/app:delegated
     restart: unless-stopped

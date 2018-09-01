@@ -1,6 +1,6 @@
   php_cli_{{ $version->safe }}:
     build:
-      context: ./docker/{{ $imageSet }}
+      context: {{ $imageSetPath }}
       dockerfile: php_cli_{{ $version->safe }}/Dockerfile
       cache_from:
         - {{ $imageSet }}-php_cli_{{ $version->safe }}:latest
@@ -9,10 +9,10 @@
       - porter
     volumes:
       - {{ $home }}:/srv/app:delegated
-      - ./storage/config/user/ssh:/root/.ssh
-      - ./storage/config/{{ $version->cli_name }}/php.ini:/etc/php/{{ $version->version_number }}/cli/php.ini
-      - ./storage/config/{{ $version->cli_name }}/xdebug.ini:/etc/php/{{ $version->version_number }}/cli/conf.d/xdebug.ini
-      - ./storage/config/{{ $version->cli_name }}/bash_history:/root/.bash_history
+      - {{ $libraryPath }}/config/user/ssh:/root/.ssh
+      - {{ $libraryPath }}/config/{{ $version->cli_name }}/php.ini:/etc/php/{{ $version->version_number }}/cli/php.ini
+      - {{ $libraryPath }}/config/{{ $version->cli_name }}/xdebug.ini:/etc/php/{{ $version->version_number }}/cli/conf.d/xdebug.ini
+      - {{ $libraryPath }}/config/{{ $version->cli_name }}/bash_history:/root/.bash_history
     environment:
       - HOST_MACHINE_NAME={{ $host_machine_name }}
       - RUNNING_ON_PORTER=true

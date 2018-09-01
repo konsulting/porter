@@ -4,8 +4,8 @@ namespace App\Commands\Images;
 
 use App\Commands\BaseCommand;
 use App\Setting;
+use App\Support\Contracts\ImageSetRepository;
 use Illuminate\Support\Facades\Artisan;
-use Symfony\Component\Finder\Finder;
 
 class UseSet extends BaseCommand
 {
@@ -30,7 +30,7 @@ class UseSet extends BaseCommand
      */
     public function handle(): void
     {
-        $current = $this->porter->getDockerImageSet();
+        $current = $this->porter->getDockerImageSet()->getName();
 
         if ($this->option('show')) {
             $this->info("The current image set is: ".$current);
@@ -38,11 +38,10 @@ class UseSet extends BaseCommand
             return;
         }
 
-        $sets = $this->findNamespaces()
-            ->mapWithKeys(function (\SplFileInfo $set) use ($current) {
-                $name = str_replace(base_path('docker').'/', '', $set->getRealPath());
-
-                return [$name => $name . ($current == $name ? ' (current)' : '')];
+        $sets = app(ImageSetRepository::class)
+            ->availableImageSets()
+            ->mapWithKeys(function ($set) use ($current) {
+                return [$set => $set . ($current == $set ? ' (current)' : '')];
             })->toArray();
 
         $option = $this->menu(
@@ -57,10 +56,5 @@ class UseSet extends BaseCommand
         Setting::updateOrCreate('docker_image_set', $option);
 
         Artisan::call('make-files');
-    }
-
-    protected function findNamespaces()
-    {
-        return collect(iterator_to_array(Finder::create()->in(base_path('docker'))->depth(1)->directories()));
     }
 }

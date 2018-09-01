@@ -54,16 +54,5 @@ return [
         \Illuminate\View\ViewServiceProvider::class,
     ],
 
-    /*
-     | The default set of images to use when installing porter
-     */
-    'default-docker-image-set' => 'konsulting/porter-ubuntu',
-
-    /*
-     |  Allow these to be overridden for testing
-     */
     'env' => env('APP_ENV', 'local'),
-    'docker-compose-file' => base_path('docker-compose.yaml'),
-    'config_storage_path' => storage_path('config'),
-    'ssl_storage_path' => storage_path('ssl'),
 ];
