@@ -35,7 +35,7 @@ class Site extends Model
             return null;
         }
 
-        return static::where('name', $name)->firstOrFail();
+        return static::where('name', $name)->first();
     }
 
     /**

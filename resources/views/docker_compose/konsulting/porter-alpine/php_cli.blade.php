@@ -9,6 +9,7 @@
       - porter
     volumes:
       - {{ $home }}:/srv/app:delegated
+      - {{ $libraryPath }}/composer/cache:/root/.composer/cache
       - {{ $libraryPath }}/config/user/ssh:/root/.ssh
       - {{ $libraryPath }}/config/{{ $version->cli_name }}/php.ini:/etc/php{{ $version->major }}/php.ini
       - {{ $libraryPath }}/config/{{ $version->cli_name }}/xdebug.ini:/etc/php{{ $version->major }}/conf.d/xdebug.ini
