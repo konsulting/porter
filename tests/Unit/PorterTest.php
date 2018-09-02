@@ -61,40 +61,40 @@ class PorterTest extends TestCase
     /** @test */
     public function it_checks_if_porter_containers_are_running()
     {
-        $this->expectCommand('docker-compose -f ' . $this->composeFile . ' ps');
+        $this->expectCommand('docker-compose -f ' . $this->composeFile . ' -p porter ps');
         $this->assertFalse($this->porter->isUp('service'));
     }
 
     /** @test */
     public function it_starts_the_porter_containers()
     {
-        $this->expectCommand('docker-compose -f ' . $this->composeFile . ' up -d --remove-orphans', 'execRealTime');
+        $this->expectCommand('docker-compose -f ' . $this->composeFile . ' -p porter up -d --remove-orphans', 'execRealTime');
         $this->porter->start();
     }
 
     /** @test */
     public function it_stops_the_porter_containers()
     {
-        $this->expectCommand('docker-compose -f ' . $this->composeFile . ' down --remove-orphans', 'execRealTime');
+        $this->expectCommand('docker-compose -f ' . $this->composeFile . ' -p porter down --remove-orphans', 'execRealTime');
         $this->porter->stop();
     }
 
     /** @test */
     public function it_restarts_the_porter_containers()
     {
-        $this->expectCommand('docker-compose -f ' . $this->composeFile . ' ps');
-        $this->expectCommand('docker-compose -f ' . $this->composeFile . ' up -d --force-recreate --remove-orphans service', 'execRealTime');
+        $this->expectCommand('docker-compose -f ' . $this->composeFile . ' -p porter ps');
+        $this->expectCommand('docker-compose -f ' . $this->composeFile . ' -p porter up -d --force-recreate --remove-orphans service', 'execRealTime');
         $this->porter->restart('service');
 
-        $this->expectCommand('docker-compose -f ' . $this->composeFile . ' ps');
-        $this->expectCommand('docker-compose -f ' . $this->composeFile . ' up -d --force-recreate --remove-orphans myService', 'execRealTime');
+        $this->expectCommand('docker-compose -f ' . $this->composeFile . ' -p porter ps');
+        $this->expectCommand('docker-compose -f ' . $this->composeFile . ' -p porter up -d --force-recreate --remove-orphans myService', 'execRealTime');
         $this->porter->restart('myService');
     }
 
     /** @test */
     public function it_builds_the_porter_containers()
     {
-        $this->expectCommand('docker-compose -f ' . $this->composeFile . ' build');
+        $this->expectCommand('docker-compose -f ' . $this->composeFile . ' -p porter build');
         $this->porter->build();
     }
 

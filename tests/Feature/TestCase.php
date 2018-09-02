@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Providers\AppServiceProvider;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 use Tests\CreatesApplication;
@@ -24,7 +25,13 @@ abstract class TestCase extends BaseTestCase
     {
         $this->app = $this->createApplication();
 
+        $this->app['config']->set('database.connections.default.database', storage_path('test_library').'/testing.sqlite');
+        $this->app['config']->set('porter.docker-compose-file', storage_path('test_library/docker-compose.yaml'));
         $this->app['config']->set('porter.library_path', storage_path('test_library'));
+
+        AppServiceProvider::$publishes[AppServiceProvider::class] = [
+            resource_path('stubs/config') => config('porter.library_path').'/config'
+        ];
     }
 
     public function tearDown()

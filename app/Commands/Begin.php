@@ -12,7 +12,7 @@ class Begin extends BaseCommand
      *
      * @var string
      */
-    protected $signature = 'begin {--force}';
+    protected $signature = 'begin {home?} {--force}';
 
     /**
      * The description of the command.
@@ -29,7 +29,7 @@ class Begin extends BaseCommand
     public function handle(): void
     {
         $force = $this->option('force');
-        $home = getcwd();
+        $home = realpath($this->argument('home') ?: getcwd());
 
         if (! $force && Database::exists()) {
             $this->error('Already began. If you definitely want to continue, you can force with the --force flag.');
@@ -37,10 +37,11 @@ class Begin extends BaseCommand
             return;
         }
 
+        $this->call('vendor:publish', ['--provider' => AppServiceProvider::class]);
+
         Database::ensureExists($force);
 
-        $this->call('vendor:publish', ['--provider' => AppServiceProvider::class]);
-        $this->call('home', [$home]);
+        $this->call('home', ['path' => $home]);
 
         $this->porter->pullImages();
     }
