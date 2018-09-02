@@ -43,8 +43,38 @@ class PorterServesSitesTest extends TestCase
     {
         Artisan::call('site:unsecure', ['site' => 'sample']);
 
-        $phpinfo = file_get_contents('http://sample.test');
+        $phpinfo = $this->get('http://sample.test');
 
         $this->assertContains('php', $phpinfo);
+    }
+
+    protected function get($url)
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+        // Since curl is a bit dodgy with the DNS for now, we
+        // force it to resolve to 127.0.0.1
+        curl_setopt($ch, CURLOPT_RESOLVE, $this->buildResolveOption($url));
+
+        $phpinfo = curl_exec($ch);
+
+        if (curl_errno($ch)) {
+            throw new \Exception('Curl failed. '.curl_error($ch));
+        }
+        curl_close ($ch);
+
+        return $phpinfo;
+    }
+
+    protected function buildResolveOption($url)
+    {
+        $scheme = parse_url($url, PHP_URL_SCHEME);
+        $host = parse_url($url, PHP_URL_HOST);
+
+        $port = $scheme == 'http' ? 80 : 443;
+
+        return ["{$host}:{$port}:127.0.0.1"];
     }
 }
