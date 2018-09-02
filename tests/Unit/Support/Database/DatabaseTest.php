@@ -14,7 +14,7 @@ class DatabaseTest extends TestCase
     /** @test */
     public function it_creates_a_database_file_if_one_does_not_exist()
     {
-        $this->databasePath = storage_path('test_library/testing.sqlite');
+        $this->databasePath = storage_path('test_library/testcreation.sqlite');
         $this->app->config['database.connections.default.database'] = $this->databasePath;
 
         $this->assertFileNotExists($this->databasePath);
@@ -26,6 +26,8 @@ class DatabaseTest extends TestCase
         Database::ensureExists();
 
         $this->assertFileExists($this->databasePath);
+
+        unlink($this->databasePath);
     }
 
     /** @test */

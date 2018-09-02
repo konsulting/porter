@@ -5,7 +5,7 @@ namespace Tests\Feature;
 use App\Porter;
 use Illuminate\Support\Facades\Artisan;
 
-class PorterTest extends TestCase
+class PorterStartStopTest extends TestCase
 {
     protected $porter;
 
@@ -22,7 +22,7 @@ class PorterTest extends TestCase
      */
     public function porter_can_be_started_and_stopped()
     {
-        $this->preparePorter();
+        Artisan::call('begin', ['home' => __DIR__.'/../TestWebRoot']);
 
         $this->assertFalse($this->porter->isUp());
 
@@ -31,14 +31,5 @@ class PorterTest extends TestCase
         $this->assertTrue($this->porter->isUp());
 
         Artisan::call('stop');
-    }
-
-    public function preparePorter()
-    {
-        Artisan::call('begin');
-
-        Artisan::call('home', ['path' => __DIR__.'/../TestWebRoot']);
-
-        Artisan::call('make-files');
     }
 }
