@@ -245,9 +245,11 @@ class Porter
 
     /**
      * Show container logs
+     *
+     * @param null $service
      */
-    public function logs()
+    public function logs($service = null)
     {
-        echo $this->dockerCompose->command('logs')->perform();
+        echo $this->dockerCompose->command("logs {$service}")->perform();
     }
 }

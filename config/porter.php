@@ -6,5 +6,5 @@ return [
 
     'library_path' => determineLibraryPath(),
 
-    'docker-compose-file' => base_path('docker-compose.yaml'),
+    'docker-compose-file' =>determineLibraryPath().'/docker-compose.yaml',
 ];

@@ -11,7 +11,7 @@ class Logs extends BaseCommand
      *
      * @var string
      */
-    protected $signature = 'logs';
+    protected $signature = 'logs {service?}';
 
     /**
      * The description of the command.
@@ -27,6 +27,6 @@ class Logs extends BaseCommand
      */
     public function handle(): void
     {
-        $this->porter->logs();
+        $this->porter->logs($this->argument('service'));
     }
 }
