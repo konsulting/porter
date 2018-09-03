@@ -173,7 +173,7 @@ class Porter
      */
     public function turnOffService($service)
     {
-        if (setting("use_{$service}") == 'off') {
+        if (in_array(setting("use_{$service}"), [null, 'off'])) {
             return;
         }
 

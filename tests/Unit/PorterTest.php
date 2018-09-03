@@ -4,7 +4,9 @@ namespace Tests\Unit;
 
 use App\DockerCompose\CliCommandFactory;
 use App\DockerCompose\YamlBuilder;
+use App\PhpVersion;
 use App\Porter;
+use App\Setting;
 use App\Support\Contracts\Cli;
 use App\Support\Contracts\ImageRepository as ImageRepositoryContract;
 use App\Support\Contracts\ImageSetRepository as ImageSetRepositoryContract;
@@ -92,6 +94,25 @@ class PorterTest extends TestCase
     }
 
     /** @test */
+    public function it_restarts_serving()
+    {
+        factory(PhpVersion::class)->create([
+            'version_number' => '7.2',
+            'default' => true,
+        ]);
+
+        $this->expectCommand('docker-compose -f ' . $this->composeFile . ' -p porter ps')
+            ->times(3)
+            ->andReturn('porter_', '', '');
+
+        $this->expectCommand('docker-compose -f ' . $this->composeFile . ' -p porter up -d --remove-orphans php_fpm_7-2', 'execRealTime');
+        $this->expectCommand('docker-compose -f ' . $this->composeFile . ' -p porter up -d --remove-orphans php_cli_7-2', 'execRealTime');
+        $this->expectCommand('docker-compose -f ' . $this->composeFile . ' -p porter up -d --force-recreate --remove-orphans nginx', 'execRealTime');
+
+        $this->porter->restartServing();
+    }
+
+    /** @test */
     public function it_builds_the_porter_containers()
     {
         $this->expectCommand('docker-compose -f ' . $this->composeFile . ' -p porter build');
@@ -104,7 +125,7 @@ class PorterTest extends TestCase
         $images = ['konsulting/image', 'konsulting/image2', 'another/image', 'another/image2'];
 
         foreach ($images as $image) {
-            $this->cli->shouldReceive('passthru')->with('docker pull ' . $image)->once();
+            $this->expectCommand('docker pull ' . $image, 'passthru');
         }
         $this->porter->pullImages();
     }
@@ -113,9 +134,71 @@ class PorterTest extends TestCase
     public function it_pushes_the_first_party_images()
     {
         foreach (['konsulting/image', 'konsulting/image2'] as $image) {
-            $this->cli->shouldReceive('passthru')->with('docker push ' . $image)->once();
+            $this->expectCommand('docker push ' . $image, 'passthru');
         }
         $this->porter->pushImages();
+    }
+
+    /** @test */
+    public function it_turns_a_service_on_if_it_is_off()
+    {
+        $this->expectCommand('docker-compose -f ' . $this->composeFile . ' -p porter ps')
+            ->andReturn('porter_');
+
+        $this->expectCommand('docker-compose -f ' . $this->composeFile . ' -p porter up -d --remove-orphans browser', 'execRealTime');
+
+        $this->porter->turnOnService('browser');
+
+        $this->assertEquals('on', Setting::where('name', 'use_browser')->value('value'));
+    }
+
+    /** @test */
+    public function it_leaves_a_service_on_if_it_is_on()
+    {
+        Setting::updateOrCreate('use_browser', 'on');
+
+        $this->cli->shouldNotReceive('exec');
+
+        $this->porter->turnOnService('browser');
+    }
+
+    /** @test */
+    public function it_turns_a_service_off_if_it_is_on()
+    {
+        $this->expectCommand('docker-compose -f ' . $this->composeFile . ' -p porter ps')
+            ->andReturn('porter_');
+
+        $this->expectCommand('docker-compose -f ' . $this->composeFile . ' -p porter stop browser', 'execRealTime');
+
+        Setting::updateOrCreate('use_browser', 'on');
+
+        $this->porter->turnOffService('browser');
+
+        $this->assertEquals('off', Setting::where('name', 'use_browser')->value('value'));
+    }
+
+    /** @test */
+    public function it_leaves_a_service_off_if_it_is_off()
+    {
+        $this->cli->shouldNotReceive('exec');
+
+        $this->porter->turnOffService('browser');
+    }
+
+    /** @test */
+    public function it_returns_the_status()
+    {
+        $this->expectCommand('docker-compose -f ' . $this->composeFile . ' -p porter ps');
+
+        $this->porter->status();
+    }
+
+    /** @test */
+    public function it_returns_the_logs()
+    {
+        $this->expectCommand('docker-compose -f ' . $this->composeFile . ' -p porter logs service');
+
+        $this->porter->logs('service');
     }
 }
 
