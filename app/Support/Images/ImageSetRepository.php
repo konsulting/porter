@@ -4,6 +4,7 @@ namespace App\Support\Images;
 
 use App\Support\Contracts\ImageSetRepository as ImageSetRepositoryContract;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 
 class ImageSetRepository implements ImageSetRepositoryContract
 {
@@ -38,7 +39,6 @@ class ImageSetRepository implements ImageSetRepositoryContract
     {
         foreach (array_reverse($this->locations) as $location) {
             $path = $location.'/'.$imageSetName;
-
             if (is_dir($path)) {
                 return new ImageRepository($path, $imageSetName);
             }
@@ -56,11 +56,16 @@ class ImageSetRepository implements ImageSetRepositoryContract
     {
         return collect($this->locations)
             ->flatMap(function ($location) {
-                return iterator_to_array(
-                    Finder::create()->in($location)->depth(1)->directories()
-                );
-            })->map(function (\SplFileInfo $directory) {
-                return $directory->getFilename();
+                try {
+                    return iterator_to_array(
+                        Finder::create()->in($location)->depth(1)->directories()
+                    );
+                } catch (\InvalidArgumentException $e) {
+                    return null;
+                }
+            })->filter()
+            ->map(function (SplFileInfo $directory) {
+                return $directory->getRelativePathname();
             })->unique();
     }
 }
