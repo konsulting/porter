@@ -72,16 +72,16 @@ getenv('HOST_MACHINE_NAME')
 
 ## Commands:
 
- - `porter begin` - Migrate and seed the sqlite database, and publish config files to `storage/config`. It will set Porter home to the working directory when you run the command.  It will also download the required docker images.
+ - `porter begin` - Migrate and seed the sqlite database, and publish config files to `~/.porter/config`. It will set Porter home to the working directory when you run the command.  It will also download the required docker images.
  - `porter start`
  - `porter status` - show the status of containers
  - `porter stop`
  - `porter restart` - Restart existing containers (e.g. pick up config changes for PHP FPM)
- - `porter logs` - Show container logs
+ - `porter logs {service}` - Show container logs, optionally pass in the service
   
 ### Basic settings
 
- - `porter domain {domain}` - Set tld ('test' is the default for domains such as sample.test)
+ - `porter domain {domain}` - Set TLD ('test' is the default for domains such as sample.test)
  - `porter home {dir?} {--show}` - Set the home dir for sites, run in the dir to use it directly - or set it specifically. Use `--show` to see the current setting.
  
 ### Site settings
@@ -94,11 +94,11 @@ Site commands will pick up the current working directory automatically.  They al
  - `porter site:remove {site?}` - Remove a site 
  - `porter site:php {site?}` - Choose the PHP version for site
  - `porter site:nginx-config {site?}` - Choose NGiNX config template for a site, ships with default (/public such as Laravel) and project_root
- - `porter site:renew-certs {--clear-ca}` - Renew the certificates for all secured sites, optionally rebuild CA.s
+ - `porter site:renew-certs {--clear-ca}` - Renew the certificates for all secured sites, optionally rebuild CA.
 
-Site NGiNX config files are created programmatically using the templates in `resources/views/nginx`. The config files are stored in `storage/config/nginx/conf.d`.
+Site NGiNX config files are created programmatically using the templates in `resources/views/nginx`. The config files are stored in `~/.porter/config/nginx/conf.d`.
 
-NGiNX logs are stored in `storage/logs/nginx`
+NGiNX logs are visible from the `porter logs nginx`.
 
 ### PHP
 
@@ -107,7 +107,7 @@ NGiNX logs are stored in `storage/logs/nginx`
  - `porter php:open {run?} {--p|php-version?}` - Open the PHP cli for the project, if run from a project directory, it will select the associated version. Otherwise, you can select a version or use the default. Optionally run a command, such as `vendor/bin/phpunit` (if you need to pass arguments, wrap in quotes). 
  - `porter php:tinker` - Run Artisan Tinker in the project directory
   
-`php.ini` files are stored in `storage/config` by PHP version. If you change one, you'll need to run `porter php:restart` for changes to be picked up. 
+`php.ini` files are stored in `~/.porter/config` by PHP version. If you change one, you'll need to run `porter php:restart` for changes to be picked up. 
 
 We currently ship with containers for PHP 5.6, 7.0, 7.1 and 7.2.
 
@@ -121,8 +121,7 @@ Enabled by default. Available on the host machine on port 13306. The user is `ro
  - `porter mysql:off`
  - `porter mysql:open` - Open MySQL cli
 
-MySQL data is stored in `storage/data/mysql`.
-Logs are stored in `storage/logs/mysql`.
+MySQL data is stored in `~/.porter/data/mysql`.
 
 ### Redis
 
@@ -132,7 +131,7 @@ Enabled by default. Available on the host machine on port 16379`.
  - `porter redis:off`
  - `porter redis:open` - Open Redis cli
 
-Redis data is stored in `storage/data/redis`.
+Redis data is stored in `~/.porter/data/redis`.
 
 ## Email
 
@@ -170,7 +169,7 @@ Notes for your test setup...
 
 ## SSH Keys
 
-Porter include a `storage/config/user/ssh` directory which is linked to the root user `.ssh` dir in the PHP cli containers and the Node container.
+Porter include a `~/.porter/config/user/ssh` directory which is linked to the root user `.ssh` dir in the PHP cli containers and the Node container.
 
 This means you can add the ssh keys you want to use in your dev environment specifically (if any).
  
@@ -193,3 +192,12 @@ The following commands will be useful if you change these items.
  
  
  - `porter make-files` - (Re)make the docker-compose.yaml, and the NGiNX config files.
+
+We store personal config in the `.porter` directory in your home directory - keeping config and data separate from the main application. It includes:
+
+ - `composer` - a composer cache dir, allowing the containers to avoid pulling as much info when using composer
+ - `config` - containing the specific files for customisation of the containers/services
+ - `data` - containing data for the MySQL and Redis containers by default
+ - `ssl` - the generated SSL certificates used by Porter
+ - `views` - allows the override and addition of views for building NGiNX configurations for example, and the `docker-compose.yaml` views for use with alternative images
+ - a `docker` directory can be added to include alternative docker machine scripts similar to the original `konsulting/porter-ubuntu` and `konsulting/porter-alpine` in the project's `docker` directory
