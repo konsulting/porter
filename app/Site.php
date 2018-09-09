@@ -167,10 +167,10 @@ class Site extends Model
     /**
      * Set the PHP version for the site
      *
-     * @param $phpVersionId
+     * @param int|null $phpVersionId
      * @throws \Throwable
      */
-    public function setPhpVersion($phpVersionId)
+    public function setPhpVersion($phpVersionId = null)
     {
         $this->update(['php_version_id' => $phpVersionId ?: PhpVersion::defaultVersion()->id]);
 
