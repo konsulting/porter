@@ -3,12 +3,12 @@
 namespace App\Providers;
 
 use App\Porter;
-use App\Ssl\CertificateBuilder;
 use App\Support\Console\Cli;
 use App\Support\Console\ConsoleWriter;
 use App\Support\Contracts\Cli as CliContract;
 use App\Support\Contracts\ImageSetRepository as ImageSetRepositoryContract;
 use App\Support\Images\ImageSetRepository;
+use App\Support\Ssl\CertificateBuilder;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider

@@ -4,7 +4,7 @@ namespace App\Commands\Site;
 
 use App\Commands\BaseCommand;
 use App\Models\Site;
-use App\Ssl\CertificateBuilder;
+use App\Support\Ssl\CertificateBuilder;
 
 class RenewCertificates extends BaseCommand
 {

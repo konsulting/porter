@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Ssl\Trust;
+namespace App\Support\Ssl\Trust;
 
-use App\Ssl\Trust\Mechanics\MacOs;
-use App\Ssl\Trust\Mechanics\Untrained;
+use App\Support\Ssl\Trust\Mechanics\MacOs;
+use App\Support\Ssl\Trust\Mechanics\Untrained;
 
 class ChooseMechanic
 {

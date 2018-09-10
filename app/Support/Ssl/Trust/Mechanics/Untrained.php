@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Ssl\Trust\Mechanics;
+namespace App\Support\Ssl\Trust\Mechanics;
 
 
-use App\Ssl\Trust\Mechanic;
 use App\Support\Console\ConsoleWriter;
+use App\Support\Ssl\Trust\Mechanic;
 
 class Untrained implements Mechanic
 {

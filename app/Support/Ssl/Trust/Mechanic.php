@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Ssl\Trust;
+namespace App\Support\Ssl\Trust;
 
 
 interface Mechanic
