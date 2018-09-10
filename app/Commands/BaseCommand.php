@@ -2,14 +2,14 @@
 
 namespace App\Commands;
 
-use App\DockerCompose\CliCommandFactory;
 use App\Porter;
-use App\Support\Cli;
+use App\Support\Console\Cli;
+use App\Support\Console\DockerCompose\CliCommandFactory;
 use LaravelZero\Framework\Commands\Command;
 
 abstract class BaseCommand extends Command
 {
-    /** @var Cli  */
+    /** @var \App\Support\Console\Cli  */
     protected $cli;
 
     /** @var CliCommandFactory  */

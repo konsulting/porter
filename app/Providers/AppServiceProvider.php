@@ -4,9 +4,9 @@ namespace App\Providers;
 
 use App\Porter;
 use App\Ssl\CertificateBuilder;
+use App\Support\Console\Cli;
+use App\Support\Console\ConsoleWriter;
 use App\Support\Contracts\Cli as CliContract;
-use App\Support\Cli;
-use App\Support\ConsoleWriter;
 use App\Support\Contracts\ImageSetRepository as ImageSetRepositoryContract;
 use App\Support\Images\ImageSetRepository;
 use Illuminate\Support\ServiceProvider;

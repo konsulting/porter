@@ -3,7 +3,7 @@
 namespace App\Ssl\Trust\Mechanics;
 
 use App\Ssl\Trust\Mechanic;
-use App\Support\Cli;
+use App\Support\Console\Cli;
 
 class MacOs extends Untrained implements Mechanic
 {

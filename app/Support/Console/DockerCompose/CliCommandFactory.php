@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DockerCompose;
+namespace App\Support\Console\DockerCompose;
 
 use App\Models\Site;
 use App\Support\Contracts\Cli;

@@ -4,7 +4,7 @@ namespace App\Ssl\Trust\Mechanics;
 
 
 use App\Ssl\Trust\Mechanic;
-use App\Support\ConsoleWriter;
+use App\Support\Console\ConsoleWriter;
 
 class Untrained implements Mechanic
 {
@@ -17,7 +17,7 @@ class Untrained implements Mechanic
     /**
      * Untrained constructor.
      *
-     * @param ConsoleWriter $console
+     * @param \App\Support\Console\ConsoleWriter $console
      */
     public function __construct(ConsoleWriter $console)
     {
