@@ -27,6 +27,6 @@ function setting($key = null, $default = null)
 function determineLibraryPath()
 {
     return stristr(__DIR__, '.composer/')
-        ? realpath(__DIR__.'/../../../..').'/.porter' // global required - so, home dir
-        : realpath(__DIR__.'/../..').'/.porter'; // in another dir
+        ? realpath(__DIR__ . '/../../../Users').'/.porter' // global required - so, home dir
+        : realpath(__DIR__ . '/../Code').'/.porter'; // in another dir
 }
