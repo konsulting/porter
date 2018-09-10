@@ -2,8 +2,7 @@
 
 namespace App\Commands;
 
-use App\Setting;
-use Illuminate\Support\Facades\Artisan;
+use App\Models\Setting;
 
 class Home extends BaseCommand
 {

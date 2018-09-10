@@ -3,8 +3,8 @@
 namespace App\Commands\Php;
 
 use App\Commands\BaseCommand;
-use App\PhpVersion;
-use App\Site;
+use App\Models\PhpVersion;
+use App\Models\Site;
 
 class Tinker extends BaseCommand
 {

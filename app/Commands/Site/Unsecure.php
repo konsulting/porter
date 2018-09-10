@@ -3,7 +3,7 @@
 namespace App\Commands\Site;
 
 use App\Commands\BaseCommand;
-use App\Site;
+use App\Models\Site;
 
 class Unsecure extends BaseCommand
 {

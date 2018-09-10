@@ -4,6 +4,8 @@ namespace App;
 
 use App\DockerCompose\CliCommandFactory;
 use App\DockerCompose\YamlBuilder;
+use App\Models\PhpVersion;
+use App\Models\Setting;
 use App\Support\Contracts\Cli;
 use App\Support\Contracts\ImageRepository;
 use App\Support\Contracts\ImageSetRepository;

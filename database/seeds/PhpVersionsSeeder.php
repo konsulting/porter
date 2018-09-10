@@ -1,6 +1,6 @@
 <?php
 
-use App\PhpVersion;
+use App\Models\PhpVersion;
 use Illuminate\Database\Seeder;
 
 class PhpVersionsSeeder extends Seeder

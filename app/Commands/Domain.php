@@ -2,8 +2,8 @@
 
 namespace App\Commands;
 
-use App\Setting;
 use App\Dnsmasq\Container as DnsmasqContainer;
+use App\Models\Setting;
 
 class Domain extends BaseCommand
 {

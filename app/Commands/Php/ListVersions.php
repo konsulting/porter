@@ -3,7 +3,7 @@
 namespace App\Commands\Php;
 
 use App\Commands\BaseCommand;
-use App\PhpVersion;
+use App\Models\PhpVersion;
 
 class ListVersions extends BaseCommand
 {

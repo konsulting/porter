@@ -2,7 +2,7 @@
 
 namespace App\DockerCompose;
 
-use App\PhpVersion;
+use App\Models\PhpVersion;
 use App\Support\Contracts\ImageRepository;
 
 class YamlBuilder

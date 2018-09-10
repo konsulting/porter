@@ -1,8 +1,9 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use App\Nginx\SiteConfBuilder;
+use App\Porter;
 use App\Ssl\CertificateBuilder;
 use App\Support\Contracts\Cli;
 use Illuminate\Database\Eloquent\Model;

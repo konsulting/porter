@@ -2,7 +2,7 @@
 
 namespace App\DockerCompose;
 
-use App\Site;
+use App\Models\Site;
 use App\Support\Contracts\Cli;
 
 class CliCommandFactory

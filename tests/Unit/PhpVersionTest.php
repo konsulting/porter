@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use App\PhpVersion;
-use App\Site;
+use App\Models\PhpVersion;
+use App\Models\Site;
 use Tests\TestCase;
 
 class PhpVersionTest extends TestCase
