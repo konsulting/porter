@@ -2,7 +2,7 @@
 
 A [Docker](https://www.docker.com) based multi-site setup for local development. Inspired by [Laravel Valet](https://github.com/laravel/valet) & [Homestead](https://github.com/laravel/homestead) and [Shipping Docker's Vessel](https://github.com/shipping-docker/vessel), [Shipping Docker](https://serversforhackers.com/shipping-docker) and [Docker For Developers](https://bitpress.io/docker-for-php-developers/).
 
-We're still learning Docker, and open to improvements to this set up and we're 'dog-fooding' it as we go. 
+We're still learning Docker, and open to improvements to this set up and we're 'dog-fooding' it as we go. **Porter is currently in Alpha state**, we're refining as we move along.
 
 Our aim is to use this for day-to-day development with simple, portable usage. We use Macs for our development, but given the portable nature of Docker we'd like to enable this offering to allow usage across each of MacOS, Linux and Windows.
 
@@ -184,13 +184,9 @@ The NGiNX config templates are in `resources/views/nginx`.
 The following commands will be useful if you change these items.
 
  - `porter build` - (Re)build the containers.
- 
- 
  - `porter images:build` - Build the current container images.
  - `porter images:pull` - Pull the current images - which will then be used by docker-compose where it can.
- - `porter images:set` - Change the image set used for Porter. The default is `konsulting/porter-alpine`.
- 
- 
+ - `porter images:set` - Change the image set used for Porter. The default is `konsulting/porter-ubuntu`.
  - `porter make-files` - (Re)make the docker-compose.yaml, and the NGiNX config files.
 
 We store personal config in the `.porter` directory in your home directory - keeping config and data separate from the main application. It includes:
