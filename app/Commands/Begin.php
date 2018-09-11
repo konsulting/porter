@@ -37,7 +37,7 @@ class Begin extends BaseCommand
             return;
         }
 
-        @mkdir(config('porter.library_path'));
+        mkdir(config('porter.library_path'));
 
         $this->call('vendor:publish', ['--provider' => AppServiceProvider::class]);
 
