@@ -100,6 +100,8 @@ Site NGiNX config files are created programmatically using the templates in `res
 
 NGiNX logs are visible from the `porter logs nginx`.
 
+Porter will try to set your Mac up to trust the SSL certificates it generates by adding the generated CA to the keychain (it will request sudo permission). This works for Safari and Chrome, but not for Firefox.  In FireFox, you will need to manually add the certificate, which is located in `~/.porter/ssl/KleverPorterSelfSigned.pem`.
+
 ### PHP
 
  - `porter php:default` - Set default PHP version
