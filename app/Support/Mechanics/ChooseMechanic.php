@@ -2,13 +2,14 @@
 
 namespace App\Support\Mechanics;
 
-use App\Support\Mechanics\Linux;
-use App\Support\Mechanics\MacOs;
-use App\Support\Mechanics\Untrained;
-use App\Support\Mechanics\Windows;
-
 class ChooseMechanic
 {
+    /**
+     * Get the mechanic for the host operating system.
+     *
+     * @param string|null $os
+     * @return Mechanic
+     */
     public static function forOS($os = null)
     {
         $os = $os ?: PHP_OS;
