@@ -5,9 +5,9 @@ namespace App\Models;
 use App\Porter;
 use App\PorterLibrary;
 use App\Support\Contracts\Cli;
-use App\Support\Nginx\SiteConfBuilder;
 use App\Support\Ssl\CertificateBuilder;
 use Illuminate\Database\Eloquent\Model;
+use SiteConfBuilder;
 
 class Site extends Model
 {
@@ -111,7 +111,7 @@ class Site extends Model
      */
     public function buildFiles()
     {
-        $this->getSiteConfigBuilder()->build($this);
+        SiteConfBuilder::build($this);
     }
 
     /**
@@ -119,7 +119,7 @@ class Site extends Model
      */
     public function destroyFiles()
     {
-        $this->getSiteConfigBuilder()->destroy($this);
+        SiteConfBuilder::destroy($this);
     }
 
     /**
@@ -160,7 +160,7 @@ class Site extends Model
     {
         $this->destroyCertificate();
 
-        $this->getSiteConfigBuilder()->destroy($this);
+        SiteConfBuilder::destroy($this);
 
         $this->delete();
 
@@ -243,16 +243,6 @@ class Site extends Model
     protected function getCertificateBuilder()
     {
         return app(CertificateBuilder::class);
-    }
-
-    /**
-     * Get Site Config Builder.
-     *
-     * @return \App\Support\Nginx\SiteConfBuilder
-     */
-    protected function getSiteConfigBuilder()
-    {
-        return app(SiteConfBuilder::class);
     }
 
     /**
