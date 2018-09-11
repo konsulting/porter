@@ -1,10 +1,11 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
-use App\Nginx\SiteConfBuilder;
-use App\Ssl\CertificateBuilder;
+use App\Porter;
 use App\Support\Contracts\Cli;
+use App\Support\Nginx\SiteConfBuilder;
+use App\Support\Ssl\CertificateBuilder;
 use Illuminate\Database\Eloquent\Model;
 
 class Site extends Model
@@ -241,7 +242,7 @@ class Site extends Model
     /**
      * Get Site Config Builder
      *
-     * @return SiteConfBuilder
+     * @return \App\Support\Nginx\SiteConfBuilder
      */
     protected function getSiteConfigBuilder()
     {

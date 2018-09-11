@@ -1,6 +1,6 @@
 <?php
 
-use App\Setting;
+use App\Models\Setting;
 
 /**
  * Get a setting, or all settings
@@ -26,7 +26,5 @@ function setting($key = null, $default = null)
  */
 function determineLibraryPath()
 {
-    return stristr(__DIR__, '.composer/')
-        ? realpath(__DIR__.'/../../../..').'/.porter' // global required - so, home dir
-        : realpath(__DIR__.'/../..').'/.porter'; // in another dir
+    return $_SERVER['HOME'] . '/.porter';
 }

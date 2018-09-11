@@ -3,12 +3,12 @@
 namespace App\Providers;
 
 use App\Porter;
-use App\Ssl\CertificateBuilder;
+use App\Support\Console\Cli;
+use App\Support\Console\ConsoleWriter;
 use App\Support\Contracts\Cli as CliContract;
-use App\Support\Cli;
-use App\Support\ConsoleWriter;
 use App\Support\Contracts\ImageSetRepository as ImageSetRepositoryContract;
 use App\Support\Images\ImageSetRepository;
+use App\Support\Ssl\CertificateBuilder;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -36,7 +36,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(Porter::class);
         $this->app->singleton(ConsoleWriter::class);
         $this->app->singleton(CertificateBuilder::class, function () {
-            return new CertificateBuilder(config('porter.library_path'));
+            return new CertificateBuilder(config('porter.library_path') . '/ssl');
         });
 
         $this->publishes([resource_path('stubs/config') => config('porter.library_path').'/config']);

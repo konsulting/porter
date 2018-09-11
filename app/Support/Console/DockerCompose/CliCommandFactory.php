@@ -1,8 +1,8 @@
 <?php
 
-namespace App\DockerCompose;
+namespace App\Support\Console\DockerCompose;
 
-use App\Site;
+use App\Models\Site;
 use App\Support\Contracts\Cli;
 
 class CliCommandFactory

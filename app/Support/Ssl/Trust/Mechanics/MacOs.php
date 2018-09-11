@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Ssl\Trust\Mechanics;
+namespace App\Support\Ssl\Trust\Mechanics;
 
-use App\Ssl\Trust\Mechanic;
-use App\Support\Cli;
+use App\Support\Console\Cli;
+use App\Support\Ssl\Trust\Mechanic;
 
 class MacOs extends Untrained implements Mechanic
 {

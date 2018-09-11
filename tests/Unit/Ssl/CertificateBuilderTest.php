@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Ssl;
 
-use App\Ssl\CertificateBuilder;
+use App\Support\Ssl\CertificateBuilder;
 use Tests\TestCase;
 
 class CertificateBuilderTest extends TestCase

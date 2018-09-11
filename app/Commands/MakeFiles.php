@@ -2,7 +2,7 @@
 
 namespace App\Commands;
 
-use App\Site;
+use App\Models\Site;
 
 class MakeFiles extends BaseCommand
 {

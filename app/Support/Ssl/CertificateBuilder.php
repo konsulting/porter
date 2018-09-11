@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Ssl;
+namespace App\Support\Ssl;
 
-use App\Ssl\Trust\ChooseMechanic;
+use App\Support\Ssl\Trust\ChooseMechanic;
 
 class CertificateBuilder
 {

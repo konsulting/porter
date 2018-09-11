@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Dnsmasq;
+namespace App\Support\Dnsmasq;
 
 
 class Container

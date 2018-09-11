@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Nginx;
+namespace App\Support\Nginx;
 
-use App\Site;
+use App\Models\Site;
 
 class SiteConfBuilder
 {
     /**
      * Build the nginx.conf file for a given site
      *
-     * @param Site $site
+     * @param \App\Models\Site $site
      * @throws \Throwable
      */
     public function build(Site $site)
@@ -27,7 +27,7 @@ class SiteConfBuilder
     /**
      * Destroy the nginx.conf conf for a given site
      *
-     * @param Site $site
+     * @param \App\Models\Site $site
      */
     public function destroy(Site $site)
     {

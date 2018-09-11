@@ -3,8 +3,8 @@
 namespace App\Commands\Site;
 
 use App\Commands\BaseCommand;
-use App\PhpVersion;
-use App\Site;
+use App\Models\PhpVersion;
+use App\Models\Site;
 
 class ListSites extends BaseCommand
 {

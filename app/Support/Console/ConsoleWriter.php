@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Support;
+namespace App\Support\Console;
 
 use Illuminate\Console\OutputStyle;
 use Illuminate\Support\Str;

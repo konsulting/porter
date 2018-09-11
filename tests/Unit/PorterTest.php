@@ -2,11 +2,11 @@
 
 namespace Tests\Unit;
 
-use App\DockerCompose\CliCommandFactory;
-use App\DockerCompose\YamlBuilder;
-use App\PhpVersion;
+use App\Models\PhpVersion;
+use App\Models\Setting;
 use App\Porter;
-use App\Setting;
+use App\Support\Console\DockerCompose\CliCommandFactory;
+use App\Support\Console\DockerCompose\YamlBuilder;
 use App\Support\Contracts\Cli;
 use App\Support\Contracts\ImageRepository as ImageRepositoryContract;
 use App\Support\Contracts\ImageSetRepository as ImageSetRepositoryContract;

@@ -3,7 +3,7 @@
 namespace App\Commands\Images;
 
 use App\Commands\BaseCommand;
-use App\Setting;
+use App\Models\Setting;
 use App\Support\Contracts\ImageSetRepository;
 use Illuminate\Support\Facades\Artisan;
 

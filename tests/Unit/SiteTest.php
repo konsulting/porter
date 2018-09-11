@@ -2,10 +2,10 @@
 
 namespace Tests\Unit;
 
-use App\Nginx\SiteConfBuilder;
-use App\PhpVersion;
-use App\Setting;
-use App\Site;
+use App\Models\PhpVersion;
+use App\Models\Setting;
+use App\Models\Site;
+use App\Support\Nginx\SiteConfBuilder;
 use Tests\TestCase;
 
 class SiteTest extends TestCase

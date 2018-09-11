@@ -1,8 +1,8 @@
 <?php
 
-namespace App\DockerCompose;
+namespace App\Support\Console\DockerCompose;
 
-use App\PhpVersion;
+use App\Models\PhpVersion;
 use App\Support\Contracts\ImageRepository;
 
 class YamlBuilder

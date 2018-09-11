@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Support;
+namespace App\Support\Console;
 
+use App\Support\Contracts\Cli as CliContract;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
-use App\Support\Contracts\Cli as CliContract;
 
 class Cli implements CliContract
 {

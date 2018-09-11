@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Ssl\Trust\Mechanics;
+namespace App\Support\Ssl\Trust\Mechanics;
 
 
-use App\Ssl\Trust\Mechanic;
-use App\Support\ConsoleWriter;
+use App\Support\Console\ConsoleWriter;
+use App\Support\Ssl\Trust\Mechanic;
 
 class Untrained implements Mechanic
 {
@@ -17,7 +17,7 @@ class Untrained implements Mechanic
     /**
      * Untrained constructor.
      *
-     * @param ConsoleWriter $console
+     * @param \App\Support\Console\ConsoleWriter $console
      */
     public function __construct(ConsoleWriter $console)
     {
