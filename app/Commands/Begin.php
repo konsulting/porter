@@ -29,22 +29,36 @@ class Begin extends BaseCommand
     public function handle(): void
     {
         $force = $this->option('force');
-        $home = realpath($this->argument('home') ?: getcwd());
+        $home = realpath($this->argument('home') ?: $this->cli->currentWorkingDirectory());
 
         if (! $force && Database::exists()) {
-            $this->error('Already began. If you definitely want to continue, you can force with the --force flag.');
-
+            $this->error("Already began, so we've stopped to avoid wiping your settings.");
+            $this->error("If you definitely want to continue, you can force with the --force flag.");
             return;
         }
 
+        $this->line("================");
+        $this->line("PREPARING PORTER");
+        $this->line("================");
+        $this->line("");
+
         mkdir(config('porter.library_path'));
 
-        $this->call('vendor:publish', ['--provider' => AppServiceProvider::class]);
+        $this->callSilent('vendor:publish', ['--provider' => AppServiceProvider::class]);
 
         Database::ensureExists($force);
 
-        $this->call('home', ['path' => $home]);
+        $this->info("Your Porter settings are stored in ".config('porter.library_path'));
+        $this->info("");
 
+        $this->callSilent('home', ['path' => $home]);
+
+        $this->info("Setting home to {$home}.");
+        $this->comment("This is the used as the root directory for your sites.");
+        $this->comment("If this is incorrect, you can change it using the 'porter home' command.");
+        $this->comment("");
+
+        $this->info("Retrieving docker images");
         $this->porter->pullImages();
     }
 }

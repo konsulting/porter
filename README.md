@@ -72,7 +72,7 @@ getenv('HOST_MACHINE_NAME')
 
 ## Commands:
 
- - `porter begin` - Migrate and seed the sqlite database, and publish config files to `~/.porter/config`. It will set Porter home to the working directory when you run the command.  It will also download the required docker images.
+ - `porter begin {--home?} {--force?}` - Migrate and seed the sqlite database, and publish config files to `~/.porter/config`. It will set Porter home to the working directory when you run the command (or you can specify with the `--home` option).  It will also download the required docker images.
  - `porter start`
  - `porter status` - show the status of containers
  - `porter stop`
