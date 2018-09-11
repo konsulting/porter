@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Porter;
 use App\PorterLibrary;
 use App\Support\Contracts\Cli;
-use App\Support\Ssl\CertificateBuilder;
+use CertificateBuilder;
 use Illuminate\Database\Eloquent\Model;
 use SiteConfBuilder;
 
@@ -236,16 +236,6 @@ class Site extends Model
     }
 
     /**
-     * Get Certificate builder.
-     *
-     * @return CertificateBuilder
-     */
-    protected function getCertificateBuilder()
-    {
-        return app(CertificateBuilder::class);
-    }
-
-    /**
      * Get Porter.
      *
      * @return Porter
@@ -270,7 +260,7 @@ class Site extends Model
      */
     public function buildCertificate()
     {
-        $this->getCertificateBuilder()->build($this->url);
+        CertificateBuilder::build($this->url);
     }
 
     /**
@@ -278,7 +268,7 @@ class Site extends Model
      */
     public function destroyCertificate()
     {
-        $this->getCertificateBuilder()->destroy($this->url);
+        CertificateBuilder::destroy($this->url);
     }
 
     /**

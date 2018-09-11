@@ -12,7 +12,7 @@ return [
     | any other location as required by the application or its packages.
     |
     */
-    'name' => 'Porter',
+    'name'       => 'Porter',
 
     /*
     |--------------------------------------------------------------------------
@@ -24,7 +24,7 @@ return [
     | number MAJOR.MINOR.PATCH when an update happens: https://semver.org.
     |
     */
-    'version' => app('git.version'),
+    'version'    => app('git.version'),
 
     /*
     |--------------------------------------------------------------------------
@@ -48,7 +48,7 @@ return [
     | this array to grant expanded functionality to your applications.
     |
     */
-    'providers' => [
+    'providers'  => [
         App\Providers\AppServiceProvider::class,
         Intonate\TinkerZero\TinkerZeroServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
@@ -58,7 +58,8 @@ return [
     'env' => env('APP_ENV', 'local'),
 
     'aliases' => [
-        'SiteConfBuilder' => \App\Support\Nginx\SiteConfBuilderFacade::class,
+        'CertificateBuilder' => \App\Support\Ssl\CertificateBuilderFacade::class,
+        'SiteConfBuilder'    => \App\Support\Nginx\SiteConfBuilderFacade::class,
     ],
 
     /*
