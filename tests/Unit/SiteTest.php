@@ -59,13 +59,7 @@ class SiteTest extends BaseTestCase
     /** @test */
     public function it_destroys_the_site_config_files()
     {
-        $this->app->extend(SiteConfBuilder::class, function ($builder, $app) {
-            $mock = \Mockery::mock(SiteConfBuilder::class);
-            $mock->shouldReceive('destroy')
-                ->once();
-
-            return $mock;
-        });
+        \SiteConfBuilder::shouldReceive('destroy')->once();
 
         $site = factory(Site::class)->create();
         $site->destroyFiles();
@@ -288,13 +282,8 @@ class SiteTest extends BaseTestCase
      */
     protected function shouldBuildNginxFiles(): void
     {
-        $this->app->extend(SiteConfBuilder::class, function ($builder, $app) {
-            $mock = \Mockery::mock(SiteConfBuilder::class);
-            $mock->shouldReceive('build')
-                ->once();
-
-            return $mock;
-        });
+        \SiteConfBuilder::shouldReceive('build')
+            ->once();
     }
 
     /**
