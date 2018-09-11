@@ -7,7 +7,10 @@ use Tests\TestCase;
 
 class CertificateBuilderTest extends TestCase
 {
-    /** @test */
+    /**
+     * @group certificates
+     * @test
+     */
     public function it_creates_a_certificate()
     {
         $dir = storage_path('test_library/ssl');

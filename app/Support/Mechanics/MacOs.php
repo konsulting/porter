@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Support\Ssl\Trust\Mechanics;
+namespace App\Support\Mechanics;
 
 use App\Support\Console\Cli;
-use App\Support\Ssl\Trust\Mechanic;
+use App\Support\Console\ServerBag;
+use Illuminate\Support\MessageBag;
 
-class MacOs extends Untrained implements Mechanic
+class MacOs extends Untrained
 {
     /**
      * Trust the given root certificate file in the Keychain.
@@ -15,7 +16,7 @@ class MacOs extends Untrained implements Mechanic
      */
     public function trustCA($pem)
     {
-        $this->console->info('Auto Trust CA Certificate, needs sudo privilege.');
+        $this->console->info('Auto Trust CA Certificate, needs sudo privilege. Please provide your sudo password.');
 
         $command = "sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain {$pem}";
         $this->commands[] = $command;
@@ -36,7 +37,7 @@ class MacOs extends Untrained implements Mechanic
      */
     public function trustCertificate($crt)
     {
-        $this->console->info('Auto Trust Certificate, needs sudo privilege.');
+        $this->console->info('Auto Trust Certificate, needs sudo privilege. Please provide your sudo password.');
 
         $command = "sudo security add-trusted-cert -d -r trustAsRoot -k /Library/Keychains/System.keychain {$crt}";
         $this->commands[] = $command;
@@ -47,5 +48,15 @@ class MacOs extends Untrained implements Mechanic
         }
 
         app(Cli::class)->passthru($command);
+    }
+
+    /**
+     * Return the User's home directory path
+     *
+     * @return string
+     */
+    public function getUserHomePath()
+    {
+        return app(ServerBag::class)->get('HOME');
     }
 }

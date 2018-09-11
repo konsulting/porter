@@ -5,6 +5,9 @@ namespace Tests\Unit;
 use App\Models\PhpVersion;
 use App\Models\Setting;
 use App\Models\Site;
+use App\Porter;
+use App\Support\Console\DockerCompose\CliCommandFactory;
+use App\Support\Contracts\Cli;
 use App\Support\Nginx\SiteConfBuilder;
 use Tests\TestCase;
 
@@ -45,6 +48,7 @@ class SiteTest extends TestCase
     public function it_sets_the_nginx_type()
     {
         $this->siteFilesShouldBeBuilt();
+        $this->shouldRestartServing();
 
         $site = factory(Site::class)->create();
 
@@ -71,6 +75,7 @@ class SiteTest extends TestCase
     public function it_sets_the_php_version()
     {
         $this->siteFilesShouldBeBuilt();
+        $this->shouldRestartServing();
 
         $site = factory(Site::class)->create();
         $version = factory(PhpVersion::class)->create();
@@ -83,6 +88,7 @@ class SiteTest extends TestCase
     public function it_uses_the_default_php_version_if_not_specified()
     {
         $this->siteFilesShouldBeBuilt();
+        $this->shouldRestartServing();
 
         $site = factory(Site::class)->create();
         $defaultVersion = factory(PhpVersion::class)->create(['default' => true]);
@@ -101,6 +107,17 @@ class SiteTest extends TestCase
         $this->app->extend(SiteConfBuilder::class, function ($builder, $app) {
             $mock = \Mockery::mock(SiteConfBuilder::class);
             $mock->shouldReceive('build')
+                ->once();
+
+            return $mock;
+        });
+    }
+
+    protected function shouldRestartServing()
+    {
+        $this->app->extend(Porter::class, function ($builder, $app) {
+            $mock = \Mockery::mock(Porter::class);
+            $mock->shouldReceive('restartServing')
                 ->once();
 
             return $mock;

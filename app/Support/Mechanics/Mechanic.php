@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Support\Ssl\Trust;
+namespace App\Support\Mechanics;
 
 
 interface Mechanic
@@ -19,5 +19,12 @@ interface Mechanic
      * @param  string  $crt
      * @return void
      */
-    public function trustCertificate($url);
+    public function trustCertificate($crt);
+
+    /**
+     * Return the User's home directory path
+     *
+     * @return string
+     */
+    public function getUserHomePath();
 }

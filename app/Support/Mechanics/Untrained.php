@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Support\Ssl\Trust\Mechanics;
+namespace App\Support\Mechanics;
 
 
 use App\Support\Console\ConsoleWriter;
-use App\Support\Ssl\Trust\Mechanic;
+use App\Support\Mechanics\Mechanic;
 
 class Untrained implements Mechanic
 {
@@ -32,7 +32,7 @@ class Untrained implements Mechanic
      */
     public function trustCA($pem)
     {
-        //
+        $this->iAmNotTrainedTo('trust a CA certificate');
     }
 
     /**
@@ -43,7 +43,17 @@ class Untrained implements Mechanic
      */
     public function trustCertificate($crt)
     {
-        //
+        $this->iAmNotTrainedTo('trust a certificate');
+    }
+
+    /**
+     * Return the User's home directory path
+     *
+     * @return string
+     */
+    public function getUserHomePath()
+    {
+        $this->iAmNotTrainedTo('get the users home path');
     }
 
     /**
@@ -64,5 +74,16 @@ class Untrained implements Mechanic
     public function getCommands()
     {
         return $this->commands;
+    }
+
+    /**
+     * Give a nice message about not being trained
+     *
+     * @param $activity
+     */
+    protected function iAmNotTrainedTo($activity)
+    {
+        $this->console->info("I haven't been trained to {$activity} on this system.");
+        $this->console->info("You are welcome to train me and submit a PR.");
     }
 }

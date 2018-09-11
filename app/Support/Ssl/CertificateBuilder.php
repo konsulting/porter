@@ -2,7 +2,7 @@
 
 namespace App\Support\Ssl;
 
-use App\Support\Ssl\Trust\ChooseMechanic;
+use App\Support\Mechanics\ChooseMechanic;
 
 class CertificateBuilder
 {

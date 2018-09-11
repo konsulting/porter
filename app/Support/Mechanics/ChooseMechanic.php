@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Support\Ssl\Trust;
+namespace App\Support\Mechanics;
 
-use App\Support\Ssl\Trust\Mechanics\MacOs;
-use App\Support\Ssl\Trust\Mechanics\Untrained;
+use App\Support\Mechanics\Linux;
+use App\Support\Mechanics\MacOs;
+use App\Support\Mechanics\Untrained;
+use App\Support\Mechanics\Windows;
 
 class ChooseMechanic
 {
@@ -16,7 +18,11 @@ class ChooseMechanic
                 return app(MacOs::class);
 
             case stristr($os, 'WIN'):
+                return app(Windows::class);
+
             case stristr($os, 'LINUX'):
+                return app(Linux::class);
+
             default :
                 return app(Untrained::class);
         }

@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Porter;
 use App\Support\Console\Cli;
 use App\Support\Console\ConsoleWriter;
+use App\Support\Console\ServerBag;
 use App\Support\Contracts\Cli as CliContract;
 use App\Support\Contracts\ImageSetRepository as ImageSetRepositoryContract;
 use App\Support\Images\ImageSetRepository;
@@ -26,6 +27,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        $this->app->singleton(ServerBag::class, function () {
+            return new ServerBag;
+        });
         $this->app->bind(CliContract::class, function () {
             return new Cli;
         });
