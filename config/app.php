@@ -51,7 +51,14 @@ return [
     'providers' => [
         App\Providers\AppServiceProvider::class,
         Intonate\TinkerZero\TinkerZeroServiceProvider::class,
-        \Illuminate\View\ViewServiceProvider::class,
+        Illuminate\View\ViewServiceProvider::class,
+        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+    ],
+
+    'env' => env('APP_ENV', 'local'),
+
+    'aliases' => [
+        'SiteConfBuilder' => \App\Support\Nginx\SiteConfBuilderFacade::class,
     ],
 
     /*

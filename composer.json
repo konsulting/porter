@@ -30,6 +30,7 @@
         "vlucas/phpdotenv": "^2.5"
     },
     "require-dev": {
+        "barryvdh/laravel-ide-helper": "^2.5",
         "mockery/mockery": "^1.1",
         "phpunit/phpunit": "^7.1"
     },
