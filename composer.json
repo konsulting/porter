@@ -54,8 +54,12 @@
         }
     },
     "scripts": {
-        "post-create-project-cmd": [
-            "@php application app:rename"
+        "post-update-cmd": [
+            "composer run-script ide-helper"
+        ],
+        "ide-helper": [
+            "php ./porter ide-helper:generate",
+            "php ./porter ide-helper:meta"
         ]
     },
     "minimum-stability": "dev",
