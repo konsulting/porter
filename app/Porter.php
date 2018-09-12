@@ -44,16 +44,16 @@ class Porter
      * Porter constructor.
      *
      * @param ImageSetRepository $imageSets
-     * @param Cli $cli
-     * @param CliCommandFactory $commandFactory
-     * @param YamlBuilder $yamlBuilder
+     * @param Cli                $cli
+     * @param CliCommandFactory  $commandFactory
+     * @param YamlBuilder        $yamlBuilder
      */
     public function __construct(
         ImageSetRepository $imageSets,
         Cli $cli,
         CliCommandFactory $commandFactory,
         YamlBuilder $yamlBuilder
-    ){
+    ) {
         $this->imageSets = $imageSets;
         $this->cli = $cli;
         $this->dockerCompose = $commandFactory;
@@ -63,7 +63,7 @@ class Porter
     /**
      * Check if the Porter containers are running
      *
-     * @param null $service
+     * @param string|null $service
      * @return bool
      */
     public function isUp($service = null)
@@ -82,7 +82,7 @@ class Porter
     /**
      * Start Porter containers, optionally start a specific service, and force them to be recreated
      *
-     * @param null $service
+     * @param string|null $service
      * @param bool $recreate
      */
     public function start($service = null, $recreate = false)
@@ -95,7 +95,7 @@ class Porter
     /**
      * Stop Porter containers
      *
-     * @param null $service
+     * @param string|null $service
      */
     public function stop($service = null)
     {
@@ -111,7 +111,7 @@ class Porter
     /**
      * Restart Porter containers
      *
-     * @param null $service
+     * @param string|null $service
      */
     public function restart($service = null)
     {
@@ -151,7 +151,7 @@ class Porter
     /**
      * Turn a service on
      *
-     * @param $service
+     * @param string $service
      */
     public function turnOnService($service)
     {
@@ -171,7 +171,7 @@ class Porter
     /**
      * Turn a service off
      *
-     * @param $service
+     * @param string $service
      */
     public function turnOffService($service)
     {
@@ -248,7 +248,7 @@ class Porter
     /**
      * Show container logs
      *
-     * @param null $service
+     * @param string|null $service
      */
     public function logs($service = null)
     {
