@@ -12,7 +12,11 @@ class DevelopmentServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        if (! $this->app->environment() === Env::DEVELOPMENT) {
+            return;
+        }
+
+        $this->app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
     }
 
     /**
@@ -20,10 +24,6 @@ class DevelopmentServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        if (! $this->app->environment() === Env::DEVELOPMENT) {
-            return;
-        }
-
-        $this->app->register(\Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class);
+        //
     }
 }

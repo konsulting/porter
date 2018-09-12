@@ -4,5 +4,7 @@ namespace App\Support\Contracts;
 
 interface Env
 {
-    const DEVELOPMENT = 'local';
+    const TESTING = 'testing';
+    const DEVELOPMENT = 'development';
+    const PRODUCTION = 'production';
 }
