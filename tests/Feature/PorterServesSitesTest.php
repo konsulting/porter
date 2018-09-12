@@ -14,7 +14,6 @@ class PorterServesSitesTest extends TestCase
         parent::setUp();
 
         $this->porter = app(Porter::class);
-
         Artisan::call('begin', ['home' => __DIR__.'/../TestWebRoot']);
 
         Artisan::call('start');
