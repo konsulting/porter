@@ -3,13 +3,14 @@
 namespace Tests;
 
 use App\Providers\AppServiceProvider;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\Artisan;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-use PHPUnit\Framework\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
 {
-    use CreatesApplication, MockeryPHPUnitIntegration;
+    use CreatesApplication, MockeryPHPUnitIntegration, DatabaseMigrations;
 
     /**
      * Holds an application instance.
@@ -18,41 +19,50 @@ abstract class TestCase extends BaseTestCase
      */
     protected $app;
 
+    protected static $migrated = false;
+
     /**
      * Setup the test environment.
      */
     protected function setUp(): void
     {
+        parent::setUp();
+
+        if (static::$migrated) {
+            return;
+        }
+
         $this->app = $this->createApplication();
 
-        @mkdir(storage_path('test_library'));
-        @mkdir(storage_path('test_library/ssl'));
-        @mkdir(storage_path('test_library/config/nginx/conf.d/'), 0777, true);
+        $this->cleanseDir(storage_path('test_library'));
+        @rmdir(storage_path('test_library'));
 
-        touch(storage_path('test_library').'/testing.sqlite');
+        mkdir(storage_path('test_library'));
+        mkdir(storage_path('test_library/ssl'));
+        mkdir(storage_path('test_library/config/nginx/conf.d/'), 0777, true);
 
-        $this->app['config']->set('database.connections.default.database', storage_path('test_library').'/testing.sqlite');
+        touch(storage_path('test_library') . '/testing.sqlite');
+
+        $this->app['config']->set('database.connections.default.database', storage_path('test_library') . '/testing.sqlite');
         $this->app['config']->set('porter.docker-compose-file', storage_path('test_library/docker-compose.yaml'));
         $this->app['config']->set('porter.library_path', storage_path('test_library'));
 
         AppServiceProvider::$publishes[AppServiceProvider::class] = [
-            resource_path('stubs/config') => config('porter.library_path').'/config'
+            resource_path('stubs/config') => config('porter.library_path') . '/config'
         ];
 
         Artisan::call('migrate:fresh');
         Artisan::call('vendor:publish', ['--provider' => AppServiceProvider::class]);
-    }
 
-    public function tearDown()
-    {
-        parent::tearDown();
-
-        $this->cleanseDir(storage_path('test_library'));
-        @rmdir(storage_path('test_library'));
+        static::$migrated = true;
     }
 
     protected function cleanseDir($dir)
     {
+        if (! file_exists($dir)) {
+            return;
+        }
+
         foreach (scandir($dir) as $item) {
             if ($item == '.' || $item == '..') {
                 continue;

@@ -4,12 +4,18 @@ namespace Tests\Unit\Support\Database;
 
 use App\Support\Database\Database;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\DB;
+use LaravelZero\Framework\Kernel;
 use Tests\TestCase;
 
 class DatabaseTest extends TestCase
 {
     protected $databasePath;
+
+    /**
+     * @var Kernel
+     */
+    protected $artisan;
+
 
     /** @test */
     public function it_creates_a_database_file_if_one_does_not_exist()
@@ -40,4 +46,29 @@ class DatabaseTest extends TestCase
 
         Database::ensureExists(true);
     }
+
+    /**
+     * Store the kernel before the test so we can restore it after swapping for a mock.
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->artisan = Artisan::getFacadeRoot();
+    }
+
+
+    /**
+     * Restore the artisan kernel so we can run artisan commands.
+     *
+     * @return void
+     */
+    protected function tearDown()
+    {
+        Artisan::swap($this->artisan);
+
+        parent::tearDown();
+    }
+
+
 }

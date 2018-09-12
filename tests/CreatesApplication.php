@@ -13,7 +13,7 @@ trait CreatesApplication
      *
      * @return \Illuminate\Contracts\Foundation\Application
      */
-    public function createApplication(): ApplicationContract
+    public function createApplication()
     {
         $app = require __DIR__.'/../bootstrap/app.php';
 
