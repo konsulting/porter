@@ -4,8 +4,9 @@ namespace Tests\Feature;
 
 use App\Porter;
 use Illuminate\Support\Facades\Artisan;
+use Tests\BaseTestCase;
 
-class PorterStartStopTest extends TestCase
+class PorterStartStopTest extends BaseTestCase
 {
     protected $porter;
 

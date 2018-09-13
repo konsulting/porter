@@ -3,9 +3,9 @@
 namespace Tests\Unit\Ssl;
 
 use App\Support\Ssl\CertificateBuilder;
-use Tests\TestCase;
+use Tests\BaseTestCase;
 
-class CertificateBuilderTest extends TestCase
+class CertificateBuilderBaseTest extends BaseTestCase
 {
     /**
      * @group certificates

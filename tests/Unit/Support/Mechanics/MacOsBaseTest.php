@@ -4,9 +4,9 @@ namespace Tests\Unit\Support\Mechanics;
 
 use App\Support\Console\ServerBag;
 use App\Support\Mechanics\MacOs;
-use Tests\TestCase;
+use Tests\BaseTestCase;
 
-class MacOsTest extends TestCase
+class MacOsBaseTest extends BaseTestCase
 {
     /** @test */
     public function it_returns_the_home_directory()

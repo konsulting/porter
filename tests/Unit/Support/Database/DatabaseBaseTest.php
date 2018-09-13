@@ -5,9 +5,9 @@ namespace Tests\Unit\Support\Database;
 use App\Support\Database\Database;
 use Illuminate\Support\Facades\Artisan;
 use LaravelZero\Framework\Kernel;
-use Tests\TestCase;
+use Tests\BaseTestCase;
 
-class DatabaseTest extends TestCase
+class DatabaseBaseTest extends BaseTestCase
 {
     protected $databasePath;
 

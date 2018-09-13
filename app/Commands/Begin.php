@@ -42,7 +42,9 @@ class Begin extends BaseCommand
         $this->line("================");
         $this->line("");
 
-        mkdir(config('porter.library_path'));
+        if (! file_exists(config('porter.library_path'))) {
+            mkdir(config('porter.library_path'));
+        }
 
         $this->callSilent('vendor:publish', ['--provider' => AppServiceProvider::class]);
 

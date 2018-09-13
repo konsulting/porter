@@ -4,9 +4,9 @@ namespace Tests\Unit;
 
 use App\Models\PhpVersion;
 use App\Models\Site;
-use Tests\TestCase;
+use Tests\BaseTestCase;
 
-class PhpVersionTest extends TestCase
+class PhpVersionBaseTest extends BaseTestCase
 {
     /** @test */
     public function it_returns_a_safe_version_number()

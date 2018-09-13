@@ -7,9 +7,9 @@ use App\Support\Mechanics\Linux;
 use App\Support\Mechanics\MacOs;
 use App\Support\Mechanics\Untrained;
 use App\Support\Mechanics\Windows;
-use Tests\TestCase;
+use Tests\BaseTestCase;
 
-class ChooseMechanicTest extends TestCase
+class ChooseMechanicBaseTest extends BaseTestCase
 {
     /** @test */
     public function it_chooses_correctly_for_the_os()

@@ -9,9 +9,9 @@ use App\Porter;
 use App\Support\Console\DockerCompose\CliCommandFactory;
 use App\Support\Contracts\Cli;
 use App\Support\Nginx\SiteConfBuilder;
-use Tests\TestCase;
+use Tests\BaseTestCase;
 
-class SiteTest extends TestCase
+class SiteBaseTest extends BaseTestCase
 {
     /** @test */
     public function it_builds_nginx_config()
