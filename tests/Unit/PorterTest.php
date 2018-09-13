@@ -14,7 +14,7 @@ use App\Support\Images\Image;
 use Mockery\MockInterface;
 use Tests\BaseTestCase;
 
-class PorterBaseTest extends BaseTestCase
+class PorterTest extends BaseTestCase
 {
     /** @var Porter */
     protected $porter;
@@ -125,6 +125,9 @@ class PorterBaseTest extends BaseTestCase
         $images = ['konsulting/image', 'konsulting/image2', 'another/image', 'another/image2'];
 
         foreach ($images as $image) {
+            $this->expectCommand('docker image inspect ' . $image, 'exec')
+                ->andReturn("Error: No such image: {$image}");
+
             $this->expectCommand('docker pull ' . $image, 'passthru');
         }
         $this->porter->pullImages();

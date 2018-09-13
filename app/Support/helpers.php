@@ -18,3 +18,11 @@ function setting($key = null, $default = null)
 
     return Setting::where('name', $key)->value('value') ?? $default;
 }
+
+/**
+ * Check if we're running tests since environment is limited to production/development
+ */
+function running_tests()
+{
+    return config('app.running_tests');
+}

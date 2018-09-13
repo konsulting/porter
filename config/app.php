@@ -54,5 +54,8 @@ return [
         \Illuminate\View\ViewServiceProvider::class,
     ],
 
-    'env' => env('APP_ENV', 'local'),
+    /**
+     * Since environment is limited to production/development, add a flag for tests.
+     */
+    'running_tests' => env('RUNNING_TESTS', false),
 ];

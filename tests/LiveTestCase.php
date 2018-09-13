@@ -1,12 +1,11 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests;
 
 use App\Porter;
 use Illuminate\Support\Facades\Artisan;
-use Tests\BaseTestCase;
 
-class PorterServesSitesTest extends BaseTestCase
+class LiveTestCase extends BaseTestCase
 {
     /** @var Porter */
     protected $porter;
@@ -16,8 +15,6 @@ class PorterServesSitesTest extends BaseTestCase
         parent::setUp();
 
         $this->porter = app(Porter::class);
-
-        Artisan::call('begin', ['home' => __DIR__.'/../TestWebRoot', '--force' => true]);
 
         Artisan::call('start');
 
@@ -33,27 +30,9 @@ class PorterServesSitesTest extends BaseTestCase
         parent::tearDown();
     }
 
-    /**
-     * @test
-     * @group docker
-     */
-    public function porter_makes_the_sample_site_available()
+    protected function preparePorter()
     {
-        Artisan::call('site:unsecure', ['site' => 'sample']);
-
-        $phpinfo = $this->get('http://sample.test');
-
-        $this->assertContains('php', $phpinfo);
-    }
-
-    protected function buildResolveOption($url)
-    {
-        $scheme = parse_url($url, PHP_URL_SCHEME);
-        $host = parse_url($url, PHP_URL_HOST);
-
-        $port = $scheme == 'http' ? 80 : 443;
-
-        return ["{$host}:{$port}:127.0.0.1"];
+        Artisan::call('begin', ['home' => __DIR__.'/TestWebRoot', '--force' => true]);
     }
 
     /**
@@ -71,6 +50,9 @@ class PorterServesSitesTest extends BaseTestCase
         // force it to resolve to 127.0.0.1
         curl_setopt($ch, CURLOPT_RESOLVE, $this->buildResolveOption($url));
 
+        // Since the cert won't be trusted, ignore it
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
         $phpinfo = curl_exec($ch);
 
         if (curl_errno($ch)) {
@@ -79,5 +61,15 @@ class PorterServesSitesTest extends BaseTestCase
         curl_close ($ch);
 
         return $phpinfo;
+    }
+
+    protected function buildResolveOption($url)
+    {
+        $scheme = parse_url($url, PHP_URL_SCHEME);
+        $host = parse_url($url, PHP_URL_HOST);
+
+        $port = $scheme == 'http' ? 80 : 443;
+
+        return ["{$host}:{$port}:127.0.0.1"];
     }
 }

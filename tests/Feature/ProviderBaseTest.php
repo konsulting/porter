@@ -3,8 +3,9 @@
 namespace Tests\Feature;
 
 use App\Support\Ssl\CertificateBuilder;
+use Tests\BaseTestCase;
 
-class ProviderBaseTest extends \Tests\BaseTestCase
+class ProviderBaseTest extends BaseTestCase
 {
     /** @test */
     public function it_passes_the_correct_ssl_directory_to_the_certificate_builder()

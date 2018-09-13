@@ -6,9 +6,13 @@
          convertErrorsToExceptions="true"
          convertNoticesToExceptions="true"
          convertWarningsToExceptions="true"
+         defaultTestSuite="Unit"
          processIsolation="false"
          stopOnFailure="false">
     <testsuites>
+        <testsuite name="Live">
+            <directory suffix="Test.php">./tests/Live</directory>
+        </testsuite>
         <testsuite name="Feature">
             <directory suffix="Test.php">./tests/Feature</directory>
         </testsuite>
@@ -16,12 +20,6 @@
             <directory suffix="Test.php">./tests/Unit</directory>
         </testsuite>
     </testsuites>
-    <groups>
-        <exclude>
-            <group>docker</group>
-            <group>certificates</group>
-        </exclude>
-    </groups>
     <listeners>
         <listener class="NunoMaduro\Collision\Adapters\Phpunit\Listener"/>
     </listeners>
@@ -31,7 +29,7 @@
         </whitelist>
     </filter>
     <php>
-        <env name="APP_ENV" value="testing"/>
+        <env name="RUNNING_TESTS" value="true"/>
         <env name="CACHE_DRIVER" value="array"/>
         <env name="SESSION_DRIVER" value="array"/>
         <env name="QUEUE_DRIVER" value="sync"/>

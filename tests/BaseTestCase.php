@@ -2,14 +2,14 @@
 
 namespace Tests;
 
-use App\Providers\AppServiceProvider;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\TestCase as IlluminateTestCase;
+use Illuminate\Support\Facades\Artisan;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
 abstract class BaseTestCase extends IlluminateTestCase
 {
-    use CreatesApplication, MockeryPHPUnitIntegration, DatabaseMigrations;
+    use CreatesApplication, MockeryPHPUnitIntegration, DatabaseTransactions;
 
     /**
      * Holds an application instance.
@@ -27,16 +27,18 @@ abstract class BaseTestCase extends IlluminateTestCase
     {
         parent::setUp();
 
-        if (static::$migrated) {
-            return;
-        }
+        $this->afterApplicationCreated(function () {
+            if (static::$migrated) {
+                return;
+            }
 
-        $this->performMigrations();
+            Artisan::call('migrate:fresh');
 
-        static::$migrated = true;
+            $this->preparePorter();
+        });
     }
 
-    protected function performMigrations()
+    protected function preparePorter()
     {
 
     }

@@ -1,17 +1,17 @@
-[req]
+[ req]
 distinguished_name = req_distinguished_name
 req_extensions = v3_req
 
 [req_distinguished_name]
 countryName = Country Name (2 letter code)
-countryName_default = US
+countryName_default = GB
 stateOrProvinceName = State or Province Name (full name)
-stateOrProvinceName_default = MN
+stateOrProvinceName_default = Berks
 localityName = Locality Name (eg, city)
-localityName_default = Minneapolis
-organizationalUnitName	= Organizational Unit Name (eg, section)
-organizationalUnitName_default	= Domain Control Validated
-commonName = Internet Widgits Ltd
+localityName_default = Reading
+organizationalUnitName = Organizational Unit Name (eg, section)
+organizationalUnitName_default = Developers
+commonName = {{ $url }}
 commonName_max	= 64
 
 [ v3_req ]

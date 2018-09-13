@@ -6,7 +6,7 @@ use App\Models\PhpVersion;
 use App\Models\Site;
 use Tests\BaseTestCase;
 
-class PhpVersionBaseTest extends BaseTestCase
+class PhpVersionTest extends BaseTestCase
 {
     /** @test */
     public function it_returns_a_safe_version_number()

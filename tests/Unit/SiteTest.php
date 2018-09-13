@@ -11,7 +11,7 @@ use App\Support\Nginx\SiteConfBuilder;
 use App\Support\Ssl\CertificateBuilder;
 use Tests\BaseTestCase;
 
-class SiteBaseTest extends BaseTestCase
+class SiteTest extends BaseTestCase
 {
     /** @test */
     public function it_builds_nginx_config()

@@ -88,7 +88,7 @@ class CertificateBuilder
         }
 
         exec(sprintf(
-            'openssl req -new -newkey rsa:2048 -days 730 -nodes -x509 -subj "/C=/ST=/O=%s/localityName=/commonName=%s/organizationalUnitName=Developers/emailAddress=%s/" -keyout %s -out %s',
+            'openssl req -new -newkey rsa:2048 -days 730 -nodes -x509 -subj "/C=GB/ST=Berks/O=%s/localityName=Reading/commonName=%s/organizationalUnitName=Developers/emailAddress=%s/" -keyout %s -out %s',
             $this->oName, $this->cName, $this->email, $paths->key, $paths->pem
         ));
 
@@ -158,8 +158,8 @@ class CertificateBuilder
     public function createSigningRequest($url, $keyPath, $csrPath, $confPath)
     {
         exec(sprintf(
-            'openssl req -new -key %s -out %s -subj "/C=/ST=/O=/localityName=/commonName=%s/organizationalUnitName=/emailAddress=%s%s/" -config %s',
-            $keyPath, $csrPath, $url, $url, '@'.$this->domain, $confPath
+            'openssl req -new -key %s -out %s -subj "/C=GB/ST=Berks/O=%s/localityName=Reading/commonName=%s/organizationalUnitName=Developers/emailAddress=%s%s/" -config %s',
+            $keyPath, $csrPath, $this->domain, $url, $url, '@'.$this->domain, $confPath
         ));
     }
 

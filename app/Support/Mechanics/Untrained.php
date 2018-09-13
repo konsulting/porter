@@ -63,7 +63,7 @@ class Untrained implements Mechanic
      */
     public function isTesting()
     {
-        return config('app.env') == 'testing';
+        return running_tests();
     }
 
     /**

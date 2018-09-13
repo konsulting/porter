@@ -9,6 +9,7 @@ use App\Support\Console\DockerCompose\YamlBuilder;
 use App\Support\Contracts\Cli;
 use App\Support\Contracts\ImageRepository;
 use App\Support\Contracts\ImageSetRepository;
+use App\Support\Images\Image;
 
 class Porter
 {
@@ -196,16 +197,6 @@ class Porter
     }
 
     /**
-     * Pull our docker images
-     */
-    public function pullImages()
-    {
-        foreach ($this->getDockerImageSet()->all() as $image) {
-            $this->cli->passthru("docker pull {$image->name}");
-        }
-    }
-
-    /**
      * Build the current images
      */
     public function buildImages()
@@ -223,6 +214,33 @@ class Porter
         foreach ($this->getDockerImageSet()->firstParty() as $image) {
             $this->cli->passthru("docker push {$image->name}");
         }
+    }
+
+    /**
+     * Pull our docker images
+     */
+    public function pullImages()
+    {
+        foreach ($this->getDockerImageSet()->all() as $image) {
+            if (running_tests() && $this->hasImage($image)) {
+                continue;
+            }
+
+            $this->cli->passthru("docker pull {$image->name}");
+        }
+    }
+
+    /**
+     * Check if we already have the image
+     *
+     * @param Image $image
+     * @return bool
+     */
+    public function hasImage(Image $image)
+    {
+        $output = $this->cli->exec("docker image inspect {$image->name}");
+
+        return strpos($output, "Error: No such image: {$image->name}") === false;
     }
 
     /**
