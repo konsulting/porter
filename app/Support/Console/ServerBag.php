@@ -29,17 +29,6 @@ class ServerBag
     }
 
     /**
-     * Static constructor
-     *
-     * @param array $overrides
-     * @return ServerBag
-     */
-    public static function withOverrides(array $overrides = [])
-    {
-        return new static($overrides);
-    }
-
-    /**
      * Get a server variable
      *
      * @param $key

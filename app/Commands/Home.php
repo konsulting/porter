@@ -32,7 +32,7 @@ class Home extends BaseCommand
             return;
         }
 
-        $path = realpath($this->argument('path') ?: getcwd());
+        $path = realpath($this->argument('path') ?: $this->cli->currentWorkingDirectory());
 
         $this->info('Setting home to ' . $path);
 

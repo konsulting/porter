@@ -6,9 +6,9 @@ use App\Models\PhpVersion;
 use App\Models\Setting;
 use App\Models\Site;
 use App\Porter;
-use App\Support\Console\DockerCompose\CliCommandFactory;
 use App\Support\Contracts\Cli;
 use App\Support\Nginx\SiteConfBuilder;
+use App\Support\Ssl\CertificateBuilder;
 use Tests\BaseTestCase;
 
 class SiteBaseTest extends BaseTestCase
@@ -47,7 +47,7 @@ class SiteBaseTest extends BaseTestCase
     /** @test */
     public function it_sets_the_nginx_type()
     {
-        $this->siteFilesShouldBeBuilt();
+        $this->shouldBuildNginxFiles();
         $this->shouldRestartServing();
 
         $site = factory(Site::class)->create();
@@ -74,7 +74,7 @@ class SiteBaseTest extends BaseTestCase
     /** @test */
     public function it_sets_the_php_version()
     {
-        $this->siteFilesShouldBeBuilt();
+        $this->shouldBuildNginxFiles();
         $this->shouldRestartServing();
 
         $site = factory(Site::class)->create();
@@ -87,7 +87,7 @@ class SiteBaseTest extends BaseTestCase
     /** @test */
     public function it_uses_the_default_php_version_if_not_specified()
     {
-        $this->siteFilesShouldBeBuilt();
+        $this->shouldBuildNginxFiles();
         $this->shouldRestartServing();
 
         $site = factory(Site::class)->create();
@@ -97,12 +97,197 @@ class SiteBaseTest extends BaseTestCase
         $this->assertEquals($defaultVersion->fresh(), $site->php_version);
     }
 
+    /** @test */
+    public function it_will_resolve_a_site_name_from_a_path()
+    {
+        Setting::updateOrCreate('home', '/Users/keoghan/Code');
+
+        $this->assertEquals('sample', Site::nameFromPath('/Users/keoghan/Code/sample'));
+    }
+
+    /** @test */
+    public function it_will_return_null_if_the_path_is_outside_the_home_dir()
+    {
+        Setting::updateOrCreate('home', '/Users/keoghan/Code');
+
+        $this->assertNull(Site::nameFromPath('/tmp/sample'));
+    }
+
+    /** @test */
+    public function it_will_resolve_a_site_from_a_path()
+    {
+        Setting::updateOrCreate('home', '/Users/keoghan/Code');
+
+        $site = factory(Site::class)->create(['name' => 'sample']);
+
+        $this->assertEquals(
+            $site->getKey(),
+            Site::resolveFromPathOrCurrentWorkingDirectory('/Users/keoghan/Code/sample')->getKey()
+        );
+    }
+
+    /** @test */
+    public function it_will_not_resolve_a_missing_site_from_a_path()
+    {
+        Setting::updateOrCreate('home', '/Users/keoghan/Code');
+
+        $this->assertNull(
+            Site::resolveFromPathOrCurrentWorkingDirectory('/Users/keoghan/Code/sample')
+        );
+    }
+
+
+    /** @test */
+    public function it_will_resolve_a_site_from_the_current_working_directory()
+    {
+        Setting::updateOrCreate('home', '/Users/keoghan/Code');
+
+        $site = factory(Site::class)->create(['name' => 'sample']);
+
+        app()->instance(Cli::class, \Mockery::mock(Cli::class));
+
+        app(Cli::class)
+            ->shouldReceive('currentWorkingDirectory')
+            ->andReturn('/Users/keoghan/Code/sample');
+
+        $this->assertEquals(
+            $site->getKey(),
+            Site::resolveFromPathOrCurrentWorkingDirectory()->getKey()
+        );
+    }
+
+    /** @test */
+    public function resolving_sites_or_failing_works()
+    {
+        Setting::updateOrCreate('home', '/Users/keoghan/Code');
+
+        $site = factory(Site::class)->create(['name' => 'sample']);
+
+        $this->assertEquals(
+            $site->getKey(),
+            Site::resolveFromPathOrCurrentWorkingDirectoryOrFail('/Users/keoghan/Code/sample')->getKey()
+        );
+
+        try {
+            Site::resolveFromPathOrCurrentWorkingDirectoryOrFail('/Users/keoghan/Code/non-existent');
+            $this->fail('Should have failed for a missing site.');
+        } catch (\Exception $e) {
+            $this->assertEquals('Site not found.', $e->getMessage());
+        }
+    }
+
+    /** @test */
+    public function it_will_create_a_site_from_only_a_name()
+    {
+        $version = factory(PhpVersion::class)->state('default')->create();
+
+        $site = Site::createForName('sample');
+
+        $this->assertArraySubset([
+            'name' => 'sample',
+            'nginx_conf' => 'default',
+            'php_version_id' => $version->getKey(),
+            'secure' => false,
+        ], $site->toArray());
+    }
+
+    /** @test */
+    public function it_will_create_a_site_from_a_name_if_it_doesnt_exist()
+    {
+        $version = factory(PhpVersion::class)->state('default')->create();
+
+        $site = Site::firstOrCreateForName('sample');
+
+        $this->assertArraySubset([
+            'name' => 'sample',
+            'nginx_conf' => 'default',
+            'php_version_id' => $version->getKey(),
+            'secure' => false,
+        ], $site->toArray());
+
+        $found = Site::firstOrCreateForName('sample');
+
+        $this->assertSame($site->getKey(), $found->getKey());
+    }
+
+    /** @test */
+    public function it_builds_a_certificate()
+    {
+        Setting::updateOrCreate('domain', 'test');
+
+        $site = factory(Site::class)->create(['name' => 'sample']);
+
+        $this->shouldAddCertificate('sample.test');
+
+        $site->buildCertificate();
+    }
+
+    /** @test */
+    public function it_removes_a_certificate()
+    {
+        Setting::updateOrCreate('domain', 'test');
+
+        $site = factory(Site::class)->create(['name' => 'sample']);
+
+        $this->shouldRemoveCertificate('sample.test');
+
+        $site->destroyCertificate();
+    }
+
+    /** @test */
+    public function it_secures_a_site()
+    {
+        Setting::updateOrCreate('domain', 'test');
+
+        $site = factory(Site::class)->create(['name' => 'sample']);
+
+        $this->shouldAddCertificate('sample.test');
+        $this->shouldBuildNginxFiles();
+        $this->shouldRestartServing();
+
+        $site->secure();
+
+        $this->assertEquals(1, $site->refresh()->secure);
+    }
+
+    /** @test */
+    public function it_unsecures_a_site()
+    {
+        Setting::updateOrCreate('domain', 'test');
+
+        $site = factory(Site::class)->create(['name' => 'sample', 'secure' => true]);
+
+        $this->shouldRemoveCertificate('sample.test');
+        $this->shouldBuildNginxFiles();
+        $this->shouldRestartServing();
+
+        $site->unsecure();
+
+        $this->assertEquals(0, $site->fresh()->secure);
+    }
+
+    /** @test */
+    public function it_removes_a_site()
+    {
+        Setting::updateOrCreate('domain', 'test');
+
+        $site = factory(Site::class)->create(['name' => 'sample', 'secure' => true]);
+
+        $this->shouldRemoveCertificate('sample.test');
+        $this->shouldRemoveNginxFiles();
+        $this->shouldRestartServing();
+
+        $site->remove();
+
+        $this->assertNull(Site::find($site->getKey()));
+    }
+
     /**
      * Ensure that the site config builder is asked to build files.
      *
      * @return void
      */
-    protected function siteFilesShouldBeBuilt(): void
+    protected function shouldBuildNginxFiles(): void
     {
         $this->app->extend(SiteConfBuilder::class, function ($builder, $app) {
             $mock = \Mockery::mock(SiteConfBuilder::class);
@@ -113,11 +298,70 @@ class SiteBaseTest extends BaseTestCase
         });
     }
 
+    /**
+     * Ensure that the site config builder is asked to build files.
+     *
+     * @return void
+     */
+    protected function shouldRemoveNginxFiles(): void
+    {
+        $this->app->extend(SiteConfBuilder::class, function ($builder, $app) {
+            $mock = \Mockery::mock(SiteConfBuilder::class);
+            $mock->shouldReceive('destroy')
+                ->once();
+
+            return $mock;
+        });
+    }
+
+    /**
+     * Ensure Porter is asked to restart serving sites
+     *
+     * @return void
+     */
     protected function shouldRestartServing()
     {
         $this->app->extend(Porter::class, function ($builder, $app) {
             $mock = \Mockery::mock(Porter::class);
             $mock->shouldReceive('restartServing')
+                ->once();
+
+            return $mock;
+        });
+    }
+
+    /**
+     * Ensure that the certificate builder is asked to build a certificate.
+     *
+     * @param $forUrl
+     *
+     * @return void
+     */
+    protected function shouldAddCertificate($forUrl): void
+    {
+        $this->app->extend(CertificateBuilder::class, function ($builder, $app) use ($forUrl) {
+            $mock = \Mockery::mock(CertificateBuilder::class);
+            $mock->shouldReceive('build')
+                ->with($forUrl)
+                ->once();
+
+            return $mock;
+        });
+    }
+
+    /**
+     * Ensure that the certificate builder is asked to remove a certificate.
+     *
+     * @param $forUrl
+     *
+     * @return void
+     */
+    protected function shouldRemoveCertificate($forUrl): void
+    {
+        $this->app->extend(CertificateBuilder::class, function ($builder, $app) use ($forUrl) {
+            $mock = \Mockery::mock(CertificateBuilder::class);
+            $mock->shouldReceive('destroy')
+                ->with($forUrl)
                 ->once();
 
             return $mock;

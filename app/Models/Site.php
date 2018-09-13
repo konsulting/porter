@@ -160,8 +160,6 @@ class Site extends Model
 
         $this->delete();
 
-        $this->buildFiles();
-
         $this->getPorter()->restartServing();
     }
 
@@ -286,7 +284,7 @@ class Site extends Model
     {
         $home = setting('home');
 
-        if (! str_start($path, $home)) {
+        if (strpos($path, $home) !== 0) {
             return null;
         }
 
