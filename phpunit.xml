@@ -16,6 +16,12 @@
             <directory suffix="Test.php">./tests/Unit</directory>
         </testsuite>
     </testsuites>
+    <groups>
+        <exclude>
+            <group>docker</group>
+            <group>certificates</group>
+        </exclude>
+    </groups>
     <listeners>
         <listener class="NunoMaduro\Collision\Adapters\Phpunit\Listener"/>
     </listeners>
