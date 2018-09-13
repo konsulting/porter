@@ -4,9 +4,11 @@ namespace Tests\Feature;
 
 use App\Porter;
 use Illuminate\Support\Facades\Artisan;
+use Tests\BaseTestCase;
 
-class PorterServesSitesTest extends TestCase
+class PorterServesSitesTest extends BaseTestCase
 {
+    /** @var Porter */
     protected $porter;
 
     public function setUp() :void
@@ -14,22 +16,19 @@ class PorterServesSitesTest extends TestCase
         parent::setUp();
 
         $this->porter = app(Porter::class);
-        Artisan::call('begin', ['home' => __DIR__.'/../TestWebRoot']);
+
+        Artisan::call('begin', ['home' => __DIR__.'/../TestWebRoot', '--force' => true]);
 
         Artisan::call('start');
 
-        if (! $this->porter->isUp()) {
-            throw new \Exception('Porter could not be started');
-        }
+        $this->assertTrue($this->porter->isUp(), 'Porter could not start.');
     }
 
     public function tearDown()
     {
         Artisan::call('stop');
 
-        if ($this->porter->isUp()) {
-            throw new \Exception('Porter could not be stopped');
-        }
+        $this->assertFalse($this->porter->isUp(), 'Porter is still up and should have stopped.');
 
         parent::tearDown();
     }
@@ -47,7 +46,22 @@ class PorterServesSitesTest extends TestCase
         $this->assertContains('php', $phpinfo);
     }
 
-    protected function get($url)
+    protected function buildResolveOption($url)
+    {
+        $scheme = parse_url($url, PHP_URL_SCHEME);
+        $host = parse_url($url, PHP_URL_HOST);
+
+        $port = $scheme == 'http' ? 80 : 443;
+
+        return ["{$host}:{$port}:127.0.0.1"];
+    }
+
+    /**
+     * @param string $url
+     * @return \Illuminate\Foundation\Testing\TestResponse|mixed
+     * @throws \Exception
+     */
+    public function get($url, array $headers = [])
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -65,15 +79,5 @@ class PorterServesSitesTest extends TestCase
         curl_close ($ch);
 
         return $phpinfo;
-    }
-
-    protected function buildResolveOption($url)
-    {
-        $scheme = parse_url($url, PHP_URL_SCHEME);
-        $host = parse_url($url, PHP_URL_HOST);
-
-        $port = $scheme == 'http' ? 80 : 443;
-
-        return ["{$host}:{$port}:127.0.0.1"];
     }
 }

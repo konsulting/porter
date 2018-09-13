@@ -12,9 +12,9 @@ use App\Support\Contracts\ImageRepository as ImageRepositoryContract;
 use App\Support\Contracts\ImageSetRepository as ImageSetRepositoryContract;
 use App\Support\Images\Image;
 use Mockery\MockInterface;
-use Tests\TestCase;
+use Tests\BaseTestCase;
 
-class PorterTest extends TestCase
+class PorterBaseTest extends BaseTestCase
 {
     /** @var Porter */
     protected $porter;
