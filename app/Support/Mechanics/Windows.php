@@ -2,8 +2,6 @@
 
 namespace App\Support\Mechanics;
 
-use App\Support\Console\ServerBag;
-
 class Windows extends Untrained
 {
     /**
@@ -13,8 +11,17 @@ class Windows extends Untrained
      */
     public function getUserHomePath()
     {
-        $bag = app(ServerBag::class);
+        return $this->serverBag->get('HOME') ?? $this->serverBag->get('HOMEDRIVE').$this->serverBag->get('HOMEPATH');
+    }
 
-        return $bag->get('HOME') ?? $bag->get('HOMEDRIVE').$bag->get('HOMEPATH');
+    /**
+     * Flush the host system DNS cache
+     *
+     * @return void
+     */
+    public function flushDns()
+    {
+        $this->consoleWriter->info('Flushing DNS.');
+        $this->cli->passthru('ipconfig /flushdns');
     }
 }

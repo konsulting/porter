@@ -1,7 +1,5 @@
 <?php
 
-use App\Support\Mechanics\ChooseMechanic;
-
 return [
 
     /*
@@ -16,8 +14,8 @@ return [
     */
     'connections' => [
         'default' => [
-            'driver'   => env('DB_CONNECTION', 'sqlite'),
-            'database' => ChooseMechanic::forOS()->getUserHomePath().'/.porter/database.sqlite',
+            'driver'   => 'sqlite',
+            'database' => env('LIBRARY_PATH').'/database.sqlite',
         ],
     ],
 ];

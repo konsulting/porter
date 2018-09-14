@@ -25,7 +25,9 @@
         "illuminate/database": "5.6.*",
         "illuminate/view": "^5.6",
         "intonate/tinker-zero": "^1.0",
-        "laravel-zero/framework": "5.6.*"
+        "laravel-zero/framework": "5.6.*",
+        "league/flysystem": "^1.0",
+        "vlucas/phpdotenv": "^2.5"
     },
     "require-dev": {
         "mockery/mockery": "^1.1",

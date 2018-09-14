@@ -2,8 +2,6 @@
 
 namespace App\Support\Mechanics;
 
-use App\Support\Console\ServerBag;
-
 class Linux extends Untrained
 {
     /**
@@ -13,6 +11,6 @@ class Linux extends Untrained
      */
     public function getUserHomePath()
     {
-        return app(ServerBag::class)->get('HOME');
+        return $this->serverBag->get('HOME');
     }
 }

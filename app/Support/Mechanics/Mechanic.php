@@ -27,4 +27,11 @@ interface Mechanic
      * @return string
      */
     public function getUserHomePath();
+
+    /**
+     * Flush the host system DNS cache
+     *
+     * @return void
+     */
+    public function flushDns();
 }
