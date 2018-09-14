@@ -3,9 +3,17 @@
 namespace App\Support\Nginx;
 
 use App\Models\Site;
+use Illuminate\Filesystem\Filesystem;
 
 class SiteConfBuilder
 {
+    protected $files;
+
+    public function __construct(Filesystem $files)
+    {
+        $this->files = $files;
+    }
+
     /**
      * Build the nginx.conf file for a given site
      *
@@ -14,7 +22,7 @@ class SiteConfBuilder
      */
     public function build(Site $site)
     {
-        file_put_contents(
+        $this->files->put(
             $site->nginx_conf_path,
             view($site->nginx_conf_template)->with([
                 'site' => $site->url,
@@ -31,6 +39,6 @@ class SiteConfBuilder
      */
     public function destroy(Site $site)
     {
-        @unlink($site->nginx_conf_path);
+        $this->files->delete($site->nginx_conf_path);
     }
 }

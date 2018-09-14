@@ -2,8 +2,8 @@
 
 namespace Tests;
 
-use App\Providers\AppServiceProvider;
-use Faker\Provider\File;
+use App\PorterLibrary;
+use App\Support\FilePublisher;
 use Illuminate\Filesystem\Filesystem;
 use LaravelZero\Framework\Kernel;
 
@@ -20,27 +20,12 @@ trait CreatesApplication
 
         $app->make(Kernel::class)->bootstrap();
 
-        $this->setupStorage();
-
-        $app['config']->set('database.connections.default.database', storage_path('test_library') . '/testing.sqlite');
-        $app['config']->set('porter.docker-compose-file', storage_path('test_library/docker-compose.yaml'));
-        $app['config']->set('porter.library_path', storage_path('test_library'));
-
-        return $app;
-    }
-
-    /**
-     * Setup local storage for running the tests
-     */
-    public function setupStorage()
-    {
         $files = new FileSystem;
-
         $files->deleteDirectory(storage_path('test_library'));
 
-        $files->makeDirectory(storage_path('test_library/ssl'), 0755, true);
-        $files->makeDirectory(storage_path('test_library/config/nginx/conf.d/'), 0755, true);
+        $lib = new PorterLibrary(new FilePublisher($files), storage_path('test_library'));
+        $lib->dontMigrateAndSeedDatabase()->setUp($app);
 
-        $files->put(storage_path('test_library') . '/testing.sqlite', '');
+        return $app;
     }
 }

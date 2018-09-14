@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Porter;
+use App\PorterLibrary;
 use App\Support\Contracts\Cli;
 use App\Support\Nginx\SiteConfBuilder;
 use App\Support\Ssl\CertificateBuilder;
@@ -85,7 +86,7 @@ class Site extends Model
      */
     public function getNginxConfPathAttribute()
     {
-        return config('porter.library_path')."/config/nginx/conf.d/{$this->name}.conf";
+        return app(PorterLibrary::class)->configPath()."/nginx/conf.d/{$this->name}.conf";
     }
 
     /**

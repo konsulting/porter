@@ -13,6 +13,7 @@ class CertificateBuilderBaseTest extends BaseTestCase
     public function it_creates_a_certificate()
     {
         $dir = storage_path('test_library/ssl');
+        mkdir($dir, 0755, true);
 
         $builder = new CertificateBuilder($dir);
         $builder->build('klever.test');
@@ -31,6 +32,7 @@ class CertificateBuilderBaseTest extends BaseTestCase
     public function it_removes_a_certificate()
     {
         $dir = storage_path('test_library/ssl');
+        mkdir($dir, 0755, true);
 
         @touch($dir.'/klever.test.conf');
         @touch($dir.'/klever.test.crt');
