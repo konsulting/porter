@@ -2,6 +2,7 @@
 
 namespace App\Support\Console\DockerCompose;
 
+use App\PorterLibrary;
 use App\Support\Contracts\Cli;
 
 class CliCommand
@@ -129,7 +130,7 @@ class CliCommand
     {
         return trim(
             'docker-compose -f '
-            . config('porter.docker-compose-file')
+            . app(PorterLibrary::class)->dockerComposeFile()
             . ' -p porter '
             . $this->command
         );

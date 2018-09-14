@@ -5,6 +5,4 @@ return [
     'default-docker-image-set' => 'konsulting/porter-ubuntu',
 
     'library_path' => env('LIBRARY_PATH'),
-
-    'docker-compose-file' => env('LIBRARY_PATH').'/docker-compose.yaml',
 ];

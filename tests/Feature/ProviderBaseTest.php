@@ -10,8 +10,7 @@ class ProviderBaseTest extends BaseTestCase
     /** @test */
     public function it_passes_the_correct_ssl_directory_to_the_certificate_builder()
     {
-        config()->set('porter.library_path', '/my/path');
-        $certificateBuilder = app(CertificateBuilder::class);
+        $certificateBuilder = new CertificateBuilder('/my/path/ssl');
 
         $expected = [
             'key' => '/my/path/ssl/url.key',

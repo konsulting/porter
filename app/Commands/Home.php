@@ -36,7 +36,7 @@ class Home extends BaseCommand
 
         $this->info('Setting home to ' . $path);
 
-        Setting::where('name', 'home')->first()->update(['value' => $path]);
+        Setting::updateOrCreate('home', $path);
         $this->call('make-files');
     }
 }

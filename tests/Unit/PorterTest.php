@@ -5,12 +5,14 @@ namespace Tests\Unit;
 use App\Models\PhpVersion;
 use App\Models\Setting;
 use App\Porter;
+use App\PorterLibrary;
 use App\Support\Console\DockerCompose\CliCommandFactory;
 use App\Support\Console\DockerCompose\YamlBuilder;
 use App\Support\Contracts\Cli;
 use App\Support\Contracts\ImageRepository as ImageRepositoryContract;
 use App\Support\Contracts\ImageSetRepository as ImageSetRepositoryContract;
 use App\Support\Images\Image;
+use Illuminate\Filesystem\Filesystem;
 use Mockery\MockInterface;
 use Tests\BaseTestCase;
 
@@ -34,9 +36,9 @@ class PorterTest extends BaseTestCase
             new TestImageSetRepository,
             $this->cli,
             new CliCommandFactory($this->cli),
-            new YamlBuilder
+            new YamlBuilder(new Filesystem)
         );
-        $this->composeFile = config('porter.docker-compose-file');
+        $this->composeFile = app(PorterLibrary::class)->dockerComposeFile();
     }
 
     /**

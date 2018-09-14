@@ -21,6 +21,14 @@ class FilePublisher
         $this->files = $files;
     }
 
+    /**
+     * @return Filesystem
+     */
+    public function getFilesystem()
+    {
+        return $this->files;
+    }
+
     public function force($bool = true)
     {
         $this->force = (bool) $bool;

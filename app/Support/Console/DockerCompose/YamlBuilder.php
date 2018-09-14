@@ -3,10 +3,19 @@
 namespace App\Support\Console\DockerCompose;
 
 use App\Models\PhpVersion;
+use App\PorterLibrary;
 use App\Support\Contracts\ImageRepository;
+use Illuminate\Filesystem\Filesystem;
 
 class YamlBuilder
 {
+    protected $files;
+
+    public function __construct(Filesystem $files)
+    {
+        $this->files = $files;
+    }
+
     /**
      * Build the docker-compose.yaml file
      *
@@ -15,8 +24,10 @@ class YamlBuilder
      */
     public function build(ImageRepository $imageSet)
     {
-        file_put_contents(
-            config('porter.docker-compose-file'),
+        $lib = app(PorterLibrary::class);
+
+        $this->files->put(
+            $lib->dockerComposeFile(),
             view("docker_compose.{$imageSet->getName()}.base")->with([
                 'home' => setting('home'),
                 'host_machine_name' => setting('host_machine_name'),
@@ -26,7 +37,7 @@ class YamlBuilder
                 'useBrowser' => setting('use_browser') == 'on',
                 'imageSet' => $imageSet->getName(),
                 'imageSetPath' => $imageSet->getPath(),
-                'libraryPath' => config('porter.library_path'),
+                'libraryPath' => $lib->path(),
             ])->render()
         );
     }
@@ -36,6 +47,6 @@ class YamlBuilder
      */
     public function destroy()
     {
-        @unlink(config('porter.docker-compose-file'));
+        $this->files->delete(app(PorterLibrary::class)->dockerComposeFile());
     }
 }

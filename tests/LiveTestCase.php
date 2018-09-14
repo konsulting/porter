@@ -33,6 +33,7 @@ class LiveTestCase extends BaseTestCase
     protected function preparePorter()
     {
         Artisan::call('begin', ['home' => __DIR__.'/TestWebRoot', '--force' => true]);
+        Artisan::call('db:seed');
     }
 
     /**
