@@ -135,6 +135,10 @@ Enabled by default. Available on the host machine on port 16379`.
 
 Redis data is stored in `~/.porter/data/redis`.
 
+## DNS
+
+ - `porter dns:flush` - flush your local machine's DNS in cases where it's getting a bit confused, saves you looking up the command we hope.
+
 ## Email
 
 We have a [MailHog](https://github.com/mailhog/MailHog) container, all emails are routed to this container from PHP when using the `mail()` function. 
