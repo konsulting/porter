@@ -18,3 +18,9 @@ filter:
   - 'tests/*'
 checks:
   php: true
+build_failure_conditions:
+- 'elements.rating(<= D).exists'                              # No classes/methods with a rating of D or worse
+- 'elements.rating(<= C).new.exists'                          # No new classes/methods with a rating of C or worse
+- 'issues.severity(>= MAJOR).new.exists'                      # New issues of major or higher severity
+- 'project.metric("scrutinizer.quality", < 9.5)'              # Code Quality Rating drops below 9.5
+- 'project.metric_change("scrutinizer.test_coverage", < 0)'   # Code Coverage decreased from previous inspection
