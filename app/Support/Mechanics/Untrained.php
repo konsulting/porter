@@ -4,24 +4,32 @@ namespace App\Support\Mechanics;
 
 
 use App\Support\Console\ConsoleWriter;
-use App\Support\Mechanics\Mechanic;
+use App\Support\Console\ServerBag;
+use App\Support\Contracts\Cli;
 
 class Untrained implements Mechanic
 {
-    /** @var array */
-    protected $commands = [];
+    /** @var Cli */
+    protected $cli;
 
     /** @var ConsoleWriter */
-    protected $console;
+    protected $consoleWriter;
+
+    /** @var ServerBag */
+    protected $serverBag;
 
     /**
      * Untrained constructor.
      *
-     * @param \App\Support\Console\ConsoleWriter $console
+     * @param Cli $cli
+     * @param ConsoleWriter $consoleWriter
+     * @param ServerBag $serverBag
      */
-    public function __construct(ConsoleWriter $console)
+    public function __construct(Cli $cli, ConsoleWriter $consoleWriter, ServerBag $serverBag)
     {
-        $this->console = $console;
+        $this->cli = $cli;
+        $this->consoleWriter = $consoleWriter;
+        $this->serverBag = $serverBag;
     }
 
     /**
@@ -57,6 +65,16 @@ class Untrained implements Mechanic
     }
 
     /**
+     * Flush the host system DNS cache
+     *
+     * @return void
+     */
+    public function flushDns()
+    {
+        $this->iAmNotTrainedTo('flush the DNS');
+    }
+
+    /**
      * Check if we're running in test mode
      *
      * @return bool
@@ -67,23 +85,13 @@ class Untrained implements Mechanic
     }
 
     /**
-     * Return commands we've run
-     *
-     * @return mixed
-     */
-    public function getCommands()
-    {
-        return $this->commands;
-    }
-
-    /**
      * Give a nice message about not being trained
      *
      * @param $activity
      */
     protected function iAmNotTrainedTo($activity)
     {
-        $this->console->info("I haven't been trained to {$activity} on this system.");
-        $this->console->info("You are welcome to train me and submit a PR.");
+        $this->consoleWriter->info("I haven't been trained to {$activity} on this system.");
+        $this->consoleWriter->info("You are welcome to train me and submit a PR.");
     }
 }

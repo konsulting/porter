@@ -2,8 +2,9 @@
 
 namespace App\Commands;
 
-use App\Providers\AppServiceProvider;
+use App\Support\FilePublisher;
 use App\Support\Database\Database;
+use App\Support\Mechanics\ChooseMechanic;
 
 class Begin extends BaseCommand
 {
@@ -31,6 +32,28 @@ class Begin extends BaseCommand
         $force = $this->option('force');
         $home = realpath($this->argument('home') ?: $this->cli->currentWorkingDirectory());
 
+        if (! config('porter.library_path')) {
+            $libraryPath = ChooseMechanic::forOS()->getUserHomePath().'/.porter';
+
+            $this->app->make(FilePublisher::class)->publish(
+                base_path('.env.example'),
+                base_path('.env')
+            );
+
+            $envContent = $this->app['files']->get(base_path('.env'));
+            $envContent = preg_replace('/LIBRARY_PATH=.*\n/', "LIBRARY_PATH=\"{$libraryPath}\"\n", $envContent);
+            $this->app['files']->put(base_path('.env'), $envContent);
+
+            $this->app['config']->set('database.connection.default.database', $libraryPath.'/database.sqlite');
+            $this->app['config']->set('porter.library_path', $libraryPath);
+            $this->app['config']->set('porter.docker-compose-file', $libraryPath.'/docker-compose.yaml');
+        }
+
+        if (! config('porter.library_path')) {
+            $this->error('Failed detecting and setting the library path for Porter');
+            die();
+        }
+
         if (! $force && Database::exists()) {
             $this->error("Already began, so we've stopped to avoid wiping your settings.");
             $this->error("If you definitely want to continue, you can force with the --force flag.");
@@ -42,11 +65,10 @@ class Begin extends BaseCommand
         $this->line("================");
         $this->line("");
 
-        if (! file_exists(config('porter.library_path'))) {
-            mkdir(config('porter.library_path'));
-        }
-
-        $this->callSilent('vendor:publish', ['--provider' => AppServiceProvider::class]);
+        $this->app->make(FilePublisher::class)->publish(
+            resource_path('stubs/config'),
+            config('porter.library_path').'/config'
+        );
 
         Database::ensureExists($force);
 

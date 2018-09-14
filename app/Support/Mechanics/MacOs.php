@@ -2,10 +2,6 @@
 
 namespace App\Support\Mechanics;
 
-use App\Support\Console\Cli;
-use App\Support\Console\ServerBag;
-use Illuminate\Support\MessageBag;
-
 class MacOs extends Untrained
 {
     /**
@@ -16,17 +12,16 @@ class MacOs extends Untrained
      */
     public function trustCA($pem)
     {
-        $this->console->info('Auto Trust CA Certificate, needs sudo privilege. Please provide your sudo password.');
+        $this->consoleWriter->info('Auto Trust CA Certificate, needs sudo privilege. Please provide your sudo password.');
 
         $command = "sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain {$pem}";
-        $this->commands[] = $command;
 
         if($this->isTesting()) {
-            $this->console->info("Did not trust CA during testing.");
+            $this->consoleWriter->info("Did not trust CA during testing.");
             return;
         }
 
-        app(Cli::class)->passthru($command);
+        $this->cli->passthru($command);
     }
 
     /**
@@ -37,17 +32,16 @@ class MacOs extends Untrained
      */
     public function trustCertificate($crt)
     {
-        $this->console->info('Auto Trust Certificate, needs sudo privilege. Please provide your sudo password.');
+        $this->consoleWriter->info('Auto Trust Certificate, needs sudo privilege. Please provide your sudo password.');
 
         $command = "sudo security add-trusted-cert -d -r trustAsRoot -k /Library/Keychains/System.keychain {$crt}";
-        $this->commands[] = $command;
 
         if($this->isTesting()) {
-            $this->console->info("Did not trust Certificate during testing.");
+            $this->consoleWriter->info("Did not trust Certificate during testing.");
             return;
         }
 
-        app(Cli::class)->passthru($command);
+        $this->cli->passthru($command);
     }
 
     /**
@@ -57,6 +51,17 @@ class MacOs extends Untrained
      */
     public function getUserHomePath()
     {
-        return app(ServerBag::class)->get('HOME');
+        return $this->serverBag->get('HOME');
+    }
+
+    /**
+     * Flush the host system DNS cache
+     *
+     * @return void
+     */
+    public function flushDns()
+    {
+        $this->consoleWriter->info('Flushing DNS. Requires sudo permissions.');
+        $this->cli->passthru('sudo killall -HUP mDNSResponder');
     }
 }

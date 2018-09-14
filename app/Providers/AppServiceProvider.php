@@ -42,7 +42,5 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(CertificateBuilder::class, function () {
             return new CertificateBuilder(config('porter.library_path') . '/ssl');
         });
-
-        $this->publishes([resource_path('stubs/config') => config('porter.library_path').'/config']);
     }
 }

@@ -2,17 +2,18 @@
 
 namespace Tests\Unit\Support\Mechanics;
 
-use App\Support\Console\ServerBag;
 use App\Support\Mechanics\Windows;
-use Tests\BaseTestCase;
 
-class WindowsBaseTest extends BaseTestCase
+class WindowsBaseTest extends MechanicTestCase
 {
+    protected $mechanicClass = Windows::class;
+
     /** @test */
     public function it_returns_the_home_directory()
     {
-        $this->app->instance(ServerBag::class, new ServerBag(['HOME'=>'C:\Users\keoghan']));
-
-        $this->assertEquals('C:\Users\keoghan', app(Windows::class)->getUserHomePath());
+        $this->assertEquals(
+            'C:\Users\keoghan',
+            $this->getMechanic(['HOME'=>'C:\Users\keoghan'])->getUserHomePath()
+        );
     }
 }

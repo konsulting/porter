@@ -1,7 +1,8 @@
-/vendor
+/.env
 /.idea
 /.vscode
 /.vagrant
+
 /docker-compose.yaml
 /database/database.sqlite
 /database/testing.sqlite
@@ -11,5 +12,7 @@
 
 /storage/framework/views/*
 /storage/test_library
+
+/vendor
 
 !.gitkeep
