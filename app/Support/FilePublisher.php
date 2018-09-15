@@ -16,12 +16,19 @@ class FilePublisher
 
     protected $force = false;
 
+    /**
+     * FilePublisher constructor.
+     *
+     * @param Filesystem $files
+     */
     public function __construct(Filesystem $files)
     {
         $this->files = $files;
     }
 
     /**
+     * Get the Filesystem
+     *
      * @return Filesystem
      */
     public function getFilesystem()
@@ -29,6 +36,12 @@ class FilePublisher
         return $this->files;
     }
 
+    /**
+     * Set the publisher to force publish the files, or not.
+     *
+     * @param bool $bool
+     * @return $this
+     */
     public function force($bool = true)
     {
         $this->force = (bool) $bool;

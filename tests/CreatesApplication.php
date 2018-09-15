@@ -13,6 +13,8 @@ trait CreatesApplication
      * Creates the application and returns it.
      *
      * @return \Illuminate\Contracts\Foundation\Application
+     *
+     * @throws \App\Exceptions\PorterSetupFailed
      */
     public function createApplication()
     {

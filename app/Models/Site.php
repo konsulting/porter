@@ -86,7 +86,7 @@ class Site extends Model
      */
     public function getNginxConfPathAttribute()
     {
-        return app(PorterLibrary::class)->configPath()."/nginx/conf.d/{$this->name}.conf";
+        return $this->getPorterLibrary()->configPath()."/nginx/conf.d/{$this->name}.conf";
     }
 
     /**
@@ -256,6 +256,16 @@ class Site extends Model
     protected function getPorter()
     {
         return app(Porter::class);
+    }
+
+    /**
+     * Get PorterLibrary
+     *
+     * @return PorterLibrary
+     */
+    protected function getPorterLibrary()
+    {
+        return app(PorterLibrary::class);
     }
 
     /**

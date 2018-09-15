@@ -9,11 +9,16 @@ use Illuminate\Filesystem\Filesystem;
 
 class YamlBuilder
 {
+    /** @var Filesystem */
     protected $files;
 
-    public function __construct(Filesystem $files)
+    /** @var PorterLibrary */
+    private $porterLibrary;
+
+    public function __construct(Filesystem $files, PorterLibrary $porterLibrary)
     {
         $this->files = $files;
+        $this->porterLibrary = $porterLibrary;
     }
 
     /**
@@ -24,10 +29,8 @@ class YamlBuilder
      */
     public function build(ImageRepository $imageSet)
     {
-        $lib = app(PorterLibrary::class);
-
         $this->files->put(
-            $lib->dockerComposeFile(),
+            $this->porterLibrary->dockerComposeFile(),
             view("docker_compose.{$imageSet->getName()}.base")->with([
                 'home' => setting('home'),
                 'host_machine_name' => setting('host_machine_name'),
@@ -37,7 +40,7 @@ class YamlBuilder
                 'useBrowser' => setting('use_browser') == 'on',
                 'imageSet' => $imageSet->getName(),
                 'imageSetPath' => $imageSet->getPath(),
-                'libraryPath' => $lib->path(),
+                'libraryPath' => $this->porterLibrary->path(),
             ])->render()
         );
     }
@@ -47,6 +50,6 @@ class YamlBuilder
      */
     public function destroy()
     {
-        $this->files->delete(app(PorterLibrary::class)->dockerComposeFile());
+        $this->files->delete($this->porterLibrary->dockerComposeFile());
     }
 }

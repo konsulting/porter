@@ -3,7 +3,7 @@
 namespace App\Commands;
 
 use App\Models\Setting;
-use App\Support\Dnsmasq\Container as DnsmasqContainer;
+use App\Support\Dnsmasq\Config;
 
 class Domain extends BaseCommand
 {
@@ -39,7 +39,7 @@ class Domain extends BaseCommand
 
         Setting::where('name', 'domain')->first()->update(['value' => $domain]);
 
-        (new DnsmasqContainer)->updateDomain($old, $domain);
+        app()->make(Config::class)->updateDomain($old, $domain);
 
         $this->call('site:renew-certs');
         $this->call('make-files');

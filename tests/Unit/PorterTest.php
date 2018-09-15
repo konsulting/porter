@@ -36,7 +36,7 @@ class PorterTest extends BaseTestCase
             new TestImageSetRepository,
             $this->cli,
             new CliCommandFactory($this->cli),
-            new YamlBuilder(new Filesystem)
+            new YamlBuilder(new Filesystem, app(PorterLibrary::class))
         );
         $this->composeFile = app(PorterLibrary::class)->dockerComposeFile();
     }
