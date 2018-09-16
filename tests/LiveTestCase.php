@@ -38,8 +38,10 @@ class LiveTestCase extends BaseTestCase
 
     /**
      * @param string $url
-     * @return \Illuminate\Foundation\Testing\TestResponse|mixed
+     *
      * @throws \Exception
+     *
+     * @return \Illuminate\Foundation\Testing\TestResponse|mixed
      */
     public function get($url, array $headers = [])
     {
@@ -59,7 +61,7 @@ class LiveTestCase extends BaseTestCase
         if (curl_errno($ch)) {
             throw new \Exception('Curl failed. '.curl_error($ch));
         }
-        curl_close ($ch);
+        curl_close($ch);
 
         return $phpinfo;
     }

@@ -30,8 +30,9 @@ class Domain extends BaseCommand
     {
         $domain = $this->argument('domain');
 
-        if (! $domain) {
+        if (!$domain) {
             $this->info(sprintf("The current domain is '%s'", setting('domain')));
+
             return;
         }
 

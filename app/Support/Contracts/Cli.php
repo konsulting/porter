@@ -8,6 +8,7 @@ interface Cli
      * Execute a command.
      *
      * @param string $command
+     *
      * @return string
      */
     public function exec($command);
@@ -16,6 +17,7 @@ interface Cli
      * Execute a command in real time.
      *
      * @param string $command
+     *
      * @return string
      */
     public function execRealTime($command);
@@ -24,12 +26,13 @@ interface Cli
      * Execute a command and allow the user to interact with it.
      *
      * @param string $command
+     *
      * @return void
      */
     public function passthru($command);
 
     /**
-     * Return the current working directory
+     * Return the current working directory.
      *
      * @return string
      */

@@ -35,7 +35,7 @@ class MakeFiles extends BaseCommand
 
         $this->porter->compose();
 
-        foreach(Site::all() as $site) {
+        foreach (Site::all() as $site) {
             $site->buildFiles();
         }
 

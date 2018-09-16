@@ -19,21 +19,21 @@ interface ImageRepository
     public function thirdParty();
 
     /**
-     * Return a full listing of images
+     * Return a full listing of images.
      *
      * @return array
      */
     public function all();
 
     /**
-     * Return the path
+     * Return the path.
      *
      * @return string
      */
     public function getPath();
 
     /**
-     * Return the name
+     * Return the name.
      *
      * @return string
      */

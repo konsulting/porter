@@ -29,12 +29,13 @@ class Open extends BaseCommand
     {
         if (setting('use_redis') != 'on') {
             $this->error('Not using docker redis');
+
             return;
         }
 
         $this->dockerCompose
-            ->runContainer("redis")
-            ->append("redis-cli -h redis")
+            ->runContainer('redis')
+            ->append('redis-cli -h redis')
             ->interactive()
             ->perform();
     }

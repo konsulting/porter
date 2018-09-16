@@ -15,9 +15,10 @@ class SiteConfBuilder
     }
 
     /**
-     * Build the nginx.conf file for a given site
+     * Build the nginx.conf file for a given site.
      *
      * @param \App\Models\Site $site
+     *
      * @throws \Throwable
      */
     public function build(Site $site)
@@ -25,15 +26,15 @@ class SiteConfBuilder
         $this->files->put(
             $site->nginx_conf_path,
             view($site->nginx_conf_template)->with([
-                'site' => $site->url,
-                'name' => $site->name,
-                'version' => $site->php_version->safe
+                'site'    => $site->url,
+                'name'    => $site->name,
+                'version' => $site->php_version->safe,
             ])->render()
         );
     }
 
     /**
-     * Destroy the nginx.conf conf for a given site
+     * Destroy the nginx.conf conf for a given site.
      *
      * @param \App\Models\Site $site
      */

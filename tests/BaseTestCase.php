@@ -48,7 +48,7 @@ abstract class BaseTestCase extends IlluminateTestCase
     }
 
     /**
-     * Re-make Porter class for tests, since we adjusted the PorterLibrary
+     * Re-make Porter class for tests, since we adjusted the PorterLibrary.
      */
     protected function remakePorter()
     {

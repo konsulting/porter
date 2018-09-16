@@ -44,6 +44,6 @@ class ListSites extends BaseCommand
             });
 
         $this->table($headers, $sites);
-        $this->info('The default PHP version is '. PHPVersion::defaultVersion()->version_number);
+        $this->info('The default PHP version is '.PHPVersion::defaultVersion()->version_number);
     }
 }

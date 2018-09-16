@@ -35,7 +35,7 @@ class Porter
     protected $dockerCompose;
 
     /**
-     * The DockerCompose YAML file builder
+     * The DockerCompose YAML file builder.
      *
      * @var YamlBuilder
      */
@@ -62,9 +62,10 @@ class Porter
     }
 
     /**
-     * Check if the Porter containers are running
+     * Check if the Porter containers are running.
      *
      * @param string|null $service
+     *
      * @return bool
      */
     public function isUp($service = null)
@@ -73,7 +74,7 @@ class Porter
     }
 
     /**
-     * Create the docker-compose.yaml file
+     * Create the docker-compose.yaml file.
      */
     public function compose()
     {
@@ -81,10 +82,10 @@ class Porter
     }
 
     /**
-     * Start Porter containers, optionally start a specific service, and force them to be recreated
+     * Start Porter containers, optionally start a specific service, and force them to be recreated.
      *
      * @param string|null $service
-     * @param bool $recreate
+     * @param bool        $recreate
      */
     public function start($service = null, $recreate = false)
     {
@@ -94,7 +95,7 @@ class Porter
     }
 
     /**
-     * Stop Porter containers
+     * Stop Porter containers.
      *
      * @param string|null $service
      */
@@ -106,11 +107,11 @@ class Porter
             return;
         }
 
-        $this->dockerCompose->command("down --remove-orphans")->realTime()->perform();
+        $this->dockerCompose->command('down --remove-orphans')->realTime()->perform();
     }
 
     /**
-     * Restart Porter containers
+     * Restart Porter containers.
      *
      * @param string|null $service
      */
@@ -125,14 +126,14 @@ class Porter
     }
 
     /**
-     * Restart serving, picking up changes in used PHP versions and NGiNX
+     * Restart serving, picking up changes in used PHP versions and NGiNX.
      */
     public function restartServing()
     {
         // Build up docker-compose again - so we pick up any new PHP containers to be used
         $this->compose();
 
-        if (! $this->isUp()) {
+        if (!$this->isUp()) {
             return;
         }
 
@@ -150,7 +151,7 @@ class Porter
     }
 
     /**
-     * Turn a service on
+     * Turn a service on.
      *
      * @param string $service
      */
@@ -170,7 +171,7 @@ class Porter
     }
 
     /**
-     * Turn a service off
+     * Turn a service off.
      *
      * @param string $service
      */
@@ -189,7 +190,7 @@ class Porter
     }
 
     /**
-     * (Re)build Porter containers
+     * (Re)build Porter containers.
      */
     public function build()
     {
@@ -197,7 +198,7 @@ class Porter
     }
 
     /**
-     * Build the current images
+     * Build the current images.
      */
     public function buildImages()
     {
@@ -207,7 +208,7 @@ class Porter
     }
 
     /**
-     * Push the current images
+     * Push the current images.
      */
     public function pushImages()
     {
@@ -217,7 +218,7 @@ class Porter
     }
 
     /**
-     * Pull our docker images
+     * Pull our docker images.
      */
     public function pullImages()
     {
@@ -231,9 +232,10 @@ class Porter
     }
 
     /**
-     * Check if we already have the image
+     * Check if we already have the image.
      *
      * @param Image $image
+     *
      * @return bool
      */
     public function hasImage(Image $image)
@@ -256,7 +258,7 @@ class Porter
     }
 
     /**
-     * Show container status
+     * Show container status.
      */
     public function status()
     {
@@ -264,7 +266,7 @@ class Porter
     }
 
     /**
-     * Show container logs
+     * Show container logs.
      *
      * @param string|null $service
      */

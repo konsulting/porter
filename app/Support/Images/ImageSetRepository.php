@@ -16,9 +16,10 @@ class ImageSetRepository implements ImageSetRepositoryContract
     }
 
     /**
-     * Add a location for the where we may find docker files
+     * Add a location for the where we may find docker files.
      *
      * @param $location
+     *
      * @return ImageSetRepository
      */
     public function addLocation($location)
@@ -29,11 +30,13 @@ class ImageSetRepository implements ImageSetRepositoryContract
     }
 
     /**
-     * Get an image repository using the most recently added locations first
+     * Get an image repository using the most recently added locations first.
      *
      * @param $imageSetName
-     * @return string
+     *
      * @throws \Exception
+     *
+     * @return string
      */
     public function getImageRepository($imageSetName)
     {
@@ -48,7 +51,7 @@ class ImageSetRepository implements ImageSetRepositoryContract
     }
 
     /**
-     * Return a list of the available ImageSets
+     * Return a list of the available ImageSets.
      *
      * @return \Illuminate\Support\Collection
      */
@@ -61,7 +64,7 @@ class ImageSetRepository implements ImageSetRepositoryContract
                         Finder::create()->in($location)->depth(1)->directories()
                     );
                 } catch (\InvalidArgumentException $e) {
-                    return null;
+                    return;
                 }
             })->filter()
             ->map(function (SplFileInfo $directory) {
