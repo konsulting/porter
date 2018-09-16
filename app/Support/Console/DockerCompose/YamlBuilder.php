@@ -17,9 +17,10 @@ class YamlBuilder
     }
 
     /**
-     * Build the docker-compose.yaml file
+     * Build the docker-compose.yaml file.
      *
      * @param $imageSet
+     *
      * @throws \Throwable
      */
     public function build(ImageRepository $imageSet)
@@ -29,21 +30,21 @@ class YamlBuilder
         $this->files->put(
             $lib->dockerComposeFile(),
             view("docker_compose.{$imageSet->getName()}.base")->with([
-                'home' => setting('home'),
+                'home'              => setting('home'),
                 'host_machine_name' => setting('host_machine_name'),
                 'activePhpVersions' => PhpVersion::active()->get(),
-                'useMysql' => setting('use_mysql') == 'on',
-                'useRedis' => setting('use_redis') == 'on',
-                'useBrowser' => setting('use_browser') == 'on',
-                'imageSet' => $imageSet->getName(),
-                'imageSetPath' => $imageSet->getPath(),
-                'libraryPath' => $lib->path(),
+                'useMysql'          => setting('use_mysql') == 'on',
+                'useRedis'          => setting('use_redis') == 'on',
+                'useBrowser'        => setting('use_browser') == 'on',
+                'imageSet'          => $imageSet->getName(),
+                'imageSetPath'      => $imageSet->getPath(),
+                'libraryPath'       => $lib->path(),
             ])->render()
         );
     }
 
     /**
-     * Destroy the docker-compose.yaml file
+     * Destroy the docker-compose.yaml file.
      */
     public function destroy()
     {

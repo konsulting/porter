@@ -2,11 +2,10 @@
 
 namespace App\Support\Console;
 
-
 class ServerBag
 {
     /**
-     * Hold the values
+     * Hold the values.
      *
      * @var array
      */
@@ -29,9 +28,10 @@ class ServerBag
     }
 
     /**
-     * Get a server variable
+     * Get a server variable.
      *
      * @param $key
+     *
      * @return mixed
      */
     public function get($key)

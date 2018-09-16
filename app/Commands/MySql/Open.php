@@ -29,12 +29,13 @@ class Open extends BaseCommand
     {
         if (setting('use_mysql') != 'on') {
             $this->error('Not using docker mysql');
+
             return;
         }
 
         $this->dockerCompose
-            ->runContainer("mysql")
-            ->append("mysql -h mysql -uroot -psecret")
+            ->runContainer('mysql')
+            ->append('mysql -h mysql -uroot -psecret')
             ->interactive()
             ->perform();
     }

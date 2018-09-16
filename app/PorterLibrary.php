@@ -16,7 +16,7 @@ class PorterLibrary
     /** @var Filesystem */
     protected $files;
 
-    /** @var \App\Support\FilePublisher **/
+    /** @var \App\Support\FilePublisher * */
     protected $filePublisher;
 
     protected $shouldMigrateAndSeedDatabase = true;
@@ -70,11 +70,11 @@ class PorterLibrary
 
     public function setUp(Application $app, $force = false)
     {
-        if ($this->alreadySetUp() && ! $force) {
+        if ($this->alreadySetUp() && !$force) {
             return;
         }
 
-        if (! $this->path) {
+        if (!$this->path) {
             $this->path = ChooseMechanic::forOS()->getUserHomePath().'/.porter';
 
             $this->moveExistingConfig();
@@ -91,7 +91,7 @@ class PorterLibrary
             Artisan::call('db:seed');
         }
 
-        $app->instance(PorterLibrary::class, $this);
+        $app->instance(self::class, $this);
     }
 
     protected function publishEnv()
@@ -104,7 +104,7 @@ class PorterLibrary
 
     protected function moveExistingConfig()
     {
-        if (! $this->alreadySetUp()) {
+        if (!$this->alreadySetUp()) {
             return;
         }
 

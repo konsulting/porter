@@ -5,7 +5,7 @@ namespace App\Support\Mechanics;
 class Windows extends Untrained
 {
     /**
-     * Return the User's home directory path
+     * Return the User's home directory path.
      *
      * @return string
      */
@@ -15,7 +15,7 @@ class Windows extends Untrained
     }
 
     /**
-     * Flush the host system DNS cache
+     * Flush the host system DNS cache.
      *
      * @return void
      */

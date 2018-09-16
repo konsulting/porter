@@ -16,11 +16,11 @@ trait CreatesApplication
      */
     public function createApplication()
     {
-        $app = require __DIR__ . '/../bootstrap/app.php';
+        $app = require __DIR__.'/../bootstrap/app.php';
 
         $app->make(Kernel::class)->bootstrap();
 
-        $files = new FileSystem;
+        $files = new FileSystem();
         $files->deleteDirectory(storage_path('test_library'));
 
         $lib = new PorterLibrary(new FilePublisher($files), storage_path('test_library'));

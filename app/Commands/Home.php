@@ -28,13 +28,14 @@ class Home extends BaseCommand
     public function handle(): void
     {
         if ($this->option('show')) {
-            $this->info("Home is currently: ". setting('home'));
+            $this->info('Home is currently: '.setting('home'));
+
             return;
         }
 
         $path = realpath($this->argument('path') ?: $this->cli->currentWorkingDirectory());
 
-        $this->info('Setting home to ' . $path);
+        $this->info('Setting home to '.$path);
 
         Setting::updateOrCreate('home', $path);
         $this->call('make-files');

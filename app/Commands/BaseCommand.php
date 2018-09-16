@@ -9,10 +9,10 @@ use LaravelZero\Framework\Commands\Command;
 
 abstract class BaseCommand extends Command
 {
-    /** @var \App\Support\Console\Cli  */
+    /** @var \App\Support\Console\Cli */
     protected $cli;
 
-    /** @var CliCommandFactory  */
+    /** @var CliCommandFactory */
     protected $dockerCompose;
 
     /** @var Porter */

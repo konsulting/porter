@@ -13,9 +13,9 @@ class ProviderBaseTest extends BaseTestCase
         $certificateBuilder = new CertificateBuilder('/my/path/ssl');
 
         $expected = [
-            'key' => '/my/path/ssl/url.key',
-            'csr' => '/my/path/ssl/url.csr',
-            'crt' => '/my/path/ssl/url.crt',
+            'key'  => '/my/path/ssl/url.key',
+            'csr'  => '/my/path/ssl/url.csr',
+            'crt'  => '/my/path/ssl/url.crt',
             'conf' => '/my/path/ssl/url.conf',
         ];
 
