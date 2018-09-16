@@ -2,6 +2,13 @@
 
 namespace Tests;
 
+use App\Porter;
+use App\PorterLibrary;
+use App\Support\Console\DockerCompose\CliCommandFactory;
+use App\Support\Console\DockerCompose\YamlBuilder;
+use App\Support\Contracts\Cli;
+use App\Support\Contracts\ImageSetRepository;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\TestCase as IlluminateTestCase;
 use Illuminate\Support\Facades\Artisan;
@@ -32,14 +39,31 @@ abstract class BaseTestCase extends IlluminateTestCase
                 return;
             }
 
+            $this->remakePorter();
+
             Artisan::call('migrate:fresh');
 
             $this->preparePorter();
         });
     }
 
+    /**
+     * Re-make Porter class for tests, since we adjusted the PorterLibrary
+     */
+    protected function remakePorter()
+    {
+        $this->app->extend(Porter::class, function ($porter, $app) {
+            return new Porter(
+                $app[ImageSetRepository::class],
+                $app[Cli::class],
+                $app[CliCommandFactory::class],
+                new YamlBuilder($app[Filesystem::class], $app[PorterLibrary::class])
+            );
+        });
+    }
+
     protected function preparePorter()
     {
-
+        //
     }
 }
