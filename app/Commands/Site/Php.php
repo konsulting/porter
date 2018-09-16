@@ -25,8 +25,9 @@ class Php extends BaseCommand
     /**
      * Execute the console command.
      *
-     * @return void
      * @throws \Exception
+     *
+     * @return void
      */
     public function handle(): void
     {
@@ -38,11 +39,11 @@ class Php extends BaseCommand
             'Available PHP versions',
             PhpVersion::pluck('version_number', 'id')
                 ->map(function ($version) use ($currentVersion) {
-                    return $version . ($version == $currentVersion ? ' (current)' : '');
+                    return $version.($version == $currentVersion ? ' (current)' : '');
                 })->toArray()
         )->open();
 
-        if (! $option) {
+        if (!$option) {
             return;
         }
 

@@ -29,8 +29,9 @@ class Tinker extends BaseCommand
      */
     public function handle(): void
     {
-        if (! $site = Site::resolveFromPathOrCurrentWorkingDirectory()) {
+        if (!$site = Site::resolveFromPathOrCurrentWorkingDirectory()) {
             $this->error('Please run this command in a project directory');
+
             return;
         }
 
@@ -40,7 +41,7 @@ class Tinker extends BaseCommand
 
         $this->dockerCompose
             ->runContainer("php_cli_{$version->safe}")
-            ->bash("php artisan tinker")
+            ->bash('php artisan tinker')
             ->perform();
     }
 }

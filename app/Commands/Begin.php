@@ -32,35 +32,36 @@ class Begin extends BaseCommand
 
         $lib = app(PorterLibrary::class);
 
-        if ($lib->alreadySetUp() && ! $force) {
+        if ($lib->alreadySetUp() && !$force) {
             $this->error("Already began, so we've stopped to avoid wiping your settings.");
-            $this->error("If you definitely want to continue, you can force with the --force flag.");
+            $this->error('If you definitely want to continue, you can force with the --force flag.');
+
             return;
         }
 
-        $this->line("================");
-        $this->line("PREPARING PORTER");
-        $this->line("================");
-        $this->line("");
+        $this->line('================');
+        $this->line('PREPARING PORTER');
+        $this->line('================');
+        $this->line('');
 
         $lib->setup($this->app, $force);
 
-        if (! $lib->path()) {
+        if (!$lib->path()) {
             $this->error('Failed detecting and setting the library path for Porter');
             die();
         }
 
-        $this->info("Your Porter settings are stored in ".$lib->path());
-        $this->info("");
+        $this->info('Your Porter settings are stored in '.$lib->path());
+        $this->info('');
 
         $this->callSilent('home', ['path' => $home]);
 
         $this->info("Setting home to {$home}.");
-        $this->comment("This is the used as the root directory for your sites.");
+        $this->comment('This is the used as the root directory for your sites.');
         $this->comment("If this is incorrect, you can change it using the 'porter home' command.");
-        $this->comment("");
+        $this->comment('');
 
-        $this->info("Retrieving docker images");
+        $this->info('Retrieving docker images');
         $this->porter->pullImages();
     }
 }

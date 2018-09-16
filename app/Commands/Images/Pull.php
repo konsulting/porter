@@ -2,7 +2,6 @@
 
 namespace App\Commands\Images;
 
-
 use App\Commands\BaseCommand;
 
 class Pull extends BaseCommand

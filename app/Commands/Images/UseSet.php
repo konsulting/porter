@@ -33,7 +33,7 @@ class UseSet extends BaseCommand
         $current = $this->porter->getDockerImageSet()->getName();
 
         if ($this->option('show')) {
-            $this->info("The current image set is: ".$current);
+            $this->info('The current image set is: '.$current);
 
             return;
         }
@@ -41,7 +41,7 @@ class UseSet extends BaseCommand
         $sets = app(ImageSetRepository::class)
             ->availableImageSets()
             ->mapWithKeys(function ($set) use ($current) {
-                return [$set => $set . ($current == $set ? ' (current)' : '')];
+                return [$set => $set.($current == $set ? ' (current)' : '')];
             })->toArray();
 
         $option = $this->menu(
@@ -49,7 +49,7 @@ class UseSet extends BaseCommand
             $sets
         )->open();
 
-        if (! $option) {
+        if (!$option) {
             return;
         }
 

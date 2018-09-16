@@ -23,7 +23,7 @@ class CertificateBuilder
     }
 
     /**
-     * List the certificate authority paths
+     * List the certificate authority paths.
      *
      * @return object
      */
@@ -37,17 +37,18 @@ class CertificateBuilder
     }
 
     /**
-     * List paths based on the certificate url
+     * List paths based on the certificate url.
      *
      * @param $url
+     *
      * @return object
      */
     public function paths($url)
     {
         return (object) [
-            'key' => $this->certificatesPath.'/'.$url.'.key',
-            'csr' => $this->certificatesPath.'/'.$url.'.csr',
-            'crt' => $this->certificatesPath.'/'.$url.'.crt',
+            'key'  => $this->certificatesPath.'/'.$url.'.key',
+            'csr'  => $this->certificatesPath.'/'.$url.'.csr',
+            'crt'  => $this->certificatesPath.'/'.$url.'.crt',
             'conf' => $this->certificatesPath.'/'.$url.'.conf',
         ];
     }
@@ -65,7 +66,7 @@ class CertificateBuilder
     }
 
     /**
-     * Destroy certificate for site based on url
+     * Destroy certificate for site based on url.
      *
      * @param $url
      */
@@ -77,7 +78,7 @@ class CertificateBuilder
     }
 
     /**
-     * Create certificate authority
+     * Create certificate authority.
      */
     public function createCa()
     {
@@ -98,7 +99,8 @@ class CertificateBuilder
     /**
      * Create a certificate for the given URL.
      *
-     * @param  string  $url
+     * @param string $url
+     *
      * @return void
      */
     public function createCertificate($url)
@@ -112,7 +114,7 @@ class CertificateBuilder
 
         $caSrlParam = ' -CAcreateserial';
         if (file_exists($caPaths->srl)) {
-            $caSrlParam = ' -CAserial ' . $caPaths->srl;
+            $caSrlParam = ' -CAserial '.$caPaths->srl;
         }
 
         exec(sprintf(
@@ -138,7 +140,8 @@ class CertificateBuilder
     /**
      * Create the private key for the TLS certificate.
      *
-     * @param  string  $keyPath
+     * @param string $keyPath
+     *
      * @return void
      */
     public function createPrivateKey($keyPath)
@@ -150,9 +153,10 @@ class CertificateBuilder
      * Create the signing request for the TLS certificate.
      *
      * @param $url
-     * @param  string $keyPath
+     * @param string $keyPath
      * @param $csrPath
      * @param $confPath
+     *
      * @return void
      */
     public function createSigningRequest($url, $keyPath, $csrPath, $confPath)
@@ -179,7 +183,7 @@ class CertificateBuilder
 
             $current = $this->certificatesPath.'/'.$item;
 
-            if (! $dropCA && in_array($current, $caPaths)) {
+            if (!$dropCA && in_array($current, $caPaths)) {
                 continue;
             }
 

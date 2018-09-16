@@ -30,13 +30,13 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(ServerBag::class, function () {
-            return new ServerBag;
+            return new ServerBag();
         });
         $this->app->bind(CliContract::class, function () {
-            return new Cli;
+            return new Cli();
         });
         $this->app->bind(ImageSetRepositoryContract::class, function () {
-            return (new ImageSetRepository)->addLocation(app(PorterLibrary::class)->dockerImagesPath());
+            return (new ImageSetRepository())->addLocation(app(PorterLibrary::class)->dockerImagesPath());
         });
 
         $this->app->singleton(PorterLibrary::class, function () {

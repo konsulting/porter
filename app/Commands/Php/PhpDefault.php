@@ -33,7 +33,7 @@ class PhpDefault extends BaseCommand
             PhpVersion::pluck('version_number', 'id')->toArray()
         )->open();
 
-        if (! $option) {
+        if (!$option) {
             return;
         }
 

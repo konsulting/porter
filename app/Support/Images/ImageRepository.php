@@ -29,15 +29,16 @@ class ImageRepository implements ImageRepositoryContract
     /**
      * Get the docker images that are pulled on install. A custom image set name may be specified.
      *
-     * @return array
      * @throws \Exception
+     *
+     * @return array
      */
     public function firstParty()
     {
         $images = [];
 
-        foreach ((new Finder)->in($this->path)->directories() as $directory) {
-            /** @var $directory \Symfony\Component\Finder\SplFileInfo */
+        foreach ((new Finder())->in($this->path)->directories() as $directory) {
+            /* @var $directory \Symfony\Component\Finder\SplFileInfo */
             $images[] = new Image($this->getImageName($directory, $this->name), $directory->getRealPath());
         }
 
@@ -60,10 +61,11 @@ class ImageRepository implements ImageRepositoryContract
     }
 
     /**
-     * Return a full listing of images
+     * Return a full listing of images.
+     *
+     * @throws \Exception
      *
      * @return array
-     * @throws \Exception
      */
     public function all()
     {
@@ -71,7 +73,7 @@ class ImageRepository implements ImageRepositoryContract
     }
 
     /**
-     * Return the path
+     * Return the path.
      *
      * @return string
      */
@@ -81,7 +83,7 @@ class ImageRepository implements ImageRepositoryContract
     }
 
     /**
-     * Return the name
+     * Return the name.
      *
      * @return string
      */
@@ -93,12 +95,13 @@ class ImageRepository implements ImageRepositoryContract
     /**
      * Get the name of the docker image from the directory and image set name.
      *
-     * @param string $imageSetName
+     * @param string      $imageSetName
      * @param SplFileInfo $dir
+     *
      * @return string
      */
     private function getImageName(SplFileInfo $dir, $imageSetName)
     {
-        return $imageSetName . '-' . $dir->getFileName() . ':latest';
+        return $imageSetName.'-'.$dir->getFileName().':latest';
     }
 }

@@ -40,6 +40,5 @@ abstract class BaseTestCase extends IlluminateTestCase
 
     protected function preparePorter()
     {
-
     }
 }

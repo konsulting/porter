@@ -25,8 +25,9 @@ class Nginx extends BaseCommand
     /**
      * Execute the console command.
      *
-     * @return void
      * @throws \Exception
+     *
+     * @return void
      */
     public function handle(): void
     {
@@ -45,7 +46,8 @@ class Nginx extends BaseCommand
                 ->directories()
         ))->mapWithKeys(function (\SplFileInfo $file) use ($currentNginxConf) {
             $conf = $file->getFilename();
-            return [$conf => $conf . ($conf == $currentNginxConf ? ' (current)' : '')];
+
+            return [$conf => $conf.($conf == $currentNginxConf ? ' (current)' : '')];
         })->sort()->toArray();
 
         $option = $this->menu(
@@ -53,7 +55,7 @@ class Nginx extends BaseCommand
             $types
         )->open();
 
-        if (! $option) {
+        if (!$option) {
             return;
         }
 

@@ -24,14 +24,15 @@ class Secure extends BaseCommand
     /**
      * Execute the console command.
      *
-     * @return void
      * @throws \Exception
+     *
+     * @return void
      */
     public function handle(): void
     {
         $name = $this->argument('site') ?: Site::nameFromPath($this->cli->currentWorkingDirectory());
 
-        if (! $name) {
+        if (!$name) {
             throw new \Exception("Site '{$name}' not found.");
         }
 

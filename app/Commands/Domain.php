@@ -30,8 +30,9 @@ class Domain extends BaseCommand
     {
         $domain = $this->argument('domain');
 
-        if (! $domain) {
+        if (!$domain) {
             $this->info(sprintf("The current domain is '%s'", setting('domain')));
+
             return;
         }
 
@@ -39,7 +40,7 @@ class Domain extends BaseCommand
 
         Setting::where('name', 'domain')->first()->update(['value' => $domain]);
 
-        (new DnsmasqContainer)->updateDomain($old, $domain);
+        (new DnsmasqContainer())->updateDomain($old, $domain);
 
         $this->call('site:renew-certs');
         $this->call('make-files');
