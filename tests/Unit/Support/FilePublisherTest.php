@@ -11,9 +11,9 @@ class FilePublisherTest extends BaseTestCase
     /** @test */
     public function it_publishes_the_config_files_to_the_library()
     {
-        $publisher = new FilePublisher($files = new Filesystem);
+        $publisher = new FilePublisher($files = new Filesystem());
 
-        $files->deleteDirectory($to= storage_path('test_library/publish_config_test'));
+        $files->deleteDirectory($to = storage_path('test_library/publish_config_test'));
 
         $publisher->publish(
             $from = resource_path('stubs/config'),

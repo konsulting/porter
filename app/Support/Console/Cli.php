@@ -12,6 +12,7 @@ class Cli implements CliContract
      * Execute a command.
      *
      * @param string $command
+     *
      * @return string
      */
     public function exec($command)
@@ -26,6 +27,7 @@ class Cli implements CliContract
      * Execute a command in real time.
      *
      * @param string $command
+     *
      * @return string
      */
     public function execRealTime($command)
@@ -45,6 +47,7 @@ class Cli implements CliContract
      * Execute a command and allow the user to interact with it.
      *
      * @param string $command
+     *
      * @return void
      */
     public function passthru($command)
@@ -62,7 +65,7 @@ class Cli implements CliContract
     }
 
     /**
-     * Return the current working directory
+     * Return the current working directory.
      *
      * @return string
      */

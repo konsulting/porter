@@ -9,7 +9,7 @@ class PhpVersion extends Model
     protected $guarded = [];
 
     /**
-     * Return the default version
+     * Return the default version.
      *
      * @return mixed
      */
@@ -19,7 +19,7 @@ class PhpVersion extends Model
     }
 
     /**
-     * Set the default PHP version
+     * Set the default PHP version.
      *
      * @param $id
      */
@@ -30,7 +30,7 @@ class PhpVersion extends Model
     }
 
     /**
-     * Get a safe version of the version number to use in paths
+     * Get a safe version of the version number to use in paths.
      *
      * @return null|string
      */
@@ -40,7 +40,7 @@ class PhpVersion extends Model
     }
 
     /**
-     * Get a major version number
+     * Get a major version number.
      *
      * @return null|string
      */
@@ -50,7 +50,7 @@ class PhpVersion extends Model
     }
 
     /**
-     * Get a short form version number with no separators
+     * Get a short form version number with no separators.
      *
      * @return null|string
      */
@@ -60,7 +60,7 @@ class PhpVersion extends Model
     }
 
     /**
-     * Get cli container name
+     * Get cli container name.
      *
      * @return null|string
      */
@@ -70,7 +70,7 @@ class PhpVersion extends Model
     }
 
     /**
-     * Get fpm container name
+     * Get fpm container name.
      *
      * @return null|string
      */
@@ -80,9 +80,10 @@ class PhpVersion extends Model
     }
 
     /**
-     * Find by a user input version number
+     * Find by a user input version number.
      *
      * @param $number
+     *
      * @return static|null
      */
     public static function findByDirtyVersionNumber($number)
@@ -91,9 +92,10 @@ class PhpVersion extends Model
     }
 
     /**
-     * Scope for the active PHP versions for porter - any used in sites plus default
+     * Scope for the active PHP versions for porter - any used in sites plus default.
      *
      * @param $scope
+     *
      * @return mixed
      */
     public function scopeActive($scope)
@@ -101,12 +103,12 @@ class PhpVersion extends Model
         return $scope->where('default', true)->orWhereIn('id', Site::all()->pluck('php_version_id'));
     }
 
-
     /**
-     * Clean php version number for file naming
+     * Clean php version number for file naming.
      *
      * @param $number
      * @param string $separator
+     *
      * @return null|string
      */
     public static function cleanVersionNumber($number, $separator = '-')

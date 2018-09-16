@@ -38,7 +38,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(CliContract::class, Cli::class);
 
         $this->app->bind(ImageSetRepositoryContract::class, function () {
-            return (new ImageSetRepository)->addLocation(app(PorterLibrary::class)->dockerImagesPath());
+            return (new ImageSetRepository())->addLocation(app(PorterLibrary::class)->dockerImagesPath());
         });
 
         $this->app->singleton(Porter::class);

@@ -33,10 +33,10 @@ class PorterTest extends BaseTestCase
         $this->cli = \Mockery::mock(Cli::class);
 
         $this->porter = new Porter(
-            new TestImageSetRepository,
+            new TestImageSetRepository(),
             $this->cli,
             new CliCommandFactory($this->cli),
-            new YamlBuilder(new Filesystem, app(PorterLibrary::class))
+            new YamlBuilder(new Filesystem(), app(PorterLibrary::class))
         );
         $this->composeFile = app(PorterLibrary::class)->dockerComposeFile();
     }
@@ -46,6 +46,7 @@ class PorterTest extends BaseTestCase
      *
      * @param array|string $commands
      * @param string       $method
+     *
      * @return \Mockery\Expectation
      */
     protected function expectCommand($commands, $method = 'exec')
@@ -65,33 +66,33 @@ class PorterTest extends BaseTestCase
     /** @test */
     public function it_checks_if_porter_containers_are_running()
     {
-        $this->expectCommand('docker-compose -f ' . $this->composeFile . ' -p porter ps');
+        $this->expectCommand('docker-compose -f '.$this->composeFile.' -p porter ps');
         $this->assertFalse($this->porter->isUp('service'));
     }
 
     /** @test */
     public function it_starts_the_porter_containers()
     {
-        $this->expectCommand('docker-compose -f ' . $this->composeFile . ' -p porter up -d --remove-orphans', 'execRealTime');
+        $this->expectCommand('docker-compose -f '.$this->composeFile.' -p porter up -d --remove-orphans', 'execRealTime');
         $this->porter->start();
     }
 
     /** @test */
     public function it_stops_the_porter_containers()
     {
-        $this->expectCommand('docker-compose -f ' . $this->composeFile . ' -p porter down --remove-orphans', 'execRealTime');
+        $this->expectCommand('docker-compose -f '.$this->composeFile.' -p porter down --remove-orphans', 'execRealTime');
         $this->porter->stop();
     }
 
     /** @test */
     public function it_restarts_the_porter_containers()
     {
-        $this->expectCommand('docker-compose -f ' . $this->composeFile . ' -p porter ps');
-        $this->expectCommand('docker-compose -f ' . $this->composeFile . ' -p porter up -d --force-recreate --remove-orphans service', 'execRealTime');
+        $this->expectCommand('docker-compose -f '.$this->composeFile.' -p porter ps');
+        $this->expectCommand('docker-compose -f '.$this->composeFile.' -p porter up -d --force-recreate --remove-orphans service', 'execRealTime');
         $this->porter->restart('service');
 
-        $this->expectCommand('docker-compose -f ' . $this->composeFile . ' -p porter ps');
-        $this->expectCommand('docker-compose -f ' . $this->composeFile . ' -p porter up -d --force-recreate --remove-orphans myService', 'execRealTime');
+        $this->expectCommand('docker-compose -f '.$this->composeFile.' -p porter ps');
+        $this->expectCommand('docker-compose -f '.$this->composeFile.' -p porter up -d --force-recreate --remove-orphans myService', 'execRealTime');
         $this->porter->restart('myService');
     }
 
@@ -100,16 +101,16 @@ class PorterTest extends BaseTestCase
     {
         factory(PhpVersion::class)->create([
             'version_number' => '7.2',
-            'default' => true,
+            'default'        => true,
         ]);
 
-        $this->expectCommand('docker-compose -f ' . $this->composeFile . ' -p porter ps')
+        $this->expectCommand('docker-compose -f '.$this->composeFile.' -p porter ps')
             ->times(3)
             ->andReturn('porter_', '', '');
 
-        $this->expectCommand('docker-compose -f ' . $this->composeFile . ' -p porter up -d --remove-orphans php_fpm_7-2', 'execRealTime');
-        $this->expectCommand('docker-compose -f ' . $this->composeFile . ' -p porter up -d --remove-orphans php_cli_7-2', 'execRealTime');
-        $this->expectCommand('docker-compose -f ' . $this->composeFile . ' -p porter up -d --force-recreate --remove-orphans nginx', 'execRealTime');
+        $this->expectCommand('docker-compose -f '.$this->composeFile.' -p porter up -d --remove-orphans php_fpm_7-2', 'execRealTime');
+        $this->expectCommand('docker-compose -f '.$this->composeFile.' -p porter up -d --remove-orphans php_cli_7-2', 'execRealTime');
+        $this->expectCommand('docker-compose -f '.$this->composeFile.' -p porter up -d --force-recreate --remove-orphans nginx', 'execRealTime');
 
         $this->porter->restartServing();
     }
@@ -117,7 +118,7 @@ class PorterTest extends BaseTestCase
     /** @test */
     public function it_builds_the_porter_containers()
     {
-        $this->expectCommand('docker-compose -f ' . $this->composeFile . ' -p porter build');
+        $this->expectCommand('docker-compose -f '.$this->composeFile.' -p porter build');
         $this->porter->build();
     }
 
@@ -127,10 +128,10 @@ class PorterTest extends BaseTestCase
         $images = ['konsulting/image', 'konsulting/image2', 'another/image', 'another/image2'];
 
         foreach ($images as $image) {
-            $this->expectCommand('docker image inspect ' . $image, 'exec')
+            $this->expectCommand('docker image inspect '.$image, 'exec')
                 ->andReturn("Error: No such image: {$image}");
 
-            $this->expectCommand('docker pull ' . $image, 'passthru');
+            $this->expectCommand('docker pull '.$image, 'passthru');
         }
         $this->porter->pullImages();
     }
@@ -139,7 +140,7 @@ class PorterTest extends BaseTestCase
     public function it_pushes_the_first_party_images()
     {
         foreach (['konsulting/image', 'konsulting/image2'] as $image) {
-            $this->expectCommand('docker push ' . $image, 'passthru');
+            $this->expectCommand('docker push '.$image, 'passthru');
         }
         $this->porter->pushImages();
     }
@@ -147,10 +148,10 @@ class PorterTest extends BaseTestCase
     /** @test */
     public function it_turns_a_service_on_if_it_is_off()
     {
-        $this->expectCommand('docker-compose -f ' . $this->composeFile . ' -p porter ps')
+        $this->expectCommand('docker-compose -f '.$this->composeFile.' -p porter ps')
             ->andReturn('porter_');
 
-        $this->expectCommand('docker-compose -f ' . $this->composeFile . ' -p porter up -d --remove-orphans browser', 'execRealTime');
+        $this->expectCommand('docker-compose -f '.$this->composeFile.' -p porter up -d --remove-orphans browser', 'execRealTime');
 
         $this->porter->turnOnService('browser');
 
@@ -170,10 +171,10 @@ class PorterTest extends BaseTestCase
     /** @test */
     public function it_turns_a_service_off_if_it_is_on()
     {
-        $this->expectCommand('docker-compose -f ' . $this->composeFile . ' -p porter ps')
+        $this->expectCommand('docker-compose -f '.$this->composeFile.' -p porter ps')
             ->andReturn('porter_');
 
-        $this->expectCommand('docker-compose -f ' . $this->composeFile . ' -p porter stop browser', 'execRealTime');
+        $this->expectCommand('docker-compose -f '.$this->composeFile.' -p porter stop browser', 'execRealTime');
 
         Setting::updateOrCreate('use_browser', 'on');
 
@@ -193,7 +194,7 @@ class PorterTest extends BaseTestCase
     /** @test */
     public function it_returns_the_status()
     {
-        $this->expectCommand('docker-compose -f ' . $this->composeFile . ' -p porter ps');
+        $this->expectCommand('docker-compose -f '.$this->composeFile.' -p porter ps');
 
         $this->porter->status();
     }
@@ -201,7 +202,7 @@ class PorterTest extends BaseTestCase
     /** @test */
     public function it_returns_the_logs()
     {
-        $this->expectCommand('docker-compose -f ' . $this->composeFile . ' -p porter logs service');
+        $this->expectCommand('docker-compose -f '.$this->composeFile.' -p porter logs service');
 
         $this->porter->logs('service');
     }
@@ -216,7 +217,7 @@ class TestImageSetRepository implements ImageSetRepositoryContract
 
     public function getImageRepository($imageSetName)
     {
-        return new TestImageRepository;
+        return new TestImageRepository();
     }
 
     public function availableImageSets()

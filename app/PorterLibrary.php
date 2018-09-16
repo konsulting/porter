@@ -17,7 +17,7 @@ class PorterLibrary
     /** @var Filesystem */
     protected $files;
 
-    /** @var \App\Support\FilePublisher **/
+    /** @var \App\Support\FilePublisher * */
     protected $filePublisher;
 
     protected $shouldMigrateAndSeedDatabase = true;
@@ -30,7 +30,7 @@ class PorterLibrary
     }
 
     /**
-     * Return the path for storing container config files
+     * Return the path for storing container config files.
      *
      * @return string
      */
@@ -40,7 +40,7 @@ class PorterLibrary
     }
 
     /**
-     * Return the path of the database file
+     * Return the path of the database file.
      *
      * @return string
      */
@@ -50,7 +50,7 @@ class PorterLibrary
     }
 
     /**
-     * Return the path of the docker-compose file
+     * Return the path of the docker-compose file.
      *
      * @return string
      */
@@ -60,7 +60,7 @@ class PorterLibrary
     }
 
     /**
-     * Return the path of additional docker images
+     * Return the path of additional docker images.
      *
      * @return string
      */
@@ -70,7 +70,7 @@ class PorterLibrary
     }
 
     /**
-     * Return the path where our generated SSL certs live
+     * Return the path where our generated SSL certs live.
      *
      * @return string
      */
@@ -80,7 +80,7 @@ class PorterLibrary
     }
 
     /**
-     * Return the library path
+     * Return the library path.
      *
      * @return string
      */
@@ -92,7 +92,7 @@ class PorterLibrary
     /**
      * Return the path for our additional/customised views
      * For example NGiNX config/ docker-compose views
-     * for alternative container structures
+     * for alternative container structures.
      *
      * @return string
      */
@@ -102,7 +102,7 @@ class PorterLibrary
     }
 
     /**
-     * Check if the library has previously been set up
+     * Check if the library has previously been set up.
      *
      * @return bool
      */
@@ -113,22 +113,23 @@ class PorterLibrary
 
     /**
      * Set up the library, by creating files, storing the path in .env
-     * creating the sqlite database and updating the app config
+     * creating the sqlite database and updating the app config.
      *
      * @param Application $app
-     * @param bool $force
+     * @param bool        $force
+     *
      * @throws PorterSetupFailed
      */
     public function setUp(Application $app, $force = false)
     {
-        if ($this->alreadySetUp() && ! $force) {
+        if ($this->alreadySetUp() && !$force) {
             throw new PorterSetupFailed(
                 "The porter library already exists at '{$this->path}'. ".
-                "You can use the --force flag to continue."
+                'You can use the --force flag to continue.'
             );
         }
 
-        if (! $this->path) {
+        if (!$this->path) {
             $this->path = ChooseMechanic::forOS()->getUserHomePath().'/.porter';
 
             $this->moveExistingConfig();
@@ -136,7 +137,7 @@ class PorterLibrary
             $this->updateEnv();
         }
 
-        if (! $this->path) {
+        if (!$this->path) {
             throw new PorterSetupFailed('Failed detecting and setting the library path for Porter.');
         }
 
@@ -149,11 +150,11 @@ class PorterLibrary
             Artisan::call('db:seed');
         }
 
-        $app->instance(PorterLibrary::class, $this);
+        $app->instance(self::class, $this);
     }
 
     /**
-     * Publish the .env.example file to .env
+     * Publish the .env.example file to .env.
      *
      * @throws PorterSetupFailed
      */
@@ -168,11 +169,11 @@ class PorterLibrary
 
     /**
      * Move any existing config at the path to a backup directory
-     * So we can avoid wiping out data/settings completely
+     * So we can avoid wiping out data/settings completely.
      */
     protected function moveExistingConfig()
     {
-        if (! $this->alreadySetUp()) {
+        if (!$this->alreadySetUp()) {
             return;
         }
 
@@ -180,7 +181,7 @@ class PorterLibrary
     }
 
     /**
-     * Create the sqlite database
+     * Create the sqlite database.
      */
     protected function createDatabase()
     {
@@ -188,7 +189,7 @@ class PorterLibrary
     }
 
     /**
-     * Update the .env file values with the new library path
+     * Update the .env file values with the new library path.
      *
      * @throws PorterSetupFailed
      */
@@ -204,7 +205,7 @@ class PorterLibrary
     }
 
     /**
-     * Update core parts of the app config
+     * Update core parts of the app config.
      *
      * @param Application $app
      */
@@ -215,7 +216,7 @@ class PorterLibrary
     }
 
     /**
-     * Publish the container config files to the library config dir
+     * Publish the container config files to the library config dir.
      *
      * @throws PorterSetupFailed
      */
@@ -229,7 +230,7 @@ class PorterLibrary
     }
 
     /**
-     * Make sure we don't try to seed and migrate (usually in tests)
+     * Make sure we don't try to seed and migrate (usually in tests).
      *
      * @return $this
      */

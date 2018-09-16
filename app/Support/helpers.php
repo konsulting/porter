@@ -3,7 +3,7 @@
 use App\Models\Setting;
 
 /**
- * Get a setting, or all settings
+ * Get a setting, or all settings.
  *
  * @param null $key
  * @param null $default
@@ -12,7 +12,7 @@ use App\Models\Setting;
  */
 function setting($key = null, $default = null)
 {
-    if (! $key) {
+    if (!$key) {
         return Setting::all()->pluck('value', 'name');
     }
 
@@ -20,7 +20,7 @@ function setting($key = null, $default = null)
 }
 
 /**
- * Check if we're running tests since environment is limited to production/development
+ * Check if we're running tests since environment is limited to production/development.
  */
 function running_tests()
 {

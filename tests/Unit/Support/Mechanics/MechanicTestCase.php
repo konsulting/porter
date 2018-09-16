@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\Support\Mechanics;
 
-
 use App\Support\Console\Cli;
 use App\Support\Console\ConsoleWriter;
 use App\Support\Console\ServerBag;

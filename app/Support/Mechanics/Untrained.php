@@ -2,7 +2,6 @@
 
 namespace App\Support\Mechanics;
 
-
 use App\Support\Console\ConsoleWriter;
 use App\Support\Console\ServerBag;
 use App\Support\Contracts\Cli;
@@ -21,9 +20,9 @@ class Untrained implements Mechanic
     /**
      * Untrained constructor.
      *
-     * @param Cli $cli
+     * @param Cli           $cli
      * @param ConsoleWriter $consoleWriter
-     * @param ServerBag $serverBag
+     * @param ServerBag     $serverBag
      */
     public function __construct(Cli $cli, ConsoleWriter $consoleWriter, ServerBag $serverBag)
     {
@@ -35,7 +34,8 @@ class Untrained implements Mechanic
     /**
      * Trust the given root certificate file in the Keychain.
      *
-     * @param  string  $pem
+     * @param string $pem
+     *
      * @return void
      */
     public function trustCA($pem)
@@ -46,7 +46,8 @@ class Untrained implements Mechanic
     /**
      * Trust the given certificate file in the Mac Keychain.
      *
-     * @param  string  $crt
+     * @param string $crt
+     *
      * @return void
      */
     public function trustCertificate($crt)
@@ -55,7 +56,7 @@ class Untrained implements Mechanic
     }
 
     /**
-     * Return the User's home directory path
+     * Return the User's home directory path.
      *
      * @return string
      */
@@ -65,7 +66,7 @@ class Untrained implements Mechanic
     }
 
     /**
-     * Flush the host system DNS cache
+     * Flush the host system DNS cache.
      *
      * @return void
      */
@@ -75,7 +76,7 @@ class Untrained implements Mechanic
     }
 
     /**
-     * Check if we're running in test mode
+     * Check if we're running in test mode.
      *
      * @return bool
      */
@@ -85,13 +86,13 @@ class Untrained implements Mechanic
     }
 
     /**
-     * Give a nice message about not being trained
+     * Give a nice message about not being trained.
      *
      * @param $activity
      */
     protected function iAmNotTrainedTo($activity)
     {
         $this->consoleWriter->info("I haven't been trained to {$activity} on this system.");
-        $this->consoleWriter->info("You are welcome to train me and submit a PR.");
+        $this->consoleWriter->info('You are welcome to train me and submit a PR.');
     }
 }

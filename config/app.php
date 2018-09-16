@@ -54,7 +54,7 @@ return [
         \Illuminate\View\ViewServiceProvider::class,
     ],
 
-    /**
+    /*
      * Since environment is limited to production/development, add a flag for tests.
      */
     'running_tests' => env('RUNNING_TESTS', false),
