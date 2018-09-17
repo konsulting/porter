@@ -136,7 +136,6 @@ class SiteTest extends BaseTestCase
         );
     }
 
-
     /** @test */
     public function it_will_resolve_a_site_from_the_current_working_directory()
     {
@@ -184,10 +183,10 @@ class SiteTest extends BaseTestCase
         $site = Site::createForName('sample');
 
         $this->assertArraySubset([
-            'name' => 'sample',
-            'nginx_conf' => 'default',
+            'name'           => 'sample',
+            'nginx_conf'     => 'default',
             'php_version_id' => $version->getKey(),
-            'secure' => false,
+            'secure'         => false,
         ], $site->toArray());
     }
 
@@ -199,10 +198,10 @@ class SiteTest extends BaseTestCase
         $site = Site::firstOrCreateForName('sample');
 
         $this->assertArraySubset([
-            'name' => 'sample',
-            'nginx_conf' => 'default',
+            'name'           => 'sample',
+            'nginx_conf'     => 'default',
             'php_version_id' => $version->getKey(),
-            'secure' => false,
+            'secure'         => false,
         ], $site->toArray());
 
         $found = Site::firstOrCreateForName('sample');
@@ -315,7 +314,7 @@ class SiteTest extends BaseTestCase
     }
 
     /**
-     * Ensure Porter is asked to restart serving sites
+     * Ensure Porter is asked to restart serving sites.
      *
      * @return void
      */

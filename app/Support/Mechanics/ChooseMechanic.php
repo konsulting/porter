@@ -8,6 +8,7 @@ class ChooseMechanic
      * Get the mechanic for the host operating system.
      *
      * @param string|null $os
+     *
      * @return Mechanic
      */
     public static function forOS($os = null)
@@ -24,7 +25,7 @@ class ChooseMechanic
             case stristr($os, 'LINUX'):
                 return app(Linux::class);
 
-            default :
+            default:
                 return app(Untrained::class);
         }
     }

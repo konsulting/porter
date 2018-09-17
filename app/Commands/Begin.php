@@ -2,7 +2,7 @@
 
 namespace App\Commands;
 
-use App\PorterLibrary;
+use App\Exceptions\PorterSetupFailed;
 
 class Begin extends BaseCommand
 {
@@ -27,40 +27,31 @@ class Begin extends BaseCommand
      */
     public function handle(): void
     {
-        $force = $this->option('force');
-        $home = realpath($this->argument('home') ?: $this->cli->currentWorkingDirectory());
+        $this->line('================');
+        $this->line('PREPARING PORTER');
+        $this->line('================');
+        $this->line('');
 
-        $lib = app(PorterLibrary::class);
+        try {
+            $this->porterLibrary->setup($this->app, $this->option('force'));
+        } catch (PorterSetupFailed $e) {
+            $this->alert($e->getMessage());
 
-        if ($lib->alreadySetUp() && ! $force) {
-            $this->error("Already began, so we've stopped to avoid wiping your settings.");
-            $this->error("If you definitely want to continue, you can force with the --force flag.");
             return;
         }
 
-        $this->line("================");
-        $this->line("PREPARING PORTER");
-        $this->line("================");
-        $this->line("");
+        $this->info('Your Porter settings are stored in '.$this->porterLibrary->path());
+        $this->info('');
 
-        $lib->setup($this->app, $force);
-
-        if (! $lib->path()) {
-            $this->error('Failed detecting and setting the library path for Porter');
-            die();
-        }
-
-        $this->info("Your Porter settings are stored in ".$lib->path());
-        $this->info("");
-
+        $home = realpath($this->argument('home') ?: $this->cli->currentWorkingDirectory());
         $this->callSilent('home', ['path' => $home]);
 
         $this->info("Setting home to {$home}.");
-        $this->comment("This is the used as the root directory for your sites.");
+        $this->comment('This is the root directory for your sites.');
         $this->comment("If this is incorrect, you can change it using the 'porter home' command.");
-        $this->comment("");
+        $this->comment('');
 
-        $this->info("Retrieving docker images");
+        $this->info('Retrieving docker images');
         $this->porter->pullImages();
     }
 }

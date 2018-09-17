@@ -14,8 +14,6 @@ class LiveTestCase extends BaseTestCase
     {
         parent::setUp();
 
-        $this->porter = app(Porter::class);
-
         Artisan::call('start');
 
         $this->assertTrue($this->porter->isUp(), 'Porter could not start.');
@@ -32,14 +30,18 @@ class LiveTestCase extends BaseTestCase
 
     protected function preparePorter()
     {
+        $this->porter = $this->app[Porter::class];
+
         Artisan::call('begin', ['home' => __DIR__.'/TestWebRoot', '--force' => true]);
         Artisan::call('db:seed');
     }
 
     /**
      * @param string $url
-     * @return \Illuminate\Foundation\Testing\TestResponse|mixed
+     *
      * @throws \Exception
+     *
+     * @return \Illuminate\Foundation\Testing\TestResponse|mixed
      */
     public function get($url, array $headers = [])
     {
@@ -59,7 +61,7 @@ class LiveTestCase extends BaseTestCase
         if (curl_errno($ch)) {
             throw new \Exception('Curl failed. '.curl_error($ch));
         }
-        curl_close ($ch);
+        curl_close($ch);
 
         return $phpinfo;
     }

@@ -14,7 +14,7 @@ class Site extends Model
     protected $guarded = [];
 
     /**
-     * PHP Version
+     * PHP Version.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
@@ -24,17 +24,18 @@ class Site extends Model
     }
 
     /**
-     * Resolve the site from the current working directory
+     * Resolve the site from the current working directory.
      *
      * @param null $path
+     *
      * @return null
      */
     public static function resolveFromPathOrCurrentWorkingDirectory($path = null)
     {
         $name = static::nameFromPath($path ?: app(Cli::class)->currentWorkingDirectory());
 
-        if (! $name) {
-            return null;
+        if (!$name) {
+            return;
         }
 
         return static::where('name', $name)->first();
@@ -45,22 +46,24 @@ class Site extends Model
      * Fail if not found.
      *
      * @param null $path
-     * @return null
+     *
      * @throws \Exception
+     *
+     * @return null
      */
     public static function resolveFromPathOrCurrentWorkingDirectoryOrFail($path = null)
     {
         $site = static::resolveFromPathOrCurrentWorkingDirectory($path);
 
-        if (! $site) {
-            throw new \Exception("Site not found.");
+        if (!$site) {
+            throw new \Exception('Site not found.');
         }
 
         return $site;
     }
 
     /**
-     * Get the url for this site
+     * Get the url for this site.
      *
      * @return string
      */
@@ -70,7 +73,7 @@ class Site extends Model
     }
 
     /**
-     * Get the scheme for this site
+     * Get the scheme for this site.
      *
      * @return string
      */
@@ -80,17 +83,17 @@ class Site extends Model
     }
 
     /**
-     * Return the path for the NGiNX config file
+     * Return the path for the NGiNX config file.
      *
      * @return string
      */
     public function getNginxConfPathAttribute()
     {
-        return app(PorterLibrary::class)->configPath()."/nginx/conf.d/{$this->name}.conf";
+        return $this->getPorterLibrary()->configPath()."/nginx/conf.d/{$this->name}.conf";
     }
 
     /**
-     * Return the full NGiNX template to use
+     * Return the full NGiNX template to use.
      *
      * @return string
      */
@@ -98,11 +101,11 @@ class Site extends Model
     {
         $type = $this->nginx_conf ?? 'default';
 
-        return "nginx.{$type}.domain" . (($this->secure ?? false) ? '_secure' : '');
+        return "nginx.{$type}.domain".(($this->secure ?? false) ? '_secure' : '');
     }
 
     /**
-     * Build the files for this site (e.g. nginx conf)
+     * Build the files for this site (e.g. nginx conf).
      *
      * @throws \Throwable
      */
@@ -112,7 +115,7 @@ class Site extends Model
     }
 
     /**
-     * Destroy the files for this site (e.g. NGiNX conf)
+     * Destroy the files for this site (e.g. NGiNX conf).
      */
     public function destroyFiles()
     {
@@ -134,7 +137,7 @@ class Site extends Model
     }
 
     /**
-     * Unsecure this site
+     * Unsecure this site.
      */
     public function unsecure()
     {
@@ -148,7 +151,7 @@ class Site extends Model
     }
 
     /**
-     * Remove this site and associated files
+     * Remove this site and associated files.
      *
      * @throws \Exception
      * @throws \Throwable
@@ -165,9 +168,10 @@ class Site extends Model
     }
 
     /**
-     * Set the PHP version for the site
+     * Set the PHP version for the site.
      *
      * @param int|null $phpVersionId
+     *
      * @throws \Throwable
      */
     public function setPhpVersion($phpVersionId = null)
@@ -180,9 +184,10 @@ class Site extends Model
     }
 
     /**
-     * Set the nginx type for the site (we have different template configs we can use)
+     * Set the nginx type for the site (we have different template configs we can use).
      *
      * @param $type
+     *
      * @throws \Throwable
      */
     public function setNginxType($type)
@@ -199,6 +204,7 @@ class Site extends Model
      *
      *
      * @param $name
+     *
      * @return mixed
      */
     public static function firstOrCreateForName($name)
@@ -213,23 +219,24 @@ class Site extends Model
     }
 
     /**
-     * Create an new site based on the name
+     * Create an new site based on the name.
      *
      * @param $name
+     *
      * @return mixed
      */
     public static function createForName($name)
     {
         return static::create([
-            'name' => $name,
-            'nginx_conf' => 'default',
+            'name'           => $name,
+            'nginx_conf'     => 'default',
             'php_version_id' => PhpVersion::defaultVersion()->id,
-            'secure' => false,
+            'secure'         => false,
         ]);
     }
 
     /**
-     * Get Certificate builder
+     * Get Certificate builder.
      *
      * @return CertificateBuilder
      */
@@ -239,7 +246,7 @@ class Site extends Model
     }
 
     /**
-     * Get Site Config Builder
+     * Get Site Config Builder.
      *
      * @return \App\Support\Nginx\SiteConfBuilder
      */
@@ -249,7 +256,7 @@ class Site extends Model
     }
 
     /**
-     * Get Porter
+     * Get Porter.
      *
      * @return Porter
      */
@@ -259,7 +266,17 @@ class Site extends Model
     }
 
     /**
-     * Build Certificate for site
+     * Get PorterLibrary.
+     *
+     * @return PorterLibrary
+     */
+    protected function getPorterLibrary()
+    {
+        return app(PorterLibrary::class);
+    }
+
+    /**
+     * Build Certificate for site.
      */
     public function buildCertificate()
     {
@@ -267,7 +284,7 @@ class Site extends Model
     }
 
     /**
-     * Destroy Certificate for site
+     * Destroy Certificate for site.
      */
     public function destroyCertificate()
     {
@@ -279,6 +296,7 @@ class Site extends Model
      * home directory.
      *
      * @param $path
+     *
      * @return null|string
      */
     public static function nameFromPath($path)
@@ -286,7 +304,7 @@ class Site extends Model
         $home = setting('home');
 
         if (strpos($path, $home) !== 0) {
-            return null;
+            return;
         }
 
         $path = trim(str_after($path, $home), DIRECTORY_SEPARATOR);

@@ -23,15 +23,16 @@ class CliCommand
     }
 
     /**
-     * Append a bash command, optionally with a further call
+     * Append a bash command, optionally with a further call.
      *
      * @param string|null $command
+     *
      * @return $this
      */
     public function bash($command = null)
     {
         $this->interactive();
-        $this->append("bash");
+        $this->append('bash');
 
         if ($command) {
             $this->append(" -c \"$command\"");
@@ -41,20 +42,21 @@ class CliCommand
     }
 
     /**
-     * Append to a command
+     * Append to a command.
      *
      * @param string|null $string
+     *
      * @return $this
      */
     public function append($string = null)
     {
-        $this->command = trim($this->command . " {$string}");
+        $this->command = trim($this->command." {$string}");
 
         return $this;
     }
 
     /**
-     * Set a command as being interactive (i.e. passthru() in php)
+     * Set a command as being interactive (i.e. passthru() in php).
      *
      * @return $this
      */
@@ -66,7 +68,7 @@ class CliCommand
     }
 
     /**
-     * Set a command as not being interactive
+     * Set a command as not being interactive.
      *
      * @return $this
      */
@@ -78,7 +80,7 @@ class CliCommand
     }
 
     /**
-     * Check if the command is expected to be interactive
+     * Check if the command is expected to be interactive.
      *
      * @return bool
      */
@@ -88,7 +90,7 @@ class CliCommand
     }
 
     /**
-     * Set our expectation to see real-time output
+     * Set our expectation to see real-time output.
      *
      * @return $this
      */
@@ -100,7 +102,7 @@ class CliCommand
     }
 
     /**
-     * Set our expectation NOT to see real-time output
+     * Set our expectation NOT to see real-time output.
      *
      * @return $this
      */
@@ -112,7 +114,7 @@ class CliCommand
     }
 
     /**
-     * Check if we're expecting real0time output
+     * Check if we're expecting real0time output.
      *
      * @return bool
      */
@@ -122,7 +124,7 @@ class CliCommand
     }
 
     /**
-     * Prepare the full command string
+     * Prepare the full command string.
      *
      * @return string
      */
@@ -130,14 +132,14 @@ class CliCommand
     {
         return trim(
             'docker-compose -f '
-            . app(PorterLibrary::class)->dockerComposeFile()
-            . ' -p porter '
-            . $this->command
+            .app(PorterLibrary::class)->dockerComposeFile()
+            .' -p porter '
+            .$this->command
         );
     }
 
     /**
-     * Execute the command
+     * Execute the command.
      *
      * @return string|null
      */

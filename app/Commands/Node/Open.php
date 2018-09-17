@@ -28,7 +28,7 @@ class Open extends BaseCommand
     public function handle(): void
     {
         $this->dockerCompose
-            ->runContainer("node")
+            ->runContainer('node')
             ->bash($this->argument('run'))
             ->perform();
     }
