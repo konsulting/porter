@@ -97,7 +97,7 @@ class Site extends Model
      *
      * @return string
      */
-    public function getNginxConfTemplateAsitettribute()
+    public function getNginxConfTemplateAttribute()
     {
         $type = $this->nginx_conf ?? 'default';
 
