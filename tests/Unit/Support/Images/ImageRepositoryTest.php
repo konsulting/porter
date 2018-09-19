@@ -22,7 +22,7 @@ class ImageRepositoryTest extends BaseTestCase
         $this->repoName = 'konsulting/porter-ubuntu';
         $this->path = storage_path('test_library/image-repo-test/'.$this->repoName);
 
-        $fs = new Filesystem;
+        $fs = new Filesystem();
         $fs->makeDirectory($this->path.'/php_fpm_7-2', 0755, true);
         $fs->makeDirectory($this->path.'/php_cli_7-2', 0755, true);
         $fs->put($this->path.'/php_fpm_7-2/Dockerfile', '');
@@ -35,7 +35,7 @@ class ImageRepositoryTest extends BaseTestCase
     {
         parent::tearDown();
 
-        $fs = new Filesystem;
+        $fs = new Filesystem();
         $fs->deleteDirectory($this->path);
     }
 

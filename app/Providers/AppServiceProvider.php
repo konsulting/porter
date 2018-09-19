@@ -40,7 +40,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ImageSetRepositoryContract::class, function () {
             return new ImageSetRepository([
                 base_path('docker'),
-                app(PorterLibrary::class)->dockerImagesPath()
+                app(PorterLibrary::class)->dockerImagesPath(),
             ]);
         });
 

@@ -22,7 +22,7 @@ class ImageSetRepositoryTest extends BaseTestCase
         $this->path = storage_path('test_library/image-set-repo-test');
         $this->secondaryPath = storage_path('test_library/image-set-repo-test-two');
 
-        $fs = new Filesystem;
+        $fs = new Filesystem();
 
         foreach (['konsulting/porter-ubuntu', 'konsulting/porter-alpine'] as $imageSet) {
             $fs->makeDirectory($this->path.'/'.$imageSet.'/php_fpm_7-2', 0755, true);
@@ -45,7 +45,7 @@ class ImageSetRepositoryTest extends BaseTestCase
     {
         parent::tearDown();
 
-        $fs = new Filesystem;
+        $fs = new Filesystem();
         $fs->deleteDirectory($this->path);
     }
 

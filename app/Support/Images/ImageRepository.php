@@ -94,21 +94,21 @@ class ImageRepository implements ImageRepositoryContract
     }
 
     /**
-     * Find the image for a given service
+     * Find the image for a given service.
      *
      * @param $service
      * @param bool $firstParty
      *
-     * @return array
-     *
      * @throws Exception
+     *
+     * @return array
      */
     public function findByServiceName($service, $firstParty = false)
     {
         $service = preg_replace('/[^a-zA-Z0-9\-\_]/', '-', $service);
         $images = $firstParty ? $this->firstParty() : $this->all();
 
-        if (! $service) {
+        if (!$service) {
             return $images;
         }
 
