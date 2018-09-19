@@ -33,7 +33,7 @@ interface ImageRepository
     public function getPath();
 
     /**
-     * Find the image for a given service
+     * Find the image for a given service.
      *
      * @param $service
      * @param bool $firstParty

@@ -12,7 +12,7 @@ class ImageSetRepository implements ImageSetRepositoryContract
 
     /**
      * ImageSetRepository constructor.
-     * Accepts a set of locations, or a singular one
+     * Accepts a set of locations, or a singular one.
      *
      * @param $location
      */
@@ -30,7 +30,7 @@ class ImageSetRepository implements ImageSetRepositoryContract
      */
     public function addLocation($location)
     {
-        if (! is_array($location)) {
+        if (!is_array($location)) {
             $location = [$location];
         }
 
