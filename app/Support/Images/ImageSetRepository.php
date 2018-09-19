@@ -8,11 +8,17 @@ use Symfony\Component\Finder\SplFileInfo;
 
 class ImageSetRepository implements ImageSetRepositoryContract
 {
-    protected $locations;
+    protected $locations = [];
 
-    public function __construct()
+    /**
+     * ImageSetRepository constructor.
+     * Accepts a set of locations, or a singular one
+     *
+     * @param $location
+     */
+    public function __construct($location)
     {
-        $this->addLocation(base_path('docker'));
+        $this->addLocation($location);
     }
 
     /**
@@ -24,7 +30,11 @@ class ImageSetRepository implements ImageSetRepositoryContract
      */
     public function addLocation($location)
     {
-        $this->locations[] = $location;
+        if (! is_array($location)) {
+            $location = [$location];
+        }
+
+        $this->locations = array_unique(array_merge($this->locations, $location));
 
         return $this;
     }

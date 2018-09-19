@@ -252,4 +252,9 @@ class TestImageRepository implements ImageRepositoryContract
     {
         return 'konsulting/porter-ubuntu';
     }
+
+    public function findByServiceName($service, $firstParty = false)
+    {
+        return $firstParty ? $this->firstParty() : $this->all();
+    }
 }

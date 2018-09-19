@@ -199,30 +199,36 @@ class Porter
 
     /**
      * Build the current images.
+     *
+     * @param null $service
      */
-    public function buildImages()
+    public function buildImages($service = null)
     {
-        foreach ($this->getDockerImageSet()->firstParty() as $image) {
+        foreach ($this->getDockerImageSet()->findByServiceName($service, $firstParty = true) as $image) {
             $this->cli->passthru("docker build -t {$image->name} --rm {$image->localPath} --");
         }
     }
 
     /**
      * Push the current images.
+     *
+     * @param null $service
      */
-    public function pushImages()
+    public function pushImages($service = null)
     {
-        foreach ($this->getDockerImageSet()->firstParty() as $image) {
+        foreach ($this->getDockerImageSet()->findByServiceName($service, $firstParty = true) as $image) {
             $this->cli->passthru("docker push {$image->name}");
         }
     }
 
     /**
      * Pull our docker images.
+     *
+     * @param null $service
      */
-    public function pullImages()
+    public function pullImages($service = null)
     {
-        foreach ($this->getDockerImageSet()->all() as $image) {
+        foreach ($this->getDockerImageSet()->findByServiceName($service) as $image) {
             if (running_tests() && $this->hasImage($image)) {
                 continue;
             }

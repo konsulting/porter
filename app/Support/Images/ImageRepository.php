@@ -3,6 +3,7 @@
 namespace App\Support\Images;
 
 use App\Support\Contracts\ImageRepository as ImageRepositoryContract;
+use Exception;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -29,7 +30,7 @@ class ImageRepository implements ImageRepositoryContract
     /**
      * Get the docker images that are pulled on install. A custom image set name may be specified.
      *
-     * @throws \Exception
+     * @throws Exception
      *
      * @return array
      */
@@ -63,7 +64,7 @@ class ImageRepository implements ImageRepositoryContract
     /**
      * Return a full listing of images.
      *
-     * @throws \Exception
+     * @throws Exception
      *
      * @return array
      */
@@ -90,6 +91,30 @@ class ImageRepository implements ImageRepositoryContract
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Find the image for a given service
+     *
+     * @param $service
+     * @param bool $firstParty
+     *
+     * @return array
+     *
+     * @throws Exception
+     */
+    public function findByServiceName($service, $firstParty = false)
+    {
+        $service = preg_replace('/[^a-zA-Z0-9\-\_]/', '-', $service);
+        $images = $firstParty ? $this->firstParty() : $this->all();
+
+        if (! $service) {
+            return $images;
+        }
+
+        return array_values(array_filter($images, function (Image $image) use ($service) {
+            return strpos($image->name, $service) !== false;
+        }));
     }
 
     /**
