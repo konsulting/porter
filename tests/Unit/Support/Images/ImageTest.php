@@ -12,8 +12,8 @@ class ImageTest extends BaseTestCase
     {
         $image = new Image('name', 'localPath');
 
-        $this->assertEquals('name', $image->name);
-        $this->assertEquals('localPath', $image->localPath);
+        $this->assertEquals('name', $image->getName());
+        $this->assertEquals('localPath', $image->getLocalPath());
     }
 
     /** @test */
@@ -21,28 +21,6 @@ class ImageTest extends BaseTestCase
     {
         $image = new Image('name');
 
-        $this->assertNull($image->localPath);
-    }
-
-    /**
-     * @test
-     * @expectedException \RuntimeException
-     */
-    public function an_images_name_cannot_change()
-    {
-        $image = new Image('name', 'localPath');
-
-        $image->name = 'new name';
-    }
-
-    /**
-     * @test
-     * @expectedException \RuntimeException
-     */
-    public function an_images_local_path_cannot_change()
-    {
-        $image = new Image('name', 'localPath');
-
-        $image->localPath = 'a new path';
+        $this->assertNull($image->getLocalPath());
     }
 }

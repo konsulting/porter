@@ -113,7 +113,7 @@ class ImageRepository implements ImageRepositoryContract
         }
 
         return array_values(array_filter($images, function (Image $image) use ($service) {
-            return strpos($image->name, $service) !== false;
+            return strpos($image->getName(), $service) !== false;
         }));
     }
 

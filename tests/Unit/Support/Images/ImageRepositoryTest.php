@@ -42,16 +42,17 @@ class ImageRepositoryTest extends BaseTestCase
     /** @test */
     public function it_finds_first_party_images()
     {
-        $expectedimages = [
+        $expectedImages = [
             new Image($this->repoName.'-php_cli_7-2:latest', $this->path.'/php_cli_7-2'),
             new Image($this->repoName.'-php_fpm_7-2:latest', $this->path.'/php_fpm_7-2'),
         ];
 
         $result = $this->repo->firstParty();
 
-        foreach ($expectedimages as $i => $image) {
-            $this->assertEquals($image->name, $result[$i]->name);
-            $this->assertEquals($image->localPath, $result[$i]->localPath);
+        foreach ($expectedImages as $i => $image) {
+            /** @var Image $image */
+            $this->assertEquals($image->getName(), $result[$i]->getName());
+            $this->assertEquals($image->getLocalPath(), $result[$i]->getLocalPath());
         }
     }
 
@@ -77,8 +78,8 @@ class ImageRepositoryTest extends BaseTestCase
     /** @test */
     public function it_finds_an_image_from_a_service_name()
     {
-        $this->assertEquals($this->repoName.'-php_fpm_7-2:latest', $this->repo->findByServiceName('php_fpm_7-2')[0]->name);
-        $this->assertEquals('mysql:5.7', $this->repo->findByServiceName('mysql')[0]->name);
+        $this->assertEquals($this->repoName.'-php_fpm_7-2:latest', $this->repo->findByServiceName('php_fpm_7-2')[0]->getName());
+        $this->assertEquals('mysql:5.7', $this->repo->findByServiceName('mysql')[0]->getName());
     }
 
     /** @test */
@@ -86,7 +87,7 @@ class ImageRepositoryTest extends BaseTestCase
     {
         $this->assertEquals(
             $this->repoName.'-php_fpm_7-2:latest',
-            $this->repo->findByServiceName('php_fpm_7-2', $firstParty = true)[0]->name
+            $this->repo->findByServiceName('php_fpm_7-2', $firstParty = true)[0]->getName()
         );
         $this->assertEmpty($this->repo->findByServiceName('mysql', $firstParty = true));
     }

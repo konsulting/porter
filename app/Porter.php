@@ -205,7 +205,8 @@ class Porter
     public function buildImages($service = null)
     {
         foreach ($this->getDockerImageSet()->findByServiceName($service, $firstParty = true) as $image) {
-            $this->cli->passthru("docker build -t {$image->name} --rm {$image->localPath} --");
+            /** @var Image $image */
+            $this->cli->passthru("docker build -t {$image->getName()} --rm {$image->getLocalPath} --");
         }
     }
 
@@ -217,7 +218,8 @@ class Porter
     public function pushImages($service = null)
     {
         foreach ($this->getDockerImageSet()->findByServiceName($service, $firstParty = true) as $image) {
-            $this->cli->passthru("docker push {$image->name}");
+            /** @var Image $image */
+            $this->cli->passthru("docker push {$image->getName()}");
         }
     }
 
@@ -229,11 +231,12 @@ class Porter
     public function pullImages($service = null)
     {
         foreach ($this->getDockerImageSet()->findByServiceName($service) as $image) {
+            /** @var Image $image */
             if (running_tests() && $this->hasImage($image)) {
                 continue;
             }
 
-            $this->cli->passthru("docker pull {$image->name}");
+            $this->cli->passthru("docker pull {$image->getName()}");
         }
     }
 
@@ -246,9 +249,9 @@ class Porter
      */
     public function hasImage(Image $image)
     {
-        $output = $this->cli->exec("docker image inspect {$image->name}");
+        $output = $this->cli->exec("docker image inspect {$image->getName()}");
 
-        return strpos($output, "Error: No such image: {$image->name}") === false;
+        return strpos($output, "Error: No such image: {$image->getName()}") === false;
     }
 
     /**

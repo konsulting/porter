@@ -2,10 +2,6 @@
 
 namespace App\Support\Images;
 
-/**
- * @property-read string $name
- * @property-read string|null $localPath
- */
 class Image
 {
     /** @var string */
@@ -14,19 +10,35 @@ class Image
     /** @var string|null */
     protected $localPath;
 
+    /**
+     * Image constructor.
+     *
+     * @param $name
+     * @param null $localPath
+     */
     public function __construct($name, $localPath = null)
     {
         $this->name = $name;
         $this->localPath = $localPath;
     }
 
-    public function __get($name)
+    /**
+     * Return the name for this image.
+     *
+     * @return string
+     */
+    public function getName()
     {
-        return $this->{$name} ?? null;
+        return $this->name;
     }
 
-    public function __set($name, $value)
+    /**
+     * Return the local path for the image, if it is local.
+     *
+     * @return string|null
+     */
+    public function getLocalPath()
     {
-        throw new \RuntimeException("Cannot set the value of {$name}");
+        return $this->localPath;
     }
 }
