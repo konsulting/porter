@@ -38,7 +38,7 @@ class ImageRepository implements ImageRepositoryContract
     {
         $images = [];
 
-        foreach ((new Finder())->in($this->path)->directories() as $directory) {
+        foreach ((new Finder())->in($this->path)->directories()->sortByName() as $directory) {
             /* @var $directory \Symfony\Component\Finder\SplFileInfo */
             $images[] = new Image($this->getImageName($directory, $this->name), $directory->getRealPath());
         }
