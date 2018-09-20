@@ -22,7 +22,7 @@ class CertificateBuilderBaseTest extends BaseTestCase
     /** @test */
     public function it_creates_a_certificate()
     {
-        $builder = new CertificateBuilder(new Cli, new Filesystem, $this->dir);
+        $builder = new CertificateBuilder(new Cli(), new Filesystem(), $this->dir);
         $builder->build('klever.test');
 
         $this->assertHasCertificates();
@@ -34,7 +34,7 @@ class CertificateBuilderBaseTest extends BaseTestCase
     {
         $this->dummyCerts();
 
-        $builder = new CertificateBuilder(new Cli, new Filesystem, $this->dir);
+        $builder = new CertificateBuilder(new Cli(), new Filesystem(), $this->dir);
         $builder->destroy('klever.test');
 
         $this->assertNoCertificates();
@@ -47,7 +47,7 @@ class CertificateBuilderBaseTest extends BaseTestCase
         $this->dummyCerts('klever.test');
         $this->dummyCerts('klever-one.test');
 
-        $builder = new CertificateBuilder(new Cli, new Filesystem, $this->dir);
+        $builder = new CertificateBuilder(new Cli(), new Filesystem(), $this->dir);
         $builder->clearCertificates(/* $dropCa = false */);
 
         $this->assertNoCertificates('klever.test');
@@ -62,7 +62,7 @@ class CertificateBuilderBaseTest extends BaseTestCase
         $this->dummyCerts('klever.test');
         $this->dummyCerts('klever-one.test');
 
-        $builder = new CertificateBuilder(new Cli, new Filesystem, $this->dir);
+        $builder = new CertificateBuilder(new Cli(), new Filesystem(), $this->dir);
         $builder->clearCertificates($dropCa = true);
 
         $this->assertNoCertificates('klever.test');
