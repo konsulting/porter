@@ -36,11 +36,11 @@ interface ImageRepository
      * Find the image for a given service.
      *
      * @param $service
-     * @param bool $firstParty
+     * @param bool $firstPartyOnly
      *
      * @return array
      */
-    public function findByServiceName($service, $firstParty = false);
+    public function findByServiceName($service, $firstPartyOnly = false);
 
     /**
      * Return the name.

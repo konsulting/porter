@@ -27,6 +27,6 @@ class Build extends BaseCommand
      */
     public function handle(): void
     {
-        $this->porter->buildImages($this->argument('service'));
+        $this->porter->buildImages((string) $this->argument('service'));
     }
 }

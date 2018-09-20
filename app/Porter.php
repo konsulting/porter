@@ -204,9 +204,9 @@ class Porter
      */
     public function buildImages($service = null)
     {
-        foreach ($this->getDockerImageSet()->findByServiceName($service, $firstParty = true) as $image) {
+        foreach ($this->getDockerImageSet()->findByServiceName($service, $firstPartyOnly = true) as $image) {
             /* @var Image $image */
-            $this->cli->passthru("docker build -t {$image->getName()} --rm {$image->getLocalPath} --");
+            $this->cli->passthru("docker build -t {$image->getName()} --rm {$image->getLocalPath()} --");
         }
     }
 
@@ -217,7 +217,7 @@ class Porter
      */
     public function pushImages($service = null)
     {
-        foreach ($this->getDockerImageSet()->findByServiceName($service, $firstParty = true) as $image) {
+        foreach ($this->getDockerImageSet()->findByServiceName($service, $firstPartyOnly = true) as $image) {
             /* @var Image $image */
             $this->cli->passthru("docker push {$image->getName()}");
         }

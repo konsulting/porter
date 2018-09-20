@@ -87,8 +87,8 @@ class ImageRepositoryTest extends BaseTestCase
     {
         $this->assertEquals(
             $this->repoName.'-php_fpm_7-2:latest',
-            $this->repo->findByServiceName('php_fpm_7-2', $firstParty = true)[0]->getName()
+            $this->repo->findByServiceName('php_fpm_7-2', $firstPartyOnly = true)[0]->getName()
         );
-        $this->assertEmpty($this->repo->findByServiceName('mysql', $firstParty = true));
+        $this->assertEmpty($this->repo->findByServiceName('mysql', $firstPartyonly = true));
     }
 }

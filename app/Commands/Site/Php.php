@@ -26,12 +26,13 @@ class Php extends BaseCommand
      * Execute the console command.
      *
      * @throws \Exception
+     * @throws \Throwable
      *
      * @return void
      */
     public function handle(): void
     {
-        $site = Site::resolveFromPathOrCurrentWorkingDirectoryOrFail($this->argument('site'));
+        $site = Site::resolveFromPathOrCurrentWorkingDirectoryOrFail((string) $this->argument('site'));
 
         $currentVersion = $site->php_version->version_number;
 

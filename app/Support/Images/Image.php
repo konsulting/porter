@@ -14,7 +14,7 @@ class Image
      * Image constructor.
      *
      * @param $name
-     * @param null $localPath
+     * @param string|null $localPath
      */
     public function __construct($name, $localPath = null)
     {
