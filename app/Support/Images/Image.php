@@ -3,8 +3,8 @@
 namespace App\Support\Images;
 
 /**
- * @property-read $name
- * @property-read $localPath
+ * @property-read string $name
+ * @property-read string|null $localPath
  */
 class Image
 {

@@ -27,6 +27,6 @@ class Restart extends BaseCommand
      */
     public function handle(): void
     {
-        $this->porter->restart($this->argument('service'));
+        $this->porter->restart((string) $this->argument('service'));
     }
 }

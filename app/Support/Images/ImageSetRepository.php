@@ -46,7 +46,7 @@ class ImageSetRepository implements ImageSetRepositoryContract
      *
      * @throws \Exception
      *
-     * @return string
+     * @return ImageRepository
      */
     public function getImageRepository($imageSetName)
     {

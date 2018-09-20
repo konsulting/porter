@@ -7,7 +7,11 @@ use App\PorterLibrary;
 use App\Support\Console\Cli;
 use App\Support\Console\DockerCompose\CliCommandFactory;
 use LaravelZero\Framework\Commands\Command;
+use NunoMaduro\LaravelConsoleMenu\Menu;
 
+/**
+ * @method Menu menu(string $title, array $options)
+ */
 abstract class BaseCommand extends Command
 {
     /** @var \App\Support\Console\Cli */

@@ -5,8 +5,8 @@ use App\Models\Setting;
 /**
  * Get a setting, or all settings.
  *
- * @param null $key
- * @param null $default
+ * @param string|null $key
+ * @param string|null $default
  *
  * @return mixed
  */

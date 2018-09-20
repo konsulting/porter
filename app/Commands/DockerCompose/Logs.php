@@ -27,6 +27,6 @@ class Logs extends BaseCommand
      */
     public function handle(): void
     {
-        $this->porter->logs($this->argument('service'));
+        $this->porter->logs((string) $this->argument('service'));
     }
 }

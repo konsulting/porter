@@ -29,17 +29,18 @@ class Open extends BaseCommand
      */
     public function handle(): void
     {
-        if ($version = $this->option('php-version')) {
+        if ($version = (string) $this->option('php-version')) {
             $version = PhpVersion::findByDirtyVersionNumber($version);
         } else {
-            $version = optional(Site::resolveFromPathOrCurrentWorkingDirectory())->php_version ?: PhpVersion::defaultVersion();
+            $version = optional(Site::resolveFromPathOrCurrentWorkingDirectory())->php_version
+                ?: PhpVersion::defaultVersion();
         }
 
         $this->info("PHP Version: {$version->version_number}");
 
         $this->dockerCompose
             ->runContainer("php_cli_{$version->safe}")
-            ->bash($this->argument('run'))
+            ->bash((string) $this->argument('run'))
             ->perform();
     }
 }

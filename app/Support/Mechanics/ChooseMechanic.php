@@ -16,13 +16,13 @@ class ChooseMechanic
         $os = $os ?: PHP_OS;
 
         switch (true) {
-            case stristr($os, 'DAR'):
+            case (bool) stristr($os, 'DAR'):
                 return app(MacOs::class);
 
-            case stristr($os, 'WIN'):
+            case (bool) stristr($os, 'WIN'):
                 return app(Windows::class);
 
-            case stristr($os, 'LINUX'):
+            case (bool) stristr($os, 'LINUX'):
                 return app(Linux::class);
 
             default:

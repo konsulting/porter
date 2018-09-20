@@ -146,7 +146,9 @@ class CliCommand
     public function perform()
     {
         if ($this->isInteractive()) {
-            return $this->cli->passthru($this->prepare());
+            $this->cli->passthru($this->prepare());
+
+            return null;
         }
 
         if ($this->isRealTime()) {

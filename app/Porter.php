@@ -200,7 +200,7 @@ class Porter
     /**
      * Build the current images.
      *
-     * @param null $service
+     * @param string|null $service
      */
     public function buildImages($service = null)
     {
@@ -212,7 +212,7 @@ class Porter
     /**
      * Push the current images.
      *
-     * @param null $service
+     * @param string|null $service
      */
     public function pushImages($service = null)
     {
@@ -224,7 +224,7 @@ class Porter
     /**
      * Pull our docker images.
      *
-     * @param null $service
+     * @param string|null $service
      */
     public function pullImages($service = null)
     {
