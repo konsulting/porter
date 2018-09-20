@@ -12,6 +12,7 @@ use App\Support\Contracts\ImageSetRepository as ImageSetRepositoryContract;
 use App\Support\FilePublisher;
 use App\Support\Images\ImageSetRepository;
 use App\Support\Ssl\CertificateBuilder;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -30,7 +31,11 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(CertificateBuilder::class, function () {
-            return new CertificateBuilder(app(PorterLibrary::class)->sslPath());
+            return new CertificateBuilder(
+                app(CliContract::class),
+                app(Filesystem::class),
+                app(PorterLibrary::class)->sslPath()
+            );
         });
 
         $this->app->bind(ConsoleWriter::class);

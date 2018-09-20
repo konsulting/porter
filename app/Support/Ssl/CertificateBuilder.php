@@ -2,18 +2,25 @@
 
 namespace App\Support\Ssl;
 
+use App\Support\Contracts\Cli;
 use App\Support\Mechanics\ChooseMechanic;
+use Illuminate\Filesystem\Filesystem;
+use Symfony\Component\Finder\SplFileInfo;
 
 class CertificateBuilder
 {
+    protected $cli;
+    protected $filesystem;
     protected $certificatesPath;
     protected $oName;
     protected $cName;
     protected $domain;
     protected $email;
 
-    public function __construct($certificatesPath)
+    public function __construct(Cli $cli, Filesystem $filesystem, $certificatesPath)
     {
+        $this->cli = $cli;
+        $this->filesystem = $filesystem;
         $this->certificatesPath = $certificatesPath;
 
         $this->oName = 'Klever Porter CA Self Signed Organization';
@@ -30,8 +37,8 @@ class CertificateBuilder
     public function caPaths()
     {
         return (object) [
-            'key' => $this->certificatesPath.'/KleverPorterSelfSigned.key',
-            'pem' => $this->certificatesPath.'/KleverPorterSelfSigned.pem',
+            'key' => $this->certificatesPath.'/KleverPorterCASelfSigned.key',
+            'pem' => $this->certificatesPath.'/KleverPorterCASelfSigned.pem',
             'srl' => $this->certificatesPath.'/KleverPorterCASelfSigned.srl',
         ];
     }
@@ -73,7 +80,7 @@ class CertificateBuilder
     public function destroy($url)
     {
         foreach ($this->paths($url) as $path) {
-            @unlink($path);
+            $this->filesystem->delete($path);
         }
     }
 
@@ -84,11 +91,11 @@ class CertificateBuilder
     {
         $paths = $this->caPaths();
 
-        if (file_exists($paths->key) || file_exists($paths->pem)) {
+        if ($this->filesystem->exists($paths->key) || $this->filesystem->exists($paths->pem)) {
             return;
         }
 
-        exec(sprintf(
+        $this->cli->exec(sprintf(
             'openssl req -new -newkey rsa:2048 -days 730 -nodes -x509 -subj "/C=GB/ST=Berks/O=%s/localityName=Reading/commonName=%s/organizationalUnitName=Developers/emailAddress=%s/" -keyout %s -out %s',
             $this->oName, $this->cName, $this->email, $paths->key, $paths->pem
         ));
@@ -113,11 +120,11 @@ class CertificateBuilder
         $this->createSigningRequest($url, $paths->key, $paths->csr, $paths->conf);
 
         $caSrlParam = ' -CAcreateserial';
-        if (file_exists($caPaths->srl)) {
+        if ($this->filesystem->exists($caPaths->srl)) {
             $caSrlParam = ' -CAserial '.$caPaths->srl;
         }
 
-        exec(sprintf(
+        $this->cli->exec(sprintf(
             'openssl x509 -req -sha256 -days 730 -CA %s -CAkey %s%s -in %s -out %s -extensions v3_req -extfile %s',
             $caPaths->pem, $caPaths->key, $caSrlParam, $paths->csr, $paths->crt, $paths->conf
         ));
@@ -134,7 +141,7 @@ class CertificateBuilder
      */
     public function createConf($path, $url)
     {
-        file_put_contents($path, view('ssl.conf')->withUrl($url)->render());
+        $this->filesystem->put($path, view('ssl.conf')->withUrl($url)->render());
     }
 
     /**
@@ -146,7 +153,7 @@ class CertificateBuilder
      */
     public function createPrivateKey($keyPath)
     {
-        exec(sprintf('openssl genrsa -out %s 2048', $keyPath));
+        $this->cli->exec(sprintf('openssl genrsa -out %s 2048', $keyPath));
     }
 
     /**
@@ -161,7 +168,7 @@ class CertificateBuilder
      */
     public function createSigningRequest($url, $keyPath, $csrPath, $confPath)
     {
-        exec(sprintf(
+        $this->cli->exec(sprintf(
             'openssl req -new -key %s -out %s -subj "/C=GB/ST=Berks/O=%s/localityName=Reading/commonName=%s/organizationalUnitName=Developers/emailAddress=%s%s/" -config %s',
             $keyPath, $csrPath, $this->domain, $url, $url, '@'.$this->domain, $confPath
         ));
@@ -172,22 +179,20 @@ class CertificateBuilder
      *
      * @param bool $dropCA
      */
-    public function clearDirectory($dropCA = false)
+    public function clearCertificates($dropCA = false)
     {
         $caPaths = (array) $this->caPaths();
 
-        foreach (scandir($this->certificatesPath) as $item) {
-            if ($item == '.' || $item == '..' || $item == '.gitkeep') {
+        $files = $this->filesystem
+            ->allFiles($this->certificatesPath);
+
+        foreach ($files as $file) {
+            /** @var SplFileInfo $file */
+            if (!$dropCA && in_array($file->getPathname(), $caPaths)) {
                 continue;
             }
 
-            $current = $this->certificatesPath.'/'.$item;
-
-            if (!$dropCA && in_array($current, $caPaths)) {
-                continue;
-            }
-
-            unlink($current);
+            $this->filesystem->delete($file->getPathname());
         }
     }
 }
