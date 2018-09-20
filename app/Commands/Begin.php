@@ -33,7 +33,7 @@ class Begin extends BaseCommand
         $this->line('');
 
         try {
-            $this->porterLibrary->setup($this->app, $this->option('force'));
+            $this->porterLibrary->setup($this->app, (bool) $this->option('force'));
         } catch (PorterSetupFailed $e) {
             $this->alert($e->getMessage());
 
@@ -43,7 +43,7 @@ class Begin extends BaseCommand
         $this->info('Your Porter settings are stored in '.$this->porterLibrary->path());
         $this->info('');
 
-        $home = realpath($this->argument('home') ?: $this->cli->currentWorkingDirectory());
+        $home = realpath((string) $this->argument('home') ?: $this->cli->currentWorkingDirectory());
         $this->callSilent('home', ['path' => $home]);
 
         $this->info("Setting home to {$home}.");

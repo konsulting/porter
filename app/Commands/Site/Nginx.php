@@ -31,7 +31,7 @@ class Nginx extends BaseCommand
      */
     public function handle(): void
     {
-        $site = Site::resolveFromPathOrCurrentWorkingDirectoryOrFail($this->argument('site'));
+        $site = Site::resolveFromPathOrCurrentWorkingDirectoryOrFail((string) $this->argument('site'));
 
         $currentNginxConf = $site->nginx_conf;
 

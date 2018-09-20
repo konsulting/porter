@@ -11,7 +11,7 @@ class Build extends BaseCommand
      *
      * @var string
      */
-    protected $signature = 'images:build';
+    protected $signature = 'images:build {service?}';
 
     /**
      * The description of the command.
@@ -27,6 +27,6 @@ class Build extends BaseCommand
      */
     public function handle(): void
     {
-        $this->porter->buildImages();
+        $this->porter->buildImages((string) $this->argument('service'));
     }
 }

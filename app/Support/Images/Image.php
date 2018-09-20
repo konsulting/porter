@@ -10,14 +10,35 @@ class Image
     /** @var string|null */
     protected $localPath;
 
+    /**
+     * Image constructor.
+     *
+     * @param $name
+     * @param string|null $localPath
+     */
     public function __construct($name, $localPath = null)
     {
         $this->name = $name;
         $this->localPath = $localPath;
     }
 
-    public function __get($name)
+    /**
+     * Return the name for this image.
+     *
+     * @return string
+     */
+    public function getName()
     {
-        return $this->{$name} ?? null;
+        return $this->name;
+    }
+
+    /**
+     * Return the local path for the image, if it is local.
+     *
+     * @return string|null
+     */
+    public function getLocalPath()
+    {
+        return $this->localPath;
     }
 }

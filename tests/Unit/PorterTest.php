@@ -125,7 +125,7 @@ class PorterTest extends BaseTestCase
     /** @test */
     public function it_pulls_the_docker_images()
     {
-        $images = ['konsulting/image', 'konsulting/image2', 'another/image', 'another/image2'];
+        $images = ['konsulting/php_cli', 'konsulting/php_fpm', 'another/node', 'another/mysql'];
 
         foreach ($images as $image) {
             $this->expectCommand('docker image inspect '.$image, 'exec')
@@ -137,12 +137,78 @@ class PorterTest extends BaseTestCase
     }
 
     /** @test */
+    public function it_pulls_a_single_first_party_docker_image()
+    {
+        $this->expectCommand('docker image inspect konsulting/php_cli', 'exec')
+            ->andReturn('Error: No such image: konsulting/php_cli');
+
+        $this->expectCommand('docker pull konsulting/php_cli', 'passthru');
+
+        $this->porter->pullImages('php_cli');
+    }
+
+    /** @test */
+    public function it_pulls_a_single_third_party_docker_image()
+    {
+        $this->expectCommand('docker image inspect another/node', 'exec')
+            ->andReturn('Error: No such image: another/node');
+
+        $this->expectCommand('docker pull another/node', 'passthru');
+
+        $this->porter->pullImages('node');
+    }
+
+    /** @test */
+    public function it_builds_the_first_party_images()
+    {
+        $images = [
+            'php_cli_path' => 'konsulting/php_cli',
+            'php_fpm_path' => 'konsulting/php_fpm',
+        ];
+
+        foreach ($images as $path => $image) {
+            $this->expectCommand('docker build -t '.$image.' --rm '.$path.' --', 'passthru');
+        }
+        $this->porter->buildImages();
+    }
+
+    /** @test */
+    public function it_builds_a_single_first_party_image()
+    {
+        $this->expectCommand('docker build -t konsulting/php_cli --rm php_cli_path --', 'passthru');
+        $this->porter->buildImages('php_cli');
+    }
+
+    /** @test */
+    public function it_does_not_build_third_party_images()
+    {
+        $this->cli->shouldNotReceive('passthru');
+        $this->porter->buildImages('node');
+    }
+
+    /** @test */
     public function it_pushes_the_first_party_images()
     {
-        foreach (['konsulting/image', 'konsulting/image2'] as $image) {
+        foreach (['konsulting/php_cli', 'konsulting/php_fpm'] as $image) {
             $this->expectCommand('docker push '.$image, 'passthru');
         }
         $this->porter->pushImages();
+    }
+
+    /** @test */
+    public function it_pushes_a_single_first_party_image()
+    {
+        foreach (['konsulting/php_cli', 'konsulting/php_fpm'] as $image) {
+            $this->expectCommand('docker push '.$image, 'passthru');
+        }
+        $this->porter->pushImages();
+    }
+
+    /** @test */
+    public function it_does_not_push_third_party_images()
+    {
+        $this->cli->shouldNotReceive('passthru');
+        $this->porter->pushImages('node');
     }
 
     /** @test */
@@ -230,12 +296,15 @@ class TestImageRepository implements ImageRepositoryContract
 {
     public function firstParty()
     {
-        return [new Image('konsulting/image'), new Image('konsulting/image2')];
+        return [
+            new Image('konsulting/php_cli', 'php_cli_path'),
+            new Image('konsulting/php_fpm', 'php_fpm_path'),
+        ];
     }
 
     public function thirdParty()
     {
-        return [new Image('another/image'), new Image('another/image2')];
+        return [new Image('another/node'), new Image('another/mysql')];
     }
 
     public function all()
@@ -251,5 +320,18 @@ class TestImageRepository implements ImageRepositoryContract
     public function getName()
     {
         return 'konsulting/porter-ubuntu';
+    }
+
+    public function findByServiceName($service, $firstPartyOnly = false)
+    {
+        if ($service == 'php_cli') {
+            return [new Image('konsulting/php_cli', 'php_cli_path')];
+        }
+
+        if ($service == 'node') {
+            return $firstPartyOnly ? [] : [new Image('another/node')];
+        }
+
+        return $firstPartyOnly ? $this->firstParty() : $this->all();
     }
 }

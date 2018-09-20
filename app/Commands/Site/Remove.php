@@ -25,11 +25,12 @@ class Remove extends BaseCommand
      * Execute the console command.
      *
      * @throws \Exception
+     * @throws \Throwable
      *
      * @return void
      */
     public function handle(): void
     {
-        Site::resolveFromPathOrCurrentWorkingDirectoryOrFail($this->argument('site'))->remove();
+        Site::resolveFromPathOrCurrentWorkingDirectoryOrFail((string) $this->argument('site'))->remove();
     }
 }

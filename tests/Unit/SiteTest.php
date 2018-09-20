@@ -114,6 +114,20 @@ class SiteTest extends BaseTestCase
     }
 
     /** @test */
+    public function it_will_resolve_a_site_name_from_the_current_working_directory()
+    {
+        Setting::updateOrCreate('home', '/Users/keoghan/Code');
+
+        app()->instance(Cli::class, \Mockery::mock(Cli::class));
+
+        app(Cli::class)
+            ->shouldReceive('currentWorkingDirectory')
+            ->andReturn('/Users/keoghan/Code/sample/deep');
+
+        $this->assertEquals('sample', Site::nameFromPath('/Users/keoghan/Code/sample'));
+    }
+
+    /** @test */
     public function it_will_resolve_a_site_from_a_path()
     {
         Setting::updateOrCreate('home', '/Users/keoghan/Code');

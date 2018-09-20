@@ -29,7 +29,7 @@ class Open extends BaseCommand
     {
         $this->dockerCompose
             ->runContainer('node')
-            ->bash($this->argument('run'))
+            ->bash((string) $this->argument('run'))
             ->perform();
     }
 }

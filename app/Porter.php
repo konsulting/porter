@@ -199,35 +199,44 @@ class Porter
 
     /**
      * Build the current images.
+     *
+     * @param string|null $service
      */
-    public function buildImages()
+    public function buildImages($service = null)
     {
-        foreach ($this->getDockerImageSet()->firstParty() as $image) {
-            $this->cli->passthru("docker build -t {$image->name} --rm {$image->localPath} --");
+        foreach ($this->getDockerImageSet()->findByServiceName($service, $firstPartyOnly = true) as $image) {
+            /* @var Image $image */
+            $this->cli->passthru("docker build -t {$image->getName()} --rm {$image->getLocalPath()} --");
         }
     }
 
     /**
      * Push the current images.
+     *
+     * @param string|null $service
      */
-    public function pushImages()
+    public function pushImages($service = null)
     {
-        foreach ($this->getDockerImageSet()->firstParty() as $image) {
-            $this->cli->passthru("docker push {$image->name}");
+        foreach ($this->getDockerImageSet()->findByServiceName($service, $firstPartyOnly = true) as $image) {
+            /* @var Image $image */
+            $this->cli->passthru("docker push {$image->getName()}");
         }
     }
 
     /**
      * Pull our docker images.
+     *
+     * @param string|null $service
      */
-    public function pullImages()
+    public function pullImages($service = null)
     {
-        foreach ($this->getDockerImageSet()->all() as $image) {
+        foreach ($this->getDockerImageSet()->findByServiceName($service) as $image) {
+            /** @var Image $image */
             if (running_tests() && $this->hasImage($image)) {
                 continue;
             }
 
-            $this->cli->passthru("docker pull {$image->name}");
+            $this->cli->passthru("docker pull {$image->getName()}");
         }
     }
 
@@ -240,9 +249,9 @@ class Porter
      */
     public function hasImage(Image $image)
     {
-        $output = $this->cli->exec("docker image inspect {$image->name}");
+        $output = $this->cli->exec("docker image inspect {$image->getName()}");
 
-        return strpos($output, "Error: No such image: {$image->name}") === false;
+        return strpos($output, "Error: No such image: {$image->getName()}") === false;
     }
 
     /**

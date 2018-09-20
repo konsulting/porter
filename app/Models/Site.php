@@ -26,9 +26,9 @@ class Site extends Model
     /**
      * Resolve the site from the current working directory.
      *
-     * @param null $path
+     * @param string|null $path
      *
-     * @return null
+     * @return Site|null
      */
     public static function resolveFromPathOrCurrentWorkingDirectory($path = null)
     {
@@ -45,11 +45,11 @@ class Site extends Model
      * Resolve the site from the current working directory
      * Fail if not found.
      *
-     * @param null $path
+     * @param string|null $path
      *
      * @throws \Exception
      *
-     * @return null
+     * @return Site|null
      */
     public static function resolveFromPathOrCurrentWorkingDirectoryOrFail($path = null)
     {
