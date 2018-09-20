@@ -303,6 +303,10 @@ class Site extends Model
     {
         $home = setting('home');
 
+        if (strpos($path, DIRECTORY_SEPARATOR) === false) {
+            return $path;
+        }
+
         if (strpos($path, $home) !== 0) {
             return;
         }

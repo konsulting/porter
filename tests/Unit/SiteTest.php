@@ -114,6 +114,14 @@ class SiteTest extends BaseTestCase
     }
 
     /** @test */
+    public function it_will_resolve_a_simple_site_name()
+    {
+        Setting::updateOrCreate('home', '/Users/keoghan/Code');
+
+        $this->assertEquals('sample', Site::nameFromPath('sample'));
+    }
+
+    /** @test */
     public function it_will_resolve_a_site_name_from_the_current_working_directory()
     {
         Setting::updateOrCreate('home', '/Users/keoghan/Code');
@@ -125,6 +133,19 @@ class SiteTest extends BaseTestCase
             ->andReturn('/Users/keoghan/Code/sample/deep');
 
         $this->assertEquals('sample', Site::nameFromPath('/Users/keoghan/Code/sample'));
+    }
+
+    /** @test */
+    public function it_will_resolve_a_site_from_a_simple_name()
+    {
+        Setting::updateOrCreate('home', '/Users/keoghan/Code');
+
+        $site = factory(Site::class)->create(['name' => 'sample']);
+
+        $this->assertEquals(
+            $site->getKey(),
+            Site::resolveFromPathOrCurrentWorkingDirectory('sample')->getKey()
+        );
     }
 
     /** @test */
