@@ -50,7 +50,7 @@ class ImageRepositoryTest extends BaseTestCase
         $result = $this->repo->firstParty();
 
         foreach ($expectedImages as $i => $image) {
-            /** @var Image $image */
+            /* @var Image $image */
             $this->assertEquals($image->getName(), $result[$i]->getName());
             $this->assertEquals($image->getLocalPath(), $result[$i]->getLocalPath());
         }
