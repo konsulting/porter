@@ -140,7 +140,7 @@ class PorterTest extends BaseTestCase
     public function it_pulls_a_single_first_party_docker_image()
     {
         $this->expectCommand('docker image inspect konsulting/php_cli', 'exec')
-            ->andReturn("Error: No such image: konsulting/php_cli");
+            ->andReturn('Error: No such image: konsulting/php_cli');
 
         $this->expectCommand('docker pull konsulting/php_cli', 'passthru');
 
@@ -151,7 +151,7 @@ class PorterTest extends BaseTestCase
     public function it_pulls_a_single_third_party_docker_image()
     {
         $this->expectCommand('docker image inspect another/node', 'exec')
-            ->andReturn("Error: No such image: another/node");
+            ->andReturn('Error: No such image: another/node');
 
         $this->expectCommand('docker pull another/node', 'passthru');
 
@@ -298,7 +298,7 @@ class TestImageRepository implements ImageRepositoryContract
     {
         return [
             new Image('konsulting/php_cli', 'php_cli_path'),
-            new Image('konsulting/php_fpm', 'php_fpm_path')
+            new Image('konsulting/php_fpm', 'php_fpm_path'),
         ];
     }
 
