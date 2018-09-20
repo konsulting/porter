@@ -35,7 +35,7 @@ class Site extends Model
         $name = static::nameFromPath($path ?: app(Cli::class)->currentWorkingDirectory());
 
         if (!$name) {
-            return null;
+            return;
         }
 
         return static::where('name', $name)->first();

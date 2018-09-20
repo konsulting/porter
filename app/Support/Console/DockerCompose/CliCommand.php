@@ -148,7 +148,7 @@ class CliCommand
         if ($this->isInteractive()) {
             $this->cli->passthru($this->prepare());
 
-            return null;
+            return;
         }
 
         if ($this->isRealTime()) {
