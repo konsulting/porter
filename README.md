@@ -1,5 +1,9 @@
 # Porter
 
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/konsulting/porter/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/konsulting/porter/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/konsulting/porter/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/konsulting/porter/?branch=master)
+[![Build Status](https://scrutinizer-ci.com/g/konsulting/porter/badges/build.png?b=master)](https://scrutinizer-ci.com/g/konsulting/porter/build-status/master)
+
 A [Docker](https://www.docker.com) based multi-site setup for local development. Inspired by [Laravel Valet](https://github.com/laravel/valet) & [Homestead](https://github.com/laravel/homestead) and [Shipping Docker's Vessel](https://github.com/shipping-docker/vessel), [Shipping Docker](https://serversforhackers.com/shipping-docker) and [Docker For Developers](https://bitpress.io/docker-for-php-developers/).
 
 We're still learning Docker, and open to improvements to this set up and we're 'dog-fooding' it as we go. **Porter is currently in Alpha state**, we're refining as we move along.
