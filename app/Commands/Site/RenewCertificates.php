@@ -29,7 +29,7 @@ class RenewCertificates extends BaseCommand
      */
     public function handle(): void
     {
-        app(CertificateBuilder::class)->clearDirectory((bool) $this->option('clear-ca'));
+        app(CertificateBuilder::class)->clearCertificates((bool) $this->option('clear-ca'));
 
         foreach (Site::where('secure', true)->get() as $site) {
             $site->buildCertificate();
