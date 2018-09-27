@@ -15,16 +15,45 @@ class ImageRepository implements ImageRepositoryContract
     /** @var string */
     protected $name;
 
+    protected $firstPartyImages = [];
+
+    protected $thirdPartyImages = [];
+
     /**
      * ImageRepository constructor.
      *
      * @param $path
      * @param $name
+     * @throws Exception
      */
     public function __construct($path, $name)
     {
         $this->path = $path;
         $this->name = $name;
+
+        $this->loadConfig();
+    }
+
+    /**
+     * Load the configuration file for the image set
+     *
+     * @throws Exception
+     */
+    protected function loadConfig()
+    {
+        try {
+            $config = json_decode(file_get_contents($this->path.'/config.json'));
+
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                throw new \Exception(json_last_error_msg());
+            }
+
+        } catch (\Exception $e) {
+            throw new \Exception("Failed loading config for image set '{$this->name}'");
+        }
+
+        $this->firstPartyImages = $config->firstParty ?? [];
+        $this->thirdPartyImages = $config->thirdParty ?? [];
     }
 
     /**
@@ -36,14 +65,10 @@ class ImageRepository implements ImageRepositoryContract
      */
     public function firstParty()
     {
-        $images = [];
-
-        foreach ((new Finder())->in($this->path)->directories()->sortByName() as $directory) {
-            /* @var $directory \Symfony\Component\Finder\SplFileInfo */
-            $images[] = new Image($this->getImageName($directory, $this->name), $directory->getRealPath());
-        }
-
-        return $images;
+        return collect($this->firstPartyImages)
+            ->mapWithKeys(function ($version, $name) {
+                return [new Image($name.':'.$version, $this->getDockerContext().$name)];
+            }, [])->toArray();
     }
 
     /**
@@ -53,12 +78,10 @@ class ImageRepository implements ImageRepositoryContract
      */
     public function thirdParty()
     {
-        return [
-            new Image('mysql:5.7'),
-            new Image('redis:alpine'),
-            new Image('andyshinn/dnsmasq'),
-            new Image('mailhog/mailhog:v1.0.0'),
-        ];
+        return collect($this->thirdPartyImages)
+            ->map(function ($image) {
+                return new Image($image);
+            })->toArray();
     }
 
     /**
@@ -71,6 +94,16 @@ class ImageRepository implements ImageRepositoryContract
     public function all()
     {
         return array_merge($this->firstParty(), $this->thirdParty());
+    }
+
+    /**
+     * Return Docker context path
+     *
+     * @return string
+     */
+    public function getDockerContext()
+    {
+        return $this->path.'/docker/';
     }
 
     /**
@@ -115,18 +148,5 @@ class ImageRepository implements ImageRepositoryContract
         return array_values(array_filter($images, function (Image $image) use ($service) {
             return strpos($image->getName(), $service) !== false;
         }));
-    }
-
-    /**
-     * Get the name of the docker image from the directory and image set name.
-     *
-     * @param string      $imageSetName
-     * @param SplFileInfo $dir
-     *
-     * @return string
-     */
-    private function getImageName(SplFileInfo $dir, $imageSetName)
-    {
-        return $imageSetName.'-'.$dir->getFileName().':latest';
     }
 }

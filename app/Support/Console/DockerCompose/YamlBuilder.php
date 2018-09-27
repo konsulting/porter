@@ -41,6 +41,7 @@ class YamlBuilder
                 'useBrowser'        => setting('use_browser') == 'on',
                 'imageSet'          => $imageSet->getName(),
                 'imageSetPath'      => $imageSet->getPath(),
+                'dockerContext'  => $imageSet->getDockerContext(),
                 'libraryPath'       => $this->porterLibrary->path(),
             ])->render()
         );

@@ -1,6 +1,6 @@
   nginx:
     build:
-      context: {{ $imageSetPath }}
+      context: {{ $dockerContext }}
       dockerfile: nginx/Dockerfile
       cache_from:
         - {{ $imageSet }}-nginx:latest

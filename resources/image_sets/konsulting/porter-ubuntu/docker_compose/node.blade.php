@@ -1,6 +1,6 @@
   node:
     build:
-      context: {{ $imageSetPath }}
+      context: {{ $dockerContext }}
       dockerfile: node/Dockerfile
       cache_from:
         - {{ $imageSet }}-node:latest

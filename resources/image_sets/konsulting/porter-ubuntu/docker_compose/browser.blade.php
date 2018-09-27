@@ -1,6 +1,6 @@
   browser:
     build:
-      context: {{ $imageSetPath }}
+      context: {{ $dockerContext }}
       dockerfile: chromedriver/Dockerfile
       cache_from:
         - {{ $imageSet }}-chromedriver:latest

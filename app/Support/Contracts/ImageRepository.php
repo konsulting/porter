@@ -26,6 +26,13 @@ interface ImageRepository
     public function all();
 
     /**
+     * Return the Docker context path
+     *
+     * @return mixed
+     */
+    public function getDockerContext();
+
+    /**
      * Return the path.
      *
      * @return string
