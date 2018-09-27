@@ -1,6 +1,6 @@
   php_fpm_{{ $version->safe }}:
     build:
-      context: {{ $imageSetPath }}
+      context: {{ $dockerContext }}
       dockerfile: php_fpm_{{ $version->safe }}/Dockerfile
       cache_from:
         - {{ $imageSet }}-php_fpm_{{ $version->safe }}:latest

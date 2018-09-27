@@ -1,6 +1,6 @@
   php_cli_{{ $version->safe }}:
     build:
-      context: {{ $imageSetPath }}
+      context: {{ $dockerContext }}
       dockerfile: php_cli_{{ $version->safe }}/Dockerfile
       cache_from:
         - {{ $imageSet }}-php_cli_{{ $version->safe }}:latest
