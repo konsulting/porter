@@ -32,7 +32,7 @@ class YamlBuilder
     {
         $this->files->put(
             $this->porterLibrary->dockerComposeFile(),
-            view("docker_compose.{$imageSet->getName()}.base")->with([
+            view("{$imageSet->getName()}::base")->with([
                 'home'              => setting('home'),
                 'host_machine_name' => setting('host_machine_name'),
                 'activePhpVersions' => PhpVersion::active()->get(),

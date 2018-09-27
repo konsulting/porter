@@ -66,7 +66,7 @@ class PorterLibrary
      */
     public function dockerImagesPath()
     {
-        return $this->path.'/docker';
+        return $this->path.'/image-sets';
     }
 
     /**

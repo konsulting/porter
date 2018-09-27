@@ -23,6 +23,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         view()->getFinder()->prependLocation(app(PorterLibrary::class)->viewsPath());
+
+        $this->app[ImageSetRepositoryContract::class]->registerViewNamespaces($this->app);
     }
 
     /**
