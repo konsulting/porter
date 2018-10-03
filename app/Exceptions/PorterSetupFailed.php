@@ -2,9 +2,7 @@
 
 namespace App\Exceptions;
 
-use Exception;
-
-class PorterSetupFailed extends Exception
+class PorterSetupFailed extends PorterException
 {
-    //
+    
 }
