@@ -21,14 +21,12 @@ class ImageRepository implements ImageRepositoryContract
      * ImageRepository constructor.
      *
      * @param $path
-     * @param $name
      *
      * @throws Exception
      */
-    public function __construct($path, $name)
+    public function __construct($path)
     {
         $this->path = $path;
-        $this->name = $name;
 
         $this->loadConfig();
     }
@@ -46,12 +44,18 @@ class ImageRepository implements ImageRepositoryContract
             if (json_last_error() !== JSON_ERROR_NONE) {
                 throw new \Exception(json_last_error_msg());
             }
-        } catch (\Exception $e) {
-            throw new \Exception("Failed loading config for image set '{$this->name}'");
-        }
 
-        $this->firstPartyImages = (array) $config->firstParty ?? [];
-        $this->thirdPartyImages = (array) $config->thirdParty ?? [];
+            if (!property_exists($config, 'name') || !$config->name) {
+                throw new \Exception("There is no name specified.");
+            }
+
+            $this->name = $config->name;
+            $this->firstPartyImages = (array) $config->firstParty ?? [];
+            $this->thirdPartyImages = (array) $config->thirdParty ?? [];
+
+        } catch (\Exception $e) {
+            throw new \Exception("Failed loading config for image set '{$this->path}'. {$e->getMessage()}");
+        }
     }
 
     /**

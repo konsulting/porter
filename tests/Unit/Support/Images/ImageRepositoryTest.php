@@ -15,6 +15,9 @@ class ImageRepositoryTest extends BaseTestCase
     /** @var ImageRepository */
     protected $repo;
 
+    /** @var Filesystem */
+    protected $fileSystem;
+
     protected function setUp() : void
     {
         parent::setUp();
@@ -22,14 +25,14 @@ class ImageRepositoryTest extends BaseTestCase
         $this->repoName = 'konsulting/porter-ubuntu';
         $this->path = storage_path('test_library/image-repo-test/'.$this->repoName);
 
-        $fs = new Filesystem();
-        $fs->makeDirectory($this->path.'/php_fpm_7-2', 0755, true);
-        $fs->makeDirectory($this->path.'/php_cli_7-2', 0755, true);
-        $fs->put($this->path.'/php_fpm_7-2/Dockerfile', '');
-        $fs->put($this->path.'/php_cli_7-2/Dockerfile', '');
-        $fs->put($this->path.'/config.json', $this->configStub());
+        $this->fileSystem = new Filesystem();
+        $this->fileSystem->makeDirectory($this->path.'/php_fpm_7-2', 0755, true);
+        $this->fileSystem->makeDirectory($this->path.'/php_cli_7-2', 0755, true);
+        $this->fileSystem->put($this->path.'/php_fpm_7-2/Dockerfile', '');
+        $this->fileSystem->put($this->path.'/php_cli_7-2/Dockerfile', '');
+        $this->fileSystem->put($this->path.'/config.json', $this->configStub());
 
-        $this->repo = new ImageRepository($this->path, $this->repoName);
+        $this->repo = new ImageRepository($this->path);
     }
 
     protected function configStub()
@@ -108,5 +111,27 @@ class ImageRepositoryTest extends BaseTestCase
             $this->repo->findByServiceName('php_fpm_7-2', $firstPartyOnly = true)[0]->getName()
         );
         $this->assertEmpty($this->repo->findByServiceName('mysql', $firstPartyonly = true));
+    }
+
+    /** @test */
+    public function it_requires_a_config_json_to_be_present()
+    {
+        $this->fileSystem->delete($this->path.'/config.json');
+
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessageRegExp('/Failed loading config for image set/');
+        $this->repo = new ImageRepository($this->path);
+    }
+
+    /** @test */
+    public function it_requires_the_name_to_be_specified_in_config_json()
+    {
+        $this->fileSystem->delete($this->path.'/config.json');
+        $this->fileSystem->put($this->path.'/config.json', '{}');
+
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessageRegExp('/There is no name specified/');
+
+        $this->repo = new ImageRepository($this->path);
     }
 }
