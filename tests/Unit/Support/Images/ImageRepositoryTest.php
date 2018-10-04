@@ -27,8 +27,26 @@ class ImageRepositoryTest extends BaseTestCase
         $fs->makeDirectory($this->path.'/php_cli_7-2', 0755, true);
         $fs->put($this->path.'/php_fpm_7-2/Dockerfile', '');
         $fs->put($this->path.'/php_cli_7-2/Dockerfile', '');
+        $fs->put($this->path.'/config.json', $this->configStub());
 
         $this->repo = new ImageRepository($this->path, $this->repoName);
+    }
+
+    protected function configStub()
+    {
+        return json_encode([
+            "name" => "konsulting/porter-ubuntu",
+            "firstParty" => [
+                "php_cli_7-2" => "latest",
+                "php_fpm_7-2" => "latest",
+            ],
+            "thirdParty" => [
+                "mysql" => "mysql:5.7",
+                "redis" => "redis:alpine",
+                "dns" => "andyshinn/dnsmasq",
+                "mailhog" => "mailhog/mailhog:v1.0.0",
+            ]
+        ]);
     }
 
     public function tearDown()
@@ -43,8 +61,8 @@ class ImageRepositoryTest extends BaseTestCase
     public function it_finds_first_party_images()
     {
         $expectedImages = [
-            new Image($this->repoName.'-php_cli_7-2:latest', $this->path.'/php_cli_7-2'),
-            new Image($this->repoName.'-php_fpm_7-2:latest', $this->path.'/php_fpm_7-2'),
+            new Image($this->repoName.'-php_cli_7-2:latest', $this->path.'/docker/php_cli_7-2'),
+            new Image($this->repoName.'-php_fpm_7-2:latest', $this->path.'/docker/php_fpm_7-2'),
         ];
 
         $result = $this->repo->firstParty();

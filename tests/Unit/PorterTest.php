@@ -334,4 +334,9 @@ class TestImageRepository implements ImageRepositoryContract
 
         return $firstPartyOnly ? $this->firstParty() : $this->all();
     }
+
+    public function getDockerContext()
+    {
+        return './docker';
+    }
 }
