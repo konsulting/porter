@@ -46,13 +46,12 @@ class ImageRepository implements ImageRepositoryContract
             }
 
             if (!property_exists($config, 'name') || !$config->name) {
-                throw new \Exception("There is no name specified.");
+                throw new \Exception('There is no name specified.');
             }
 
             $this->name = $config->name;
             $this->firstPartyImages = (array) $config->firstParty ?? [];
             $this->thirdPartyImages = (array) $config->thirdParty ?? [];
-
         } catch (\Exception $e) {
             throw new \Exception("Failed loading config for image set '{$this->path}'. {$e->getMessage()}");
         }
