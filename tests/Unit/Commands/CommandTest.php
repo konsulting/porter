@@ -13,7 +13,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Tests\BaseTestCase;
 
-
 class CommandTest extends BaseTestCase
 {
     /** @test */
@@ -31,7 +30,7 @@ class CommandTest extends BaseTestCase
             $porterLibrary
         );
 
-        $command->run(Mockery::spy(InputInterface::class), new ConsoleOutput);
+        $command->run(Mockery::spy(InputInterface::class), new ConsoleOutput());
     }
 
     /** @test */
@@ -43,10 +42,10 @@ class CommandTest extends BaseTestCase
             Mockery::spy(Porter::class),
             Mockery::spy(PorterLibrary::class)
         );
-        $command->setLaravel(new \Illuminate\Container\Container);
+        $command->setLaravel(new \Illuminate\Container\Container());
 
         $input = Mockery::spy(InputInterface::class);
-        $command->run($input, new ConsoleOutput);
+        $command->run($input, new ConsoleOutput());
 
         // Check that the handle() method is executed
         $input->shouldHaveReceived('getOptions');

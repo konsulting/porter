@@ -53,10 +53,12 @@ abstract class BaseCommand extends Command
     /**
      * Execute the console command.
      *
-     * @param  \Symfony\Component\Console\Input\InputInterface   $input
-     * @param  \Symfony\Component\Console\Output\OutputInterface $output
-     * @return mixed
+     * @param \Symfony\Component\Console\Input\InputInterface   $input
+     * @param \Symfony\Component\Console\Output\OutputInterface $output
+     *
      * @throws PorterNotSetUp
+     *
+     * @return mixed
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -65,7 +67,6 @@ abstract class BaseCommand extends Command
         return parent::execute($input, $output);
     }
 
-
     /**
      * Ensure that Porter has been set up if necessary before continuing.
      *
@@ -73,7 +74,7 @@ abstract class BaseCommand extends Command
      */
     private function checkPorterIsSetUp()
     {
-        if ($this->porterMustBeSetUp && ! $this->porterLibrary->alreadySetUp()) {
+        if ($this->porterMustBeSetUp && !$this->porterLibrary->alreadySetUp()) {
             throw new PorterNotSetUp('Porter must be set up to run this command. Run \'porter begin\' first.');
         }
     }
