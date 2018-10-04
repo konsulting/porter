@@ -52,8 +52,8 @@ class ImageRepository implements ImageRepositoryContract
             throw new \Exception("Failed loading config for image set '{$this->name}'");
         }
 
-        $this->firstPartyImages = $config->firstParty ?? [];
-        $this->thirdPartyImages = $config->thirdParty ?? [];
+        $this->firstPartyImages = (array) $config->firstParty ?? [];
+        $this->thirdPartyImages = (array) $config->thirdParty ?? [];
     }
 
     /**
@@ -66,9 +66,9 @@ class ImageRepository implements ImageRepositoryContract
     public function firstParty()
     {
         return collect($this->firstPartyImages)
-            ->mapWithKeys(function ($version, $name) {
-                return [new Image($name.':'.$version, $this->getDockerContext().$name)];
-            }, [])->toArray();
+            ->map(function ($version, $name) {
+                return new Image($this->name.'-'.$name.':'.$version, $this->getDockerContext().$name);
+            })->values()->toArray();
     }
 
     /**

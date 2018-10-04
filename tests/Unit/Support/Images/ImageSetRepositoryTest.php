@@ -29,6 +29,7 @@ class ImageSetRepositoryTest extends BaseTestCase
             $fs->makeDirectory($this->path.'/'.$imageSet.'/php_cli_7-2', 0755, true);
             $fs->put($this->path.'/'.$imageSet.'/php_fpm_7-2/Dockerfile', '');
             $fs->put($this->path.'/'.$imageSet.'/php_cli_7-2/Dockerfile', '');
+            $fs->put($this->path.'/'.$imageSet.'/config.json', $this->configStub($imageSet));
         }
 
         foreach (['konsulting/porter-custom'] as $imageSet) {
@@ -36,9 +37,27 @@ class ImageSetRepositoryTest extends BaseTestCase
             $fs->makeDirectory($this->secondaryPath.'/'.$imageSet.'/php_cli_7-2', 0755, true);
             $fs->put($this->secondaryPath.'/'.$imageSet.'/php_fpm_7-2/Dockerfile', '');
             $fs->put($this->secondaryPath.'/'.$imageSet.'/php_cli_7-2/Dockerfile', '');
+            $fs->put($this->secondaryPath.'/'.$imageSet.'/config.json', $this->configStub($imageSet));
         }
 
         $this->repo = new ImageSetRepository($this->path);
+    }
+
+    protected function configStub($name)
+    {
+        return json_encode([
+            "name" => $name,
+            "firstParty" => [
+                "php_cli_7-2" => "latest",
+                "php_fpm_7-2" => "latest",
+            ],
+            "thirdParty" => [
+                "mysql" => "mysql:5.7",
+                "redis" => "redis:alpine",
+                "dns" => "andyshinn/dnsmasq",
+                "mailhog" => "mailhog/mailhog:v1.0.0",
+            ]
+        ]);
     }
 
     public function tearDown()
