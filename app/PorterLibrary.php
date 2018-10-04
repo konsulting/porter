@@ -11,13 +11,25 @@ use Illuminate\Support\Facades\Artisan;
 
 class PorterLibrary
 {
-    /** @var string */
+    /**
+     * The path of the Porter library directory (e.g. ~/.porter on Mac).
+     *
+     * @var string
+     */
     protected $path;
 
-    /** @var Filesystem */
+    /**
+     * The system's filesystem.
+     *
+     * @var Filesystem
+     */
     protected $files;
 
-    /** @var \App\Support\FilePublisher * */
+    /**
+     * The file publisher.
+     *
+     * @var \App\Support\FilePublisher
+     */
     protected $filePublisher;
 
     protected $shouldMigrateAndSeedDatabase = true;
