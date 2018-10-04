@@ -54,7 +54,7 @@ class ImageSetRepository implements ImageSetRepositoryContract
         foreach (array_reverse($this->locations) as $location) {
             $path = $location.'/'.$imageSetName;
             if (is_dir($path)) {
-                return new ImageRepository($path, $imageSetName);
+                return new ImageRepository($path);
             }
         }
 
