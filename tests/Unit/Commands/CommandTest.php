@@ -11,7 +11,6 @@ use App\Support\Console\DockerCompose\CliCommandFactory;
 use Mockery;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
-use Symfony\Component\Console\Output\OutputInterface;
 use Tests\BaseTestCase;
 
 
@@ -21,11 +20,11 @@ class CommandTest extends BaseTestCase
     public function it_checks_if_porter_has_been_set_up()
     {
         $porterLibrary = Mockery::mock(PorterLibrary::class);
-        $porterLibrary->shouldReceive('alreadySetUp')->andReturn(false);
+        $porterLibrary->shouldReceive('alreadySetUp')->once()->andReturn(false);
 
         $this->expectException(PorterNotSetUp::class);
 
-        $command = new SomeCommand(
+        $command = new MustHaveBeenSetUp(
             Mockery::spy(Cli::class),
             Mockery::spy(CliCommandFactory::class),
             Mockery::spy(Porter::class),
@@ -34,8 +33,36 @@ class CommandTest extends BaseTestCase
 
         $command->run(Mockery::spy(InputInterface::class), new ConsoleOutput);
     }
+
+    /** @test */
+    public function commands_can_be_run_before_setup()
+    {
+        $command = new CanRunBeforeSetup(
+            Mockery::spy(Cli::class),
+            Mockery::spy(CliCommandFactory::class),
+            Mockery::spy(Porter::class),
+            Mockery::spy(PorterLibrary::class)
+        );
+        $command->setLaravel(new \Illuminate\Container\Container);
+
+        $input = Mockery::spy(InputInterface::class);
+        $command->run($input, new ConsoleOutput);
+
+        // Check that the handle() method is executed
+        $input->shouldHaveReceived('getOptions');
+    }
 }
 
-class SomeCommand extends BaseCommand
+class MustHaveBeenSetUp extends BaseCommand
 {
+}
+
+class CanRunBeforeSetup extends BaseCommand
+{
+    protected $porterMustBeSetUp = false;
+
+    public function handle(): void
+    {
+        $this->input->getOptions();
+    }
 }
