@@ -84,7 +84,7 @@ class ImageSetRepository implements ImageSetRepositoryContract
     }
 
     /**
-     * Register the view namespaces for the image sets
+     * Register the view namespaces for the image sets.
      *
      * @param $app
      */
