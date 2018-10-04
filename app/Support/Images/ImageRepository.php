@@ -4,8 +4,6 @@ namespace App\Support\Images;
 
 use App\Support\Contracts\ImageRepository as ImageRepositoryContract;
 use Exception;
-use Symfony\Component\Finder\Finder;
-use Symfony\Component\Finder\SplFileInfo;
 
 class ImageRepository implements ImageRepositoryContract
 {
@@ -24,6 +22,7 @@ class ImageRepository implements ImageRepositoryContract
      *
      * @param $path
      * @param $name
+     *
      * @throws Exception
      */
     public function __construct($path, $name)
@@ -35,7 +34,7 @@ class ImageRepository implements ImageRepositoryContract
     }
 
     /**
-     * Load the configuration file for the image set
+     * Load the configuration file for the image set.
      *
      * @throws Exception
      */
@@ -47,7 +46,6 @@ class ImageRepository implements ImageRepositoryContract
             if (json_last_error() !== JSON_ERROR_NONE) {
                 throw new \Exception(json_last_error_msg());
             }
-
         } catch (\Exception $e) {
             throw new \Exception("Failed loading config for image set '{$this->name}'");
         }
@@ -97,7 +95,7 @@ class ImageRepository implements ImageRepositoryContract
     }
 
     /**
-     * Return Docker context path
+     * Return Docker context path.
      *
      * @return string
      */

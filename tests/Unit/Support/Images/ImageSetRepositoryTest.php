@@ -92,8 +92,8 @@ class ImageSetRepositoryTest extends BaseTestCase
     {
         $this->repo->addLocation($this->secondaryPath);
         $this->assertEquals([
-            $this->path.'/konsulting/porter-alpine' => 'konsulting/porter-alpine',
-            $this->path.'/konsulting/porter-ubuntu' => 'konsulting/porter-ubuntu',
+            $this->path.'/konsulting/porter-alpine'          => 'konsulting/porter-alpine',
+            $this->path.'/konsulting/porter-ubuntu'          => 'konsulting/porter-ubuntu',
             $this->secondaryPath.'/konsulting/porter-custom' => 'konsulting/porter-custom',
         ], $this->repo->availableImageSets()->toArray());
     }
