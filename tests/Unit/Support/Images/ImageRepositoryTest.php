@@ -35,17 +35,17 @@ class ImageRepositoryTest extends BaseTestCase
     protected function configStub()
     {
         return json_encode([
-            "name" => "konsulting/porter-ubuntu",
-            "firstParty" => [
-                "php_cli_7-2" => "latest",
-                "php_fpm_7-2" => "latest",
+            'name'       => 'konsulting/porter-ubuntu',
+            'firstParty' => [
+                'php_cli_7-2' => 'latest',
+                'php_fpm_7-2' => 'latest',
             ],
-            "thirdParty" => [
-                "mysql" => "mysql:5.7",
-                "redis" => "redis:alpine",
-                "dns" => "andyshinn/dnsmasq",
-                "mailhog" => "mailhog/mailhog:v1.0.0",
-            ]
+            'thirdParty' => [
+                'mysql'   => 'mysql:5.7',
+                'redis'   => 'redis:alpine',
+                'dns'     => 'andyshinn/dnsmasq',
+                'mailhog' => 'mailhog/mailhog:v1.0.0',
+            ],
         ]);
     }
 
