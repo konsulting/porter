@@ -187,7 +187,7 @@ This means you can add the ssh keys you want to use in your dev environment spec
 
 As Porter is based on Docker, it is easy to add new containers as required or to adjust the way the existing containers are built. 
 
-The docker-compose.yaml file is built using the views in `resources/views/docker-compose`.
+The docker-compose.yaml file is built using the views in the image set's docker-compose directory.  To locate the image set directory, look in `resources/image_sets` and `~/.porter/image_sets`.
 
 The NGiNX config templates are in `resources/views/nginx`.
 
@@ -199,11 +199,11 @@ The following commands will be useful if you change these items.
  - `porter images:set` - Change the image set used for Porter. The default is `konsulting/porter-ubuntu`.
  - `porter make-files` - (Re)make the docker-compose.yaml, and the NGiNX config files.
 
-We store personal config in the `.porter` directory in your home directory - keeping config and data separate from the main application. It includes:
+We store personal config in the `.porter` directory in your home directory - keeping config and data separate from the main application. This is the PorterLibrary. It includes:
 
  - `composer` - a composer cache dir, allowing the containers to avoid pulling as much info when using composer
  - `config` - containing the specific files for customisation of the containers/services
  - `data` - containing data for the MySQL and Redis containers by default
  - `ssl` - the generated SSL certificates used by Porter
- - `views` - allows the override and addition of views for building NGiNX configurations for example, and the `docker-compose.yaml` views for use with alternative images
- - a `docker` directory can be added to include alternative docker machine scripts similar to the original `konsulting/porter-ubuntu` and `konsulting/porter-alpine` in the project's `docker` directory
+ - `views` - allows the override and addition of views for building NGiNX configurations for example
+ - an `image_sets` directory can be added to include alternative docker scripts similar to the original `konsulting/porter-ubuntu` in the project's `resources/image_sets` directory, and the `docker-compose.yaml` views
