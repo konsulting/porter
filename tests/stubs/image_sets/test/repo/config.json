@@ -1,0 +1,11 @@
+{
+    "name" : "test/repo",
+    "firstParty": {
+        "php_cli": "1.0.0",
+        "php_fpm": "1.0.0"
+    },
+    "thirdParty": [
+        "another/node",
+        "another/mysql"
+    ]
+}
