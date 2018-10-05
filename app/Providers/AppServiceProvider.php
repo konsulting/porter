@@ -54,7 +54,7 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(Organiser::class, function () {
             return new Organiser(
-                app(Porter::clasS)->getDockerImageSet(),
+                app(Porter::class)->getDockerImageSet(),
                 app(CliContract::class),
                 app(FileSystem::class)
             );
