@@ -22,7 +22,7 @@ class OrganiserTest extends BaseTestCase
     {
         parent::setUp();
         $this->cli = \Mockery::mock(Cli::class);
-        $this->organiser = new Organiser(new TestImageRepository, $this->cli);
+        $this->organiser = new Organiser(new TestImageRepository(), $this->cli);
     }
 
     /**

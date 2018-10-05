@@ -24,12 +24,13 @@ class Build extends BaseCommand
     /**
      * Execute the console command.
      *
-     * @return void
      * @throws \Exception
+     *
+     * @return void
      */
     public function handle(): void
-    { (new Organiser($this->porter->getDockerImageSet(), $this->cli))
-
-   ->buildImages((string) $this->argument('service'));
+    {
+        (new Organiser($this->porter->getDockerImageSet(), $this->cli))
+            ->buildImages((string) $this->argument('service'));
     }
 }

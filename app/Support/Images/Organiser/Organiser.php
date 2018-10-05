@@ -24,6 +24,7 @@ class Organiser
      * Build the current images.
      *
      * @param string|null $service
+     *
      * @throws \Exception
      */
     public function buildImages($service = null)
@@ -38,6 +39,7 @@ class Organiser
      * Push the current images.
      *
      * @param string|null $service
+     *
      * @throws \Exception
      */
     public function pushImages($service = null)
@@ -52,6 +54,7 @@ class Organiser
      * Pull our docker images.
      *
      * @param string|null $service
+     *
      * @throws \Exception
      */
     public function pullImages($service = null)

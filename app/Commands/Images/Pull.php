@@ -24,8 +24,9 @@ class Pull extends BaseCommand
     /**
      * Execute the console command.
      *
-     * @return void
      * @throws \Exception
+     *
+     * @return void
      */
     public function handle(): void
     {
