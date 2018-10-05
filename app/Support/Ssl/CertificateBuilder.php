@@ -34,7 +34,7 @@ class CertificateBuilder
         $this->oName = 'Klever Porter CA Self Signed Organization';
         $this->cName = 'Klever Porter CA Self Signed CN';
         $this->domain = 'klever.porter';
-        $this->email = 'rootcertificate@' . $this->domain;
+        $this->email = 'rootcertificate@'.$this->domain;
     }
 
     /**
@@ -45,9 +45,9 @@ class CertificateBuilder
     public function caPaths()
     {
         return (object) [
-            'key' => $this->certificatesPath . '/KleverPorterCASelfSigned.key',
-            'pem' => $this->certificatesPath . '/KleverPorterCASelfSigned.pem',
-            'srl' => $this->certificatesPath . '/KleverPorterCASelfSigned.srl',
+            'key' => $this->certificatesPath.'/KleverPorterCASelfSigned.key',
+            'pem' => $this->certificatesPath.'/KleverPorterCASelfSigned.pem',
+            'srl' => $this->certificatesPath.'/KleverPorterCASelfSigned.srl',
         ];
     }
 
@@ -61,10 +61,10 @@ class CertificateBuilder
     public function paths($url)
     {
         return (object) [
-            'key'  => $this->certificatesPath . '/' . $url . '.key',
-            'csr'  => $this->certificatesPath . '/' . $url . '.csr',
-            'crt'  => $this->certificatesPath . '/' . $url . '.crt',
-            'conf' => $this->certificatesPath . '/' . $url . '.conf',
+            'key'  => $this->certificatesPath.'/'.$url.'.key',
+            'csr'  => $this->certificatesPath.'/'.$url.'.csr',
+            'crt'  => $this->certificatesPath.'/'.$url.'.crt',
+            'conf' => $this->certificatesPath.'/'.$url.'.conf',
         ];
     }
 
@@ -129,7 +129,7 @@ class CertificateBuilder
 
         $caSrlParam = ' -CAcreateserial';
         if ($this->filesystem->exists($caPaths->srl)) {
-            $caSrlParam = ' -CAserial ' . $caPaths->srl;
+            $caSrlParam = ' -CAserial '.$caPaths->srl;
         }
 
         $this->cli->exec(sprintf(
@@ -178,7 +178,7 @@ class CertificateBuilder
     {
         $this->cli->exec(sprintf(
             'openssl req -new -key %s -out %s -subj "/C=GB/ST=Berks/O=%s/localityName=Reading/commonName=%s/organizationalUnitName=Developers/emailAddress=%s%s/" -config %s',
-            $keyPath, $csrPath, $this->domain, $url, $url, '@' . $this->domain, $confPath
+            $keyPath, $csrPath, $this->domain, $url, $url, '@'.$this->domain, $confPath
         ));
     }
 
@@ -196,7 +196,7 @@ class CertificateBuilder
 
         foreach ($files as $file) {
             /** @var SplFileInfo $file */
-            if (! $dropCA && in_array($file->getPathname(), $caPaths)) {
+            if (!$dropCA && in_array($file->getPathname(), $caPaths)) {
                 continue;
             }
 

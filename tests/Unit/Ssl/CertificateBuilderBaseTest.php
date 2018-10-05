@@ -39,7 +39,7 @@ class CertificateBuilderBaseTest extends BaseTestCase
     {
         $this->mechanic->shouldReceive('trustCA')
             ->once()
-            ->with($this->dir . '/KleverPorterCASelfSigned.pem');
+            ->with($this->dir.'/KleverPorterCASelfSigned.pem');
 
         $this->certificateBuilder->build('klever.test');
 
@@ -87,46 +87,46 @@ class CertificateBuilderBaseTest extends BaseTestCase
 
     protected function dummyCerts($url = 'klever.test')
     {
-        @touch($this->dir . "/{$url}.conf");
-        @touch($this->dir . "{$url}.crt");
-        @touch($this->dir . "/{$url}.csr");
-        @touch($this->dir . "{$url}.key");
+        @touch($this->dir."/{$url}.conf");
+        @touch($this->dir."{$url}.crt");
+        @touch($this->dir."/{$url}.csr");
+        @touch($this->dir."{$url}.key");
     }
 
     protected function dummyCaCerts()
     {
-        @touch($this->dir . '/KleverPorterCASelfSigned.key');
-        @touch($this->dir . '/KleverPorterCASelfSigned.pem');
-        @touch($this->dir . '/KleverPorterCASelfSigned.srl');
+        @touch($this->dir.'/KleverPorterCASelfSigned.key');
+        @touch($this->dir.'/KleverPorterCASelfSigned.pem');
+        @touch($this->dir.'/KleverPorterCASelfSigned.srl');
     }
 
     protected function assertHasCertificates($url = 'klever.test')
     {
-        $this->assertFileExists($this->dir . "/{$url}.conf");
-        $this->assertFileExists($this->dir . "/{$url}.crt");
-        $this->assertFileExists($this->dir . "/{$url}.csr");
-        $this->assertFileExists($this->dir . "/{$url}.key");
+        $this->assertFileExists($this->dir."/{$url}.conf");
+        $this->assertFileExists($this->dir."/{$url}.crt");
+        $this->assertFileExists($this->dir."/{$url}.csr");
+        $this->assertFileExists($this->dir."/{$url}.key");
     }
 
     protected function assertNoCertificates($url = 'klever.test')
     {
-        $this->assertFileNotExists($this->dir . "/{$url}.conf");
-        $this->assertFileNotExists($this->dir . "/{$url}.crt");
-        $this->assertFileNotExists($this->dir . "/{$url}.csr");
-        $this->assertFileNotExists($this->dir . "/{$url}.key");
+        $this->assertFileNotExists($this->dir."/{$url}.conf");
+        $this->assertFileNotExists($this->dir."/{$url}.crt");
+        $this->assertFileNotExists($this->dir."/{$url}.csr");
+        $this->assertFileNotExists($this->dir."/{$url}.key");
     }
 
     protected function assertHasCaCertificates()
     {
-        $this->assertFileExists($this->dir . '/KleverPorterCASelfSigned.key');
-        $this->assertFileExists($this->dir . '/KleverPorterCASelfSigned.pem');
-        $this->assertFileExists($this->dir . '/KleverPorterCASelfSigned.srl');
+        $this->assertFileExists($this->dir.'/KleverPorterCASelfSigned.key');
+        $this->assertFileExists($this->dir.'/KleverPorterCASelfSigned.pem');
+        $this->assertFileExists($this->dir.'/KleverPorterCASelfSigned.srl');
     }
 
     protected function assertNoCaCertificates()
     {
-        $this->assertFileNotExists($this->dir . '/KleverPorterCASelfSigned.key');
-        $this->assertFileNotExists($this->dir . '/KleverPorterCASelfSigned.pem');
-        $this->assertFileNotExists($this->dir . '/KleverPorterCASelfSigned.srl');
+        $this->assertFileNotExists($this->dir.'/KleverPorterCASelfSigned.key');
+        $this->assertFileNotExists($this->dir.'/KleverPorterCASelfSigned.pem');
+        $this->assertFileNotExists($this->dir.'/KleverPorterCASelfSigned.srl');
     }
 }
