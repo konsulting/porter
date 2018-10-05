@@ -9,7 +9,7 @@ use App\Support\Mechanics\Untrained;
 use App\Support\Mechanics\Windows;
 use Tests\BaseTestCase;
 
-class ChooseMechanicBaseTest extends BaseTestCase
+class ChooseMechanicTest extends BaseTestCase
 {
     /** @test */
     public function it_chooses_correctly_for_the_os()

@@ -4,7 +4,7 @@ namespace Tests\Unit\Support\Mechanics;
 
 use App\Support\Mechanics\MacOs;
 
-class MacOsMechanicTest extends MechanicTestCase
+class MacOsTest extends MechanicTestCase
 {
     protected $mechanicClass = MacOs::class;
 

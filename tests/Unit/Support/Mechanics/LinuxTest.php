@@ -4,7 +4,7 @@ namespace Tests\Unit\Support\Mechanics;
 
 use App\Support\Mechanics\Linux;
 
-class LinuxBaseTest extends MechanicTestCase
+class LinuxTest extends MechanicTestCase
 {
     protected $mechanicClass = Linux::class;
 
