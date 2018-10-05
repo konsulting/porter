@@ -30,6 +30,6 @@ class Pull extends BaseCommand
      */
     public function handle(): void
     {
-        (new Organiser($this->porter->getDockerImageSet(), $this->cli))->pullImages();
+        app(Organiser::class)->pullImages();
     }
 }

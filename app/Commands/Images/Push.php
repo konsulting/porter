@@ -30,6 +30,6 @@ class Push extends BaseCommand
      */
     public function handle(): void
     {
-        (new Organiser($this->porter->getDockerImageSet(), $this->cli))->pushImages();
+        app(Organiser::class)->pushImages();
     }
 }

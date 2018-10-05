@@ -32,6 +32,7 @@ class Begin extends BaseCommand
      * Execute the console command.
      *
      * @return void
+     * @throws \Exception
      */
     public function handle(): void
     {
@@ -60,6 +61,6 @@ class Begin extends BaseCommand
         $this->comment('');
 
         $this->info('Retrieving docker images');
-        (new ImageOrganiser($this->porter->getDockerImageSet(), $this->cli));
+        app(ImageOrganiser::class)->pullImages();
     }
 }

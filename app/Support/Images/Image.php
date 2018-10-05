@@ -33,6 +33,16 @@ class Image
     }
 
     /**
+     * Return the un-versioned name for this image.
+     *
+     * @return string
+     */
+    public function getUnVersionedName()
+    {
+        return str_before($this->name, ':');
+    }
+
+    /**
      * Return the local path for the image, if it is local.
      *
      * @return string|null

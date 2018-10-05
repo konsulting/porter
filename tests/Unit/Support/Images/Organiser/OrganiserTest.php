@@ -3,8 +3,10 @@
 namespace Tests\Unit\Support\Images\Organiser;
 
 use App\Support\Contracts\Cli;
+use App\Support\Images\Image;
 use App\Support\Images\ImageRepository;
 use App\Support\Images\Organiser\Organiser;
+use Illuminate\Filesystem\Filesystem;
 use Mockery\MockInterface;
 use Tests\BaseTestCase;
 
@@ -28,7 +30,8 @@ class OrganiserTest extends BaseTestCase
 
         $this->organiser = new Organiser(
             $this->imageRepo,
-            $this->cli
+            $this->cli,
+            new FileSystem()
         );
     }
 
@@ -50,7 +53,7 @@ class OrganiserTest extends BaseTestCase
     /** @test */
     public function it_pulls_the_docker_images()
     {
-        $images = ['test/repo-php_cli:1.0.0', 'test/repo-php_fpm:1.0.0', 'another/node', 'another/mysql'];
+        $images = ['test/repo-php_cli:1.0.0', 'test/repo-php_fpm:1.0.1', 'another/node', 'another/mysql'];
 
         foreach ($images as $image) {
             $this->expectCommand('docker image inspect '.$image, 'exec')
@@ -88,11 +91,12 @@ class OrganiserTest extends BaseTestCase
     {
         $images = [
             $this->imageRepo->getDockerContext().'php_cli' => 'test/repo-php_cli:1.0.0',
-            $this->imageRepo->getDockerContext().'php_fpm' => 'test/repo-php_fpm:1.0.0',
+            $this->imageRepo->getDockerContext().'php_fpm' => 'test/repo-php_fpm:1.0.1',
         ];
 
         foreach ($images as $path => $image) {
-            $this->expectCommand('docker build -t '.$image.' --rm '.$path.' --', 'passthru');
+            $latest = str_before($image, ':').':latest';
+            $this->expectCommand('docker build -t '.$image.' -t '.$latest.' --rm '.$path.' --', 'passthru');
         }
         $this->organiser->buildImages();
     }
@@ -102,7 +106,7 @@ class OrganiserTest extends BaseTestCase
     {
         $cliPath = $this->imageRepo->getDockerContext().'php_cli';
 
-        $this->expectCommand("docker build -t test/repo-php_cli:1.0.0 --rm {$cliPath} --", 'passthru');
+        $this->expectCommand("docker build -t test/repo-php_cli:1.0.0 -t test/repo-php_cli:latest --rm {$cliPath} --", 'passthru');
         $this->organiser->buildImages('php_cli');
     }
 
@@ -116,7 +120,7 @@ class OrganiserTest extends BaseTestCase
     /** @test */
     public function it_pushes_the_first_party_images()
     {
-        foreach (['test/repo-php_cli:1.0.0', 'test/repo-php_fpm:1.0.0'] as $image) {
+        foreach (['test/repo-php_cli:1.0.0', 'test/repo-php_fpm:1.0.1'] as $image) {
             $this->expectCommand('docker push '.$image, 'passthru');
         }
         $this->organiser->pushImages();
@@ -125,7 +129,7 @@ class OrganiserTest extends BaseTestCase
     /** @test */
     public function it_pushes_a_single_first_party_image()
     {
-        foreach (['test/repo-php_cli:1.0.0', 'test/repo-php_fpm:1.0.0'] as $image) {
+        foreach (['test/repo-php_cli:1.0.0', 'test/repo-php_fpm:1.0.1'] as $image) {
             $this->expectCommand('docker push '.$image, 'passthru');
         }
         $this->organiser->pushImages();
@@ -136,5 +140,65 @@ class OrganiserTest extends BaseTestCase
     {
         $this->cli->shouldNotReceive('passthru');
         $this->organiser->pushImages('node');
+    }
+
+    /** @test */
+    public function it_finds_the_build_version_for_an_image()
+    {
+        $image = new Image('test/repo-php_cli:1.0.0', $this->imageRepo->getDockerContext().'php_cli');
+
+        $this->assertEquals('1.0.0', $this->organiser->findBuildVersion($image));
+
+        $image = new Image('test/repo-php_fpm:1.0.1', $this->imageRepo->getDockerContext().'php_fpm');
+
+        $this->assertEquals('1.0.1', $this->organiser->findBuildVersion($image));
+    }
+
+    /** @test */
+    public function it_will_throw_on_invalid_version()
+    {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessageRegExp('/#VERSION: x\.y\.z/');
+
+        $this->organiser->readVersion('Something else');
+    }
+
+    /** @test */
+    public function it_will_return_a_valid_version()
+    {
+        $this->assertEquals('10.1.3', $this->organiser->readVersion('#VERSION: 10.1.3'));
+    }
+
+    /** @test */
+    public function it_will_update_the_version_in_config()
+    {
+        $organiser = new Organiser(
+            $this->imageRepo,
+            $this->cli,
+            $fs = \Mockery::mock(Filesystem::class)
+        );
+
+        $fs->expects('get')->andReturns(json_encode([
+            'name' => 'test/repo',
+            'firstParty' => [
+                'php_cli' => '1.0.0',
+                'php_fpm' => '1.0.0',
+            ]
+        ]));
+
+        $fs->expects('put')->with(
+            $this->imageRepo->getPath().'/config.json',
+            json_encode([
+                'name' => 'test/repo',
+                'firstParty' => [
+                    'php_cli' => '1.0.0',
+                    'php_fpm' => '1.0.1',
+                ]
+            ], JSON_PRETTY_PRINT)
+        );
+
+        $image = new Image('test/repo-php_fpm:1.0.1', $this->imageRepo->getDockerContext().'php_fpm');
+
+        $organiser->updateConfigVersionForImage($image, '1.0.1');
     }
 }

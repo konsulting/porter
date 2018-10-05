@@ -30,7 +30,6 @@ class Build extends BaseCommand
      */
     public function handle(): void
     {
-        (new Organiser($this->porter->getDockerImageSet(), $this->cli))
-            ->buildImages((string) $this->argument('service'));
+        app(Organiser::class)->buildImages((string) $this->argument('service'));
     }
 }

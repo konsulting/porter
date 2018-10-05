@@ -1,5 +1,5 @@
 {
-    "name": "konsulting/porter-ubuntu",
+    "name": "konsulting\/porter-ubuntu",
     "maintainers": [
         {
             "name": "Keoghan Litchfield",
@@ -26,7 +26,7 @@
     "thirdParty": {
         "mysql": "mysql:5.7",
         "redis": "redis:alpine",
-        "dns": "andyshinn/dnsmasq",
-        "mailhog": "mailhog/mailhog:v1.0.0"
+        "dns": "andyshinn\/dnsmasq",
+        "mailhog": "mailhog\/mailhog:v1.0.0"
     }
 }
