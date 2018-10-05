@@ -76,16 +76,6 @@ class Untrained implements Mechanic
     }
 
     /**
-     * Check if we're running in test mode.
-     *
-     * @return bool
-     */
-    public function isTesting()
-    {
-        return running_tests();
-    }
-
-    /**
      * Give a nice message about not being trained.
      *
      * @param $activity

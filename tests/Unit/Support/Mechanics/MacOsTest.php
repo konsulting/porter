@@ -11,7 +11,7 @@ class MacOsTest extends MechanicTestCase
     /** @test */
     public function it_returns_the_home_directory()
     {
-        $this->assertEquals(
+        $this->assertSame(
             '/Users/keoghan',
             $this->getMechanic(['HOME'=>'/Users/keoghan'])->getUserHomePath()
         );
