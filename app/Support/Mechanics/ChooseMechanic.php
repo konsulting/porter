@@ -10,7 +10,6 @@ class ChooseMechanic
         'LINUX' => Linux::class,
     ];
 
-
     /**
      * Get the mechanic for the host operating system.
      *
