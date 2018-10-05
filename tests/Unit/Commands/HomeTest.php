@@ -4,7 +4,6 @@ namespace Tests\Unit\Commands;
 
 use App\Commands\MakeFiles;
 use App\Models\Setting;
-use App\Support\Dnsmasq\Config;
 use Illuminate\Support\Facades\Artisan;
 use Tests\BaseTestCase;
 
@@ -26,11 +25,12 @@ class HomeTest extends BaseTestCase
         $this->mockPorterCommand(MakeFiles::class);
 
         Setting::updateOrCreate('home', 'old_home');
+        $home = base_path('tests/TestWebRoot');
 
-        $this->artisan('home', ['path' => '/Users/keoghan/Code']);
+        $this->artisan('home', ['path' => $home]);
 
-        $this->assertRegExp('/Setting home to \/Users\/keoghan\/Code/', Artisan::output());
+        $this->assertRegExp('/Setting home to '.preg_quote($home, '/').'/', Artisan::output());
 
-        $this->assertEquals('/Users/keoghan/Code', setting('home'));
+        $this->assertEquals($home, setting('home'));
     }
 }

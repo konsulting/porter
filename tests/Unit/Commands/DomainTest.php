@@ -6,7 +6,6 @@ use App\Commands\MakeFiles;
 use App\Commands\Site\RenewCertificates;
 use App\Models\Setting;
 use App\Support\Dnsmasq\Config;
-use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Support\Facades\Artisan;
 use Tests\BaseTestCase;
 

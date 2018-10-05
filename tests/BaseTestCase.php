@@ -63,11 +63,22 @@ abstract class BaseTestCase extends IlluminateTestCase
         });
     }
 
+    /**
+     * Prepare Porter for the test.
+     */
     protected function preparePorter()
     {
         //
     }
 
+
+    /**
+     * Mock a Porter command, one that extends the App\Commands\BaseCommand.
+     *
+     * @param $class
+     *
+     * @return \Mockery\MockInterface
+     */
     protected function mockPorterCommand($class)
     {
         $mock = \Mockery::mock(
@@ -76,7 +87,7 @@ abstract class BaseTestCase extends IlluminateTestCase
                 app(Cli::class),
                 app(CliCommandFactory::class),
                 app(Porter::class),
-                app(PorterLibrary::class)
+                app(PorterLibrary::class),
             ]
         );
 

@@ -3,7 +3,7 @@
 namespace App\Commands\Dns;
 
 use App\Commands\BaseCommand;
-use App\Support\Mechanics\ChooseMechanic;
+use App\Support\Mechanics\Mechanic;
 
 class Flush extends BaseCommand
 {
@@ -28,6 +28,6 @@ class Flush extends BaseCommand
      */
     public function handle(): void
     {
-        ChooseMechanic::forOs()->flushDns();
+        app(Mechanic::class)->flushDns();
     }
 }
