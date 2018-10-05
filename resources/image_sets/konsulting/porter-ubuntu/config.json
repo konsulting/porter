@@ -10,19 +10,18 @@
             "email": "robin@klever.co.uk"
         }
     ],
-    "version": "1.0.0",
     "firstParty": {
-        "chromedriver": "latest",
-        "nginx": "latest",
-        "node": "latest",
-        "php_cli_5-6": "latest",
-        "php_cli_7-0": "latest",
-        "php_cli_7-1": "latest",
-        "php_cli_7-2": "latest",
-        "php_fpm_5-6": "latest",
-        "php_fpm_7-0": "latest",
-        "php_fpm_7-1": "latest",
-        "php_fpm_7-2": "latest"
+        "chromedriver": "1.0.0",
+        "nginx": "1.0.0",
+        "node": "1.0.0",
+        "php_cli_5-6": "1.0.0",
+        "php_cli_7-0": "1.0.0",
+        "php_cli_7-1": "1.0.0",
+        "php_cli_7-2": "1.0.0",
+        "php_fpm_5-6": "1.0.0",
+        "php_fpm_7-0": "1.0.0",
+        "php_fpm_7-1": "1.0.0",
+        "php_fpm_7-2": "1.0.0"
     },
     "thirdParty": {
         "mysql": "mysql:5.7",

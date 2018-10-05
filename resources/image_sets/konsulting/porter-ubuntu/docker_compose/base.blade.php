@@ -6,32 +6,32 @@ networks:
 
 services:
 
-  @include("{$imageSet}::dns")
+  @include("{$imageSet->getName()}::dns")
 
-  @include("{$imageSet}::mailhog")
+  @include("{$imageSet->getName()}::mailhog")
 
-  @include("{$imageSet}::nginx")
+  @include("{$imageSet->getName()}::nginx")
 
-  @include("{$imageSet}::node")
+  @include("{$imageSet->getName()}::node")
 
 @foreach($activePhpVersions as $key => $version)
   # PHP version {!! $version->version_number !!}
 
-  @include("{$imageSet}::php_fpm")
+  @include("{$imageSet->getName()}::php_fpm")
 
-  @include("{$imageSet}::php_cli")
+  @include("{$imageSet->getName()}::php_cli")
 
   # END PHP version {!! $version->version_number !!}
 @endforeach
 
 @if($useMysql)
-  @include("{$imageSet}::mysql")
+  @include("{$imageSet->getName()}::mysql")
 @endif
 
 @if($useRedis)
-  @include("{$imageSet}::redis")
+  @include("{$imageSet->getName()}::redis")
 @endif
 
 @if ($useBrowser)
-  @include("{$imageSet}::browser")
+  @include("{$imageSet->getName()}::browser")
 @endif

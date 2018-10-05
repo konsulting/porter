@@ -1,5 +1,5 @@
   redis:
-    image: redis:alpine
+    image: {{ $imageSet->firstByServiceName('redis')->getName() }}
     volumes:
       - {{ $libraryPath }}/data/redis:/data
     ports:

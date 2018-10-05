@@ -150,4 +150,29 @@ class ImageRepository implements ImageRepositoryContract
             return strpos($image->getName(), $service) !== false;
         }));
     }
+
+    /**
+     * Find the first image for a given service.
+     *
+     * @param $service
+     * @param bool $firstPartyOnly
+     *
+     * @throws Exception
+     *
+     * @return Image
+     */
+    public function firstByServiceName($service, $firstPartyOnly = false)
+    {
+        if (!$service) {
+            throw new \Exception('A service name must be provided.');
+        }
+
+        $found = $this->findByServiceName($service, $firstPartyOnly);
+
+        if (empty($found)) {
+            throw new \Exception("Service not found '{$service}'");
+        }
+
+        return $found[0];
+    }
 }

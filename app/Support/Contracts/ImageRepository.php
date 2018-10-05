@@ -2,6 +2,8 @@
 
 namespace App\Support\Contracts;
 
+use App\Support\Images\Image;
+
 interface ImageRepository
 {
     /**
@@ -48,6 +50,16 @@ interface ImageRepository
      * @return array
      */
     public function findByServiceName($service, $firstPartyOnly = false);
+
+    /**
+     * Find the image for a given service.
+     *
+     * @param $service
+     * @param bool $firstPartyOnly
+     *
+     * @return Image
+     */
+    public function firstByServiceName($service, $firstPartyOnly = false);
 
     /**
      * Return the name.

@@ -1,10 +1,8 @@
   php_cli_{{ $version->safe }}:
     build:
-      context: {{ $dockerContext }}
+      context: {{ $imageSet->getDockerContext() }}
       dockerfile: php_cli_{{ $version->safe }}/Dockerfile
-      cache_from:
-        - {{ $imageSet }}-php_cli_{{ $version->safe }}:latest
-    image: {{ $imageSet }}-php_cli_{{ $version->safe }}
+    image: {{ $imageSet->firstByServiceName('php_cli_'.$version->safe)->getName() }}
     networks:
       - porter
     volumes:

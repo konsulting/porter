@@ -134,4 +134,32 @@ class ImageRepositoryTest extends BaseTestCase
 
         $this->repo = new ImageRepository($this->path);
     }
+
+    /** @test */
+    public function it_finds_the_first_image_from_a_service_name()
+    {
+        $this->assertEquals($this->repoName.'-php_fpm_7-2:latest', $this->repo->findByServiceName('php_fpm_7-2')[0]->getName());
+        $this->assertEquals('mysql:5.7', $this->repo->firstByServiceName('mysql')->getName());
+    }
+
+    /** @test */
+    public function it_doesnt_find_the_first_image_with_no_service_name()
+    {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessageRegExp('/A service name must be provided/');
+        $this->repo->firstByServiceName(null);
+    }
+
+    /** @test */
+    public function it_finds_the_first_image_from_first_party_only_by_service_name()
+    {
+        $this->assertEquals(
+            $this->repoName.'-php_fpm_7-2:latest',
+            $this->repo->firstByServiceName('php_fpm_7-2', $firstPartyOnly = true)->getName()
+        );
+
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessageRegExp('/Service not found/');
+        $this->repo->firstByServiceName('mysql', $firstPartyonly = true);
+    }
 }

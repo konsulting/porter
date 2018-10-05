@@ -1,10 +1,8 @@
   browser:
     build:
-      context: {{ $dockerContext }}
+      context: {{ $imageSet->getDockerContext() }}
       dockerfile: chromedriver/Dockerfile
-      cache_from:
-        - {{ $imageSet }}-chromedriver:latest
-    image: {{ $imageSet }}-chromedriver
+    image: {{ $imageSet->firstByServiceName('chromedriver')->getName() }}
     networks:
       - porter
     environment:

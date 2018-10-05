@@ -3,6 +3,7 @@
 namespace App\Commands\Images;
 
 use App\Commands\BaseCommand;
+use App\Support\Images\Organiser\Organiser;
 
 class Pull extends BaseCommand
 {
@@ -24,9 +25,10 @@ class Pull extends BaseCommand
      * Execute the console command.
      *
      * @return void
+     * @throws \Exception
      */
     public function handle(): void
     {
-        $this->porter->pullImages();
+        (new Organiser($this->porter->getDockerImageSet(), $this->cli))->pullImages();
     }
 }

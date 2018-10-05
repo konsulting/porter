@@ -3,6 +3,7 @@
 namespace App\Commands\Images;
 
 use App\Commands\BaseCommand;
+use App\Support\Images\Organiser\Organiser;
 
 class Push extends BaseCommand
 {
@@ -24,9 +25,10 @@ class Push extends BaseCommand
      * Execute the console command.
      *
      * @return void
+     * @throws \Exception
      */
     public function handle(): void
     {
-        $this->porter->pushImages();
+        (new Organiser($this->porter->getDockerImageSet(), $this->cli))->pushImages();
     }
 }

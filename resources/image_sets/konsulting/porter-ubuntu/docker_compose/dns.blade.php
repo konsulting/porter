@@ -1,5 +1,5 @@
   dns:
-    image: andyshinn/dnsmasq
+    image: {{ $imageSet->firstByServiceName('dns')->getName() }}
     networks:
       - porter
     ports:

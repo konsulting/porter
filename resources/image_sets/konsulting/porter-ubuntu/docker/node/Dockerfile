@@ -1,3 +1,4 @@
+#VERSION: 1.0.0
 FROM alpine:3.7
 
 ARG uid=1000

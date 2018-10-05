@@ -1,5 +1,5 @@
   mysql:
-    image: mysql:5.7
+    image: {{ $imageSet->firstByServiceName('mysql')->getName() }}
     ports:
       - 13306:3306
     environment:

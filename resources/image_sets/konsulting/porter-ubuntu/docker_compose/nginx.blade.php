@@ -1,10 +1,8 @@
   nginx:
     build:
-      context: {{ $dockerContext }}
+      context: {{ $imageSet->getDockerContext() }}
       dockerfile: nginx/Dockerfile
-      cache_from:
-        - {{ $imageSet }}-nginx:latest
-    image: {{ $imageSet }}-nginx
+    image: {{ $imageSet->firstByServiceName('nginx')->getName() }}
     networks:
       - porter
     ports:

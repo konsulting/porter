@@ -1,10 +1,8 @@
   php_fpm_{{ $version->safe }}:
     build:
-      context: {{ $dockerContext }}
-      dockerfile: php_fpm_{{ $version->safe }}/Dockerfile
-      cache_from:
-        - {{ $imageSet }}-php_fpm_{{ $version->safe }}:latest
-    image: {{ $imageSet }}-php_fpm_{{ $version->safe }}
+      context: {{ $imageSet->getDockerContext() }}
+      dockerfile: php_cli_{{ $version->safe }}/Dockerfile
+    image: {{ $imageSet->firstByServiceName('php_fpm_'.$version->safe)->getName() }}
     networks:
       - porter
     volumes:

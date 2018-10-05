@@ -1,5 +1,5 @@
   mailhog:
-    image: mailhog/mailhog:v1.0.0
+    image: {{ $imageSet->firstByServiceName('mailhog')->getName() }}
     networks:
       - porter
     ports:

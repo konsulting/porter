@@ -1,10 +1,8 @@
   node:
     build:
-      context: {{ $dockerContext }}
+      context: {{ $imageSet->getDockerContext() }}
       dockerfile: node/Dockerfile
-      cache_from:
-        - {{ $imageSet }}-node:latest
-    image: {{ $imageSet }}-node
+    image: {{ $imageSet->firstByServiceName('node')->getName() }}
     user: node
     volumes:
       - {{ $home }}:/srv/app:delegated

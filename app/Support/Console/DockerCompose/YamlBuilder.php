@@ -39,9 +39,7 @@ class YamlBuilder
                 'useMysql'          => setting('use_mysql') == 'on',
                 'useRedis'          => setting('use_redis') == 'on',
                 'useBrowser'        => setting('use_browser') == 'on',
-                'imageSet'          => $imageSet->getName(),
-                'imageSetPath'      => $imageSet->getPath(),
-                'dockerContext'     => $imageSet->getDockerContext(),
+                'imageSet'          => $imageSet,
                 'libraryPath'       => $this->porterLibrary->path(),
             ])->render()
         );
