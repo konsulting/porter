@@ -3,27 +3,45 @@
 namespace Tests\Unit\Ssl;
 
 use App\Support\Console\Cli;
+use App\Support\Mechanics\Mechanic;
 use App\Support\Ssl\CertificateBuilder;
 use Illuminate\Filesystem\Filesystem;
+use Mockery\Mock;
 use Tests\BaseTestCase;
 
 class CertificateBuilderBaseTest extends BaseTestCase
 {
     protected $dir;
 
-    public function setUp() : void
+    /**
+     * @var Mock|Mechanic
+     */
+    protected $mechanic;
+
+    /**
+     * @var CertificateBuilder
+     */
+    protected $certificateBuilder;
+
+    public function setUp(): void
     {
         parent::setUp();
 
         $this->dir = storage_path('test_library/ssl');
         mkdir($this->dir, 0755, true);
+
+        $this->mechanic = \Mockery::mock(Mechanic::class);
+        $this->certificateBuilder = new CertificateBuilder(new Cli(), new Filesystem(), $this->mechanic, $this->dir);
     }
 
     /** @test */
     public function it_creates_a_certificate()
     {
-        $builder = new CertificateBuilder(new Cli(), new Filesystem(), $this->dir);
-        $builder->build('klever.test');
+        $this->mechanic->shouldReceive('trustCA')
+            ->once()
+            ->with($this->dir.'/KleverPorterCASelfSigned.pem');
+
+        $this->certificateBuilder->build('klever.test');
 
         $this->assertHasCertificates();
         $this->assertHasCaCertificates();
@@ -34,8 +52,7 @@ class CertificateBuilderBaseTest extends BaseTestCase
     {
         $this->dummyCerts();
 
-        $builder = new CertificateBuilder(new Cli(), new Filesystem(), $this->dir);
-        $builder->destroy('klever.test');
+        $this->certificateBuilder->destroy('klever.test');
 
         $this->assertNoCertificates();
     }
@@ -47,8 +64,7 @@ class CertificateBuilderBaseTest extends BaseTestCase
         $this->dummyCerts('klever.test');
         $this->dummyCerts('klever-one.test');
 
-        $builder = new CertificateBuilder(new Cli(), new Filesystem(), $this->dir);
-        $builder->clearCertificates(/* $dropCa = false */);
+        $this->certificateBuilder->clearCertificates(/* $dropCa = false */);
 
         $this->assertNoCertificates('klever.test');
         $this->assertNoCertificates('klever-one.test');
@@ -62,8 +78,7 @@ class CertificateBuilderBaseTest extends BaseTestCase
         $this->dummyCerts('klever.test');
         $this->dummyCerts('klever-one.test');
 
-        $builder = new CertificateBuilder(new Cli(), new Filesystem(), $this->dir);
-        $builder->clearCertificates($dropCa = true);
+        $this->certificateBuilder->clearCertificates($dropCa = true);
 
         $this->assertNoCertificates('klever.test');
         $this->assertNoCertificates('klever-one.test');

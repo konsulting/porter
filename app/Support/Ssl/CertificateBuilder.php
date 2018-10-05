@@ -3,7 +3,7 @@
 namespace App\Support\Ssl;
 
 use App\Support\Contracts\Cli;
-use App\Support\Mechanics\ChooseMechanic;
+use App\Support\Mechanics\Mechanic;
 use Illuminate\Filesystem\Filesystem;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -17,10 +17,18 @@ class CertificateBuilder
     protected $domain;
     protected $email;
 
-    public function __construct(Cli $cli, Filesystem $filesystem, $certificatesPath)
+    /**
+     * Driver that will interact with the operating system.
+     *
+     * @var Mechanic
+     */
+    protected $mechanic;
+
+    public function __construct(Cli $cli, Filesystem $filesystem, Mechanic $mechanic, $certificatesPath)
     {
         $this->cli = $cli;
         $this->filesystem = $filesystem;
+        $this->mechanic = $mechanic;
         $this->certificatesPath = $certificatesPath;
 
         $this->oName = 'Klever Porter CA Self Signed Organization';
@@ -100,7 +108,7 @@ class CertificateBuilder
             $this->oName, $this->cName, $this->email, $paths->key, $paths->pem
         ));
 
-        ChooseMechanic::forOS()->trustCA($paths->pem);
+        $this->mechanic->trustCA($paths->pem);
     }
 
     /**
@@ -130,7 +138,7 @@ class CertificateBuilder
         ));
 
         // Trusting the certificate shouldn't be necessary once the CA is trusted.
-        // ChooseMechanic::forOS()->trustCertificate($paths->crt);
+        // $this->mechanic->trustCertificate($paths->crt);
     }
 
     /**
@@ -159,10 +167,10 @@ class CertificateBuilder
     /**
      * Create the signing request for the TLS certificate.
      *
-     * @param $url
+     * @param        $url
      * @param string $keyPath
-     * @param $csrPath
-     * @param $confPath
+     * @param        $csrPath
+     * @param        $confPath
      *
      * @return void
      */

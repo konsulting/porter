@@ -12,6 +12,8 @@ use App\Support\Contracts\ImageSetRepository as ImageSetRepositoryContract;
 use App\Support\FilePublisher;
 use App\Support\Images\ImageSetRepository;
 use App\Support\Images\Organiser\Organiser;
+use App\Support\Mechanics\ChooseMechanic;
+use App\Support\Mechanics\Mechanic;
 use App\Support\Ssl\CertificateBuilder;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\ServiceProvider;
@@ -37,6 +39,7 @@ class AppServiceProvider extends ServiceProvider
             return new CertificateBuilder(
                 app(CliContract::class),
                 app(Filesystem::class),
+                app(Mechanic::class),
                 app(PorterLibrary::class)->sslPath()
             );
         });
@@ -67,5 +70,9 @@ class AppServiceProvider extends ServiceProvider
         });
 
         $this->app->singleton(ServerBag::class);
+
+        $this->app->bind(Mechanic::class, function () {
+            return ChooseMechanic::forOS();
+        });
     }
 }

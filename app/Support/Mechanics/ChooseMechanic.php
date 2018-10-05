@@ -4,6 +4,12 @@ namespace App\Support\Mechanics;
 
 class ChooseMechanic
 {
+    const MECHANICS = [
+        'DAR'   => MacOs::class,
+        'WIN'   => Windows::class,
+        'LINUX' => Linux::class,
+    ];
+
     /**
      * Get the mechanic for the host operating system.
      *
@@ -15,18 +21,12 @@ class ChooseMechanic
     {
         $os = $os ?: PHP_OS;
 
-        switch (true) {
-            case (bool) stristr($os, 'DAR'):
-                return app(MacOs::class);
-
-            case (bool) stristr($os, 'WIN'):
-                return app(Windows::class);
-
-            case (bool) stristr($os, 'LINUX'):
-                return app(Linux::class);
-
-            default:
-                return app(Untrained::class);
+        foreach (static::MECHANICS as $key => $class) {
+            if (stristr($os, $key)) {
+                return app()->make($class);
+            }
         }
+
+        return app()->make(Untrained::class);
     }
 }

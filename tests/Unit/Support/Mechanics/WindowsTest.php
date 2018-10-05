@@ -4,7 +4,7 @@ namespace Tests\Unit\Support\Mechanics;
 
 use App\Support\Mechanics\Windows;
 
-class WindowsBaseTest extends MechanicTestCase
+class WindowsTest extends MechanicTestCase
 {
     protected $mechanicClass = Windows::class;
 

@@ -4,14 +4,14 @@ namespace Tests\Unit\Support\Mechanics;
 
 use App\Support\Mechanics\MacOs;
 
-class MacOsMechanicTest extends MechanicTestCase
+class MacOsTest extends MechanicTestCase
 {
     protected $mechanicClass = MacOs::class;
 
     /** @test */
     public function it_returns_the_home_directory()
     {
-        $this->assertEquals(
+        $this->assertSame(
             '/Users/keoghan',
             $this->getMechanic(['HOME'=>'/Users/keoghan'])->getUserHomePath()
         );
