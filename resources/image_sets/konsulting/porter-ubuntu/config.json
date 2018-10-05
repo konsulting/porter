@@ -1,0 +1,32 @@
+{
+    "name": "konsulting\/porter-ubuntu",
+    "maintainers": [
+        {
+            "name": "Keoghan Litchfield",
+            "email": "keoghan@klever.co.uk"
+        },
+        {
+            "name": "Robin D'Arcy",
+            "email": "robin@klever.co.uk"
+        }
+    ],
+    "firstParty": {
+        "chromedriver": "1.0.0",
+        "nginx": "1.0.0",
+        "node": "1.0.0",
+        "php_cli_5-6": "1.0.0",
+        "php_cli_7-0": "1.0.0",
+        "php_cli_7-1": "1.0.0",
+        "php_cli_7-2": "1.0.0",
+        "php_fpm_5-6": "1.0.0",
+        "php_fpm_7-0": "1.0.0",
+        "php_fpm_7-1": "1.0.0",
+        "php_fpm_7-2": "1.0.0"
+    },
+    "thirdParty": {
+        "mysql": "mysql:5.7",
+        "redis": "redis:alpine",
+        "dns": "andyshinn\/dnsmasq",
+        "mailhog": "mailhog\/mailhog:v1.0.0"
+    }
+}

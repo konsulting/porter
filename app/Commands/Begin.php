@@ -3,6 +3,7 @@
 namespace App\Commands;
 
 use App\Exceptions\PorterSetupFailed;
+use App\Support\Images\Organiser\Organiser as ImageOrganiser;
 
 class Begin extends BaseCommand
 {
@@ -29,6 +30,8 @@ class Begin extends BaseCommand
 
     /**
      * Execute the console command.
+     *
+     * @throws \Exception
      *
      * @return void
      */
@@ -59,6 +62,6 @@ class Begin extends BaseCommand
         $this->comment('');
 
         $this->info('Retrieving docker images');
-        $this->porter->pullImages();
+        app(ImageOrganiser::class)->pullImages();
     }
 }

@@ -15,6 +15,9 @@ class ImageRepositoryTest extends BaseTestCase
     /** @var ImageRepository */
     protected $repo;
 
+    /** @var Filesystem */
+    protected $fileSystem;
+
     protected function setUp() : void
     {
         parent::setUp();
@@ -22,13 +25,31 @@ class ImageRepositoryTest extends BaseTestCase
         $this->repoName = 'konsulting/porter-ubuntu';
         $this->path = storage_path('test_library/image-repo-test/'.$this->repoName);
 
-        $fs = new Filesystem();
-        $fs->makeDirectory($this->path.'/php_fpm_7-2', 0755, true);
-        $fs->makeDirectory($this->path.'/php_cli_7-2', 0755, true);
-        $fs->put($this->path.'/php_fpm_7-2/Dockerfile', '');
-        $fs->put($this->path.'/php_cli_7-2/Dockerfile', '');
+        $this->fileSystem = new Filesystem();
+        $this->fileSystem->makeDirectory($this->path.'/php_fpm_7-2', 0755, true);
+        $this->fileSystem->makeDirectory($this->path.'/php_cli_7-2', 0755, true);
+        $this->fileSystem->put($this->path.'/php_fpm_7-2/Dockerfile', '');
+        $this->fileSystem->put($this->path.'/php_cli_7-2/Dockerfile', '');
+        $this->fileSystem->put($this->path.'/config.json', $this->configStub());
 
-        $this->repo = new ImageRepository($this->path, $this->repoName);
+        $this->repo = new ImageRepository($this->path);
+    }
+
+    protected function configStub()
+    {
+        return json_encode([
+            'name'       => 'konsulting/porter-ubuntu',
+            'firstParty' => [
+                'php_cli_7-2' => 'latest',
+                'php_fpm_7-2' => 'latest',
+            ],
+            'thirdParty' => [
+                'mysql'   => 'mysql:5.7',
+                'redis'   => 'redis:alpine',
+                'dns'     => 'andyshinn/dnsmasq',
+                'mailhog' => 'mailhog/mailhog:v1.0.0',
+            ],
+        ]);
     }
 
     public function tearDown()
@@ -43,8 +64,8 @@ class ImageRepositoryTest extends BaseTestCase
     public function it_finds_first_party_images()
     {
         $expectedImages = [
-            new Image($this->repoName.'-php_cli_7-2:latest', $this->path.'/php_cli_7-2'),
-            new Image($this->repoName.'-php_fpm_7-2:latest', $this->path.'/php_fpm_7-2'),
+            new Image($this->repoName.'-php_cli_7-2:latest', $this->path.'/docker/php_cli_7-2'),
+            new Image($this->repoName.'-php_fpm_7-2:latest', $this->path.'/docker/php_fpm_7-2'),
         ];
 
         $result = $this->repo->firstParty();
@@ -90,5 +111,55 @@ class ImageRepositoryTest extends BaseTestCase
             $this->repo->findByServiceName('php_fpm_7-2', $firstPartyOnly = true)[0]->getName()
         );
         $this->assertEmpty($this->repo->findByServiceName('mysql', $firstPartyonly = true));
+    }
+
+    /** @test */
+    public function it_requires_a_config_json_to_be_present()
+    {
+        $this->fileSystem->delete($this->path.'/config.json');
+
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessageRegExp('/Failed loading config for image set/');
+        $this->repo = new ImageRepository($this->path);
+    }
+
+    /** @test */
+    public function it_requires_the_name_to_be_specified_in_config_json()
+    {
+        $this->fileSystem->delete($this->path.'/config.json');
+        $this->fileSystem->put($this->path.'/config.json', '{}');
+
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessageRegExp('/There is no name specified/');
+
+        $this->repo = new ImageRepository($this->path);
+    }
+
+    /** @test */
+    public function it_finds_the_first_image_from_a_service_name()
+    {
+        $this->assertEquals($this->repoName.'-php_fpm_7-2:latest', $this->repo->findByServiceName('php_fpm_7-2')[0]->getName());
+        $this->assertEquals('mysql:5.7', $this->repo->firstByServiceName('mysql')->getName());
+    }
+
+    /** @test */
+    public function it_doesnt_find_the_first_image_with_no_service_name()
+    {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessageRegExp('/A service name must be provided/');
+        $this->repo->firstByServiceName(null);
+    }
+
+    /** @test */
+    public function it_finds_the_first_image_from_first_party_only_by_service_name()
+    {
+        $this->assertEquals(
+            $this->repoName.'-php_fpm_7-2:latest',
+            $this->repo->firstByServiceName('php_fpm_7-2', $firstPartyOnly = true)->getName()
+        );
+
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessageRegExp('/Service not found/');
+        $this->repo->firstByServiceName('mysql', $firstPartyonly = true);
     }
 }

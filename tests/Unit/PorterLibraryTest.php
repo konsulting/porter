@@ -38,7 +38,7 @@ class PorterLibraryTest extends BaseTestCase
         $this->assertEquals('/Users/test/.porter/config', $lib->configPath());
         $this->assertEquals('/Users/test/.porter/database.sqlite', $lib->databaseFile());
         $this->assertEquals('/Users/test/.porter/docker-compose.yaml', $lib->dockerComposeFile());
-        $this->assertEquals('/Users/test/.porter/docker', $lib->dockerImagesPath());
+        $this->assertEquals('/Users/test/.porter/image-sets', $lib->dockerImagesPath());
         $this->assertEquals('/Users/test/.porter/ssl', $lib->sslPath());
         $this->assertEquals('/Users/test/.porter/views', $lib->viewsPath());
     }

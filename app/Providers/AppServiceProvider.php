@@ -11,6 +11,7 @@ use App\Support\Contracts\Cli as CliContract;
 use App\Support\Contracts\ImageSetRepository as ImageSetRepositoryContract;
 use App\Support\FilePublisher;
 use App\Support\Images\ImageSetRepository;
+use App\Support\Images\Organiser\Organiser;
 use App\Support\Ssl\CertificateBuilder;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\ServiceProvider;
@@ -23,6 +24,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         view()->getFinder()->prependLocation(app(PorterLibrary::class)->viewsPath());
+
+        $this->app[ImageSetRepositoryContract::class]->registerViewNamespaces($this->app);
     }
 
     /**
@@ -44,9 +47,17 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(ImageSetRepositoryContract::class, function () {
             return new ImageSetRepository([
-                base_path('docker'),
+                resource_path('image_sets'),
                 app(PorterLibrary::class)->dockerImagesPath(),
             ]);
+        });
+
+        $this->app->bind(Organiser::class, function () {
+            return new Organiser(
+                app(Porter::class)->getDockerImageSet(),
+                app(CliContract::class),
+                app(FileSystem::class)
+            );
         });
 
         $this->app->singleton(Porter::class);

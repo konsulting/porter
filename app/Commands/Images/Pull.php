@@ -3,6 +3,7 @@
 namespace App\Commands\Images;
 
 use App\Commands\BaseCommand;
+use App\Support\Images\Organiser\Organiser;
 
 class Pull extends BaseCommand
 {
@@ -23,10 +24,12 @@ class Pull extends BaseCommand
     /**
      * Execute the console command.
      *
+     * @throws \Exception
+     *
      * @return void
      */
     public function handle(): void
     {
-        $this->porter->pullImages();
+        app(Organiser::class)->pullImages();
     }
 }

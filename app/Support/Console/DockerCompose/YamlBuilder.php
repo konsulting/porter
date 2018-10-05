@@ -32,15 +32,14 @@ class YamlBuilder
     {
         $this->files->put(
             $this->porterLibrary->dockerComposeFile(),
-            view("docker_compose.{$imageSet->getName()}.base")->with([
+            view("{$imageSet->getName()}::base")->with([
                 'home'              => setting('home'),
                 'host_machine_name' => setting('host_machine_name'),
                 'activePhpVersions' => PhpVersion::active()->get(),
                 'useMysql'          => setting('use_mysql') == 'on',
                 'useRedis'          => setting('use_redis') == 'on',
                 'useBrowser'        => setting('use_browser') == 'on',
-                'imageSet'          => $imageSet->getName(),
-                'imageSetPath'      => $imageSet->getPath(),
+                'imageSet'          => $imageSet,
                 'libraryPath'       => $this->porterLibrary->path(),
             ])->render()
         );

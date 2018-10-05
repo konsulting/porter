@@ -4,8 +4,6 @@ namespace App\Support\Images;
 
 use App\Support\Contracts\ImageRepository as ImageRepositoryContract;
 use Exception;
-use Symfony\Component\Finder\Finder;
-use Symfony\Component\Finder\SplFileInfo;
 
 class ImageRepository implements ImageRepositoryContract
 {
@@ -15,16 +13,48 @@ class ImageRepository implements ImageRepositoryContract
     /** @var string */
     protected $name;
 
+    protected $firstPartyImages = [];
+
+    protected $thirdPartyImages = [];
+
     /**
      * ImageRepository constructor.
      *
      * @param $path
-     * @param $name
+     *
+     * @throws Exception
      */
-    public function __construct($path, $name)
+    public function __construct($path)
     {
         $this->path = $path;
-        $this->name = $name;
+
+        $this->loadConfig();
+    }
+
+    /**
+     * Load the configuration file for the image set.
+     *
+     * @throws Exception
+     */
+    protected function loadConfig()
+    {
+        try {
+            $config = json_decode(file_get_contents($this->path.'/config.json'));
+
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                throw new \Exception(json_last_error_msg());
+            }
+
+            if (!property_exists($config, 'name') || !$config->name) {
+                throw new \Exception('There is no name specified.');
+            }
+
+            $this->name = $config->name;
+            $this->firstPartyImages = (array) $config->firstParty ?? [];
+            $this->thirdPartyImages = (array) $config->thirdParty ?? [];
+        } catch (\Exception $e) {
+            throw new \Exception("Failed loading config for image set '{$this->path}'. {$e->getMessage()}");
+        }
     }
 
     /**
@@ -36,14 +66,10 @@ class ImageRepository implements ImageRepositoryContract
      */
     public function firstParty()
     {
-        $images = [];
-
-        foreach ((new Finder())->in($this->path)->directories()->sortByName() as $directory) {
-            /* @var $directory \Symfony\Component\Finder\SplFileInfo */
-            $images[] = new Image($this->getImageName($directory, $this->name), $directory->getRealPath());
-        }
-
-        return $images;
+        return collect($this->firstPartyImages)
+            ->map(function ($version, $name) {
+                return new Image($this->name.'-'.$name.':'.$version, $this->getDockerContext().$name);
+            })->values()->toArray();
     }
 
     /**
@@ -53,12 +79,10 @@ class ImageRepository implements ImageRepositoryContract
      */
     public function thirdParty()
     {
-        return [
-            new Image('mysql:5.7'),
-            new Image('redis:alpine'),
-            new Image('andyshinn/dnsmasq'),
-            new Image('mailhog/mailhog:v1.0.0'),
-        ];
+        return collect($this->thirdPartyImages)
+            ->map(function ($image) {
+                return new Image($image);
+            })->toArray();
     }
 
     /**
@@ -71,6 +95,16 @@ class ImageRepository implements ImageRepositoryContract
     public function all()
     {
         return array_merge($this->firstParty(), $this->thirdParty());
+    }
+
+    /**
+     * Return Docker context path.
+     *
+     * @return string
+     */
+    public function getDockerContext()
+    {
+        return $this->path.'/docker/';
     }
 
     /**
@@ -118,15 +152,27 @@ class ImageRepository implements ImageRepositoryContract
     }
 
     /**
-     * Get the name of the docker image from the directory and image set name.
+     * Find the first image for a given service.
      *
-     * @param string      $imageSetName
-     * @param SplFileInfo $dir
+     * @param $service
+     * @param bool $firstPartyOnly
      *
-     * @return string
+     * @throws Exception
+     *
+     * @return Image
      */
-    private function getImageName(SplFileInfo $dir, $imageSetName)
+    public function firstByServiceName($service, $firstPartyOnly = false)
     {
-        return $imageSetName.'-'.$dir->getFileName().':latest';
+        if (!$service) {
+            throw new \Exception('A service name must be provided.');
+        }
+
+        $found = $this->findByServiceName($service, $firstPartyOnly);
+
+        if (empty($found)) {
+            throw new \Exception("Service not found '{$service}'");
+        }
+
+        return $found[0];
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Support\Contracts;
 
+use App\Support\Images\Image;
+
 interface ImageRepository
 {
     /**
@@ -26,6 +28,13 @@ interface ImageRepository
     public function all();
 
     /**
+     * Return the Docker context path.
+     *
+     * @return mixed
+     */
+    public function getDockerContext();
+
+    /**
      * Return the path.
      *
      * @return string
@@ -41,6 +50,16 @@ interface ImageRepository
      * @return array
      */
     public function findByServiceName($service, $firstPartyOnly = false);
+
+    /**
+     * Find the image for a given service.
+     *
+     * @param $service
+     * @param bool $firstPartyOnly
+     *
+     * @return Image
+     */
+    public function firstByServiceName($service, $firstPartyOnly = false);
 
     /**
      * Return the name.

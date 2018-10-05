@@ -3,6 +3,7 @@
 namespace App\Commands\Images;
 
 use App\Commands\BaseCommand;
+use App\Support\Images\Organiser\Organiser;
 
 class Push extends BaseCommand
 {
@@ -23,10 +24,12 @@ class Push extends BaseCommand
     /**
      * Execute the console command.
      *
+     * @throws \Exception
+     *
      * @return void
      */
     public function handle(): void
     {
-        $this->porter->pushImages();
+        app(Organiser::class)->pushImages();
     }
 }

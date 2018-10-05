@@ -3,6 +3,7 @@
 namespace App\Commands\Images;
 
 use App\Commands\BaseCommand;
+use App\Support\Images\Organiser\Organiser;
 
 class Build extends BaseCommand
 {
@@ -23,10 +24,12 @@ class Build extends BaseCommand
     /**
      * Execute the console command.
      *
+     * @throws \Exception
+     *
      * @return void
      */
     public function handle(): void
     {
-        $this->porter->buildImages((string) $this->argument('service'));
+        app(Organiser::class)->buildImages((string) $this->argument('service'));
     }
 }

@@ -23,4 +23,12 @@ class ImageTest extends BaseTestCase
 
         $this->assertNull($image->getLocalPath());
     }
+
+    /** @test */
+    public function it_returns_an_unversioned_image_name()
+    {
+        $image = new Image('name:1.0.0');
+
+        $this->assertEquals('name', $image->getUnVersionedName());
+    }
 }

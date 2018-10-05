@@ -3,6 +3,7 @@
 namespace App\Support\Images;
 
 use App\Support\Contracts\ImageSetRepository as ImageSetRepositoryContract;
+use Illuminate\Foundation\Application;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -53,7 +54,7 @@ class ImageSetRepository implements ImageSetRepositoryContract
         foreach (array_reverse($this->locations) as $location) {
             $path = $location.'/'.$imageSetName;
             if (is_dir($path)) {
-                return new ImageRepository($path, $imageSetName);
+                return new ImageRepository($path);
             }
         }
 
@@ -80,5 +81,17 @@ class ImageSetRepository implements ImageSetRepositoryContract
             ->map(function (SplFileInfo $directory) {
                 return $directory->getRelativePathname();
             })->unique();
+    }
+
+    /**
+     * Register the view namespaces for the image sets.
+     *
+     * @param $app
+     */
+    public function registerViewNamespaces(Application $app)
+    {
+        foreach ($this->availableImageSets() as $path => $namespace) {
+            $app['view']->addNamespace($namespace, $path.'/docker_compose');
+        }
     }
 }
