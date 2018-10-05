@@ -17,12 +17,6 @@ class MacOs extends Untrained
 
         $command = "sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain {$pem}";
 
-        if ($this->isTesting()) {
-            $this->consoleWriter->info('Did not trust CA during testing.');
-
-            return;
-        }
-
         $this->cli->passthru($command);
     }
 
@@ -38,12 +32,6 @@ class MacOs extends Untrained
         $this->consoleWriter->info('Auto Trust Certificate, needs sudo privilege. Please provide your sudo password.');
 
         $command = "sudo security add-trusted-cert -d -r trustAsRoot -k /Library/Keychains/System.keychain {$crt}";
-
-        if ($this->isTesting()) {
-            $this->consoleWriter->info('Did not trust Certificate during testing.');
-
-            return;
-        }
 
         $this->cli->passthru($command);
     }

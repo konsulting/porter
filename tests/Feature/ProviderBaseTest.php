@@ -2,9 +2,11 @@
 
 namespace Tests\Feature;
 
-use App\Support\Console\Cli;
+use App\Support\Contracts\Cli as CliContract;
+use App\Support\Mechanics\Mechanic;
 use App\Support\Ssl\CertificateBuilder;
 use Illuminate\Filesystem\Filesystem;
+use Mockery;
 use Tests\BaseTestCase;
 
 class ProviderBaseTest extends BaseTestCase
@@ -12,7 +14,9 @@ class ProviderBaseTest extends BaseTestCase
     /** @test */
     public function it_passes_the_correct_ssl_directory_to_the_certificate_builder()
     {
-        $certificateBuilder = new CertificateBuilder(new Cli(), new Filesystem(), '/my/path/ssl');
+        $mechanic = Mockery::spy(Mechanic::class);
+        $cli = Mockery::spy(CliContract::class);
+        $certificateBuilder = new CertificateBuilder($cli, new Filesystem(), $mechanic, '/my/path/ssl');
 
         $expected = [
             'key'  => '/my/path/ssl/url.key',

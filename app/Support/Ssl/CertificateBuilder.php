@@ -3,7 +3,7 @@
 namespace App\Support\Ssl;
 
 use App\Support\Contracts\Cli;
-use App\Support\Mechanics\ChooseMechanic;
+use App\Support\Mechanics\Mechanic;
 use Illuminate\Filesystem\Filesystem;
 use Symfony\Component\Finder\SplFileInfo;
 
@@ -17,16 +17,24 @@ class CertificateBuilder
     protected $domain;
     protected $email;
 
-    public function __construct(Cli $cli, Filesystem $filesystem, $certificatesPath)
+    /**
+     * Driver that will interact with the operating system.
+     *
+     * @var Mechanic
+     */
+    protected $mechanic;
+
+    public function __construct(Cli $cli, Filesystem $filesystem, Mechanic $mechanic, $certificatesPath)
     {
         $this->cli = $cli;
         $this->filesystem = $filesystem;
+        $this->mechanic = $mechanic;
         $this->certificatesPath = $certificatesPath;
 
         $this->oName = 'Klever Porter CA Self Signed Organization';
         $this->cName = 'Klever Porter CA Self Signed CN';
         $this->domain = 'klever.porter';
-        $this->email = 'rootcertificate@'.$this->domain;
+        $this->email = 'rootcertificate@' . $this->domain;
     }
 
     /**
@@ -37,9 +45,9 @@ class CertificateBuilder
     public function caPaths()
     {
         return (object) [
-            'key' => $this->certificatesPath.'/KleverPorterCASelfSigned.key',
-            'pem' => $this->certificatesPath.'/KleverPorterCASelfSigned.pem',
-            'srl' => $this->certificatesPath.'/KleverPorterCASelfSigned.srl',
+            'key' => $this->certificatesPath . '/KleverPorterCASelfSigned.key',
+            'pem' => $this->certificatesPath . '/KleverPorterCASelfSigned.pem',
+            'srl' => $this->certificatesPath . '/KleverPorterCASelfSigned.srl',
         ];
     }
 
@@ -53,10 +61,10 @@ class CertificateBuilder
     public function paths($url)
     {
         return (object) [
-            'key'  => $this->certificatesPath.'/'.$url.'.key',
-            'csr'  => $this->certificatesPath.'/'.$url.'.csr',
-            'crt'  => $this->certificatesPath.'/'.$url.'.crt',
-            'conf' => $this->certificatesPath.'/'.$url.'.conf',
+            'key'  => $this->certificatesPath . '/' . $url . '.key',
+            'csr'  => $this->certificatesPath . '/' . $url . '.csr',
+            'crt'  => $this->certificatesPath . '/' . $url . '.crt',
+            'conf' => $this->certificatesPath . '/' . $url . '.conf',
         ];
     }
 
@@ -100,7 +108,7 @@ class CertificateBuilder
             $this->oName, $this->cName, $this->email, $paths->key, $paths->pem
         ));
 
-        ChooseMechanic::forOS()->trustCA($paths->pem);
+        $this->mechanic->trustCA($paths->pem);
     }
 
     /**
@@ -121,7 +129,7 @@ class CertificateBuilder
 
         $caSrlParam = ' -CAcreateserial';
         if ($this->filesystem->exists($caPaths->srl)) {
-            $caSrlParam = ' -CAserial '.$caPaths->srl;
+            $caSrlParam = ' -CAserial ' . $caPaths->srl;
         }
 
         $this->cli->exec(sprintf(
@@ -130,7 +138,7 @@ class CertificateBuilder
         ));
 
         // Trusting the certificate shouldn't be necessary once the CA is trusted.
-        // ChooseMechanic::forOS()->trustCertificate($paths->crt);
+        // $this->mechanic->trustCertificate($paths->crt);
     }
 
     /**
@@ -159,10 +167,10 @@ class CertificateBuilder
     /**
      * Create the signing request for the TLS certificate.
      *
-     * @param $url
+     * @param        $url
      * @param string $keyPath
-     * @param $csrPath
-     * @param $confPath
+     * @param        $csrPath
+     * @param        $confPath
      *
      * @return void
      */
@@ -170,7 +178,7 @@ class CertificateBuilder
     {
         $this->cli->exec(sprintf(
             'openssl req -new -key %s -out %s -subj "/C=GB/ST=Berks/O=%s/localityName=Reading/commonName=%s/organizationalUnitName=Developers/emailAddress=%s%s/" -config %s',
-            $keyPath, $csrPath, $this->domain, $url, $url, '@'.$this->domain, $confPath
+            $keyPath, $csrPath, $this->domain, $url, $url, '@' . $this->domain, $confPath
         ));
     }
 
@@ -188,7 +196,7 @@ class CertificateBuilder
 
         foreach ($files as $file) {
             /** @var SplFileInfo $file */
-            if (!$dropCA && in_array($file->getPathname(), $caPaths)) {
+            if (! $dropCA && in_array($file->getPathname(), $caPaths)) {
                 continue;
             }
 
