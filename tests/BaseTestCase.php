@@ -8,6 +8,7 @@ use App\Support\Console\DockerCompose\CliCommandFactory;
 use App\Support\Console\DockerCompose\YamlBuilder;
 use App\Support\Contracts\Cli;
 use App\Support\Contracts\ImageSetRepository;
+use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\TestCase as IlluminateTestCase;
@@ -65,5 +66,24 @@ abstract class BaseTestCase extends IlluminateTestCase
     protected function preparePorter()
     {
         //
+    }
+
+    protected function mockPorterCommand($class)
+    {
+        $mock = \Mockery::mock(
+            $class.'[handle]',
+            [
+                app(Cli::class),
+                app(CliCommandFactory::class),
+                app(Porter::class),
+                app(PorterLibrary::class)
+            ]
+        );
+
+        $mock->shouldReceive('handle');
+
+        $this->app[Kernel::class]->registerCommand($mock);
+
+        return $mock;
     }
 }
