@@ -9,7 +9,8 @@ class BeginTest extends BaseTestCase
 {
     protected $organiser;
 
-    public function setUp() : void {
+    public function setUp() : void
+    {
         $this->organiser = \Mockery::mock(Organiser::class);
 
         $this->afterApplicationCreated(function () {

@@ -179,21 +179,21 @@ class OrganiserTest extends BaseTestCase
         );
 
         $fs->expects('get')->andReturns(json_encode([
-            'name' => 'test/repo',
+            'name'       => 'test/repo',
             'firstParty' => [
                 'php_cli' => '1.0.0',
                 'php_fpm' => '1.0.0',
-            ]
+            ],
         ]));
 
         $fs->expects('put')->with(
             $this->imageRepo->getPath().'/config.json',
             json_encode([
-                'name' => 'test/repo',
+                'name'       => 'test/repo',
                 'firstParty' => [
                     'php_cli' => '1.0.0',
                     'php_fpm' => '1.0.1',
-                ]
+                ],
             ], JSON_PRETTY_PRINT)
         );
 

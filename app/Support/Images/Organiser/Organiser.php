@@ -74,7 +74,7 @@ class Organiser
      */
     public function readVersion($versionString)
     {
-        if (! preg_match('/#VERSION:\s{0,}\d+\.\d+\.\d+/', $versionString)) {
+        if (!preg_match('/#VERSION:\s{0,}\d+\.\d+\.\d+/', $versionString)) {
             throw new \Exception(
                 "The version must be the first line of the Dockerfile and in the format '#VERSION: x.y.z'"
             );
@@ -88,6 +88,7 @@ class Organiser
      *
      * @param Image $image
      * @param $version
+     *
      * @throws FileNotFoundException
      */
     public function updateConfigVersionForImage(Image $image, $version)
