@@ -7,6 +7,13 @@ use App\Exceptions\PorterSetupFailed;
 class Begin extends BaseCommand
 {
     /**
+     * The begin command may be run at any time, since it's needed to perform setup.
+     *
+     * @var bool
+     */
+    protected $porterMustBeSetUp = false;
+
+    /**
      * The signature of the command.
      *
      * @var string
