@@ -23,10 +23,10 @@ class ChooseMechanic
 
         foreach (static::MECHANICS as $key => $class) {
             if (stristr($os, $key)) {
-                return app($class);
+                return app()->make($class);
             }
         }
 
-        return app(Untrained::class);
+        return app()->make(Untrained::class);
     }
 }
