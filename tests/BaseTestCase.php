@@ -71,7 +71,6 @@ abstract class BaseTestCase extends IlluminateTestCase
         //
     }
 
-
     /**
      * Mock a Porter command, one that extends the App\Commands\BaseCommand.
      *

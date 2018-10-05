@@ -23,7 +23,7 @@ class MakeFilesTest extends BaseTestCase
     {
         $conf = $this->mockSiteConfigBuilder();
 
-        factory(Site::class,2)->create([]);
+        factory(Site::class, 2)->create([]);
 
         $this->porter->shouldReceive('isUp')->andReturn(false);
         $this->porter->shouldReceive('compose');
@@ -41,7 +41,7 @@ class MakeFilesTest extends BaseTestCase
 
         $conf = $this->mockSiteConfigBuilder();
 
-        factory(Site::class,2)->create([]);
+        factory(Site::class, 2)->create([]);
 
         $this->porter->shouldReceive('isUp')->andReturn(true);
         $this->porter->shouldReceive('compose');

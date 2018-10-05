@@ -58,7 +58,7 @@ class FilePublisher
      *
      * @throws Exception
      *
-     * @return null
+     * @return void
      */
     public function publish($from, $to)
     {
