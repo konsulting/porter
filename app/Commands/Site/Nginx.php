@@ -5,7 +5,6 @@ namespace App\Commands\Site;
 use App\Commands\BaseCommand;
 use App\Models\Site;
 use App\Support\Nginx\AvailableConfigurations;
-use Symfony\Component\Finder\Finder;
 
 class Nginx extends BaseCommand
 {
@@ -37,7 +36,7 @@ class Nginx extends BaseCommand
 
         $option = $this->menu(
             'Available Nginx Types',
-            (new AvailableConfigurations)->getList($site->nginx_conf)
+            (new AvailableConfigurations())->getList($site->nginx_conf)
         )->open();
 
         if (!$option) {

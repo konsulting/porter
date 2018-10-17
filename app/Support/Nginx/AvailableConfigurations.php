@@ -23,13 +23,14 @@ class AvailableConfigurations
      * Get the list of conf files, indicating current.
      *
      * @param null $highlight
+     *
      * @return mixed
      */
     public function getList($highlight = null)
     {
         return $this->getFileNames()
             ->mapWithKeys(function ($name) use ($highlight) {
-                return [$name => $name.($name==$highlight ? ' (current)' : '')];
+                return [$name => $name.($name == $highlight ? ' (current)' : '')];
             })->toArray();
     }
 
