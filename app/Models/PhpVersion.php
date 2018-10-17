@@ -30,6 +30,20 @@ class PhpVersion extends Model
     }
 
     /**
+     * Return a list of PHP versions and optionally highlight one.
+     *
+     * @param $highlight
+     * @return mixed
+     */
+    public static function getList($highlight = null)
+    {
+        return static::pluck('version_number', 'id')
+            ->map(function ($version) use ($highlight) {
+                return $version.($version == $highlight ? ' (current)' : '');
+            })->toArray();
+    }
+
+    /**
      * Get a safe version of the version number to use in paths.
      *
      * @return null|string
