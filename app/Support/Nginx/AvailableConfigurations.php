@@ -22,7 +22,7 @@ class AvailableConfigurations
     /**
      * Get the list of conf files, indicating current.
      *
-     * @param null $highlight
+     * @param string|null $highlight
      *
      * @return mixed
      */

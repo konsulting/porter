@@ -32,7 +32,7 @@ class PhpVersion extends Model
     /**
      * Return a list of PHP versions and optionally highlight one.
      *
-     * @param $highlight
+     * @param string|null $highlight
      *
      * @return mixed
      */
