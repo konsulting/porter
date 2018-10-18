@@ -97,4 +97,32 @@ class PhpVersionTest extends BaseTestCase
         $this->assertContains($v5->id, $active->pluck('id'));
         $this->assertContains($v7->id, $active->pluck('id'));
     }
+
+    /** @test */
+    public function it_returns_a_list_of_versions()
+    {
+        $v5 = factory(PhpVersion::class)->create(['version_number' => '5.6']);
+
+        $v7 = factory(PhpVersion::class)->states(['default'])
+            ->create(['version_number' => '7.0']);
+
+        $this->assertEquals([
+            $v5->getKey() => '5.6',
+            $v7->getKey() => '7.0',
+        ], PhpVersion::getList());
+    }
+
+    /** @test */
+    public function it_returns_a_list_of_versions_and_highlights_one()
+    {
+        $v5 = factory(PhpVersion::class)->create(['version_number' => '5.6']);
+
+        $v7 = factory(PhpVersion::class)->states(['default'])
+            ->create(['version_number' => '7.0']);
+
+        $this->assertEquals([
+            $v5->getKey() => '5.6',
+            $v7->getKey() => '7.0 (current)',
+        ], PhpVersion::getList('7.0'));
+    }
 }

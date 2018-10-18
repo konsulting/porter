@@ -9,7 +9,7 @@ $factory->define(\App\Models\PhpVersion::class, function (Faker $faker) {
     ];
 });
 
-$factory->state(\App\Models\PhpVersion::class, 'default', function ($faker) {
+$factory->state(\App\Models\PhpVersion::class, 'default', function () {
     return [
         'default' => true,
     ];

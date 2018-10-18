@@ -13,6 +13,7 @@ class FilePublisher
     /** @var Filesystem */
     protected $files;
 
+    /** @var bool Should we force the publishing of the files? */
     protected $force = false;
 
     /**

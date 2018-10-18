@@ -4,7 +4,7 @@ namespace App\Commands\Site;
 
 use App\Commands\BaseCommand;
 use App\Models\Site;
-use Symfony\Component\Finder\Finder;
+use App\Support\Nginx\AvailableConfigurations;
 
 class Nginx extends BaseCommand
 {
@@ -26,6 +26,7 @@ class Nginx extends BaseCommand
      * Execute the console command.
      *
      * @throws \Exception
+     * @throws \Throwable
      *
      * @return void
      */
@@ -33,26 +34,9 @@ class Nginx extends BaseCommand
     {
         $site = Site::resolveFromPathOrCurrentWorkingDirectoryOrFail((string) $this->argument('site'));
 
-        $currentNginxConf = $site->nginx_conf;
-
-        $nginxFileLocations = collect(view()->getFinder()->getPaths())
-            ->map(function ($location) {
-                return $location.'/nginx';
-            })->toArray();
-
-        $types = collect(iterator_to_array(
-            Finder::create()
-                ->in($nginxFileLocations)
-                ->directories()
-        ))->mapWithKeys(function (\SplFileInfo $file) use ($currentNginxConf) {
-            $conf = $file->getFilename();
-
-            return [$conf => $conf.($conf == $currentNginxConf ? ' (current)' : '')];
-        })->sort()->toArray();
-
         $option = $this->menu(
             'Available Nginx Types',
-            $types
+            (new AvailableConfigurations())->getList($site->nginx_conf)
         )->open();
 
         if (!$option) {
