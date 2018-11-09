@@ -92,7 +92,7 @@ class PorterLibraryTest extends BaseTestCase
     }
 
     /** @test */
-    public function it_wont_migrate_when_Asked_not_t0()
+    public function it_wont_migrate_when_asked_not_to()
     {
         Carbon::setTestNow('2018-01-01 00:00:00');
 
