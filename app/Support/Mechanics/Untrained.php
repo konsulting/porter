@@ -17,6 +17,9 @@ class Untrained implements Mechanic
     /** @var ServerBag */
     protected $serverBag;
 
+    /** @var string $hostAddress Address for Host */
+    protected $hostAddress = '127.0.0.1';
+
     /**
      * Untrained constructor.
      *
@@ -84,5 +87,35 @@ class Untrained implements Mechanic
     {
         $this->consoleWriter->info("I haven't been trained to {$activity} on this system.");
         $this->consoleWriter->info('You are welcome to train me and submit a PR.');
+    }
+
+    /**
+     * Setup networking for Porter
+     *
+     * @return void
+     */
+    public function setupNetworking()
+    {
+        $this->iAmNotTrainedTo('set up special networking for Porter');
+    }
+
+    /**
+     * Restore networking for Porter
+     *
+     * @return void
+     */
+    public function restoreNetworking()
+    {
+        $this->iAmNotTrainedTo('restore special networking for Porter');
+    }
+
+    /**
+     * Get Host IP for Porter
+     *
+     * @return string
+     */
+    public function getHostAddress()
+    {
+        return $this->hostAddress;
     }
 }

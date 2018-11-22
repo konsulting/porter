@@ -26,6 +26,14 @@ class UntrainedTest extends MechanicTestCase
             ['trustCertificate', ['']],
             ['getUserHomePath'],
             ['flushDns'],
+            ['setupNetworking'],
+            ['restoreNetworking'],
         ];
+    }
+
+    /** @test */
+    public function it_returns_the_host_address()
+    {
+        $this->assertEquals('127.0.0.1', $this->getMechanic()->getHostAddress());
     }
 }

@@ -35,4 +35,23 @@ interface Mechanic
      * @return void
      */
     public function flushDns();
+
+    /**
+     * Setup networking for Porter
+     *
+     * @return void
+     */
+    public function setupNetworking();
+
+    /**
+     * Restore networking
+     *
+     * @return void
+     */
+    public function restoreNetworking();
+
+    /**
+     * Get Host IP address
+     */
+    public function getHostAddress();
 }
