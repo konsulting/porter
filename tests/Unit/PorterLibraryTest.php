@@ -47,6 +47,7 @@ class PorterLibraryTest extends BaseTestCase
      * Make the porter library.
      *
      * @param string $path
+     *
      * @return PorterLibrary
      */
     protected function makeLibrary($path)
