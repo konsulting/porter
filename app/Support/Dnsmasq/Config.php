@@ -37,7 +37,7 @@ class Config
 
     protected function getPath()
     {
-        return $this->porterLibrary->configPath() . '/dnsmasq/dnsmasq.conf';
+        return $this->porterLibrary->configPath().'/dnsmasq/dnsmasq.conf';
     }
 
     protected function getConfig()

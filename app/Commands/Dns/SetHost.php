@@ -34,6 +34,7 @@ class SetHost extends BaseCommand
         if ($this->option('restore')) {
             $mechanic->restoreNetworking();
             app(Config::class)->updateIp('127.0.0.1');
+
             return;
         }
 

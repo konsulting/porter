@@ -61,7 +61,7 @@ class MacOs extends Untrained
     }
 
     /**
-     * Set up networking for Mac
+     * Set up networking for Mac.
      *
      * Add a loopback alias to 10.200.10.1. This is then used as the IP for DNS resolution, otherwise
      * we get weird results when trying to access services hosted in docker (since they resolve
@@ -79,7 +79,7 @@ class MacOs extends Untrained
     }
 
     /**
-     * Restore networking on Mac
+     * Restore networking on Mac.
      *
      * @return void
      */
@@ -93,7 +93,7 @@ class MacOs extends Untrained
     }
 
     /**
-     * Return the host IP address in use
+     * Return the host IP address in use.
      *
      * @return string
      */

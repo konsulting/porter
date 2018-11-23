@@ -37,21 +37,21 @@ interface Mechanic
     public function flushDns();
 
     /**
-     * Setup networking for Porter
+     * Setup networking for Porter.
      *
      * @return void
      */
     public function setupNetworking();
 
     /**
-     * Restore networking
+     * Restore networking.
      *
      * @return void
      */
     public function restoreNetworking();
 
     /**
-     * Get Host IP address
+     * Get Host IP address.
      */
     public function getHostAddress();
 }

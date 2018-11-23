@@ -74,7 +74,15 @@ getenv('RUNNING_ON_PORTER')
 getenv('HOST_MACHINE_NAME')
 ```
 
-## Commands:
+## DNS Resolution Notes
+
+If you plan on running development sites which resolve other development sites (e.g. with Curl, or use hot reloading with [Laravel Mix](https://laravel-mix.com)), there is an additional command to run (after each Host machine reboot) `porter dns:set-host`. Please see [DNS](#dns) for more details. 
+
+As we work on Macs, this command only works on MacOS for now, but we welcome any contributions to set the IP to a relevant IP on other OS's.  Some additional helpful background at [Eventuate](http://eventuate.io/docs/usingdocker.html).
+
+We have deliberately chosen not to make this automatic, nor permanent to avoid digging into your machine too much.
+
+## Commands
 
  - `porter begin {--home?} {--force?}` - Migrate and seed the sqlite database, and publish config files to `~/.porter/config`. It will set Porter home to the working directory when you run the command (or you can specify with the `--home` option).  It will also download the required docker images.
  - `porter start`
@@ -121,6 +129,21 @@ We currently ship with containers for PHP 5.6, 7.0, 7.1 and 7.2.
 ### Node (npm/yarn)
  - `porter node:open {run?}` - Open Node cli, run in project dir. Optionally run a command, such as `npm run production` (if you need to pass arguments, wrap in quotes). 
 
+We use [Laravel Mix](https://laravel-mix.com) in quite a few projects, since it makes setup of JS dev tools straightforward.  In order to use `npm run hot` in the node container, you will need to adjust the node devServer settings so that compiled assets become available.
+
+In your `webpack.mix.js` file add the following setup:
+
+```javascript
+mix.webpackConfig({
+    devServer: {
+        host: '0.0.0.0',
+        port: 8080,
+    }
+});
+```
+
+Ports `3000`, `3001` and `8080` are bound to localhost when running the Node container. These provide the development proxy, BrowserSync interface and access to the compiled assets.
+
 ### MySQL
 Enabled by default. Available on the host machine on port 13306. The user is `root` and the password `secret`. You can connect with your favourite GUI if you want to.
 
@@ -143,6 +166,16 @@ Redis data is stored in `~/.porter/data/redis`.
 ## DNS
 
  - `porter dns:flush` - flush your local machine's DNS in cases where it's getting a bit confused, saves you looking up the command we hope.
+ 
+ - `porter dns:set-host {--restore}` - see below. The `--restore` will remove the setup. 
+ 
+ There are some times where pointing the DNS to 127.0.0.1 in order to access the development sites doesn't work out well. 
+ 
+ For example when resolving development sites inside a container - when making a request to another site hosted in Porter, the container ends up looking at itself rather than the host machine). 
+ 
+ On MacOS this command will create an alias of `10.200.10.1` to the `loopback` address, and then use this when resolving DNS for the Porter domain.  The default for all systems is `127.0.0.1`. 
+ 
+ We leave it up to you to run this command at the moment, it is a temporary setting and resets on a machine restart. Not everyone will need it, and we'd rather not dig much deeper into your system to make it permanent.
 
 ## Email
 

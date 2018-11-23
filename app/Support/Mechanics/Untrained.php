@@ -90,7 +90,7 @@ class Untrained implements Mechanic
     }
 
     /**
-     * Setup networking for Porter
+     * Setup networking for Porter.
      *
      * @return void
      */
@@ -100,7 +100,7 @@ class Untrained implements Mechanic
     }
 
     /**
-     * Restore networking for Porter
+     * Restore networking for Porter.
      *
      * @return void
      */
@@ -110,7 +110,7 @@ class Untrained implements Mechanic
     }
 
     /**
-     * Get Host IP for Porter
+     * Get Host IP for Porter.
      *
      * @return string
      */
