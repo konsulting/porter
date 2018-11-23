@@ -4,7 +4,7 @@ namespace App;
 
 use App\Exceptions\PorterSetupFailed;
 use App\Support\FilePublisher;
-use App\Support\Mechanics\ChooseMechanic;
+use App\Support\Mechanics\Mechanic;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Artisan;
@@ -33,12 +33,17 @@ class PorterLibrary
     protected $filePublisher;
 
     protected $shouldMigrateAndSeedDatabase = true;
+    /**
+     * @var Mechanic
+     */
+    private $mechanic;
 
-    public function __construct(FilePublisher $filePublisher, $path)
+    public function __construct(FilePublisher $filePublisher, Mechanic $mechanic, $path)
     {
         $this->filePublisher = $filePublisher;
         $this->files = $filePublisher->getFilesystem();
         $this->path = $path;
+        $this->mechanic = $mechanic;
     }
 
     /**
@@ -48,7 +53,7 @@ class PorterLibrary
      */
     public function configPath()
     {
-        return $this->path.'/config';
+        return $this->path . '/config';
     }
 
     /**
@@ -58,7 +63,7 @@ class PorterLibrary
      */
     public function databaseFile()
     {
-        return $this->path.'/database.sqlite';
+        return $this->path . '/database.sqlite';
     }
 
     /**
@@ -68,7 +73,7 @@ class PorterLibrary
      */
     public function dockerComposeFile()
     {
-        return $this->path.'/docker-compose.yaml';
+        return $this->path . '/docker-compose.yaml';
     }
 
     /**
@@ -78,7 +83,7 @@ class PorterLibrary
      */
     public function dockerImagesPath()
     {
-        return $this->path.'/image-sets';
+        return $this->path . '/image-sets';
     }
 
     /**
@@ -88,7 +93,7 @@ class PorterLibrary
      */
     public function sslPath()
     {
-        return $this->path.'/ssl';
+        return $this->path . '/ssl';
     }
 
     /**
@@ -110,7 +115,7 @@ class PorterLibrary
      */
     public function viewsPath()
     {
-        return $this->path.'/views';
+        return $this->path . '/views';
     }
 
     /**
@@ -134,22 +139,22 @@ class PorterLibrary
      */
     public function setUp(Application $app, $force = false)
     {
-        if ($this->alreadySetUp() && !$force) {
+        if ($this->alreadySetUp() && ! $force) {
             throw new PorterSetupFailed(
-                "The porter library already exists at '{$this->path}'. ".
+                "The porter library already exists at '{$this->path}'. " .
                 'You can use the --force flag to continue.'
             );
         }
 
-        if (!$this->path) {
-            $this->path = ChooseMechanic::forOS()->getUserHomePath().'/.porter';
+        if (! $this->path) {
+            $this->path = $this->mechanic->getUserHomePath() . '/.porter';
 
             $this->moveExistingConfig();
             $this->publishEnv();
             $this->updateEnv();
         }
 
-        if (!$this->path) {
+        if (! $this->path) {
             throw new PorterSetupFailed('Failed detecting and setting the library path for Porter.');
         }
 
@@ -185,11 +190,11 @@ class PorterLibrary
      */
     protected function moveExistingConfig()
     {
-        if (!$this->alreadySetUp()) {
+        if (! $this->alreadySetUp()) {
             return;
         }
 
-        $this->files->moveDirectory($this->path, $this->path.'_'.now()->format('YmdHis'));
+        $this->files->moveDirectory($this->path, $this->path . '_' . now()->format('YmdHis'));
     }
 
     /**
@@ -212,7 +217,7 @@ class PorterLibrary
             $envContent = preg_replace('/LIBRARY_PATH=.*\n/', "LIBRARY_PATH=\"{$this->path}\"\n", $envContent);
             $this->files->put(base_path('.env'), $envContent);
         } catch (\Exception $e) {
-            throw new PorterSetupFailed('Failed changing library path in the .env file');
+            throw new PorterSetupFailed('Failed changing library path in the .env file', 0, $e);
         }
     }
 
