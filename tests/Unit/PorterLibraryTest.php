@@ -4,35 +4,61 @@ namespace Tests\Unit;
 
 use App\PorterLibrary;
 use App\Support\FilePublisher;
+use App\Support\Mechanics\Mechanic;
 use Carbon\Carbon;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Artisan;
+use Mockery;
+use Mockery\Mock;
 use Tests\BaseTestCase;
 
 class PorterLibraryTest extends BaseTestCase
 {
+    /**
+     * @var Mock
+     */
     protected $files;
+
+    /**
+     * @var Mock|FilePublisher
+     */
     protected $filePublisher;
 
     /** @var PorterLibrary */
     protected $lib;
 
-    public function setUp() : void
+    /** @var Mock|Mechanic */
+    protected $mechanic;
+
+    public function setUp(): void
     {
         parent::setUp();
 
-        $this->files = \Mockery::mock(Filesystem::class);
-        $this->filePublisher = \Mockery::mock(FilePublisher::class);
+        $this->files = Mockery::mock(Filesystem::class);
+        $this->filePublisher = Mockery::mock(FilePublisher::class);
+        $this->mechanic = Mockery::mock(Mechanic::class);
 
         $this->filePublisher
             ->shouldReceive('getFileSystem')
             ->andReturn($this->files);
     }
 
+    /**
+     * Make the porter library.
+     *
+     * @param string $path
+     *
+     * @return PorterLibrary
+     */
+    protected function makeLibrary($path)
+    {
+        return new PorterLibrary($this->filePublisher, $this->mechanic, $path);
+    }
+
     /** @test */
     public function it_presents_the_paths_we_need()
     {
-        $lib = new PorterLibrary($this->filePublisher, '/Users/test/.porter');
+        $lib = $this->makeLibrary('/Users/test/.porter');
 
         $this->assertEquals('/Users/test/.porter', $lib->path());
         $this->assertEquals('/Users/test/.porter/config', $lib->configPath());
@@ -46,7 +72,7 @@ class PorterLibraryTest extends BaseTestCase
     /** @test */
     public function it_recognises_being_already_set_up()
     {
-        $lib = new PorterLibrary($this->filePublisher, '/Users/test/.porter');
+        $lib = $this->makeLibrary('/Users/test/.porter');
 
         $this->files->shouldReceive('exists')->with('/Users/test/.porter')->andReturn(true);
 
@@ -57,35 +83,44 @@ class PorterLibraryTest extends BaseTestCase
     public function it_will_set_up_the_library()
     {
         Carbon::setTestNow('2018-01-01 00:00:00');
+        $this->mechanic->shouldReceive('getUserHomePath')->withNoArgs()
+            ->andReturn('/Users/test');
 
-        $lib = new PorterLibrary($this->filePublisher, '/Users/test/.porter');
+        $lib = $this->makeLibrary('');
 
         $this->files->shouldReceive('exists')
             ->with('/Users/test/.porter')
-            ->andReturn(false);
+            ->andReturn(true)
+            ->once();
 
+        // Check we're backing up the existing directory
         $this->files->shouldReceive('moveDirectory')
-            ->with('/Users/test/.porter', '/Users/test/.porter_20180101000000');
+            ->with('/Users/test/.porter', '/Users/test/.porter_20180101000000')
+            ->once();
 
         $this->filePublisher->shouldReceive('publish')
             ->with(base_path('.env.example'), base_path('.env'));
 
-        $this->files->shouldReceive('get', base_path('.env'));
-        $this->files->shouldReceive('put', base_path('.env'))
-            ->with("LIBRARY_PATH=\"/Users/test/.porter\"\n");
+        $this->files->shouldReceive('get')->with(base_path('.env'))
+            ->andReturn("LIBRARY_PATH=\n")->once();
+        $this->files->shouldReceive('put')
+            ->with(base_path('.env'), "LIBRARY_PATH=\"/Users/test/.porter\"\n")
+            ->once();
 
-        $this->files->shouldReceive('put', '/Users/test/.porter/database.sqlite');
+        $this->files->shouldReceive('put')
+            ->with('/Users/test/.porter/database.sqlite', '')->once();
 
         $this->filePublisher->shouldReceive('publish')
-            ->with(resource_path('stubs/config'), '/Users/test/.porter/config');
+            ->with(resource_path('stubs/config'), '/Users/test/.porter/config')->once();
 
-        $lib->setUp($this->app);
+        $lib->setUp($this->app, true);
 
         $this->assertEquals(config('database.connections.default.database'), '/Users/test/.porter/database.sqlite');
         $this->assertEquals(config('database.connections.default.database'), '/Users/test/.porter/database.sqlite');
 
         Artisan::spy()
             ->shouldReceive('migrate:fresh')
+            ->getMock()
             ->shouldReceive('db:seed');
 
         $this->assertEquals($this->app[PorterLibrary::class], $lib);
@@ -96,7 +131,7 @@ class PorterLibraryTest extends BaseTestCase
     {
         Carbon::setTestNow('2018-01-01 00:00:00');
 
-        $lib = new PorterLibrary($this->filePublisher, '/Users/test/.porter');
+        $lib = $this->makeLibrary('/Users/test/.porter');
         $lib->dontMigrateAndSeedDatabase();
 
         $this->files->shouldReceive('exists')
@@ -125,6 +160,7 @@ class PorterLibraryTest extends BaseTestCase
 
         Artisan::spy()
             ->shouldNotReceive('migrate:fresh')
+            ->getMock()
             ->shouldNotReceive('db:seed');
 
         $this->assertEquals($this->app[PorterLibrary::class], $lib);

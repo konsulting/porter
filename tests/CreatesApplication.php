@@ -4,6 +4,7 @@ namespace Tests;
 
 use App\PorterLibrary;
 use App\Support\FilePublisher;
+use App\Support\Mechanics\Mechanic;
 use Illuminate\Filesystem\Filesystem;
 use LaravelZero\Framework\Kernel;
 
@@ -25,7 +26,7 @@ trait CreatesApplication
         $files = new FileSystem();
         $files->deleteDirectory(storage_path('test_library'));
 
-        $lib = new PorterLibrary(new FilePublisher($files), storage_path('test_library'));
+        $lib = new PorterLibrary(new FilePublisher($files), app(Mechanic::class), storage_path('test_library'));
         $lib->dontMigrateAndSeedDatabase()->setUp($app);
 
         return $app;

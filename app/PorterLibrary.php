@@ -4,7 +4,7 @@ namespace App;
 
 use App\Exceptions\PorterSetupFailed;
 use App\Support\FilePublisher;
-use App\Support\Mechanics\ChooseMechanic;
+use App\Support\Mechanics\Mechanic;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Artisan;
@@ -33,12 +33,17 @@ class PorterLibrary
     protected $filePublisher;
 
     protected $shouldMigrateAndSeedDatabase = true;
+    /**
+     * @var Mechanic
+     */
+    private $mechanic;
 
-    public function __construct(FilePublisher $filePublisher, $path)
+    public function __construct(FilePublisher $filePublisher, Mechanic $mechanic, $path)
     {
         $this->filePublisher = $filePublisher;
         $this->files = $filePublisher->getFilesystem();
         $this->path = $path;
+        $this->mechanic = $mechanic;
     }
 
     /**
@@ -142,7 +147,7 @@ class PorterLibrary
         }
 
         if (!$this->path) {
-            $this->path = ChooseMechanic::forOS()->getUserHomePath().'/.porter';
+            $this->path = $this->mechanic->getUserHomePath().'/.porter';
 
             $this->moveExistingConfig();
             $this->publishEnv();
@@ -212,7 +217,7 @@ class PorterLibrary
             $envContent = preg_replace('/LIBRARY_PATH=.*\n/', "LIBRARY_PATH=\"{$this->path}\"\n", $envContent);
             $this->files->put(base_path('.env'), $envContent);
         } catch (\Exception $e) {
-            throw new PorterSetupFailed('Failed changing library path in the .env file');
+            throw new PorterSetupFailed('Failed changing library path in the .env file', 0, $e);
         }
     }
 

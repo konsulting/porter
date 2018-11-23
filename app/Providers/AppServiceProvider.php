@@ -17,6 +17,7 @@ use App\Support\Mechanics\Mechanic;
 use App\Support\Ssl\CertificateBuilder;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\ServiceProvider;
+use LaravelZero\Framework\Application;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -65,8 +66,8 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->singleton(Porter::class);
 
-        $this->app->singleton(PorterLibrary::class, function () {
-            return new PorterLibrary(app(FilePublisher::class), config('porter.library_path'));
+        $this->app->singleton(PorterLibrary::class, function (Application $app) {
+            return new PorterLibrary($app->make(FilePublisher::class), $app->make(Mechanic::class), config('porter.library_path'));
         });
 
         $this->app->singleton(ServerBag::class);
