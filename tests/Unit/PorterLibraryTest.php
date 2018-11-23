@@ -7,17 +7,25 @@ use App\Support\FilePublisher;
 use Carbon\Carbon;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Artisan;
+use Mockery\Mock;
 use Tests\BaseTestCase;
 
 class PorterLibraryTest extends BaseTestCase
 {
+    /**
+     * @var Mock
+     */
     protected $files;
+
+    /**
+     * @var Mock
+     */
     protected $filePublisher;
 
     /** @var PorterLibrary */
     protected $lib;
 
-    public function setUp() : void
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -62,24 +70,28 @@ class PorterLibraryTest extends BaseTestCase
 
         $this->files->shouldReceive('exists')
             ->with('/Users/test/.porter')
-            ->andReturn(false);
+            ->andReturn(true)
+            ->once();
 
+        // Check we're backing up the existing directory
         $this->files->shouldReceive('moveDirectory')
-            ->with('/Users/test/.porter', '/Users/test/.porter_20180101000000');
+//            ->with('/Users/test/.porter', '/Users/test/.porter_20180101000000')
+            ->once();
 
         $this->filePublisher->shouldReceive('publish')
             ->with(base_path('.env.example'), base_path('.env'));
 
-        $this->files->shouldReceive('get', base_path('.env'));
-        $this->files->shouldReceive('put', base_path('.env'))
-            ->with("LIBRARY_PATH=\"/Users/test/.porter\"\n");
+        $this->files->shouldReceive('get')->with(base_path('.env'))->once();
+        $this->files->shouldReceive('put')->with(base_path('.env'), "LIBRARY_PATH=\"/Users/test/.porter\"\n")->once();
 
-        $this->files->shouldReceive('put', '/Users/test/.porter/database.sqlite');
+        $this->files->shouldReceive('put', '/Users/test/.porter/database.sqlite')->once();
 
         $this->filePublisher->shouldReceive('publish')
-            ->with(resource_path('stubs/config'), '/Users/test/.porter/config');
+            ->with(resource_path('stubs/config'), '/Users/test/.porter/config')->once();
 
-        $lib->setUp($this->app);
+//        $this->files->shouldReceive('makeDirectory')->with('/Users/test/.porter/views/nginx')->once();
+
+        $lib->setUp($this->app, true);
 
         $this->assertEquals(config('database.connections.default.database'), '/Users/test/.porter/database.sqlite');
         $this->assertEquals(config('database.connections.default.database'), '/Users/test/.porter/database.sqlite');
