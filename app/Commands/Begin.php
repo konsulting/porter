@@ -52,7 +52,7 @@ class Begin extends BaseCommand
             return;
         }
 
-        $this->info('Your Porter settings are stored in ' . $this->porterLibrary->path());
+        $this->info('Your Porter settings are stored in '.$this->porterLibrary->path());
         $this->info('');
 
         $this->setHomeDirectory();
