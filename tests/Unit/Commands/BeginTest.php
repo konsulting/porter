@@ -50,7 +50,7 @@ class BeginTest extends BaseTestCase
     {
         $this->artisan('begin', ['--force' => true, '--no-interaction' => true]);
 
-        $expected = 'Setting home to '.__DIR__;
+        $expected = 'Setting home to '.base_path();
         $this->stringContains($expected)->evaluate(Artisan::output());
     }
 }
