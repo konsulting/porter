@@ -12,6 +12,8 @@ class BeginTest extends BaseTestCase
 
     public function setUp(): void
     {
+        parent::setup();
+
         $this->organiser = \Mockery::mock(Organiser::class);
         $this->organiser->expects('pullImages');
 
@@ -20,8 +22,6 @@ class BeginTest extends BaseTestCase
                 return $this->organiser;
             });
         });
-
-        parent::setup();
     }
 
     /** @test */
