@@ -3,6 +3,7 @@
 namespace Tests;
 
 use App\Porter;
+use App\Support\Mechanics\Mechanic;
 use Illuminate\Support\Facades\Artisan;
 
 class LiveTestCase extends BaseTestCase
@@ -30,6 +31,11 @@ class LiveTestCase extends BaseTestCase
 
     protected function preparePorter()
     {
+        // Mock the mechanic, so we don't have to trust the CA Cert
+        $mechanic = \Mockery::mock(Mechanic::class);
+        $mechanic->shouldReceive('trustCA')->once();
+        $this->app->instance(Mechanic::class, $mechanic);
+
         $this->porter = $this->app[Porter::class];
 
         Artisan::call('begin', ['home' => __DIR__.'/TestWebRoot', '--force' => true]);

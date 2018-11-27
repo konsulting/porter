@@ -29,7 +29,13 @@ class RenewCertificates extends BaseCommand
      */
     public function handle(): void
     {
-        app(CertificateBuilder::class)->clearCertificates((bool) $this->option('clear-ca'));
+        /** @var CertificateBuilder $builder */
+        $builder = app(CertificateBuilder::class);
+        $builder->clearCertificates((bool) $this->option('clear-ca'));
+
+        // The porter_default certificate is used for serving error pages
+        // when a domain has not been set up in Porter
+        $builder->build('porter_default');
 
         foreach (Site::where('secure', true)->get() as $site) {
             $site->buildCertificate();
