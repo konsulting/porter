@@ -25,15 +25,6 @@ class BeginTest extends BaseTestCase
     }
 
     /** @test */
-    public function it_prompts_for_the_home_directory()
-    {
-        $this->artisan('begin', ['--force' => true]);
-
-        $expected = 'Please enter the root directory for your sites, or leave blank to use the current directory.';
-        $this->stringContains($expected)->evaluate(Artisan::output());
-    }
-
-    /** @test */
     public function it_uses_the_supplied_home_directory()
     {
         $home = storage_path('temp/test_home');
