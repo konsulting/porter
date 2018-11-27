@@ -28,8 +28,9 @@ class CertificateBuilderBaseTest extends BaseTestCase
         parent::setUp();
 
         $this->dir = storage_path('test_library/ssl');
-        mkdir($this->dir, 0755, true);
-
+        if (!is_dir($this->dir)) {
+            mkdir($this->dir, 0755, true);
+        }
         $this->mechanic = \Mockery::mock(Mechanic::class);
         $this->certificateBuilder = new CertificateBuilder(new Cli(), new Filesystem(), $this->mechanic, $this->dir);
     }

@@ -159,6 +159,7 @@ class PorterLibrary
         }
 
         $this->publishConfigFiles();
+        $this->createDirectoryStructure();
         $this->createDatabase();
         $this->updateAppConfig($app);
 
@@ -256,5 +257,19 @@ class PorterLibrary
         $this->shouldMigrateAndSeedDatabase = false;
 
         return $this;
+    }
+
+    /**
+     * Create the directory structure in the library path.
+     */
+    protected function createDirectoryStructure()
+    {
+        $directories = [$this->sslPath(), $this->viewsPath().'/nginx'];
+
+        foreach ($directories as $directory) {
+            if (!$this->files->isDirectory($directory)) {
+                $this->files->makeDirectory($directory, 0755, true);
+            }
+        }
     }
 }

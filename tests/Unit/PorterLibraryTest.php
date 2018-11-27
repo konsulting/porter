@@ -50,9 +50,10 @@ class PorterLibraryTest extends BaseTestCase
      *
      * @return PorterLibrary
      */
-    protected function makeLibrary($path)
+    protected function makeLibrary($path, $filePublisher = null, $mechanic = null)
     {
-        return new PorterLibrary($this->filePublisher, $this->mechanic, $path);
+        return new PorterLibrary($filePublisher ?: $this->filePublisher,
+            $mechanic ?: $this->mechanic, $path);
     }
 
     /** @test */
@@ -98,8 +99,9 @@ class PorterLibraryTest extends BaseTestCase
             ->with('/Users/test/.porter', '/Users/test/.porter_20180101000000')
             ->once();
 
+        // Publish .env
         $this->filePublisher->shouldReceive('publish')
-            ->with(base_path('.env.example'), base_path('.env'));
+            ->with(base_path('.env.example'), base_path('.env'))->once();
 
         $this->files->shouldReceive('get')->with(base_path('.env'))
             ->andReturn("LIBRARY_PATH=\n")->once();
@@ -107,21 +109,33 @@ class PorterLibraryTest extends BaseTestCase
             ->with(base_path('.env'), "LIBRARY_PATH=\"/Users/test/.porter\"\n")
             ->once();
 
+        // Create database
         $this->files->shouldReceive('put')
             ->with('/Users/test/.porter/database.sqlite', '')->once();
 
+        // Make directory structure
+        $this->files->shouldReceive('isDirectory')->with('/Users/test/.porter/ssl')
+            ->andReturn(false)->once();
+        $this->files->shouldReceive('makeDirectory')
+            ->with('/Users/test/.porter/ssl', 0755, $recursive = true)->once();
+        $this->files->shouldReceive('isDirectory')->with('/Users/test/.porter/views/nginx')
+            ->andReturn(false)->once();
+        $this->files->shouldReceive('makeDirectory')
+            ->with('/Users/test/.porter/views/nginx', 0755, $recursive = true)->once();
+
+        // Publish config
         $this->filePublisher->shouldReceive('publish')
             ->with(resource_path('stubs/config'), '/Users/test/.porter/config')->once();
+
+        $artisan = Artisan::spy();
 
         $lib->setUp($this->app, true);
 
         $this->assertEquals(config('database.connections.default.database'), '/Users/test/.porter/database.sqlite');
         $this->assertEquals(config('database.connections.default.database'), '/Users/test/.porter/database.sqlite');
 
-        Artisan::spy()
-            ->shouldReceive('migrate:fresh')
-            ->getMock()
-            ->shouldReceive('db:seed');
+        $artisan->shouldHaveReceived('call')->with('migrate:fresh');
+        $artisan->shouldHaveReceived('call')->with('db:seed');
 
         $this->assertEquals($this->app[PorterLibrary::class], $lib);
     }
@@ -131,37 +145,22 @@ class PorterLibraryTest extends BaseTestCase
     {
         Carbon::setTestNow('2018-01-01 00:00:00');
 
-        $lib = $this->makeLibrary('/Users/test/.porter');
+        $mechanic = Mockery::spy(Mechanic::class);
+        $files = Mockery::spy(Filesystem::class);
+        $filePublisher = Mockery::spy(FilePublisher::class);
+        $filePublisher->shouldReceive('getFilesystem')->andReturn($files);
+
+        $lib = $this->makeLibrary('/Users/test/.porter', $filePublisher, $mechanic);
         $lib->dontMigrateAndSeedDatabase();
 
-        $this->files->shouldReceive('exists')
-            ->with('/Users/test/.porter')
-            ->andReturn(false);
-
-        $this->files->shouldReceive('moveDirectory')
-            ->with('/Users/test/.porter', '/Users/test/.porter_20180101000000');
-
-        $this->filePublisher->shouldReceive('publish')
-            ->with(base_path('.env.example'), base_path('.env'));
-
-        $this->files->shouldReceive('get', base_path('.env'));
-        $this->files->shouldReceive('put', base_path('.env'))
-            ->with("LIBRARY_PATH=\"/Users/test/.porter\"\n");
-
-        $this->files->shouldReceive('put', '/Users/test/.porter/database.sqlite');
-
-        $this->filePublisher->shouldReceive('publish')
-            ->with(resource_path('stubs/config'), '/Users/test/.porter/config');
+        $artisan = Artisan::spy();
 
         $lib->setUp($this->app);
 
         $this->assertEquals(config('database.connections.default.database'), '/Users/test/.porter/database.sqlite');
         $this->assertEquals(config('database.connections.default.database'), '/Users/test/.porter/database.sqlite');
 
-        Artisan::spy()
-            ->shouldNotReceive('migrate:fresh')
-            ->getMock()
-            ->shouldNotReceive('db:seed');
+        $artisan->shouldNotHaveReceived('call');
 
         $this->assertEquals($this->app[PorterLibrary::class], $lib);
     }
