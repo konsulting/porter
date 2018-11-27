@@ -41,7 +41,7 @@ Contributions are welcome.  We are a small company, so please be patient if your
     source .bash_profile
     ```
  
- - Set up routing... you have some options.
+ - Set up DNS resolution... you have some options.
    
    1. Use the DNS container shipped with Porter.  Update your machine's network DNS settings to point to 127.0.0.1 before other name servers. The container will resolve the domain for Porter. You will need to turn off locally any installed DNSmasq since the DNS container opens to port 53 on localhost. (e.g. `brew services stop dnsmasq`)
    
@@ -53,7 +53,9 @@ Contributions are welcome.  We are a small company, so please be patient if your
 
  - Porter binds to ports 80 and 443, so you need to turn Valet off (`valet stop`) or any other services that are bound to them before using it.
  
- - In your terminal `cd` to the directory where your sites are located, and run `porter begin`
+ - In your terminal `cd` to the directory where your sites are located, and run `porter begin`. 
+ 
+    This command will ask for your home directory (the root of your sites) and will generate a CA Certificate (and ask your permission to trust it on Mac).
  
  - Finally run `porter start`
  
@@ -84,7 +86,7 @@ We have deliberately chosen not to make this automatic, nor permanent to avoid d
 
 ## Commands
 
- - `porter begin {--home?} {--force?}` - Migrate and seed the sqlite database, and publish config files to `~/.porter/config`. It will set Porter home to the working directory when you run the command (or you can specify with the `--home` option).  It will also download the required docker images.
+ - `porter begin {--home?} {--force?}` - Migrate and seed the sqlite database, and publish config files to `~/.porter/config`. It will set Porter home to the working directory when you run the command (or you can specify with the `--home` option).  It will also create a CA certificate (asking you to trust it on a Mac) and it will download the required docker images.
  - `porter start`
  - `porter status` - show the status of containers
  - `porter stop`

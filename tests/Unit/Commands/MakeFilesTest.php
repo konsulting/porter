@@ -7,6 +7,7 @@ use App\Commands\DockerCompose\Stop;
 use App\Models\Site;
 use App\Porter;
 use App\Support\Nginx\SiteConfBuilder;
+use App\Support\Ssl\CertificateBuilder;
 use Mockery\MockInterface;
 use Tests\BaseTestCase;
 use Tests\Unit\Support\Concerns\MocksPorter;
@@ -22,6 +23,7 @@ class MakeFilesTest extends BaseTestCase
     public function it_will_remake_the_files()
     {
         $conf = $this->mockSiteConfigBuilder();
+        $cert = $this->mockCertificateBuilder();
 
         factory(Site::class, 2)->create([]);
 
@@ -29,6 +31,7 @@ class MakeFilesTest extends BaseTestCase
         $this->porter->shouldReceive('compose');
 
         $conf->shouldReceive('build')->twice();
+        $cert->shouldReceive('build')->with('porter_default')->once();
 
         $this->artisan('make-files');
     }
@@ -40,6 +43,7 @@ class MakeFilesTest extends BaseTestCase
         $this->mockPorterCommand(Stop::class);
 
         $conf = $this->mockSiteConfigBuilder();
+        $cert = $this->mockCertificateBuilder();
 
         factory(Site::class, 2)->create([]);
 
@@ -47,6 +51,7 @@ class MakeFilesTest extends BaseTestCase
         $this->porter->shouldReceive('compose');
 
         $conf->shouldReceive('build')->twice();
+        $cert->shouldReceive('build')->with('porter_default')->once();
 
         $this->artisan('make-files');
     }
@@ -63,5 +68,19 @@ class MakeFilesTest extends BaseTestCase
         $this->app->instance(SiteConfBuilder::class, $conf);
 
         return $conf;
+    }
+
+    /**
+     * Mock the CertificateBuilder.
+     *
+     * @return MockInterface
+     */
+    protected function mockCertificateBuilder()
+    {
+        $builder = \Mockery::mock(CertificateBuilder::class);
+
+        $this->app->instance(CertificateBuilder::class, $builder);
+
+        return $builder;
     }
 }

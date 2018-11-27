@@ -3,6 +3,7 @@
 namespace App\Commands;
 
 use App\Models\Site;
+use App\Support\Ssl\CertificateBuilder;
 
 class MakeFiles extends BaseCommand
 {
@@ -38,6 +39,10 @@ class MakeFiles extends BaseCommand
         foreach (Site::all() as $site) {
             $site->buildFiles();
         }
+
+        // The porter_default certificate is used for serving error pages
+        // when a domain has not been set up in Porter
+        app(CertificateBuilder::class)->build('porter_default');
 
         if ($wasUp) {
             $this->call('start');

@@ -3,6 +3,7 @@
 namespace Tests\Unit\Commands;
 
 use App\Support\Images\Organiser\Organiser;
+use App\Support\Mechanics\Mechanic;
 use Illuminate\Support\Facades\Artisan;
 use Tests\BaseTestCase;
 
@@ -27,6 +28,8 @@ class BeginTest extends BaseTestCase
     /** @test */
     public function it_uses_the_supplied_home_directory()
     {
+        $this->mockMechanic();
+
         $home = storage_path('temp/test_home');
         file_exists($home) ? null : mkdir($home, 0777, true);
 
@@ -39,9 +42,19 @@ class BeginTest extends BaseTestCase
     /** @test */
     public function it_uses_the_current_directory_if_no_interaction()
     {
+        $this->mockMechanic();
+
         $this->artisan('begin', ['--force' => true, '--no-interaction' => true]);
 
         $expected = 'Setting home to '.base_path();
         $this->stringContains($expected)->evaluate(Artisan::output());
+    }
+
+    protected function mockMechanic()
+    {
+        $mechanic = \Mockery::mock(Mechanic::class);
+        $mechanic->shouldReceive('trustCA')->once();
+
+        $this->app->instance(Mechanic::class, $mechanic);
     }
 }
