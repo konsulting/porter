@@ -3,30 +3,45 @@
 namespace Tests\Unit\Commands;
 
 use App\Support\Images\Organiser\Organiser;
+use Illuminate\Support\Facades\Artisan;
 use Tests\BaseTestCase;
 
 class BeginTest extends BaseTestCase
 {
     protected $organiser;
 
-    public function setUp() : void
+    public function setUp(): void
     {
+        parent::setup();
+
         $this->organiser = \Mockery::mock(Organiser::class);
+        $this->organiser->expects('pullImages');
 
         $this->afterApplicationCreated(function () {
             app()->bind(Organiser::class, function () {
                 return $this->organiser;
             });
         });
-
-        parent::setup();
     }
 
     /** @test */
-    public function it_pulls_the_docker_images()
+    public function it_uses_the_supplied_home_directory()
     {
-        $this->organiser->expects('pullImages');
+        $home = storage_path('temp/test_home');
+        file_exists($home) ? null : mkdir($home, 0777, true);
 
-        $this->artisan('begin', ['--force' => true]);
+        $this->artisan('begin', ['--force' => true, 'home' => $home]);
+
+        $expected = "Setting home to {$home}";
+        $this->stringContains($expected)->evaluate(Artisan::output());
+    }
+
+    /** @test */
+    public function it_uses_the_current_directory_if_no_interaction()
+    {
+        $this->artisan('begin', ['--force' => true, '--no-interaction' => true]);
+
+        $expected = 'Setting home to '.base_path();
+        $this->stringContains($expected)->evaluate(Artisan::output());
     }
 }

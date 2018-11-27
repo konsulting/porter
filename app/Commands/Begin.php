@@ -19,7 +19,9 @@ class Begin extends BaseCommand
      *
      * @var string
      */
-    protected $signature = 'begin {home?} {--force}';
+    protected $signature = 'begin 
+        {home? : The path of Porter\'s home directory (optional). Defaults to current directory.} 
+        {--force : Force setup to run, even if it has already been run}';
 
     /**
      * The description of the command.
@@ -53,15 +55,31 @@ class Begin extends BaseCommand
         $this->info('Your Porter settings are stored in '.$this->porterLibrary->path());
         $this->info('');
 
-        $home = realpath((string) $this->argument('home') ?: $this->cli->currentWorkingDirectory());
-        $this->callSilent('home', ['path' => $home]);
+        $this->setHomeDirectory();
+
+        $this->info('Retrieving docker images');
+        app(ImageOrganiser::class)->pullImages();
+    }
+
+    /**
+     * Set the Porter home directory, prompting for input if necessary.
+     *
+     * @return void
+     */
+    protected function setHomeDirectory()
+    {
+        if ($this->argument('home') || $this->option('no-interaction')) {
+            $home = realpath((string) $this->argument('home') ?: $this->cli->currentWorkingDirectory());
+        } else {
+            $this->comment('Please enter the root directory for your sites, or leave blank to use the current directory.');
+            $home = $this->ask('', $this->cli->currentWorkingDirectory());
+        }
 
         $this->info("Setting home to {$home}.");
         $this->comment('This is the root directory for your sites.');
         $this->comment("If this is incorrect, you can change it using the 'porter home' command.");
         $this->comment('');
 
-        $this->info('Retrieving docker images');
-        app(ImageOrganiser::class)->pullImages();
+        $this->callSilent('home', ['path' => $home]);
     }
 }
