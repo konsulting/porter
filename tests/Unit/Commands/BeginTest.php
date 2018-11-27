@@ -28,7 +28,7 @@ class BeginTest extends BaseTestCase
     /** @test */
     public function it_uses_the_supplied_home_directory()
     {
-       $this->mockMechanic();
+        $this->mockMechanic();
 
         $home = storage_path('temp/test_home');
         file_exists($home) ? null : mkdir($home, 0777, true);
