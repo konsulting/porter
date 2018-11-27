@@ -98,8 +98,9 @@ class PorterLibraryTest extends BaseTestCase
             ->with('/Users/test/.porter', '/Users/test/.porter_20180101000000')
             ->once();
 
+        // Publish .env
         $this->filePublisher->shouldReceive('publish')
-            ->with(base_path('.env.example'), base_path('.env'));
+            ->with(base_path('.env.example'), base_path('.env'))->once();
 
         $this->files->shouldReceive('get')->with(base_path('.env'))
             ->andReturn("LIBRARY_PATH=\n")->once();
@@ -107,9 +108,21 @@ class PorterLibraryTest extends BaseTestCase
             ->with(base_path('.env'), "LIBRARY_PATH=\"/Users/test/.porter\"\n")
             ->once();
 
+        // Create database
         $this->files->shouldReceive('put')
             ->with('/Users/test/.porter/database.sqlite', '')->once();
 
+        // Make directory structure
+        $this->files->shouldReceive('isDirectory')->with('ssl')
+            ->andReturn(false)->once();
+        $this->files->shouldReceive('makeDirectory')
+            ->with('ssl')->once();
+        $this->files->shouldReceive('isDirectory')->with('views/nginx')
+            ->andReturn(false)->once();
+        $this->files->shouldReceive('makeDirectory')
+            ->with('views/nginx', 0755, $recursive = true)->once();
+
+        // Publish config
         $this->filePublisher->shouldReceive('publish')
             ->with(resource_path('stubs/config'), '/Users/test/.porter/config')->once();
 
@@ -126,7 +139,10 @@ class PorterLibraryTest extends BaseTestCase
         $this->assertEquals($this->app[PorterLibrary::class], $lib);
     }
 
-    /** @test */
+    /**
+     * @todo fix mock expectations
+     * @test
+     */
     public function it_wont_migrate_when_asked_not_to()
     {
         Carbon::setTestNow('2018-01-01 00:00:00');
@@ -152,6 +168,9 @@ class PorterLibraryTest extends BaseTestCase
 
         $this->filePublisher->shouldReceive('publish')
             ->with(resource_path('stubs/config'), '/Users/test/.porter/config');
+
+        $this->files->shouldReceive('isDirectory')->twice();
+        $this->files->shouldReceive('makeDirectory')->twice();
 
         $lib->setUp($this->app);
 
