@@ -28,4 +28,34 @@ class MacOsTest extends MechanicTestCase
 
         $this->getMechanic()->flushDns();
     }
+
+    /** @test */
+    public function it_can_setup_networking()
+    {
+        $this->consoleWriter->shouldReceive('info')->once();
+
+        $this->cli->shouldReceive('passthru')
+            ->with('sudo ifconfig lo0 alias 10.200.10.1/24')
+            ->once();
+
+        $this->getMechanic()->setupNetworking();
+    }
+
+    /** @test */
+    public function it_can_restore_networking()
+    {
+        $this->consoleWriter->shouldReceive('info')->once();
+
+        $this->cli->shouldReceive('passthru')
+            ->with('sudo ifconfig lo0 -alias 10.200.10.1')
+            ->once();
+
+        $this->getMechanic()->restoreNetworking();
+    }
+
+    /** @test */
+    public function it_returns_the_host_address()
+    {
+        $this->assertEquals('10.200.10.1', $this->getMechanic()->getHostAddress());
+    }
 }

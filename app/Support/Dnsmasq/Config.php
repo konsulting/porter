@@ -3,6 +3,7 @@
 namespace App\Support\Dnsmasq;
 
 use App\PorterLibrary;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Filesystem\Filesystem;
 
 class Config
@@ -21,10 +22,35 @@ class Config
 
     public function updateDomain($from, $to)
     {
-        $filePath = $this->porterLibrary->configPath().'/dnsmasq/dnsmasq.conf';
+        $newConfig = preg_replace("/\/.{$from}\//", "/.{$to}/", $this->getConfig());
 
-        $newConfig = preg_replace("/\/.{$from}\//", "/.{$to}/", file_get_contents($filePath));
+        $this->putConfig($newConfig);
+    }
 
-        $this->files->put($filePath, $newConfig);
+    public function updateIp($to)
+    {
+        $pattern = "/\/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/";
+        $newConfig = preg_replace($pattern, "/{$to}", $this->getConfig());
+
+        $this->putConfig($newConfig);
+    }
+
+    protected function getPath()
+    {
+        return $this->porterLibrary->configPath().'/dnsmasq/dnsmasq.conf';
+    }
+
+    protected function getConfig()
+    {
+        try {
+            return $this->files->get($this->getPath());
+        } catch (FileNotFoundException $e) {
+            return '';
+        }
+    }
+
+    protected function putConfig($content)
+    {
+        $this->files->put($this->getPath(), $content);
     }
 }
