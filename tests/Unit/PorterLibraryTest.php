@@ -114,14 +114,14 @@ class PorterLibraryTest extends BaseTestCase
             ->with('/Users/test/.porter/database.sqlite', '')->once();
 
         // Make directory structure
-        $this->files->shouldReceive('isDirectory')->with('ssl')
+        $this->files->shouldReceive('isDirectory')->with('/Users/test/.porter/ssl')
             ->andReturn(false)->once();
         $this->files->shouldReceive('makeDirectory')
-            ->with('ssl')->once();
-        $this->files->shouldReceive('isDirectory')->with('views/nginx')
+            ->with('/Users/test/.porter/ssl', 0755, $recursive = true)->once();
+        $this->files->shouldReceive('isDirectory')->with('/Users/test/.porter/views/nginx')
             ->andReturn(false)->once();
         $this->files->shouldReceive('makeDirectory')
-            ->with('views/nginx', 0755, $recursive = true)->once();
+            ->with('/Users/test/.porter/views/nginx', 0755, $recursive = true)->once();
 
         // Publish config
         $this->filePublisher->shouldReceive('publish')

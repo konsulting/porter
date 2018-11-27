@@ -264,12 +264,12 @@ class PorterLibrary
      */
     protected function createDirectoryStructure()
     {
-        if (!$this->files->isDirectory('ssl')) {
-            $this->files->makeDirectory('ssl');
-        }
+        $directories = [$this->sslPath(), $this->viewsPath().'/nginx'];
 
-        if (!$this->files->isDirectory('views/nginx')) {
-            $this->files->makeDirectory('views/nginx', 0755, true);
+        foreach ($directories as $directory) {
+            if (!$this->files->isDirectory($directory)) {
+                $this->files->makeDirectory($directory, 0755, true);
+            }
         }
     }
 }
