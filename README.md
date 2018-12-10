@@ -126,7 +126,7 @@ In Firefox, you will need to manually add the certificate, which is located in `
   
 `php.ini` files are stored in `~/.porter/config` by PHP version. If you change one, you'll need to run `porter php:restart` for changes to be picked up. 
 
-We currently ship with containers for PHP 5.6, 7.0, 7.1 and 7.2.
+We currently ship with containers for PHP 5.6, 7.0, 7.1, 7.2 and 7.3.
 
 ### Node (npm/yarn)
  - `porter node:open {run?}` - Open Node cli, run in project dir. Optionally run a command, such as `npm run production` (if you need to pass arguments, wrap in quotes). 
