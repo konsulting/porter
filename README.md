@@ -197,6 +197,10 @@ It is set up for use with PHPSTORM, and on demand - you can use an extension suc
 
 Xdebug is set up to communicate with the host machine on port 9001 to avoid clashes with any locally installed PHP-fpm.
 
+You can enable and disable Xdebug with the following commands:
+ - `porter php:xdebug-on {--p|php-version}` - Enable Xdebug for all versions, or the passed through version.
+ - `porter php:xdebug-off {--p|php-version}` - Disable Xdebug for all versions, or the passed through version.
+
 ## Browser Testing
 
 We like [Laravel Dusk](https://laravel.com/docs/5.6/dusk), and also help with [Orchestra Testbench Dusk](https://github.com/orchestral/testbench-dusk) for package development. Porter provides a browser container with Chrome and Chromedriver for browser testing.
