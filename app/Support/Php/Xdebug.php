@@ -29,16 +29,17 @@ class Xdebug
      * We are just editing the config, rather than disabling wholesale.
      *
      * @param PhpVersion|null $phpVersion
+     *
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function turnOn(PhpVersion $phpVersion = null)
     {
         $phpVersions = $phpVersion ? collect([$phpVersion]) : PhpVersion::all();
-        $config = $this->porterLibrary->configPath() . '/';
+        $config = $this->porterLibrary->configPath().'/';
 
         foreach ($phpVersions as $phpVersion) {
-            $this->enable($config . $phpVersion->cli_name);
-            $this->enable($config . $phpVersion->fpm_name);
+            $this->enable($config.$phpVersion->cli_name);
+            $this->enable($config.$phpVersion->fpm_name);
         }
     }
 
@@ -51,23 +52,24 @@ class Xdebug
     public function turnOff(PhpVersion $phpVersion = null)
     {
         $phpVersions = $phpVersion ? collect([$phpVersion]) : PhpVersion::all();
-        $config = $this->porterLibrary->configPath() . '/';
+        $config = $this->porterLibrary->configPath().'/';
 
         foreach ($phpVersions as $phpVersion) {
-            $this->disable($config . $phpVersion->cli_name);
-            $this->disable($config . $phpVersion->fpm_name);
+            $this->disable($config.$phpVersion->cli_name);
+            $this->disable($config.$phpVersion->fpm_name);
         }
     }
 
     /**
-     * Edit the xdebug.ini file to enable the xdebug
+     * Edit the xdebug.ini file to enable the xdebug.
      *
      * @param string $path
+     *
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     protected function enable(string $path)
     {
-        $file = $path. '/xdebug.ini';
+        $file = $path.'/xdebug.ini';
 
         $contents = $this->filesystem->get($file);
 
@@ -79,14 +81,15 @@ class Xdebug
     }
 
     /**
-     * Edit the xdebug.ini file to disable xdebug
+     * Edit the xdebug.ini file to disable xdebug.
      *
      * @param string $path
+     *
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     protected function disable(string $path)
     {
-        $file = $path. '/xdebug.ini';
+        $file = $path.'/xdebug.ini';
 
         $contents = $this->filesystem->get($file);
 

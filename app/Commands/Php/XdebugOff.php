@@ -4,7 +4,6 @@ namespace App\Commands\Php;
 
 use App\Commands\BaseCommand;
 use App\Models\PhpVersion;
-use App\Models\Site;
 use App\Support\Php\Xdebug;
 
 class XdebugOff extends BaseCommand
@@ -33,7 +32,7 @@ class XdebugOff extends BaseCommand
         $phpVersion = null;
 
         if ($this->argument('php_version')
-            && ! ($phpVersion = PhpVersion::findByDirtyVersionNumber($this->argument('php_version')))
+            && !($phpVersion = PhpVersion::findByDirtyVersionNumber($this->argument('php_version')))
         ) {
             $this->error('Invalid PHP version provided');
 

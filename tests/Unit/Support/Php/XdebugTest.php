@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Tests\Unit\Support\Php;
-
 
 use App\Models\PhpVersion;
 use App\PorterLibrary;
@@ -92,7 +90,7 @@ class XdebugTest extends BaseTestCase
 
     protected function expectsOffToOn(MockInterface $filesystem, $version)
     {
-        $file = $version . '/xdebug.ini';
+        $file = $version.'/xdebug.ini';
 
         $filesystem->shouldReceive('get')->once()->with('/'.$file)
             ->andReturn("xdebug.remote_enable=1\r\nxdebug.default_enable=1");
@@ -102,7 +100,7 @@ class XdebugTest extends BaseTestCase
 
     protected function expectsOnToOff(MockInterface $filesystem, $version)
     {
-        $file = $version . '/xdebug.ini';
+        $file = $version.'/xdebug.ini';
 
         $filesystem->shouldReceive('get')->once()->with('/'.$file)
             ->andReturn("xdebug.remote_enable=0\r\nxdebug.default_enable=0");
