@@ -1,4 +1,4 @@
-#VERSION: 1.0.0
+#VERSION: 1.1.0
 FROM ubuntu:18.04
 
 RUN apt-get update \
@@ -17,6 +17,7 @@ RUN apt-get update \
     && apt-get install -y curl zip unzip git software-properties-common \
     && add-apt-repository -y ppa:ondrej/php \
     && apt-get install -y \
+           php5.6-bcmath \
            php5.6-cli \
            php5.6-curl \
            php5.6-gd \

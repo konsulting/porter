@@ -1,4 +1,4 @@
-#VERSION: 1.0.0
+#VERSION: 1.1.0
 FROM ubuntu:18.04
 
 RUN apt-get update \
@@ -18,6 +18,7 @@ RUN apt-get update \
     && add-apt-repository -y ppa:ondrej/php \
     && apt-get install -y \
           php7.1-fpm \
+          php7.1-bcmath \
           php7.1-curl \
           php7.1-gd \
           php7.1-mysql \
