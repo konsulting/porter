@@ -107,7 +107,7 @@ Site commands will pick up the current working directory automatically.  They al
  - `porter site:secure {site?}` - Set up a site to use https.
  - `porter site:remove {site?}` - Remove a site 
  - `porter site:php {site?}` - Choose the PHP version for site
- - `porter site:nginx-config {site?}` - Choose NGiNX config template for a site, ships with default (/public such as Laravel) and project_root
+ - `porter site:nginx {site?}` - Choose NGiNX config template for a site, ships with default (/public such as Laravel) and project_root
  - `porter site:renew-certs {--clear-ca}` - Renew the certificates for all secured sites, optionally rebuild CA.
 
 Site NGiNX config files are created programmatically using the templates in `resources/views/nginx`. The config files are stored in `~/.porter/config/nginx/conf.d`.
