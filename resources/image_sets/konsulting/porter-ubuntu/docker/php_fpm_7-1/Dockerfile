@@ -1,4 +1,4 @@
-#VERSION: 1.1.0
+#VERSION: 1.2.0
 FROM ubuntu:18.04
 
 RUN apt-get update \
@@ -46,6 +46,26 @@ RUN sed -i -e "s|xdebug.so|/usr/lib/php/20160303/xdebug.so|" /etc/php/7.1/mods-a
 # Add MailHogSend
 RUN curl -sSL "https://github.com/mailhog/mhsendmail/releases/download/v0.2.0/mhsendmail_linux_amd64" -o /usr/local/bin/mhsendmail && \
         chmod +x /usr/local/bin/mhsendmail
+
+# Install pdftk
+# based on (https://askubuntu.com/a/1046476)
+RUN curl -OL http://mirrors.kernel.org/ubuntu/pool/main/g/gcc-6/libgcj17_6.4.0-8ubuntu1_amd64.deb \
+         -OL http://mirrors.kernel.org/ubuntu/pool/main/g/gcc-defaults/libgcj-common_6.4-3ubuntu1_all.deb \
+         -OL http://mirrors.kernel.org/ubuntu/pool/universe/p/pdftk/pdftk_2.02-4build1_amd64.deb \
+         -OL http://mirrors.kernel.org/ubuntu/pool/universe/p/pdftk/pdftk-dbg_2.02-4build1_amd64.deb \
+    && apt-get update \
+    && apt-get install -y ./libgcj17_6.4.0-8ubuntu1_amd64.deb \
+        ./libgcj-common_6.4-3ubuntu1_all.deb \
+        ./pdftk_2.02-4build1_amd64.deb \
+        ./pdftk-dbg_2.02-4build1_amd64.deb \
+    && rm ./libgcj17_6.4.0-8ubuntu1_amd64.deb \
+        ./libgcj-common_6.4-3ubuntu1_all.deb \
+        ./pdftk_2.02-4build1_amd64.deb  \
+        ./pdftk-dbg_2.02-4build1_amd64.deb \
+    && apt-get remove -y --purge software-properties-common \
+        && apt-get autoremove -y \
+        && apt-get clean \
+        && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 EXPOSE 9000
 
