@@ -2,9 +2,9 @@
 
 namespace App\Support\Console;
 
-use Symfony\Component\Process\Process;
 use App\Support\Contracts\Cli as CliContract;
 use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
 
 class Cli implements CliContract
 {
@@ -73,6 +73,7 @@ class Cli implements CliContract
      * Get a Symfony process object that can execute a command.
      *
      * @param string $command The command to execute
+     *
      * @return Process
      */
     protected function getProcess($command)
