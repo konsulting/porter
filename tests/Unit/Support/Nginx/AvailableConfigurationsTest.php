@@ -28,6 +28,7 @@ class AvailableConfigurationsTest extends BaseTestCase
         $this->assertEquals([
             'default'      => 'default',
             'project_root' => 'project_root',
+            'wordpress'    => 'wordpress',
         ], $configurations->getList());
     }
 
@@ -41,6 +42,7 @@ class AvailableConfigurationsTest extends BaseTestCase
         $this->assertEquals([
             'default'      => 'default',
             'project_root' => 'project_root (current)',
+            'wordpress'    => 'wordpress',
         ], $configurations->getList('project_root'));
     }
 }

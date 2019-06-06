@@ -178,6 +178,9 @@ class Site extends Model
     {
         $this->update(['php_version_id' => $phpVersionId ?: PhpVersion::defaultVersion()->id]);
 
+        // The php_version relation needs to be refreshed, so get a whole new representation of this
+        $this->refresh();
+
         $this->buildFiles();
 
         $this->getPorter()->restartServing();
