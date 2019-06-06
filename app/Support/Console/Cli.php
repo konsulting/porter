@@ -2,12 +2,17 @@
 
 namespace App\Support\Console;
 
+use Symfony\Component\Process\Process;
 use App\Support\Contracts\Cli as CliContract;
 use Symfony\Component\Process\Exception\ProcessFailedException;
-use Symfony\Component\Process\Process;
 
 class Cli implements CliContract
 {
+    /**
+     * The process timeout in seconds.
+     */
+    const TIMEOUT = 120;
+
     /**
      * Execute a command.
      *
@@ -17,7 +22,7 @@ class Cli implements CliContract
      */
     public function exec($command)
     {
-        $process = new Process($command);
+        $process = $this->getProcess($command);
         $process->run();
 
         return $process->getOutput();
@@ -32,7 +37,7 @@ class Cli implements CliContract
      */
     public function execRealTime($command)
     {
-        $process = new Process($command);
+        $process = $this->getProcess($command);
 
         try {
             $process->mustRun(function ($type, $buffer) {
@@ -52,7 +57,7 @@ class Cli implements CliContract
      */
     public function passthru($command)
     {
-        $process = new Process($command);
+        $process = $this->getProcess($command);
 
         try {
             $process->setTty(true);
@@ -62,6 +67,20 @@ class Cli implements CliContract
         } catch (ProcessFailedException $e) {
             echo $e->getMessage();
         }
+    }
+
+    /**
+     * Get a Symfony process object that can execute a command.
+     *
+     * @param string $command The command to execute
+     * @return Process
+     */
+    protected function getProcess($command)
+    {
+        return app()->make(Process::class, [
+            'commandline' => $command,
+            'timeout'     => static::TIMEOUT,
+        ]);
     }
 
     /**
