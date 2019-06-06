@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\Support\Console;
 
-use Mockery;
-use Tests\BaseTestCase;
 use App\Support\Console\Cli;
+use Mockery;
 use Symfony\Component\Process\Process;
+use Tests\BaseTestCase;
 
 class CliTest extends BaseTestCase
 {
@@ -23,7 +23,7 @@ class CliTest extends BaseTestCase
                 ->getMock();
         });
 
-        (new Cli)->$method('foo');
+        (new Cli())->$method('foo');
     }
 
     public function methodProvider()
@@ -38,9 +38,9 @@ class CliTest extends BaseTestCase
     /** @test */
     public function it_executes_a_command()
     {
-        $this->assertSame('foo' . PHP_EOL, (new Cli)->exec('echo foo'));
-        $this->assertSame('foo' . PHP_EOL, $this->captureOutput(function () {
-            (new Cli)->execRealTime('echo foo');
+        $this->assertSame('foo'.PHP_EOL, (new Cli())->exec('echo foo'));
+        $this->assertSame('foo'.PHP_EOL, $this->captureOutput(function () {
+            (new Cli())->execRealTime('echo foo');
         }));
     }
 
@@ -48,6 +48,7 @@ class CliTest extends BaseTestCase
      * Run the callback and return the captured output.
      *
      * @param callable $callback
+     *
      * @return false|string
      */
     protected function captureOutput($callback)
