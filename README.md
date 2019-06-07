@@ -12,7 +12,7 @@ Our aim is to use this for day-to-day development with simple, portable usage. W
 
 Porter is developed using [Laravel-Zero](https://laravel-zero.com/).
 
-Contributions are welcome.  We are a small company, so please be patient if your question or pull request need to wait a little.
+Contributions are welcome.  We are a small company, so please be patient if your question or pull request needs to wait a little.
 
 ## Requirements
 
@@ -26,7 +26,7 @@ Contributions are welcome.  We are a small company, so please be patient if your
  
  - Login to docker (this will allow Porter to pull the images it needs). `docker login`
  
- - Clone Porter to a directory and install it's dependencies.
+ - Clone Porter to a directory and install its dependencies.
  
     ```
     git clone git@github.com:konsulting/porter.git
@@ -181,7 +181,7 @@ Redis data is stored in `~/.porter/data/redis`.
 
 ## Email
 
-We have a [MailHog](https://github.com/mailhog/MailHog) container, all emails are routed to this container from PHP when using the `mail()` function. 
+We have a [MailHog](https://github.com/mailhog/MailHog) container; all emails are routed to this container from PHP when using the `mail()` function. 
 
 You can review received emails in MailHog's UI at [http://localhost:8025](http://localhost:8025/). Or, you can use the MailHog API to inspect received emails.
 
@@ -193,7 +193,7 @@ We have added a number of PHP extensions to the containers that we use frequentl
 
 Xdebug is available on each PHP container. `xdebug.ini` files are stored in `storage/config` by PHP version.
 
-It is set up for use with PHPSTORM, and on demand - you can use an extension such as Xdebug helper in Chrome to send the Cookie required to activate a debugging session ([Jetbrains article](https://confluence.jetbrains.com/display/PhpStorm/Configure+Xdebug+Helper+for+Chrome+to+be+used+with+PhpStorm)).
+It is set up for use with PhpStorm, and on demand - you can use an extension such as Xdebug helper in Chrome to send the Cookie required to activate a debugging session ([Jetbrains article](https://confluence.jetbrains.com/display/PhpStorm/Configure+Xdebug+Helper+for+Chrome+to+be+used+with+PhpStorm)).
 
 Xdebug is set up to communicate with the host machine on port 9001 to avoid clashes with any locally installed PHP-fpm.
 
