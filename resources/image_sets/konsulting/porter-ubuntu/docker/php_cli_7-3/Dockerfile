@@ -1,4 +1,4 @@
-#VERSION: 1.2.0
+#VERSION: 1.2.1
 FROM ubuntu:18.04
 
 RUN apt-get update \
@@ -49,20 +49,11 @@ RUN php -r "readfile('http://getcomposer.org/installer');" | php -- --install-di
 RUN sed -i -e "s|xdebug.so|/usr/lib/php/20180731/xdebug.so|" /etc/php/7.3/mods-available/xdebug.ini
 
 # Install pdftk
-# based on (https://askubuntu.com/a/1046476)
-RUN curl -OL http://mirrors.kernel.org/ubuntu/pool/main/g/gcc-6/libgcj17_6.4.0-8ubuntu1_amd64.deb \
-         -OL http://mirrors.kernel.org/ubuntu/pool/main/g/gcc-defaults/libgcj-common_6.4-3ubuntu1_all.deb \
-         -OL http://mirrors.kernel.org/ubuntu/pool/universe/p/pdftk/pdftk_2.02-4build1_amd64.deb \
-         -OL http://mirrors.kernel.org/ubuntu/pool/universe/p/pdftk/pdftk-dbg_2.02-4build1_amd64.deb \
-    && apt-get update \
-    && apt-get install -y ./libgcj17_6.4.0-8ubuntu1_amd64.deb \
-        ./libgcj-common_6.4-3ubuntu1_all.deb \
-        ./pdftk_2.02-4build1_amd64.deb \
-        ./pdftk-dbg_2.02-4build1_amd64.deb \
-    && rm ./libgcj17_6.4.0-8ubuntu1_amd64.deb \
-        ./libgcj-common_6.4-3ubuntu1_all.deb \
-        ./pdftk_2.02-4build1_amd64.deb  \
-        ./pdftk-dbg_2.02-4build1_amd64.deb \
+# based on (https://gitlab.com/pdftk-java/pdftk)
+RUN apt-get update \
+    && apt-get install -y software-properties-common \
+    && add-apt-repository ppa:malteworld/ppa \
+        && apt-get -y install pdftk \
     && apt-get remove -y --purge software-properties-common \
         && apt-get autoremove -y \
         && apt-get clean \
