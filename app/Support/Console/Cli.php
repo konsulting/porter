@@ -11,7 +11,7 @@ class Cli implements CliContract
     /**
      * The process timeout in seconds.
      */
-    const TIMEOUT = 120;
+    const TIMEOUT = 1200;
 
     /**
      * Execute a command.
