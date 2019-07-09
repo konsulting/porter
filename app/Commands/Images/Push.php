@@ -12,7 +12,7 @@ class Push extends BaseCommand
      *
      * @var string
      */
-    protected $signature = 'images:push';
+    protected $signature = 'images:push {service?}';
 
     /**
      * The description of the command.
@@ -30,6 +30,6 @@ class Push extends BaseCommand
      */
     public function handle(): void
     {
-        app(Organiser::class)->pushImages();
+        app(Organiser::class)->pushImages((string) $this->argument('service'));
     }
 }

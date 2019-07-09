@@ -12,7 +12,7 @@ class Pull extends BaseCommand
      *
      * @var string
      */
-    protected $signature = 'images:pull';
+    protected $signature = 'images:pull {service?}';
 
     /**
      * The description of the command.
@@ -30,6 +30,6 @@ class Pull extends BaseCommand
      */
     public function handle(): void
     {
-        app(Organiser::class)->pullImages();
+        app(Organiser::class)->pullImages((string) $this->argument('service'));
     }
 }

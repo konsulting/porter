@@ -1,5 +1,5 @@
-#VERSION: 1.0.0
-FROM alpine:3.7
+#VERSION: 1.1.0
+FROM alpine:3.10
 
 ARG uid=1000
 
@@ -7,6 +7,7 @@ RUN apk add --update --no-cache \
     # for compilation
     g++ bash make zlib-dev libpng-dev \
 	nodejs \
+	npm \
 	yarn \
 	git
 
