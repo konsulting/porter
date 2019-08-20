@@ -34,11 +34,13 @@ class SetHost extends BaseCommand
         if ($this->option('restore')) {
             $mechanic->restoreNetworking();
             app(Config::class)->updateIp('127.0.0.1');
+            $this->porter->restart('dns');
 
             return;
         }
 
         $mechanic->setupNetworking();
         app(Config::class)->updateIp($mechanic->getHostAddress());
+        $this->porter->restart('dns');
     }
 }

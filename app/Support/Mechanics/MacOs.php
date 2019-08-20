@@ -2,6 +2,8 @@
 
 namespace App\Support\Mechanics;
 
+use App\Support\Mechanics\Exceptions\UnableToRetrieveIP;
+
 class MacOs extends Untrained
 {
     /** @var string $hostAddress Address for Host */
@@ -100,5 +102,42 @@ class MacOs extends Untrained
     public function getHostAddress()
     {
         return $this->hostAddress;
+    }
+
+    /**
+     * Does a Porter domain resolve to the Host Address
+     *
+     * @return bool
+     * @throws UnableToRetrieveIP
+     */
+    public function isUsingHostAddress()
+    {
+        return $this->getPorterDomainIp() === $this->getHostAddress();
+    }
+
+    /**
+     * Does a Porter domain resolve to 127.0.0.1
+     *
+     * @return bool
+     * @throws UnableToRetrieveIP
+     */
+    public function isUsingDefaultHostAddress()
+    {
+        return $this->getPorterDomainIp() === '127.0.0.1';
+    }
+
+    /**
+     * Determine the working IP for Porter
+     *
+     * @return string
+     * @throws UnableToRetrieveIP
+     */
+    public function getPorterDomainIp()
+    {
+        if (($records = dns_get_record('www.unlikely-domain-name.'.setting('domain'))) === []) {
+            throw new UnableToRetrieveIP;
+        }
+
+        return $records[0]['ip'];
     }
 }

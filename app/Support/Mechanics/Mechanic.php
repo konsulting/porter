@@ -54,4 +54,18 @@ interface Mechanic
      * Get Host IP address.
      */
     public function getHostAddress();
+
+    /**
+     * Does a porter domain resolve to the Host Address
+     *
+     * @return bool
+     */
+    public function isUsingHostAddress();
+
+    /**
+     * Does a porter domain resolve to 127.0.0.1
+     *
+     * @return bool
+     */
+    public function isUsingDefaultHostAddress();
 }

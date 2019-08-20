@@ -118,4 +118,24 @@ class Untrained implements Mechanic
     {
         return $this->hostAddress;
     }
+
+    /**
+     * Does a porter domain resolve to the Host Address
+     *
+     * @return bool
+     */
+    public function isUsingHostAddress()
+    {
+        $this->iAmNotTrainedTo('determine if we are using the Host Address for Porter');
+    }
+
+    /**
+     * Does a porter domain resolve to 127.0.0.1
+     *
+     * @return bool
+     */
+    public function isUsingDefaultHostAddress()
+    {
+        $this->iAmNotTrainedTo('determine if we are using the Default Host Address for Porter');
+    }
 }
