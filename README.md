@@ -179,6 +179,18 @@ Redis data is stored in `~/.porter/data/redis`.
  
  We leave it up to you to run this command at the moment, it is a temporary setting and resets on a machine restart. Not everyone will need it, and we'd rather not dig much deeper into your system to make it permanent.
 
+## Ngrok
+
+ - `porter ngrok {site?} {--region=eu} {--no-inspection}`
+ 
+It's sometimes handy to share your progress on a site without deploying it to a server out there in the world. [ngrok](https://ngrok.com) provides a decent solution for this. Porter provides an ngrok container which is able to forward your local site to an external url. 
+
+You can optionally specify a site to ngrok (e.g. `konsulting.test` would be `konsulting`). You can also specify a region and optionally disable inspections of responses by ngrok.
+
+The ngrok UI interface will be available here: [http://0.0.0.0:4040](http://0.0.0.0:4040)
+
+In order to use ngrok, you need to use an alternative loopback address to 127.0.0.1, since this resolves to the container that a request is sent from otherwise.  This can be done by following [these instructions](#dns). 
+
 ## Email
 
 We have a [MailHog](https://github.com/mailhog/MailHog) container; all emails are routed to this container from PHP when using the `mail()` function. 
