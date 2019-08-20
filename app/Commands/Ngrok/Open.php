@@ -36,21 +36,11 @@ class Open extends BaseCommand
 
         if (! $site) {
             $this->error('No site at this location, and no site path provided.');
-            exit();
+            return;
         }
 
-        // We're now checking that Porter is using the dns:set-host IP. If we don't,
-        // ngrok requests will only resolve to 127.0.0.1 which is internal
-        // to the ngrok container, and results in a useless 502 error.
-        try {
-            if (app(Mechanic::class)->isUsingDefaultHostAddress()) {
-                $this->info('You need to use an alternative loopback address.');
-                $this->info('Please run porter dns:set-host and review the documentation here: https://github.com/konsulting/porter#dns');
-                exit();
-            }
-        } catch (UnableToRetrieveIP $e) {
-            $this->info('Please run porter dns:flush and try again. You may need to give it a little while.');
-            exit();
+        if (! $this->checkItWillResolveProperly()) {
+            return;
         }
 
         if ($site->secure) {
@@ -77,5 +67,28 @@ class Open extends BaseCommand
         }
 
         app(Porter::class)->stop('ngrok');
+    }
+
+    /**
+     * Checking that Porter is using the dns:set-host IP. If we don't ngrok
+     * requests will only resolve to 127.0.0.1 which is internal to the
+     * ngrok container, and results in a useless 502 error.
+     *
+     * @return bool
+     */
+    public function checkItWillResolveProperly()
+    {
+        try {
+            if (app(Mechanic::class)->isUsingDefaultHostAddress()) {
+                $this->info('You need to use an alternative loopback address.');
+                $this->info('Please run porter dns:set-host and review the documentation here: https://github.com/konsulting/porter#dns');
+                return false;
+            }
+        } catch (UnableToRetrieveIP $e) {
+            $this->info('Please run porter dns:flush and try again. You may need to give it a little while.');
+            return false;
+        }
+
+        return true;
     }
 }
