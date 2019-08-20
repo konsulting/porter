@@ -2,11 +2,11 @@
 
 namespace App\Commands\Ngrok;
 
-use App\Porter;
-use App\Models\Site;
 use App\Commands\BaseCommand;
-use App\Support\Mechanics\Mechanic;
+use App\Models\Site;
+use App\Porter;
 use App\Support\Mechanics\Exceptions\UnableToRetrieveIP;
+use App\Support\Mechanics\Mechanic;
 
 class Open extends BaseCommand
 {
@@ -34,12 +34,13 @@ class Open extends BaseCommand
         $site = Site::resolveFromPathOrCurrentWorkingDirectory($this->argument('site'));
         $wasSecure = false;
 
-        if (! $site) {
+        if (!$site) {
             $this->error('No site at this location, and no site path provided.');
+
             return;
         }
 
-        if (! $this->checkItWillResolveProperly()) {
+        if (!$this->checkItWillResolveProperly()) {
             return;
         }
 
@@ -52,7 +53,7 @@ class Open extends BaseCommand
         app(Porter::class)->stop('ngrok');
 
         $tls = ' -bind-tls='.($wasSecure ? 'true' : 'false');
-        $region = ' -region='. $this->option('region');
+        $region = ' -region='.$this->option('region');
         $inspect = ' -inspect='.($this->option('no-inspection') ? 'false' : 'true');
 
         $this->dockerCompose
@@ -82,10 +83,12 @@ class Open extends BaseCommand
             if (app(Mechanic::class)->isUsingDefaultHostAddress()) {
                 $this->info('You need to use an alternative loopback address.');
                 $this->info('Please run porter dns:set-host and review the documentation here: https://github.com/konsulting/porter#dns');
+
                 return false;
             }
         } catch (UnableToRetrieveIP $e) {
             $this->info('Please run porter dns:flush and try again. You may need to give it a little while.');
+
             return false;
         }
 

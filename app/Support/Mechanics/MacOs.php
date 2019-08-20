@@ -105,10 +105,11 @@ class MacOs extends Untrained
     }
 
     /**
-     * Does a Porter domain resolve to the Host Address
+     * Does a Porter domain resolve to the Host Address.
+     *
+     * @throws UnableToRetrieveIP
      *
      * @return bool
-     * @throws UnableToRetrieveIP
      */
     public function isUsingHostAddress()
     {
@@ -116,10 +117,11 @@ class MacOs extends Untrained
     }
 
     /**
-     * Does a Porter domain resolve to 127.0.0.1
+     * Does a Porter domain resolve to 127.0.0.1.
+     *
+     * @throws UnableToRetrieveIP
      *
      * @return bool
-     * @throws UnableToRetrieveIP
      */
     public function isUsingDefaultHostAddress()
     {
@@ -127,15 +129,16 @@ class MacOs extends Untrained
     }
 
     /**
-     * Determine the working IP for Porter
+     * Determine the working IP for Porter.
+     *
+     * @throws UnableToRetrieveIP
      *
      * @return string
-     * @throws UnableToRetrieveIP
      */
     public function getPorterDomainIp()
     {
         if (($records = dns_get_record('www.unlikely-domain-name.'.setting('domain'))) === []) {
-            throw new UnableToRetrieveIP;
+            throw new UnableToRetrieveIP();
         }
 
         return $records[0]['ip'];
