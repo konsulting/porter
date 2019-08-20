@@ -29,18 +29,16 @@ class SetHost extends BaseCommand
      */
     public function handle(): void
     {
-        $mechanic = app(Mechanic::class);
-
         if ($this->option('restore')) {
-            $mechanic->restoreNetworking();
+            $this->porterLibrary->getMechanic()->restoreNetworking();
             app(Config::class)->updateIp('127.0.0.1');
             $this->porter->restart('dns');
 
             return;
         }
 
-        $mechanic->setupNetworking();
-        app(Config::class)->updateIp($mechanic->getHostAddress());
+        $this->porterLibrary->getMechanic()->setupNetworking();
+        app(Config::class)->updateIp($this->porterLibrary->getMechanic()->getHostAddress());
         $this->porter->restart('dns');
     }
 }

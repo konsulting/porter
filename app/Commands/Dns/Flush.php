@@ -28,6 +28,6 @@ class Flush extends BaseCommand
      */
     public function handle(): void
     {
-        app(Mechanic::class)->flushDns();
+        $this->porterLibrary->getMechanic()->flushDns();
     }
 }

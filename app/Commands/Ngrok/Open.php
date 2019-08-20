@@ -4,9 +4,7 @@ namespace App\Commands\Ngrok;
 
 use App\Commands\BaseCommand;
 use App\Models\Site;
-use App\Porter;
 use App\Support\Mechanics\Exceptions\UnableToRetrieveIP;
-use App\Support\Mechanics\Mechanic;
 
 class Open extends BaseCommand
 {
@@ -50,7 +48,7 @@ class Open extends BaseCommand
             $wasSecure = true;
         }
 
-        app(Porter::class)->stop('ngrok');
+        $this->porter->stop('ngrok');
 
         $tls = ' -bind-tls='.($wasSecure ? 'true' : 'false');
         $region = ' -region='.$this->option('region');
@@ -67,7 +65,7 @@ class Open extends BaseCommand
             $site->secure();
         }
 
-        app(Porter::class)->stop('ngrok');
+        $this->porter->stop('ngrok');
     }
 
     /**
@@ -80,7 +78,7 @@ class Open extends BaseCommand
     public function checkItWillResolveProperly()
     {
         try {
-            if (app(Mechanic::class)->isUsingDefaultHostAddress()) {
+            if ($this->porterLibrary->getMechanic()->isUsingDefaultHostAddress()) {
                 $this->info('You need to use an alternative loopback address.');
                 $this->info('Please run porter dns:set-host and review the documentation here: https://github.com/konsulting/porter#dns');
 

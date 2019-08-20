@@ -272,4 +272,14 @@ class PorterLibrary
             }
         }
     }
+
+    /**
+     * Return the Mechanic instance
+     *
+     * @return Mechanic
+     */
+    public function getMechanic()
+    {
+        return $this->mechanic;
+    }
 }
