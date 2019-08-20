@@ -120,7 +120,7 @@ class Untrained implements Mechanic
     }
 
     /**
-     * Does a porter domain resolve to the Host Address
+     * Does a porter domain resolve to the Host Address.
      *
      * @return bool
      */
@@ -130,7 +130,7 @@ class Untrained implements Mechanic
     }
 
     /**
-     * Does a porter domain resolve to 127.0.0.1
+     * Does a porter domain resolve to 127.0.0.1.
      *
      * @return bool
      */
