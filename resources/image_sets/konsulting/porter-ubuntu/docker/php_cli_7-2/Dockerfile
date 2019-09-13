@@ -1,4 +1,4 @@
-#VERSION: 1.2.1
+#VERSION: 1.3.0
 FROM ubuntu:18.04
 
 RUN apt-get update \
@@ -58,6 +58,9 @@ RUN apt-get update \
         && apt-get autoremove -y \
         && apt-get clean \
         && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Enable Imagick to work with PDFs
+RUN sed -i -e 's/rights="none" pattern="PDF"/rights="read|write" pattern="PDF"/' /etc/ImageMagick-6/policy.xml
 
 WORKDIR /srv/app
 
