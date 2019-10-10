@@ -28,7 +28,7 @@ function setting($key = null, $default = null)
  */
 function setting_exists($key)
 {
-    return ! is_null(setting($key));
+    return !is_null(setting($key));
 }
 
 /**
@@ -40,7 +40,7 @@ function setting_exists($key)
  */
 function setting_missing($key)
 {
-    return ! setting_exists($key);
+    return !setting_exists($key);
 }
 
 /**
