@@ -37,12 +37,13 @@ class YamlBuilder
     }
 
     /**
-     * Render the docker compose file
+     * Render the docker compose file.
      *
-     * @param  ImageRepository  $imageSet
+     * @param ImageRepository $imageSet
+     *
+     * @throws \Throwable
      *
      * @return string
-     * @throws \Throwable
      */
     public function renderDockerComposeFile(ImageRepository $imageSet)
     {
