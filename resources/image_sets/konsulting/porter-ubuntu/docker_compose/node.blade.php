@@ -8,6 +8,7 @@
       - {{ $home }}:/srv/app
       - {{ $libraryPath }}/config/user/ssh:/root/.ssh
       - {{ $libraryPath }}/config/node/bash_history:/home/node/.bash_history
+      - {{ $libraryPath }}/config/user/bashrc:/root/.bashrc
     networks:
       - porter
     ports:
