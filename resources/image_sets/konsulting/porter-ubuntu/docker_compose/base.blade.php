@@ -6,7 +6,7 @@ networks:
 
 services:
 
-  @include("{$imageSet->getName()}::dns")
+  @includeWhen($useDns, "{$imageSet->getName()}::dns")
 
   @include("{$imageSet->getName()}::mailhog")
 
@@ -26,14 +26,8 @@ services:
   # END PHP version {!! $version->version_number !!}
 @endforeach
 
-@if($useMysql)
-  @include("{$imageSet->getName()}::mysql")
-@endif
+  @includeWhen($useMysql, "{$imageSet->getName()}::mysql")
 
-@if($useRedis)
-  @include("{$imageSet->getName()}::redis")
-@endif
+  @includeWhen($useRedis, "{$imageSet->getName()}::redis")
 
-@if ($useBrowser)
-  @include("{$imageSet->getName()}::browser")
-@endif
+  @includeWhen($useBrowser, "{$imageSet->getName()}::browser")

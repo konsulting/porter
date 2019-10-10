@@ -20,6 +20,30 @@ function setting($key = null, $default = null)
 }
 
 /**
+ * Check if a setting exists.
+ *
+ * @param string $key
+ *
+ * @return bool
+ */
+function setting_exists($key)
+{
+    return ! is_null(setting($key));
+}
+
+/**
+ * Check if a setting is missing.
+ *
+ * @param string $key
+ *
+ * @return bool
+ */
+function setting_missing($key)
+{
+    return ! setting_exists($key);
+}
+
+/**
  * Check if we're running tests since environment is limited to production/development.
  */
 function running_tests()
