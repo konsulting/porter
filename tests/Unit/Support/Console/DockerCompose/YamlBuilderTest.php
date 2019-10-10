@@ -1,22 +1,20 @@
 <?php
 
-
 namespace Tests\Unit\Support\Console\DockerCompose;
 
-
-use App\PorterLibrary;
-use Tests\BaseTestCase;
 use App\Models\Setting;
-use Mockery\MockInterface;
-use Illuminate\Filesystem\Filesystem;
-use App\Support\Images\ImageRepository;
+use App\PorterLibrary;
 use App\Support\Console\DockerCompose\YamlBuilder;
+use App\Support\Images\ImageRepository;
+use Illuminate\Filesystem\Filesystem;
+use Mockery\MockInterface;
+use Tests\BaseTestCase;
 
 class YamlBuilderTest extends BaseTestCase
 {
     /** @var Filesystem|MockInterface */
     protected $files;
-    /** @var PorterLibrary|MockInterface  */
+    /** @var PorterLibrary|MockInterface */
     private $lib;
     /** @var ImageRepository */
     private $images;
