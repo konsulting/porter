@@ -23,6 +23,13 @@ class Open extends BaseCommand
     protected $description = 'Open ngrok connection to forward your dev environment to an external url';
 
     /**
+     * Was the site secure at the start of the command?
+     *
+     * @var bool
+     */
+    protected $wasSecure = false;
+
+    /**
      * Execute the console command.
      *
      * @return void
@@ -30,7 +37,6 @@ class Open extends BaseCommand
     public function handle(): void
     {
         $site = Site::resolveFromPathOrCurrentWorkingDirectory($this->argument('site'));
-        $wasSecure = false;
 
         if (!$site) {
             $this->error('No site at this location, and no site path provided.');
@@ -42,28 +48,17 @@ class Open extends BaseCommand
             return;
         }
 
-        if ($site->secure) {
-            $this->info('Removing SSL for site (required for free ngrok version)');
-            $site->unsecure();
-            $wasSecure = true;
-        }
+        $this->removeSSLIfNeeded($site);
 
         $this->porter->stop('ngrok');
 
-        $tls = ' -bind-tls='.($wasSecure ? 'true' : 'false');
-        $region = ' -region='.$this->option('region');
-        $inspect = ' -inspect='.($this->option('no-inspection') ? 'false' : 'true');
-
         $this->dockerCompose
             ->runContainer('ngrok')
-            ->append("ngrok http -host-header=rewrite{$region}{$tls}{$inspect} {$site->url}:80")
+            ->append($this->constructNgrokCommand($site))
             ->interactive()
             ->perform();
 
-        if ($wasSecure) {
-            $this->info('Restoring SSL for site');
-            $site->secure();
-        }
+        $this->restoreSSLIfNeeded($site);
 
         $this->porter->stop('ngrok');
     }
@@ -91,5 +86,52 @@ class Open extends BaseCommand
         }
 
         return true;
+    }
+
+    /**
+     * Remove SSL from the site if it was secured.
+     *
+     * @param Site $site
+     */
+    protected function removeSSLIfNeeded(Site $site): void
+    {
+        if (!$site->secure) {
+            return;
+        }
+
+        $this->info('Removing SSL for site (required for free ngrok version)');
+        $this->wasSecure = true;
+        $site->unsecure();
+    }
+
+    /**
+     * Add SSL back to the site if it was previously secured.
+     *
+     * @param Site $site
+     */
+    protected function restoreSSLIfNeeded(Site $site): void
+    {
+        if (!$this->wasSecure) {
+            return;
+        }
+
+        $this->info('Restoring SSL for site');
+        $site->secure();
+    }
+
+    /**
+     * Construct the ngrok command.
+     *
+     * @param Site $site
+     *
+     * @return string
+     */
+    protected function constructNgrokCommand(Site $site): string
+    {
+        $tls = ' -bind-tls='.($this->wasSecure ? 'true' : 'false');
+        $region = ' -region='.$this->option('region');
+        $inspect = ' -inspect='.($this->option('no-inspection') ? 'false' : 'true');
+
+        return "ngrok http -host-header=rewrite{$region}{$tls}{$inspect} {$site->url}:80";
     }
 }

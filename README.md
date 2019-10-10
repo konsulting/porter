@@ -167,6 +167,10 @@ Redis data is stored in `~/.porter/data/redis`.
 
 ## DNS
 
+ - `porter dns:on` - Turn the DNS container on (the default status).
+ 
+ - `porter dns:off` - Turn the DNS container off.
+ 
  - `porter dns:flush` - flush your local machine's DNS in cases where it's getting a bit confused, saves you looking up the command we hope.
  
  - `porter dns:set-host {--restore}` - see below. The `--restore` will remove the setup. 
