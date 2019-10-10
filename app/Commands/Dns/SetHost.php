@@ -4,7 +4,6 @@ namespace App\Commands\Dns;
 
 use App\Commands\BaseCommand;
 use App\Support\Dnsmasq\Config;
-use App\Support\Mechanics\Mechanic;
 
 class SetHost extends BaseCommand
 {
