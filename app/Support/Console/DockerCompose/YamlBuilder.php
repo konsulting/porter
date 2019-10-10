@@ -32,18 +32,31 @@ class YamlBuilder
     {
         $this->files->put(
             $this->porterLibrary->dockerComposeFile(),
-            view("{$imageSet->getName()}::base")->with([
-                'home'              => setting('home'),
-                'host_machine_name' => setting('host_machine_name'),
-                'activePhpVersions' => PhpVersion::active()->get(),
-                'useMysql'          => setting('use_mysql') == 'on',
-                'useRedis'          => setting('use_redis') == 'on',
-                'useBrowser'        => setting('use_browser') == 'on',
-                'useDns'            => setting('use_dns') == 'on' || setting_missing('use_dns'),
-                'imageSet'          => $imageSet,
-                'libraryPath'       => $this->porterLibrary->path(),
-            ])->render()
+            $this->renderDockerComposeFile($imageSet)
         );
+    }
+
+    /**
+     * Render the docker compose file
+     *
+     * @param  ImageRepository  $imageSet
+     *
+     * @return string
+     * @throws \Throwable
+     */
+    public function renderDockerComposeFile(ImageRepository $imageSet)
+    {
+        return view("{$imageSet->getName()}::base")->with([
+            'home'              => setting('home'),
+            'host_machine_name' => setting('host_machine_name'),
+            'activePhpVersions' => PhpVersion::active()->get(),
+            'useMysql'          => setting('use_mysql') === 'on',
+            'useRedis'          => setting('use_redis') === 'on',
+            'useBrowser'        => setting('use_browser') === 'on',
+            'useDns'            => setting('use_dns') === 'on' || setting_missing('use_dns'),
+            'imageSet'          => $imageSet,
+            'libraryPath'       => $this->porterLibrary->path(),
+        ])->render();
     }
 
     /**
