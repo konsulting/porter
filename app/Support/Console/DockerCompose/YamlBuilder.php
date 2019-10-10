@@ -39,6 +39,7 @@ class YamlBuilder
                 'useMysql'          => setting('use_mysql') == 'on',
                 'useRedis'          => setting('use_redis') == 'on',
                 'useBrowser'        => setting('use_browser') == 'on',
+                'useDns'            => setting('use_dns') == 'on' || setting_missing('use_dns'),
                 'imageSet'          => $imageSet,
                 'libraryPath'       => $this->porterLibrary->path(),
             ])->render()
