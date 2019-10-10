@@ -10,7 +10,7 @@ class OffTest extends BaseTestCase
     use MocksPorter;
 
     /** @test */
-    public function it_turns_the_browser_of()
+    public function it_turns_the_browser_off()
     {
         $this->porter->shouldReceive('turnOffService')->with('browser')->once();
 

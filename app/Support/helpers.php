@@ -8,7 +8,7 @@ use App\Models\Setting;
  * @param string|null $key
  * @param string|null $default
  *
- * @return mixed
+ * @return mixed|\Illuminate\Support\Collection
  */
 function setting($key = null, $default = null)
 {
@@ -48,5 +48,5 @@ function setting_missing($key)
  */
 function running_tests()
 {
-    return config('app.running_tests');
+    return (bool) config('app.running_tests');
 }
