@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\Commands\Dns;
 
-use Mockery;
 use App\PorterLibrary;
-use Tests\BaseTestCase;
 use App\Support\Mechanics\Mechanic;
+use Mockery;
+use Tests\BaseTestCase;
 
-class Flush extends BaseTestCase
+class FlushTest extends BaseTestCase
 {
     /** @test */
     public function it_will_flush_the_dns()
