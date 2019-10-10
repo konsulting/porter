@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\Commands\Dns;
 
-use Mockery;
 use App\PorterLibrary;
-use Tests\BaseTestCase;
 use App\Support\Mechanics\Mechanic;
+use Mockery;
+use Tests\BaseTestCase;
 use Tests\Unit\Support\Concerns\MocksPorter;
 
 class SetHostTest extends BaseTestCase
