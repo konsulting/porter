@@ -12,6 +12,7 @@
       - {{ $libraryPath }}/config/{{ $version->cli_name }}/php.ini:/etc/php/{{ $version->version_number }}/cli/php.ini
       - {{ $libraryPath }}/config/{{ $version->cli_name }}/xdebug.ini:/etc/php/{{ $version->version_number }}/cli/conf.d/xdebug.ini
       - {{ $libraryPath }}/config/{{ $version->cli_name }}/bash_history:/root/.bash_history
+      - {{ $libraryPath }}/config/user/bashrc:/root/.bashrc
     environment:
       - HOST_MACHINE_NAME={{ $host_machine_name }}
       - RUNNING_ON_PORTER=true
