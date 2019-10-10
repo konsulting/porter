@@ -40,6 +40,7 @@ class Open extends BaseCommand
 
         if (!$site) {
             $this->error('No site at this location, and no site path provided.');
+
             return;
         }
 
@@ -90,11 +91,11 @@ class Open extends BaseCommand
     /**
      * Remove SSL from the site if it was secured.
      *
-     * @param  Site $site
+     * @param Site $site
      */
     protected function removeSSLIfNeeded(Site $site): void
     {
-        if (! $site->secure) {
+        if (!$site->secure) {
             return;
         }
 
@@ -104,13 +105,13 @@ class Open extends BaseCommand
     }
 
     /**
-     * Add SSL back to the site if it was previously secured
+     * Add SSL back to the site if it was previously secured.
      *
-     * @param  Site  $site
+     * @param Site $site
      */
     protected function restoreSSLIfNeeded(Site $site): void
     {
-        if (! $this->wasSecure) {
+        if (!$this->wasSecure) {
             return;
         }
 
@@ -119,9 +120,9 @@ class Open extends BaseCommand
     }
 
     /**
-     * Construct the ngrok command
+     * Construct the ngrok command.
      *
-     * @param  Site  $site
+     * @param Site $site
      *
      * @return string
      */
