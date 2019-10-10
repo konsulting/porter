@@ -47,6 +47,20 @@ class PorterLibrary
     }
 
     /**
+     * Set the Mechanic instance
+     *
+     * @param  Mechanic  $mechanic
+     *
+     * @return $this
+     */
+    public function setMechanic(Mechanic $mechanic)
+    {
+        $this->mechanic = $mechanic;
+
+        return $this;
+    }
+
+    /**
      * Return the path for storing container config files.
      *
      * @return string

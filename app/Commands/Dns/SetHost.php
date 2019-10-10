@@ -30,15 +30,15 @@ class SetHost extends BaseCommand
     public function handle(): void
     {
         if ($this->option('restore')) {
-            $this->porterLibrary->getMechanic()->restoreNetworking();
-            app(Config::class)->updateIp('127.0.0.1');
+            $this->porterLibrary->getMechanic()->removeAlternativeLoopbackAddress();
+            app(Config::class)->updateIp($this->porterLibrary->getMechanic()->getStandardLoopback());
             $this->porter->restart('dns');
 
             return;
         }
 
-        $this->porterLibrary->getMechanic()->setupNetworking();
-        app(Config::class)->updateIp($this->porterLibrary->getMechanic()->getHostAddress());
+        $this->porterLibrary->getMechanic()->addAlternativeLoopbackAddress();
+        app(Config::class)->updateIp($this->porterLibrary->getMechanic()->getAlternativeLoopback());
         $this->porter->restart('dns');
     }
 }

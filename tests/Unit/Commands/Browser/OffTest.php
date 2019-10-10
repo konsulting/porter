@@ -12,7 +12,7 @@ class OffTest extends BaseTestCase
     /** @test */
     public function it_turns_the_browser_on()
     {
-        $this->porter->shouldReceive('turnOffService')->with('browser');
+        $this->porter->shouldReceive('turnOffService')->with('browser')->once();
 
         $this->artisan('browser:off');
     }

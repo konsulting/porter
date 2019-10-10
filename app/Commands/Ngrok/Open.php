@@ -78,7 +78,7 @@ class Open extends BaseCommand
     public function checkItWillResolveProperly()
     {
         try {
-            if ($this->porterLibrary->getMechanic()->isUsingDefaultHostAddress()) {
+            if ($this->porterLibrary->getMechanic()->isUsingStandardLoopback()) {
                 $this->info('You need to use an alternative loopback address.');
                 $this->info('Please run porter dns:set-host and review the documentation here: https://github.com/konsulting/porter#dns');
 

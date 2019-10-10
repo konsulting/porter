@@ -27,8 +27,8 @@ class MakeFilesTest extends BaseTestCase
 
         factory(Site::class, 2)->create([]);
 
-        $this->porter->shouldReceive('isUp')->andReturn(false);
-        $this->porter->shouldReceive('compose');
+        $this->porter->shouldReceive('isUp')->once()->andReturn(false);
+        $this->porter->shouldReceive('compose')->once();
 
         $conf->shouldReceive('build')->twice();
         $cert->shouldReceive('build')->with('porter_default')->once();
@@ -47,8 +47,8 @@ class MakeFilesTest extends BaseTestCase
 
         factory(Site::class, 2)->create([]);
 
-        $this->porter->shouldReceive('isUp')->andReturn(true);
-        $this->porter->shouldReceive('compose');
+        $this->porter->shouldReceive('isUp')->once()->andReturn(true);
+        $this->porter->shouldReceive('compose')->once();
 
         $conf->shouldReceive('build')->twice();
         $cert->shouldReceive('build')->with('porter_default')->once();
