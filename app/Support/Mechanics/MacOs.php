@@ -2,10 +2,12 @@
 
 namespace App\Support\Mechanics;
 
+use App\Support\Mechanics\Exceptions\UnableToRetrieveIP;
+
 class MacOs extends Untrained
 {
-    /** @var string $hostAddress Address for Host */
-    protected $hostAddress = '10.200.10.1';
+    /** @var string Alternative Loopback Address */
+    protected $alternativeLoopback = '10.200.10.1';
 
     /**
      * Trust the given root certificate file in the Keychain.
@@ -61,7 +63,7 @@ class MacOs extends Untrained
     }
 
     /**
-     * Set up networking for Mac.
+     * Add the alternative loopback address to the system.
      *
      * Add a loopback alias to 10.200.10.1. This is then used as the IP for DNS resolution, otherwise
      * we get weird results when trying to access services hosted in docker (since they resolve
@@ -69,36 +71,42 @@ class MacOs extends Untrained
      *
      * @return void
      */
-    public function setupNetworking()
+    public function addAlternativeLoopbackAddress()
     {
-        $this->consoleWriter->info("Adding loopback alias to {$this->hostAddress}/24. Please provide your sudo password.");
+        $this->consoleWriter->info("Adding loopback alias to {$this->alternativeLoopback}/24. Please provide your sudo password.");
 
-        $command = "sudo ifconfig lo0 alias {$this->hostAddress}/24";
+        $command = "sudo ifconfig lo0 alias {$this->alternativeLoopback}/24";
 
         $this->cli->passthru($command);
     }
 
     /**
-     * Restore networking on Mac.
+     * Remove the alternative loopback address from the system.
      *
      * @return void
      */
-    public function restoreNetworking()
+    public function removeAlternativeLoopbackAddress()
     {
-        $this->consoleWriter->info("Removing loopback alias to {$this->hostAddress}. Please provide your sudo password.");
+        $this->consoleWriter->info("Removing loopback alias to {$this->alternativeLoopback}. Please provide your sudo password.");
 
-        $command = "sudo ifconfig lo0 -alias {$this->hostAddress}";
+        $command = "sudo ifconfig lo0 -alias {$this->alternativeLoopback}";
 
         $this->cli->passthru($command);
     }
 
     /**
-     * Return the host IP address in use.
+     * Determine the working IP for Porter.
+     *
+     * @throws UnableToRetrieveIP
      *
      * @return string
      */
-    public function getHostAddress()
+    public function getPorterDomainIp()
     {
-        return $this->hostAddress;
+        if (($records = dns_get_record('www.unlikely-domain-name.'.setting('domain'))) === []) {
+            throw new UnableToRetrieveIP();
+        }
+
+        return $records[0]['ip'];
     }
 }

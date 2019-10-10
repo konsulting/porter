@@ -6,6 +6,7 @@ use App\Support\Console\Cli;
 use App\Support\Console\ConsoleWriter;
 use App\Support\Console\ServerBag;
 use App\Support\Mechanics\MacOs;
+use App\Support\Mechanics\Mechanic;
 use Tests\BaseTestCase;
 
 abstract class MechanicTestCase extends BaseTestCase
@@ -22,6 +23,13 @@ abstract class MechanicTestCase extends BaseTestCase
         $this->consoleWriter = \Mockery::mock(ConsoleWriter::class);
     }
 
+    /**
+     * Get a Mechanic.
+     *
+     * @param array $serverOverrides
+     *
+     * @return Mechanic
+     */
     protected function getMechanic($serverOverrides = [])
     {
         return new $this->mechanicClass($this->cli, $this->consoleWriter, new ServerBag($serverOverrides));

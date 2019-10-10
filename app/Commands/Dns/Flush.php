@@ -3,7 +3,6 @@
 namespace App\Commands\Dns;
 
 use App\Commands\BaseCommand;
-use App\Support\Mechanics\Mechanic;
 
 class Flush extends BaseCommand
 {
@@ -28,6 +27,6 @@ class Flush extends BaseCommand
      */
     public function handle(): void
     {
-        app(Mechanic::class)->flushDns();
+        $this->porterLibrary->getMechanic()->flushDns();
     }
 }

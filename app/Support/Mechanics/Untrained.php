@@ -17,8 +17,11 @@ class Untrained implements Mechanic
     /** @var ServerBag */
     protected $serverBag;
 
-    /** @var string $hostAddress Address for Host */
-    protected $hostAddress = '127.0.0.1';
+    /** @var string Standard Loopback Address */
+    protected $standardLoopback = '127.0.0.1';
+
+    /** @var string Alternative Loopback Address */
+    protected $alternativeLoopback = '127.0.0.1';
 
     /**
      * Untrained constructor.
@@ -94,7 +97,7 @@ class Untrained implements Mechanic
      *
      * @return void
      */
-    public function setupNetworking()
+    public function addAlternativeLoopbackAddress()
     {
         $this->iAmNotTrainedTo('set up special networking for Porter');
     }
@@ -104,18 +107,58 @@ class Untrained implements Mechanic
      *
      * @return void
      */
-    public function restoreNetworking()
+    public function removeAlternativeLoopbackAddress()
     {
         $this->iAmNotTrainedTo('restore special networking for Porter');
     }
 
     /**
-     * Get Host IP for Porter.
+     * Get standard loopback address.
      *
      * @return string
      */
-    public function getHostAddress()
+    public function getStandardLoopback()
     {
-        return $this->hostAddress;
+        return $this->standardLoopback;
+    }
+
+    /**
+     * Get alternative loopback address.
+     *
+     * @return string
+     */
+    public function getAlternativeLoopback()
+    {
+        return $this->alternativeLoopback;
+    }
+
+    /**
+     * Does a Porter domain resolve to the standard loopback address.
+     *
+     * @return bool
+     */
+    public function isUsingAlternativeLoopback()
+    {
+        return $this->getPorterDomainIp() === $this->getAlternativeLoopback();
+    }
+
+    /**
+     * Does a Porter domain resolve to the standard loopback address?
+     *
+     * @return bool
+     */
+    public function isUsingStandardLoopback()
+    {
+        return $this->getPorterDomainIp() === $this->getStandardLoopback();
+    }
+
+    /**
+     * Determine the working IP for Porter.
+     *
+     * @return string
+     */
+    public function getPorterDomainIp()
+    {
+        $this->iAmNotTrainedTo('obtain the current IP address for Porter');
     }
 }

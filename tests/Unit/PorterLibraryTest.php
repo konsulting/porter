@@ -164,4 +164,10 @@ class PorterLibraryTest extends BaseTestCase
 
         $this->assertEquals($this->app[PorterLibrary::class], $lib);
     }
+
+    /** @test */
+    public function it_will_return_the_mechanic()
+    {
+        $this->assertInstanceOf(Mechanic::class, $this->makeLibrary('/Users/test/.porter')->getMechanic());
+    }
 }

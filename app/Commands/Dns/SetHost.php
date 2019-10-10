@@ -4,7 +4,6 @@ namespace App\Commands\Dns;
 
 use App\Commands\BaseCommand;
 use App\Support\Dnsmasq\Config;
-use App\Support\Mechanics\Mechanic;
 
 class SetHost extends BaseCommand
 {
@@ -29,16 +28,16 @@ class SetHost extends BaseCommand
      */
     public function handle(): void
     {
-        $mechanic = app(Mechanic::class);
-
         if ($this->option('restore')) {
-            $mechanic->restoreNetworking();
-            app(Config::class)->updateIp('127.0.0.1');
+            $this->porterLibrary->getMechanic()->removeAlternativeLoopbackAddress();
+            app(Config::class)->updateIp($this->porterLibrary->getMechanic()->getStandardLoopback());
+            $this->porter->restart('dns');
 
             return;
         }
 
-        $mechanic->setupNetworking();
-        app(Config::class)->updateIp($mechanic->getHostAddress());
+        $this->porterLibrary->getMechanic()->addAlternativeLoopbackAddress();
+        app(Config::class)->updateIp($this->porterLibrary->getMechanic()->getAlternativeLoopback());
+        $this->porter->restart('dns');
     }
 }

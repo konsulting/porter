@@ -12,7 +12,7 @@ class OffTest extends BaseTestCase
     /** @test */
     public function it_turns_the_browser_on()
     {
-        $this->porter->shouldReceive('turnOffService')->with('mysql');
+        $this->porter->shouldReceive('turnOffService')->with('mysql')->once();
 
         $this->artisan('mysql:off');
     }

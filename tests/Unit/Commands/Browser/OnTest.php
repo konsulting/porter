@@ -12,7 +12,7 @@ class OnTest extends BaseTestCase
     /** @test */
     public function it_turns_the_browser_on()
     {
-        $this->porter->shouldReceive('turnOnService')->with('browser');
+        $this->porter->shouldReceive('turnOnService')->with('browser')->once();
 
         $this->artisan('browser:on');
     }

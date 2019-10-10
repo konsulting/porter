@@ -37,21 +37,51 @@ interface Mechanic
     public function flushDns();
 
     /**
-     * Setup networking for Porter.
+     * Add the alternative loopback address to the system.
      *
      * @return void
      */
-    public function setupNetworking();
+    public function addAlternativeLoopbackAddress();
 
     /**
-     * Restore networking.
+     * Remove the alternative loopback address from the system.
      *
      * @return void
      */
-    public function restoreNetworking();
+    public function removeAlternativeLoopbackAddress();
 
     /**
-     * Get Host IP address.
+     * Get standard loopback address.
+     *
+     * @return string
      */
-    public function getHostAddress();
+    public function getStandardLoopback();
+
+    /**
+     * Get alternative loopback address.
+     *
+     * @return string
+     */
+    public function getAlternativeLoopback();
+
+    /**
+     * Does a Porter domain resolve to the standard loopback address.
+     *
+     * @return bool
+     */
+    public function isUsingAlternativeLoopback();
+
+    /**
+     *  Does a Porter domain resolve to the standard loopback address?
+     *
+     * @return bool
+     */
+    public function isUsingStandardLoopback();
+
+    /**
+     * Determine the working IP for Porter.
+     *
+     * @return string
+     */
+    public function getPorterDomainIp();
 }

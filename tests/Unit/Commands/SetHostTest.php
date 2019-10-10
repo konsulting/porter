@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Commands;
 
+use App\PorterLibrary;
 use App\Support\Dnsmasq\Config;
 use App\Support\Mechanics\Mechanic;
 use Mockery;
@@ -13,12 +14,13 @@ class SetHostTest extends BaseTestCase
     public function it_sets_the_host()
     {
         $mechanicMock = Mockery::mock(Mechanic::class);
-        $mechanicMock->shouldReceive('setupNetworking')->withNoArgs()->once();
-        $mechanicMock->shouldReceive('getHostAddress')->andReturn('1.1.1.1')->once();
+        $mechanicMock->shouldReceive('addAlternativeLoopbackAddress')->withNoArgs()->once();
+        $mechanicMock->shouldReceive('getAlternativeLoopback')->andReturn('1.1.1.1')->once();
 
         // Mechanic is being fetched from the container more than once, so we need to bind a specific instance rather
         // than a closure
         $this->app->instance(Mechanic::class, $mechanicMock);
+        $this->app->get(PorterLibrary::class)->setMechanic($mechanicMock);
 
         $this->app->extend(Config::class, function () {
             return Mockery::mock(Config::class)
@@ -33,9 +35,11 @@ class SetHostTest extends BaseTestCase
     public function it_restores_the_host()
     {
         $mechanicMock = Mockery::mock(Mechanic::class);
-        $mechanicMock->shouldReceive('restoreNetworking')->withNoArgs()->once();
+        $mechanicMock->shouldReceive('removeAlternativeLoopbackAddress')->withNoArgs()->once();
+        $mechanicMock->shouldReceive('getStandardLoopback')->withNoArgs()->andReturn('127.0.0.1')->once();
 
         $this->app->instance(Mechanic::class, $mechanicMock);
+        $this->app->get(PorterLibrary::class)->setMechanic($mechanicMock);
 
         $this->app->extend(Config::class, function () {
             return Mockery::mock(Config::class)

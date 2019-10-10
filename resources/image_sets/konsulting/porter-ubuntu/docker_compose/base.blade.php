@@ -14,6 +14,8 @@ services:
 
   @include("{$imageSet->getName()}::node")
 
+  @include("{$imageSet->getName()}::ngrok")
+
 @foreach($activePhpVersions as $key => $version)
   # PHP version {!! $version->version_number !!}
 

@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 class Site extends Model
 {
     protected $guarded = [];
+    protected $casts = ['secure' => 'boolean'];
 
     /**
      * PHP Version.
