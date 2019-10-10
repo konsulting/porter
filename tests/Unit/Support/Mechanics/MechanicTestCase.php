@@ -3,10 +3,10 @@
 namespace Tests\Unit\Support\Mechanics;
 
 use App\Support\Console\Cli;
-use App\Support\Mechanics\Mechanic;
 use App\Support\Console\ConsoleWriter;
 use App\Support\Console\ServerBag;
 use App\Support\Mechanics\MacOs;
+use App\Support\Mechanics\Mechanic;
 use Tests\BaseTestCase;
 
 abstract class MechanicTestCase extends BaseTestCase
@@ -24,9 +24,9 @@ abstract class MechanicTestCase extends BaseTestCase
     }
 
     /**
-     * Get a Mechanic
+     * Get a Mechanic.
      *
-     * @param  array  $serverOverrides
+     * @param array $serverOverrides
      *
      * @return Mechanic
      */

@@ -2,7 +2,6 @@
 
 namespace App\Support\Console\DockerCompose;
 
-
 class NullCliCommand extends CliCommand
 {
     /**
@@ -12,6 +11,5 @@ class NullCliCommand extends CliCommand
      */
     public function perform()
     {
-        return null;
     }
 }
