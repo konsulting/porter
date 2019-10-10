@@ -3,7 +3,6 @@
 namespace App\Commands\Dns;
 
 use App\Commands\BaseCommand;
-use App\Support\Mechanics\Mechanic;
 
 class Flush extends BaseCommand
 {

@@ -47,9 +47,9 @@ class PorterLibrary
     }
 
     /**
-     * Set the Mechanic instance
+     * Set the Mechanic instance.
      *
-     * @param  Mechanic  $mechanic
+     * @param Mechanic $mechanic
      *
      * @return $this
      */
@@ -288,7 +288,7 @@ class PorterLibrary
     }
 
     /**
-     * Return the Mechanic instance
+     * Return the Mechanic instance.
      *
      * @return Mechanic
      */
