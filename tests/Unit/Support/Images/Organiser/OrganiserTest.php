@@ -7,6 +7,7 @@ use App\Support\Images\Image;
 use App\Support\Images\ImageRepository;
 use App\Support\Images\Organiser\Organiser;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Str;
 use Mockery\MockInterface;
 use Tests\BaseTestCase;
 
@@ -95,7 +96,7 @@ class OrganiserTest extends BaseTestCase
         ];
 
         foreach ($images as $path => $image) {
-            $latest = str_before($image, ':').':latest';
+            $latest = Str::before($image, ':').':latest';
             $this->expectCommand('docker build -t '.$image.' -t '.$latest.' --rm '.$path.' --', 'passthru');
         }
         $this->organiser->buildImages();

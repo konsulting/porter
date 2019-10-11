@@ -46,7 +46,7 @@ class BeginTest extends BaseTestCase
 
         $this->artisan('begin', ['--force' => true, '--no-interaction' => true]);
 
-        $expected = 'Setting home to '.base_path();
+        $expected = 'Setting home to '.getcwd();
         $this->stringContains($expected)->evaluate(Artisan::output());
     }
 

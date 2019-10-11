@@ -36,7 +36,7 @@ class Open extends BaseCommand
      */
     public function handle(): void
     {
-        $site = Site::resolveFromPathOrCurrentWorkingDirectory($this->argument('site'));
+        $site = Site::resolveFromPathOrCurrentWorkingDirectory((string) $this->argument('site'));
 
         if (!$site) {
             $this->error('No site at this location, and no site path provided.');

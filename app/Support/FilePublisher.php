@@ -63,12 +63,12 @@ class FilePublisher
     public function publish($from, $to)
     {
         if ($this->files->isFile($from)) {
-            return $this->publishFile($from, $to);
+            $this->publishFile($from, $to);
         } elseif ($this->files->isDirectory($from)) {
-            return $this->publishDirectory($from, $to);
+            $this->publishDirectory($from, $to);
+        } else {
+            throw new Exception("Can't locate path: <{$from}>");
         }
-
-        throw new Exception("Can't locate path: <{$from}>");
     }
 
     /**
@@ -94,6 +94,8 @@ class FilePublisher
      * @param string $from
      * @param string $to
      *
+     * @throws \League\Flysystem\FileNotFoundException
+     *
      * @return void
      */
     protected function publishDirectory($from, $to)
@@ -109,13 +111,15 @@ class FilePublisher
      *
      * @param \League\Flysystem\MountManager $manager
      *
+     * @throws \League\Flysystem\FileNotFoundException
+     *
      * @return void
      */
     protected function moveManagedFiles($manager)
     {
         foreach ($manager->listContents('from://', true) as $file) {
             if ($file['type'] === 'file' && (!$manager->has('to://'.$file['path']) || $this->force)) {
-                $manager->put('to://'.$file['path'], $manager->read('from://'.$file['path']));
+                $manager->put('to://'.$file['path'], (string) $manager->read('from://'.$file['path']));
             }
         }
     }

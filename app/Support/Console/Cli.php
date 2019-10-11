@@ -79,7 +79,7 @@ class Cli implements CliContract
     protected function getProcess($command)
     {
         return app()->make(Process::class, [
-            'commandline' => $command,
+            'command'     => $command,
             'timeout'     => static::TIMEOUT,
         ]);
     }

@@ -15,7 +15,7 @@ trait CreatesApplication
      *
      * @throws \App\Exceptions\PorterSetupFailed
      *
-     * @return \Illuminate\Contracts\Foundation\Application
+     * @return \Illuminate\Foundation\Application
      */
     public function createApplication()
     {

@@ -8,6 +8,7 @@ use App\Support\Contracts\Cli;
 use App\Support\Nginx\SiteConfBuilder;
 use App\Support\Ssl\CertificateBuilder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Site extends Model
 {
@@ -315,8 +316,8 @@ class Site extends Model
             return;
         }
 
-        $path = trim(str_after($path, $home), DIRECTORY_SEPARATOR);
+        $path = trim(Str::after($path, $home), DIRECTORY_SEPARATOR);
 
-        return str_before($path, DIRECTORY_SEPARATOR);
+        return Str::before($path, DIRECTORY_SEPARATOR);
     }
 }

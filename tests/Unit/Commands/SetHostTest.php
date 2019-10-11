@@ -7,9 +7,12 @@ use App\Support\Dnsmasq\Config;
 use App\Support\Mechanics\Mechanic;
 use Mockery;
 use Tests\BaseTestCase;
+use Tests\Unit\Support\Concerns\MocksPorter;
 
 class SetHostTest extends BaseTestCase
 {
+    use MocksPorter;
+
     /** @test */
     public function it_sets_the_host()
     {
@@ -27,6 +30,8 @@ class SetHostTest extends BaseTestCase
                 ->shouldReceive('updateIp')->with('1.1.1.1')->once()
                 ->getMock();
         });
+
+        $this->porter->shouldReceive('restart')->with('dns')->once();
 
         $this->artisan('dns:set-host');
     }
@@ -46,6 +51,8 @@ class SetHostTest extends BaseTestCase
                 ->shouldReceive('updateIp')->with('127.0.0.1')->once()
                 ->getMock();
         });
+
+        $this->porter->shouldReceive('restart')->with('dns')->once();
 
         $this->artisan('dns:set-host', ['--restore' => true]);
     }
