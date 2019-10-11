@@ -35,7 +35,7 @@ class CliCommand
         $this->append('bash');
 
         if ($command) {
-            $this->append(" -c \"$command\"");
+            $this->append("-c \"$command\"");
         }
 
         return $this;

@@ -51,8 +51,8 @@ class CliCommandFactory
     public function runContainer($container = null)
     {
         $site = Site::resolveFromPathOrCurrentWorkingDirectory();
-        $workingDir = $site ? '-w /srv/app/'.$site->name : '';
+        $workingDir = $site ? ' -w /srv/app/'.$site->name : '';
 
-        return new CliCommand($this->cli, "run {$workingDir} --rm --service-ports {$container}");
+        return new CliCommand($this->cli, "run{$workingDir} --rm --service-ports {$container}");
     }
 }
