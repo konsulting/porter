@@ -11,6 +11,5 @@ class NullCliCommand extends CliCommand
      */
     public function perform()
     {
-        return;
     }
 }
