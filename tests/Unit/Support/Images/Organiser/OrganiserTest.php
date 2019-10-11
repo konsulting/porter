@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Support\Images\Organiser;
 
+use Illuminate\Support\Str;
 use App\Support\Contracts\Cli;
 use App\Support\Images\Image;
 use App\Support\Images\ImageRepository;
@@ -95,7 +96,7 @@ class OrganiserTest extends BaseTestCase
         ];
 
         foreach ($images as $path => $image) {
-            $latest = str_before($image, ':').':latest';
+            $latest = Str::before($image, ':').':latest';
             $this->expectCommand('docker build -t '.$image.' -t '.$latest.' --rm '.$path.' --', 'passthru');
         }
         $this->organiser->buildImages();

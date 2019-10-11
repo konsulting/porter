@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Porter;
 use App\PorterLibrary;
+use Illuminate\Support\Str;
 use App\Support\Contracts\Cli;
 use App\Support\Nginx\SiteConfBuilder;
 use App\Support\Ssl\CertificateBuilder;
@@ -315,8 +316,8 @@ class Site extends Model
             return;
         }
 
-        $path = trim(str_after($path, $home), DIRECTORY_SEPARATOR);
+        $path = trim(Str::after($path, $home), DIRECTORY_SEPARATOR);
 
-        return str_before($path, DIRECTORY_SEPARATOR);
+        return Str::before($path, DIRECTORY_SEPARATOR);
     }
 }

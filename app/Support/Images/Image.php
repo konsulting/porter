@@ -2,6 +2,8 @@
 
 namespace App\Support\Images;
 
+use Illuminate\Support\Str;
+
 class Image
 {
     /** @var string */
@@ -39,7 +41,7 @@ class Image
      */
     public function getUnVersionedName()
     {
-        return str_before($this->name, ':');
+        return Str::before($this->name, ':');
     }
 
     /**

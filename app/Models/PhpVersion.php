@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 
 class PhpVersion extends Model
@@ -61,7 +62,7 @@ class PhpVersion extends Model
      */
     public function getMajorAttribute()
     {
-        return str_before($this->version_number, '.');
+        return Str::before($this->version_number, '.');
     }
 
     /**
