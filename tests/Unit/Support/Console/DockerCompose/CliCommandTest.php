@@ -2,17 +2,14 @@
 
 namespace Tests\Unit\Support\Console\DockerCompose;
 
-use App\Models\Site;
 use App\PorterLibrary;
-use App\Models\Setting;
 use App\Support\Console\Cli;
-use Tests\BaseTestCase;
 use App\Support\Console\DockerCompose\CliCommand;
-use App\Support\Console\DockerCompose\CliCommandFactory;
+use Tests\BaseTestCase;
 
 class CliCommandTest extends BaseTestCase
 {
-    /** @var Cli|\Mockery\MockInterface  */
+    /** @var Cli|\Mockery\MockInterface */
     protected $cli;
     /** @var PorterLibrary|\Mockery\MockInterface */
     protected $lib;
