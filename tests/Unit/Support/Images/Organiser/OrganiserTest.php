@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\Support\Images\Organiser;
 
-use Illuminate\Support\Str;
 use App\Support\Contracts\Cli;
 use App\Support\Images\Image;
 use App\Support\Images\ImageRepository;
 use App\Support\Images\Organiser\Organiser;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Str;
 use Mockery\MockInterface;
 use Tests\BaseTestCase;
 

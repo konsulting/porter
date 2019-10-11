@@ -4,11 +4,11 @@ namespace App\Models;
 
 use App\Porter;
 use App\PorterLibrary;
-use Illuminate\Support\Str;
 use App\Support\Contracts\Cli;
 use App\Support\Nginx\SiteConfBuilder;
 use App\Support\Ssl\CertificateBuilder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Site extends Model
 {
