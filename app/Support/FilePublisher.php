@@ -63,12 +63,12 @@ class FilePublisher
     public function publish($from, $to)
     {
         if ($this->files->isFile($from)) {
-            return $this->publishFile($from, $to);
+            $this->publishFile($from, $to);
         } elseif ($this->files->isDirectory($from)) {
-            return $this->publishDirectory($from, $to);
+            $this->publishDirectory($from, $to);
+        } else {
+            throw new Exception("Can't locate path: <{$from}>");
         }
-
-        throw new Exception("Can't locate path: <{$from}>");
     }
 
     /**
