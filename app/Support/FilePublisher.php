@@ -91,11 +91,12 @@ class FilePublisher
     /**
      * Publish the directory to the given directory.
      *
-     * @param  string  $from
-     * @param  string  $to
+     * @param string $from
+     * @param string $to
+     *
+     * @throws \League\Flysystem\FileNotFoundException
      *
      * @return void
-     * @throws \League\Flysystem\FileNotFoundException
      */
     protected function publishDirectory($from, $to)
     {
@@ -108,10 +109,11 @@ class FilePublisher
     /**
      * Move all the files in the given MountManager.
      *
-     * @param  \League\Flysystem\MountManager  $manager
+     * @param \League\Flysystem\MountManager $manager
+     *
+     * @throws \League\Flysystem\FileNotFoundException
      *
      * @return void
-     * @throws \League\Flysystem\FileNotFoundException
      */
     protected function moveManagedFiles($manager)
     {
