@@ -91,10 +91,11 @@ class FilePublisher
     /**
      * Publish the directory to the given directory.
      *
-     * @param string $from
-     * @param string $to
+     * @param  string  $from
+     * @param  string  $to
      *
      * @return void
+     * @throws \League\Flysystem\FileNotFoundException
      */
     protected function publishDirectory($from, $to)
     {
@@ -107,15 +108,16 @@ class FilePublisher
     /**
      * Move all the files in the given MountManager.
      *
-     * @param \League\Flysystem\MountManager $manager
+     * @param  \League\Flysystem\MountManager  $manager
      *
      * @return void
+     * @throws \League\Flysystem\FileNotFoundException
      */
     protected function moveManagedFiles($manager)
     {
         foreach ($manager->listContents('from://', true) as $file) {
             if ($file['type'] === 'file' && (!$manager->has('to://'.$file['path']) || $this->force)) {
-                $manager->put('to://'.$file['path'], $manager->read('from://'.$file['path']));
+                $manager->put('to://'.$file['path'], (string) $manager->read('from://'.$file['path']));
             }
         }
     }

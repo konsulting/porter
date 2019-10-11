@@ -45,7 +45,7 @@ class Begin extends BaseCommand
         $this->line('');
 
         try {
-            $this->porterLibrary->setup($this->app, (bool) $this->option('force'));
+            $this->porterLibrary->setup(/** @scrutinizer ignore-type */$this->app, (bool) $this->option('force'));
         } catch (PorterSetupFailed $e) {
             $this->alert($e->getMessage());
 
