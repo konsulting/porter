@@ -11,7 +11,7 @@ class Cli implements CliContract
     /**
      * The process timeout in seconds.
      */
-    const TIMEOUT = 1200;
+    protected $timeout = null;
 
     /**
      * Execute a command.
@@ -80,7 +80,7 @@ class Cli implements CliContract
     {
         return app()->make(Process::class, [
             'command'     => $command,
-            'timeout'     => static::TIMEOUT,
+            'timeout'     => $this->timeout,
         ]);
     }
 
@@ -92,5 +92,29 @@ class Cli implements CliContract
     public function currentWorkingDirectory()
     {
         return getcwd();
+    }
+
+    /**
+     * Set the timeout for the wrapping PHP Process.
+     *
+     * @param int|null $seconds
+     *
+     * @return Cli
+     */
+    public function setTimeout(int $seconds = null)
+    {
+        $this->timeout = $seconds;
+
+        return $this;
+    }
+
+    /**
+     * Return the timeout for the wrapping PHP Process..
+     *
+     * @return int|null
+     */
+    public function getTimeout()
+    {
+        return $this->timeout;
     }
 }

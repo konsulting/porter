@@ -16,14 +16,14 @@ class CliTest extends BaseTestCase
     public function it_sets_the_timeout_on_the_process_object($method)
     {
         $this->app->bind(Process::class, function ($app, $args) {
-            $this->assertSame(Cli::TIMEOUT, $args['timeout']);
+            $this->assertSame(config('porter.process_timeout'), $args['timeout']);
 
             return Mockery::mock(Process::class)
                 ->shouldReceive('run', 'mustRun', 'getOutput', 'setTty')
                 ->getMock();
         });
 
-        (new Cli())->$method('foo');
+        app()->make(Cli::class)->$method('foo');
     }
 
     public function methodProvider()
@@ -40,7 +40,7 @@ class CliTest extends BaseTestCase
     {
         $this->assertSame('foo'.PHP_EOL, (new Cli())->exec('echo foo'));
         $this->assertSame('foo'.PHP_EOL, $this->captureOutput(function () {
-            (new Cli())->execRealTime('echo foo');
+            app()->make(Cli::class)->execRealTime('echo foo');
         }));
     }
 

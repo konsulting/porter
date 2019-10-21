@@ -123,4 +123,17 @@ class CliCommandTest extends BaseTestCase
         $this->assertFalse($command->isRealTime());
         $this->assertFalse($command->isInteractive());
     }
+
+    /** @test */
+    public function we_are_able_to_override_the_timeout_for_the_process()
+    {
+        // We want the actual Cli for this test.
+        $this->app->forgetInstance(Cli::class);
+
+        $command = new CliCommand(app()->make(Cli::class), 'node');
+
+        $this->assertNotEquals(null, $command->getCli()->getTimeout());
+        $command->setTimeout(null);
+        $this->assertEquals(null, $command->getCli()->getTimeout());
+    }
 }

@@ -138,6 +138,8 @@ class CliCommand
         );
     }
 
+
+
     /**
      * Execute the command.
      *
@@ -156,5 +158,29 @@ class CliCommand
         }
 
         return $this->cli->exec($this->prepare());
+    }
+
+    /**
+     * Return the Cli instance for this CliCommand.
+     *
+     * @return Cli
+     */
+    public function getCli()
+    {
+        return $this->cli;
+    }
+
+    /**
+     * Set the timeout for the Cli instance.
+     *
+     * @param $seconds
+     *
+     * @return CliCommand
+     */
+    public function setTimeout($seconds)
+    {
+        $this->cli->setTimeout($seconds);
+
+        return $this;
     }
 }

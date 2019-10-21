@@ -37,6 +37,7 @@ class Open extends BaseCommand
             ->runContainer('mysql')
             ->append('mysql -h mysql -uroot -psecret')
             ->interactive()
+            ->setTimeout(null)
             ->perform();
     }
 }
