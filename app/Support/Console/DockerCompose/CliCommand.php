@@ -138,8 +138,6 @@ class CliCommand
         );
     }
 
-
-
     /**
      * Execute the command.
      *

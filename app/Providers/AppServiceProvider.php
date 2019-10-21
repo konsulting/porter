@@ -49,7 +49,7 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(CliContract::class, Cli::class);
         $this->app->bind(Cli::class, function () {
-            return (new Cli)->setTimeout(config('porter.process_timeout'));
+            return (new Cli())->setTimeout(config('porter.process_timeout'));
         });
 
         $this->app->bind(ImageSetRepositoryContract::class, function () {
