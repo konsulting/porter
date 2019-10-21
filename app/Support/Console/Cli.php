@@ -97,13 +97,25 @@ class Cli implements CliContract
     /**
      * Set the timeout for the wrapping PHP Process.
      *
-     * @param int|null $seconds
+     * @param int $seconds
      *
      * @return Cli
      */
-    public function setTimeout(int $seconds = null)
+    public function setTimeout(int $seconds)
     {
         $this->timeout = $seconds;
+
+        return $this;
+    }
+
+    /**
+     * Remove the timeout for the wrapping PHP Process.
+     *
+     * @return Cli
+     */
+    public function doNotTimeout()
+    {
+        $this->timeout = null;
 
         return $this;
     }

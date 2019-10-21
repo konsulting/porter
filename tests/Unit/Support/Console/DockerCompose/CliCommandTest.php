@@ -132,8 +132,12 @@ class CliCommandTest extends BaseTestCase
 
         $command = new CliCommand(app()->make(Cli::class), 'node');
 
-        $this->assertNotEquals(null, $command->getCli()->getTimeout());
+        $this->assertSame(config('porter.process_timeout'), $command->getCli()->getTimeout());
+
+        $command->setTimeout(60);
+        $this->assertSame(60, $command->getCli()->getTimeout());
+
         $command->doNotTimeout();
-        $this->assertEquals(null, $command->getCli()->getTimeout());
+        $this->assertNull($command->getCli()->getTimeout());
     }
 }

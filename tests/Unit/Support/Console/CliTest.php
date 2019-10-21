@@ -44,6 +44,32 @@ class CliTest extends BaseTestCase
         }));
     }
 
+    /** @test */
+    public function a_cli_instance_has_no_timeout_when_created()
+    {
+        $this->assertNull((new Cli)->getTimeout());
+    }
+
+    /** @test */
+    public function a_cli_instance_made_by_the_app_has_the_default_timeout()
+    {
+        $this->assertSame(config('porter.process_timeout'), app()->make(Cli::class)->getTimeout());
+    }
+
+    /** @test */
+    public function the_timeout_for_a_cli_instance_can_be_changed_and_removed()
+    {
+        $cli = new Cli();
+
+        $this->assertNull($cli->getTimeout());
+
+        $cli->setTimeout(60);
+        $this->assertSame(60, $cli->getTimeout());
+
+        $cli->doNotTimeout();
+        $this->assertNull($cli->getTimeout());
+    }
+
     /**
      * Run the callback and return the captured output.
      *

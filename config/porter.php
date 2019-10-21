@@ -12,5 +12,5 @@ return [
      * We default to 1200 seconds (20 minutes) but if you want to run the node container
      * or others for a while, you may prefer to make it infinite - using null.
      */
-    'process_timeout' => 1200,
+    'process_timeout' => env('PROCESS_TIMEOUT', 1200),
 ];
