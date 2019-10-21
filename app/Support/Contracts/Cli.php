@@ -39,12 +39,12 @@ interface Cli
     public function currentWorkingDirectory();
 
     /**
-    * Set the timeout for the wrapping PHP Process.
-    *
-    * @param int|null $seconds
-    *
-    * @return Cli
-    */
+     * Set the timeout for the wrapping PHP Process.
+     *
+     * @param int|null $seconds
+     *
+     * @return Cli
+     */
     public function setTimeout(int $seconds = null);
 
     /**
