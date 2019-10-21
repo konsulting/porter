@@ -7,7 +7,7 @@ interface Cli
     /**
      * Execute a command.
      *
-     * @param  string  $command
+     * @param string $command
      *
      * @return string
      */
@@ -16,7 +16,7 @@ interface Cli
     /**
      * Execute a command in real time.
      *
-     * @param  string  $command
+     * @param string $command
      *
      * @return string
      */
@@ -25,7 +25,7 @@ interface Cli
     /**
      * Execute a command and allow the user to interact with it.
      *
-     * @param  string  $command
+     * @param string $command
      *
      * @return void
      */
@@ -41,7 +41,7 @@ interface Cli
     /**
      * Set the timeout for the wrapping PHP Process.
      *
-     * @param  int  $seconds
+     * @param int $seconds
      *
      * @return Cli
      */

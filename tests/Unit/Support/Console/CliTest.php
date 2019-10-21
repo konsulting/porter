@@ -47,7 +47,7 @@ class CliTest extends BaseTestCase
     /** @test */
     public function a_cli_instance_has_no_timeout_when_created()
     {
-        $this->assertNull((new Cli)->getTimeout());
+        $this->assertNull((new Cli())->getTimeout());
     }
 
     /** @test */
