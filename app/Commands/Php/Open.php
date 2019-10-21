@@ -41,7 +41,7 @@ class Open extends BaseCommand
         $this->dockerCompose
             ->runContainer("php_cli_{$version->safe}")
             ->bash((string) $this->argument('run'))
-            ->setTimeout(null)
+            ->doNotTimeout()
             ->perform();
     }
 }

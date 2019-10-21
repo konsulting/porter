@@ -56,7 +56,7 @@ class Open extends BaseCommand
             ->runContainer('ngrok')
             ->append($this->constructNgrokCommand($site))
             ->interactive()
-            ->setTimeout(null)
+            ->doNotTimeout()
             ->perform();
 
         $this->restoreSSLIfNeeded($site);

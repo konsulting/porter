@@ -31,7 +31,7 @@ class Open extends BaseCommand
             ->runContainer('node')
             ->bash((string) $this->argument('run'))
             ->interactive()
-            ->setTimeout(null)
+            ->doNotTimeout()
             ->perform();
     }
 }

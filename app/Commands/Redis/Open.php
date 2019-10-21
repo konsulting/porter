@@ -37,7 +37,7 @@ class Open extends BaseCommand
             ->runContainer('redis')
             ->append('redis-cli -h redis')
             ->interactive()
-            ->setTimeout(null)
+            ->doNotTimeout()
             ->perform();
     }
 }

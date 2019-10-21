@@ -171,14 +171,24 @@ class CliCommand
     /**
      * Set the timeout for the Cli instance.
      *
-     * @param $seconds
+     * @param int|null $seconds
      *
      * @return CliCommand
      */
-    public function setTimeout($seconds)
+    public function setTimeout(int $seconds = null)
     {
         $this->cli->setTimeout($seconds);
 
         return $this;
+    }
+
+    /**
+     * Remove the timeout for the Cli instance. (Just a nicer way to write it).
+     *
+     * @return CliCommand
+     */
+    public function doNotTimeout()
+    {
+        return $this->setTimeout(null);
     }
 }

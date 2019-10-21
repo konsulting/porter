@@ -109,7 +109,7 @@ class Cli implements CliContract
     }
 
     /**
-     * Return the timeout for the wrapping PHP Process..
+     * Return the timeout for the wrapping PHP Process.
      *
      * @return int|null
      */
