@@ -157,4 +157,40 @@ class CliCommand
 
         return $this->cli->exec($this->prepare());
     }
+
+    /**
+     * Return the Cli instance for this CliCommand.
+     *
+     * @return Cli
+     */
+    public function getCli()
+    {
+        return $this->cli;
+    }
+
+    /**
+     * Set the timeout for the Cli instance.
+     *
+     * @param int $seconds
+     *
+     * @return CliCommand
+     */
+    public function setTimeout(int $seconds)
+    {
+        $this->cli->setTimeout($seconds);
+
+        return $this;
+    }
+
+    /**
+     * Remove the timeout for the Cli instance. (Just a nicer way to write it).
+     *
+     * @return CliCommand
+     */
+    public function doNotTimeout()
+    {
+        $this->cli->doNotTimeout();
+
+        return $this;
+    }
 }

@@ -30,6 +30,8 @@ class Open extends BaseCommand
         $this->dockerCompose
             ->runContainer('node')
             ->bash((string) $this->argument('run'))
+            ->interactive()
+            ->doNotTimeout()
             ->perform();
     }
 }
