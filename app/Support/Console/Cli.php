@@ -10,6 +10,8 @@ class Cli implements CliContract
 {
     /**
      * The process timeout in seconds.
+     *
+     * @var int|null
      */
     protected $timeout = null;
 
