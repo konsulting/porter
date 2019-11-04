@@ -50,7 +50,9 @@ return [
     */
     'providers' => [
         App\Providers\AppServiceProvider::class,
+        App\Providers\EventServiceProvider::class,
         Intonate\TinkerZero\TinkerZeroServiceProvider::class,
+        \Illuminate\Database\DatabaseServiceProvider::class,
         \Illuminate\View\ViewServiceProvider::class,
     ],
 
