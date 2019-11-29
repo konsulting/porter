@@ -27,6 +27,7 @@
         "intonate/tinker-zero": "^1.0",
         "laravel-zero/framework": "^6.0",
         "league/flysystem": "^1.0",
+        "nunomaduro/laravel-console-menu": "^2.1",
         "symfony/yaml": "^4.3",
         "vlucas/phpdotenv": "^3.0"
     },
