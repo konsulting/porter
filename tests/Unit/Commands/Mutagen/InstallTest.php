@@ -2,9 +2,8 @@
 
 namespace Tests\Unit\Commands\Mutagen;
 
-use Tests\BaseTestCase;
 use App\Support\Mutagen\Mutagen;
-
+use Tests\BaseTestCase;
 
 class InstallTest extends BaseTestCase
 {

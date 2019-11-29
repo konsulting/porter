@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Events;
-
 
 class StoppedPorterService
 {

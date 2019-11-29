@@ -26,8 +26,9 @@ class YamlBuilder
      *
      * @param $imageSet
      *
-     * @return string
      * @throws \Throwable
+     *
+     * @return string
      */
     public function build(ImageRepository $imageSet)
     {

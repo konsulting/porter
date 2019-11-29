@@ -1,13 +1,11 @@
 <?php
 
-
 namespace App\Support\DockerSync;
 
-
-use App\Events\StartingPorter;
-use App\Events\StoppingPorter;
 use App\Events\BuiltDockerCompose;
+use App\Events\StartingPorter;
 use App\Events\StartingPorterService;
+use App\Events\StoppingPorter;
 use App\Events\StoppingPorterService;
 use App\Support\Console\ConsoleWriter;
 
@@ -44,7 +42,7 @@ class EventSubscriber
     public function adaptDockerCompose(BuiltDockerCompose $event)
     {
         if ($this->dockerSync->isActive()) {
-            app(ConsoleWriter::class)->info("Adapting DockerCompose YAML for DockerSync");
+            app(ConsoleWriter::class)->info('Adapting DockerCompose YAML for DockerSync');
             $this->dockerSync->adjustDockerComposeSetup($event->filePath);
         }
     }
@@ -52,15 +50,16 @@ class EventSubscriber
     /**
      * Register the listeners for the subscriber.
      *
-     * @param  Illuminate\Events\Dispatcher  $events
+     * @param Illuminate\Events\Dispatcher $events
+     *
      * @return void
      */
     public function subscribe($events)
     {
-        $events->listen(StartingPorter::class, static::class."@startAll");
-        $events->listen(StartingPorterService::class, static::class."@startForService");
-        $events->listen(StoppingPorter::class, static::class."@stopAll");
-        $events->listen(StoppingPorterService::class, static::class."@stopForService");
-        $events->listen(BuiltDockerCompose::class, static::class."@adaptDockerCompose");
+        $events->listen(StartingPorter::class, static::class.'@startAll');
+        $events->listen(StartingPorterService::class, static::class.'@startForService');
+        $events->listen(StoppingPorter::class, static::class.'@stopAll');
+        $events->listen(StoppingPorterService::class, static::class.'@stopForService');
+        $events->listen(BuiltDockerCompose::class, static::class.'@adaptDockerCompose');
     }
 }
