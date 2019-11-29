@@ -3,11 +3,11 @@
 namespace Tests\Unit\Support\Mechanics;
 
 use App\Support\Console\Cli;
-use App\Support\Mutagen\Mutagen;
-use App\Support\Mechanics\MacOs;
 use App\Support\Mechanics\Linux;
+use App\Support\Mechanics\MacOs;
 use App\Support\Mechanics\Windows;
 use App\Support\Mutagen\CannotInstallDockerSync;
+use App\Support\Mutagen\Mutagen;
 
 class MutagenTest extends MechanicTestCase
 {
@@ -53,24 +53,20 @@ class MutagenTest extends MechanicTestCase
     /** @test */
     public function it_will_start_the_daemon_when_porter_starts_and_mutagen_is_active()
     {
-
     }
 
     /** @test */
     public function it_will_stop_the_daemon_when_porter_stops_and_mutagen_is_active()
     {
-
     }
 
     /** @test */
     public function it_stops_fast_dirs_from_being_mounted_by_docker_when_active()
     {
-
     }
 
     /** @test */
     public function it_creates_the_mounts_it_needs_when_active()
     {
-
     }
 }

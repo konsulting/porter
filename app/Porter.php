@@ -2,17 +2,17 @@
 
 namespace App;
 
+use App\Events\BuiltDockerCompose;
+use App\Events\StartedPorter;
+use App\Events\StartedPorterService;
+use App\Events\StartingPorter;
+use App\Events\StartingPorterService;
+use App\Events\StoppedPorter;
+use App\Events\StoppedPorterService;
+use App\Events\StoppingPorter;
+use App\Events\StoppingPorterService;
 use App\Models\PhpVersion;
 use App\Models\Setting;
-use App\Events\StartedPorter;
-use App\Events\StoppedPorter;
-use App\Events\StoppingPorter;
-use App\Events\StartingPorter;
-use App\Events\BuiltDockerCompose;
-use App\Events\StartedPorterService;
-use App\Events\StoppedPorterService;
-use App\Events\StoppingPorterService;
-use App\Events\StartingPorterService;
 use App\Support\Console\DockerCompose\CliCommandFactory;
 use App\Support\Console\DockerCompose\YamlBuilder;
 use App\Support\Contracts\Cli;
@@ -101,11 +101,11 @@ class Porter
     {
         $recreate = $recreate ? '--force-recreate ' : '';
 
-        event(is_null($service) ? new StartingPorter : new StartingPorterService($service));
+        event(is_null($service) ? new StartingPorter() : new StartingPorterService($service));
 
         $this->dockerCompose->command("up -d {$recreate}--remove-orphans {$service}")->realTime()->perform();
 
-        event(is_null($service) ? new StartedPorter : new StartedPorterService($service));
+        event(is_null($service) ? new StartedPorter() : new StartedPorterService($service));
     }
 
     /**
@@ -115,7 +115,7 @@ class Porter
      */
     public function stop($service = null)
     {
-        event(is_null($service) ? new StoppingPorter : new StoppingPorterService($service));
+        event(is_null($service) ? new StoppingPorter() : new StoppingPorterService($service));
 
         if ($service) {
             $this->dockerCompose->command("stop {$service}")->realTime()->perform();
@@ -125,7 +125,7 @@ class Porter
         }
 
         $this->dockerCompose->command('down --remove-orphans')->realTime()->perform();
-        event(new StoppedPorter);
+        event(new StoppedPorter());
     }
 
     /**
