@@ -1,17 +1,15 @@
 <?php
 
-
 namespace App\Support\Mutagen;
 
-
-use App\PorterLibrary;
 use App\Models\PhpVersion;
-use Illuminate\Support\Str;
+use App\PorterLibrary;
 use App\Support\Contracts\Cli;
 use App\Support\Mechanics\MacOs;
-use Symfony\Component\Yaml\Yaml;
 use App\Support\Mechanics\Mechanic;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Str;
+use Symfony\Component\Yaml\Yaml;
 
 class Mutagen
 {
@@ -46,26 +44,26 @@ class Mutagen
 
     public function startDaemon()
     {
-        if (! $this->isActive()) {
+        if (!$this->isActive()) {
             return;
         }
 
-        $this->cli->exec("mutagen daemon start");
+        $this->cli->exec('mutagen daemon start');
     }
 
     public function stopDaemon()
     {
-        if (! $this->isActive()) {
+        if (!$this->isActive()) {
             return;
         }
 
-        $this->cli->exec("mutagen sync terminate -a");
-        $this->cli->exec("mutagen daemon stop");
+        $this->cli->exec('mutagen sync terminate -a');
+        $this->cli->exec('mutagen daemon stop');
     }
 
     public function syncVolumes()
     {
-        if (! $this->isActive()) {
+        if (!$this->isActive()) {
             return;
         }
 
@@ -82,7 +80,7 @@ class Mutagen
 
         $home = setting('home');
 
-        foreach(PhpVersion::active()->get() as $version) {
+        foreach (PhpVersion::active()->get() as $version) {
 //            $this->syncVolume($home, $version->cli_name, '/srv/app');
             $this->syncVolume($home, $version->fpm_name, '/srv/app');
         }
@@ -93,7 +91,7 @@ class Mutagen
 
     public function syncVolume($localPath, $container, $containerPath)
     {
-        if (! $this->isActive()) {
+        if (!$this->isActive()) {
             return;
         }
 
@@ -110,7 +108,7 @@ class Mutagen
 
     public function removeVolumesFromDockerCompose(string $file)
     {
-        if (! $this->isActive()) {
+        if (!$this->isActive()) {
             return;
         }
 
@@ -125,7 +123,7 @@ class Mutagen
 //            unset($yaml['services']['redis']['volumes']);
 //        }
 
-        foreach(PhpVersion::active()->get() as $version) {
+        foreach (PhpVersion::active()->get() as $version) {
 //            unset($yaml['services'][$version->cli_name]['volumes'][0]);
             unset($yaml['services'][$version->fpm_name]['volumes'][0]);
 //            $yaml['services'][$version->cli_name]['volumes'] = array_values($yaml['services'][$version->cli_name]['volumes']);

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Events;
-
 
 class StoppedPorter
 {
@@ -13,4 +11,3 @@ class StoppedPorter
         //
     }
 }
-

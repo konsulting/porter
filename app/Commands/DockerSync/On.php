@@ -3,7 +3,6 @@
 namespace App\Commands\DockerSync;
 
 use App\Commands\BaseCommand;
-use App\Support\Mutagen\Mutagen;
 
 class On extends BaseCommand
 {

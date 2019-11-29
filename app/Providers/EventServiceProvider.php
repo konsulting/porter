@@ -1,11 +1,9 @@
 <?php
 
-
 namespace App\Providers;
 
-
-use App\Support\Mutagen\EventSubscriber as MutagenSubscriber;
 use App\Support\DockerSync\EventSubscriber as DockerSyncSubscriber;
+use App\Support\Mutagen\EventSubscriber as MutagenSubscriber;
 
 class EventServiceProvider extends \Illuminate\Foundation\Support\Providers\EventServiceProvider
 {

@@ -1,17 +1,15 @@
 <?php
 
-
 namespace App\Support\DockerSync;
 
-
-use App\PorterLibrary;
 use App\Models\PhpVersion;
-use Illuminate\Support\Str;
+use App\PorterLibrary;
 use App\Support\Contracts\Cli;
 use App\Support\Mechanics\MacOs;
-use Symfony\Component\Yaml\Yaml;
 use App\Support\Mechanics\Mechanic;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Str;
+use Symfony\Component\Yaml\Yaml;
 
 class DockerSync
 {
@@ -56,7 +54,7 @@ class DockerSync
 
     public function adjustDockerComposeSetup(string $composeFile)
     {
-        if (! $this->isActive()) {
+        if (!$this->isActive()) {
             return;
         }
 
@@ -64,7 +62,7 @@ class DockerSync
         $syncYamlFile = dirname($composeFile).'/docker-sync.yml';
         $syncYaml = [
             'version' => 2,
-            'syncs' => $this->getSyncs(),
+            'syncs'   => $this->getSyncs(),
         ];
 
 //        if (setting('use_mysql') === 'on') {
@@ -75,7 +73,7 @@ class DockerSync
 //            $composeYaml['services']['redis']['volumes'][0] = $this->replaceSync($composeYaml['services']['redis']['volumes'][0], 'redis-data');
 //        }
 
-        foreach(PhpVersion::active()->get() as $version) {
+        foreach (PhpVersion::active()->get() as $version) {
             $composeYaml['services'][$version->cli_name]['volumes'][0] = $this->replaceSync($composeYaml['services'][$version->cli_name]['volumes'][0]);
             $composeYaml['services'][$version->fpm_name]['volumes'][0] = $this->replaceSync($composeYaml['services'][$version->fpm_name]['volumes'][0]);
         }
@@ -96,7 +94,7 @@ class DockerSync
     {
         return [
             'home' => [
-                'src' => $this->homePath,
+                'src'           => $this->homePath,
                 'watch_excludes'=> ['.*/.git', '.*/node_modules'],
             ],
 //            'mysql-data' => $this->library->path().'/data/mysql',
@@ -139,7 +137,7 @@ class DockerSync
 
     public function startDaemon()
     {
-        if (! $this->isActive()) {
+        if (!$this->isActive()) {
             return;
         }
 
@@ -148,7 +146,7 @@ class DockerSync
 
     public function stopDaemon()
     {
-        if (! $this->isActive()) {
+        if (!$this->isActive()) {
             return;
         }
 
@@ -157,6 +155,6 @@ class DockerSync
 
     public function getPath()
     {
-        return str_replace("\n", "", $this->cli->exec("ruby -r rubygems -e 'puts Gem.user_dir'"))."/bin/";
+        return str_replace("\n", '', $this->cli->exec("ruby -r rubygems -e 'puts Gem.user_dir'")).'/bin/';
     }
 }
