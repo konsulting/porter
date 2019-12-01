@@ -6,9 +6,9 @@ use App\Support\Console\Cli;
 use App\Support\Mechanics\Linux;
 use App\Support\Mechanics\MacOs;
 use App\Support\Mechanics\Windows;
-use Illuminate\Filesystem\Filesystem;
 use App\Support\Mutagen\CannotInstallMutagen;
 use App\Support\Mutagen\Mutagen;
+use Illuminate\Filesystem\Filesystem;
 
 class MutagenTest extends MechanicTestCase
 {
@@ -24,7 +24,7 @@ class MutagenTest extends MechanicTestCase
     /** @test */
     public function it_installs_mutagen_on_macos()
     {
-        $mutagen = new Mutagen(app(MacOs::class), $this->cli, new Filesystem);
+        $mutagen = new Mutagen(app(MacOs::class), $this->cli, new Filesystem());
 
         $this->cli->shouldReceive('passthru')
             ->with('brew install havoc-io/mutagen/mutagen')
@@ -37,7 +37,7 @@ class MutagenTest extends MechanicTestCase
     public function it_will_not_install_on_linux()
     {
         $this->expectException(CannotInstallMutagen::class);
-        $mutagen = new Mutagen(app(Linux::class), $this->cli, new Filesystem);
+        $mutagen = new Mutagen(app(Linux::class), $this->cli, new Filesystem());
 
         $mutagen->install();
     }
@@ -46,7 +46,7 @@ class MutagenTest extends MechanicTestCase
     public function it_will_not_install_on_windows()
     {
         $this->expectException(CannotInstallMutagen::class);
-        $mutagen = new Mutagen(app(Windows::class), $this->cli, new Filesystem);
+        $mutagen = new Mutagen(app(Windows::class), $this->cli, new Filesystem());
 
         $mutagen->install();
     }
