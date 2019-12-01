@@ -19,8 +19,6 @@ class DockerSync
     protected $cli;
     /** @var FileSystem */
     protected $files;
-    /** @var string|null */
-    protected $homePath;
     /** @var PorterLibrary */
     private $library;
 
@@ -29,7 +27,6 @@ class DockerSync
         $this->mechanic = $mechanic;
         $this->cli = $cli;
         $this->files = $files;
-        $this->homePath = setting('home');
         $this->library = $library;
     }
 
@@ -94,7 +91,7 @@ class DockerSync
     {
         return [
             'home' => [
-                'src'           => $this->homePath,
+                'src'           => setting('home'),
                 'watch_excludes'=> ['.*/.git', '.*/node_modules'],
             ],
 //            'mysql-data' => $this->library->path().'/data/mysql',
