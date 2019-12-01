@@ -4,7 +4,6 @@ namespace Tests\Unit\Commands;
 
 use App\Commands\MakeFiles;
 use App\Models\Setting;
-use Illuminate\Support\Facades\Artisan;
 use Tests\BaseTestCase;
 
 class HomeTest extends BaseTestCase
