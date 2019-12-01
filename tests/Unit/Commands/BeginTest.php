@@ -4,7 +4,6 @@ namespace Tests\Unit\Commands;
 
 use App\Support\Images\Organiser\Organiser;
 use App\Support\Mechanics\Mechanic;
-use Illuminate\Support\Facades\Artisan;
 use Tests\BaseTestCase;
 
 class BeginTest extends BaseTestCase
@@ -33,10 +32,8 @@ class BeginTest extends BaseTestCase
         $home = storage_path('temp/test_home');
         file_exists($home) ? null : mkdir($home, 0777, true);
 
-        $this->artisan('begin', ['--force' => true, 'home' => $home]);
-
-        $expected = "Setting home to {$home}";
-        $this->stringContains($expected)->evaluate(Artisan::output());
+        $this->artisan('begin', ['--force' => true, 'home' => $home])
+            ->expectsOutput("Setting home to {$home}");
     }
 
     /** @test */
@@ -44,10 +41,8 @@ class BeginTest extends BaseTestCase
     {
         $this->mockMechanic();
 
-        $this->artisan('begin', ['--force' => true, '--no-interaction' => true]);
-
-        $expected = 'Setting home to '.getcwd();
-        $this->stringContains($expected)->evaluate(Artisan::output());
+        $this->artisan('begin', ['--force' => true, '--no-interaction' => true])
+            ->expectsOutput('Setting home to '.getcwd());
     }
 
     protected function mockMechanic()

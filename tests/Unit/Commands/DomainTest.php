@@ -16,9 +16,8 @@ class DomainTest extends BaseTestCase
     {
         Setting::updateOrCreate('domain', 'test');
 
-        $this->artisan('domain');
-
-        $this->assertRegExp('/\'test\'/', Artisan::output());
+        $this->artisan('domain')
+            ->expectsOutput('The current domain is \'test\'');
     }
 
     /** @test */

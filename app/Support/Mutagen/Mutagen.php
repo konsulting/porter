@@ -102,7 +102,7 @@ class Mutagen
     protected function checkForMacOs(): void
     {
         if (get_class($this->mechanic) !== MacOs::class) {
-            throw new CannotInstallDockerSync('The OS must be MacOs');
+            throw new CannotInstallMutagen('The OS must be MacOs');
         }
     }
 
