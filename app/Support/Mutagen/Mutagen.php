@@ -27,7 +27,7 @@ class Mutagen
     }
 
     /**
-     * Check if mutagen is already active
+     * Check if mutagen is already active.
      *
      * @return bool
      */
@@ -37,7 +37,7 @@ class Mutagen
     }
 
     /**
-     * Install mutagen
+     * Install mutagen.
      *
      * @throws CannotInstallMutagen
      */
@@ -49,7 +49,7 @@ class Mutagen
     }
 
     /**
-     * Start the mutagen daemon
+     * Start the mutagen daemon.
      */
     public function startDaemon()
     {
@@ -61,7 +61,7 @@ class Mutagen
     }
 
     /**
-     * Stop the mutagen daemon and terminate sync processes
+     * Stop the mutagen daemon and terminate sync processes.
      */
     public function stopDaemon()
     {
@@ -94,7 +94,7 @@ class Mutagen
     }
 
     /**
-     * Spawn a sync process for a volume
+     * Spawn a sync process for a volume.
      *
      * @param $localPath
      * @param $container
@@ -111,7 +111,7 @@ class Mutagen
     }
 
     /**
-     * Check that the command is running on MacOS
+     * Check that the command is running on MacOS.
      *
      * @throws CannotInstallMutagen
      */
@@ -123,9 +123,9 @@ class Mutagen
     }
 
     /**
-     * Remove the synced volumes from docker-compose.yaml
+     * Remove the synced volumes from docker-compose.yaml.
      *
-     * @param  string  $file
+     * @param string $file
      *
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
@@ -149,12 +149,13 @@ class Mutagen
     }
 
     /**
-     * Get the yaml from the file
+     * Get the yaml from the file.
      *
-     * @param  string  $file
+     * @param string $file
+     *
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      *
      * @return mixed
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function getYaml(string $file)
     {
@@ -162,10 +163,10 @@ class Mutagen
     }
 
     /**
-     * Save array to yaml file
+     * Save array to yaml file.
      *
-     * @param  string  $file
-     * @param  array   $yaml
+     * @param string $file
+     * @param array  $yaml
      */
     public function putYaml(string $file, array $yaml)
     {

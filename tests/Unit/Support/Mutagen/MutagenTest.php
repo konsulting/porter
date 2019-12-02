@@ -2,11 +2,9 @@
 
 namespace Tests\Unit\Support;
 
-use Mockery;
-use App\Models\Site;
-use Tests\BaseTestCase;
-use App\Models\Setting;
 use App\Models\PhpVersion;
+use App\Models\Setting;
+use App\Models\Site;
 use App\Support\Console\Cli;
 use App\Support\Mechanics\Linux;
 use App\Support\Mechanics\MacOs;
@@ -14,6 +12,8 @@ use App\Support\Mechanics\Windows;
 use App\Support\Mutagen\CannotInstallMutagen;
 use App\Support\Mutagen\Mutagen;
 use Illuminate\Filesystem\Filesystem;
+use Mockery;
+use Tests\BaseTestCase;
 
 class MutagenTest extends BaseTestCase
 {
@@ -92,7 +92,7 @@ class MutagenTest extends BaseTestCase
         $v = factory(PhpVersion::class)->create(['version_number' => '7.1']);
         factory(Site::class)->create(['php_version_id' => $v->id]);
 
-        $files->shouldReceive('get')->with('dc.yaml')->andReturn(<<<EOB
+        $files->shouldReceive('get')->with('dc.yaml')->andReturn(<<<'EOB'
 services:
   php_fpm_7-1:
     volumes:
