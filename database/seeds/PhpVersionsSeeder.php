@@ -16,6 +16,7 @@ class PhpVersionsSeeder extends Seeder
         PhpVersion::create(['version_number' => '7.0', 'default' => false]);
         PhpVersion::create(['version_number' => '7.1', 'default' => false]);
         PhpVersion::create(['version_number' => '7.2', 'default' => false]);
-        PhpVersion::create(['version_number' => '7.3', 'default' => true]);
+        PhpVersion::create(['version_number' => '7.3', 'default' => false]);
+        PhpVersion::create(['version_number' => '7.4', 'default' => true]);
     }
 }
