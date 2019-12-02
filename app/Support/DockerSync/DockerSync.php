@@ -8,7 +8,6 @@ use App\Support\Contracts\Cli;
 use App\Support\Mechanics\MacOs;
 use App\Support\Mechanics\Mechanic;
 use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Str;
 use Symfony\Component\Yaml\Yaml;
 
 class DockerSync
@@ -31,7 +30,8 @@ class DockerSync
     }
 
     /**
-     * Check if docker-sync is active
+     * Check if docker-sync is active.
+     *
      * @return bool
      */
     public function isActive()
@@ -40,7 +40,7 @@ class DockerSync
     }
 
     /**
-     * Install docker-sync
+     * Install docker-sync.
      *
      * @throws CannotInstallDockerSync
      */
@@ -52,7 +52,8 @@ class DockerSync
     }
 
     /**
-     * Check this command is running on MacOS
+     * Check this command is running on MacOS.
+     *
      * @throws CannotInstallDockerSync
      */
     protected function checkForMacOs(): void
@@ -63,11 +64,11 @@ class DockerSync
     }
 
     /**
-     * Adjust the docker-compose file to point to sync volumes, create docker-sync.yaml
+     * Adjust the docker-compose file to point to sync volumes, create docker-sync.yaml.
      *
      * MySQL and Redis usage not explored as yet.
      *
-     * @param  string  $composeFile
+     * @param string $composeFile
      *
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
@@ -127,12 +128,13 @@ class DockerSync
     }
 
     /**
-     * Get the yaml from the file
+     * Get the yaml from the file.
      *
-     * @param  string  $file
+     * @param string $file
+     *
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      *
      * @return mixed
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     public function getYaml(string $file)
     {
@@ -140,10 +142,10 @@ class DockerSync
     }
 
     /**
-     * Save array to yaml file
+     * Save array to yaml file.
      *
-     * @param  string  $file
-     * @param  array   $yaml
+     * @param string $file
+     * @param array  $yaml
      */
     public function putYaml(string $file, array $yaml)
     {
@@ -151,7 +153,7 @@ class DockerSync
     }
 
     /**
-     * Start the docker-syn daemon
+     * Start the docker-syn daemon.
      */
     public function startDaemon()
     {
@@ -163,7 +165,7 @@ class DockerSync
     }
 
     /**
-     * Stop the docker-sync daemon
+     * Stop the docker-sync daemon.
      */
     public function stopDaemon()
     {
@@ -175,7 +177,7 @@ class DockerSync
     }
 
     /**
-     * Get the path for docker-sync
+     * Get the path for docker-sync.
      *
      * @return string
      */

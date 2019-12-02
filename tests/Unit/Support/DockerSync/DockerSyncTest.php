@@ -2,19 +2,19 @@
 
 namespace Tests\Unit\Support;
 
-use Mockery;
+use App\Models\PhpVersion;
+use App\Models\Setting;
 use App\Models\Site;
 use App\PorterLibrary;
-use Tests\BaseTestCase;
-use App\Models\Setting;
-use App\Models\PhpVersion;
 use App\Support\Console\Cli;
+use App\Support\DockerSync\CannotInstallDockerSync;
+use App\Support\DockerSync\DockerSync;
 use App\Support\Mechanics\Linux;
 use App\Support\Mechanics\MacOs;
 use App\Support\Mechanics\Windows;
-use App\Support\DockerSync\DockerSync;
-use App\Support\DockerSync\CannotInstallDockerSync;
 use Illuminate\Filesystem\Filesystem;
+use Mockery;
+use Tests\BaseTestCase;
 
 class DockerSyncTest extends BaseTestCase
 {
@@ -103,7 +103,7 @@ class DockerSyncTest extends BaseTestCase
         $v = factory(PhpVersion::class)->create(['version_number' => '7.1']);
         factory(Site::class)->create(['php_version_id' => $v->id]);
 
-        $files->shouldReceive('get')->with('dcdir/dc.yaml')->andReturn(<<<EOB
+        $files->shouldReceive('get')->with('dcdir/dc.yaml')->andReturn(<<<'EOB'
 services:
   php_cli_7-1:
     volumes:
