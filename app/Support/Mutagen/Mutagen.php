@@ -3,7 +3,6 @@
 namespace App\Support\Mutagen;
 
 use App\Models\PhpVersion;
-use App\PorterLibrary;
 use App\Support\Contracts\Cli;
 use App\Support\Mechanics\MacOs;
 use App\Support\Mechanics\Mechanic;
@@ -27,14 +26,21 @@ class Mutagen
         $this->files = $files;
     }
 
-    // Mutagen needs to hook into porter start/stop/restart to start/stop itself
-    // Mutagen needs to stop some volumes form being linked in Docker
-
+    /**
+     * Check if mutagen is already active
+     *
+     * @return bool
+     */
     public function isActive()
     {
         return setting('use_mutagen') === 'on';
     }
 
+    /**
+     * Install mutagen
+     *
+     * @throws CannotInstallMutagen
+     */
     public function install()
     {
         $this->checkForMacOs();
@@ -42,6 +48,9 @@ class Mutagen
         $this->cli->passthru('brew install havoc-io/mutagen/mutagen');
     }
 
+    /**
+     * Start the mutagen daemon
+     */
     public function startDaemon()
     {
         if (!$this->isActive()) {
@@ -51,6 +60,9 @@ class Mutagen
         $this->cli->exec('mutagen daemon start');
     }
 
+    /**
+     * Stop the mutagen daemon and terminate sync processes
+     */
     public function stopDaemon()
     {
         if (!$this->isActive()) {
@@ -61,34 +73,33 @@ class Mutagen
         $this->cli->exec('mutagen daemon stop');
     }
 
+    /**
+     * Add syncs for php fpm and nginx volume. Mutagen is not recommended for use with
+     * mysql/redis volumes, and cannot be used with the PHP CLI/Node containers since
+     * they do not remain started.
+     */
     public function syncVolumes()
     {
         if (!$this->isActive()) {
             return;
         }
 
-        /** @var PorterLibrary $lib */
-        $lib = app(PorterLibrary::class);
-
-//        if (setting('use_mysql') === 'on') {
-//            $this->syncVolume($lib->path().'/data/mysql', 'mysql', '/var/lib/mysql');
-//        }
-
-//        if (setting('use_redis') === 'on') {
-//            $this->syncVolume($lib->path().'/data/redis', 'redis', '/data');
-//        }
-
         $home = setting('home');
 
         foreach (PhpVersion::active()->get() as $version) {
-//            $this->syncVolume($home, $version->cli_name, '/srv/app');
             $this->syncVolume($home, $version->fpm_name, '/srv/app');
         }
 
         $this->syncVolume($home, 'nginx', '/srv/app');
-//        $this->syncVolume($home, 'node', '/srv/app');
     }
 
+    /**
+     * Spawn a sync process for a volume
+     *
+     * @param $localPath
+     * @param $container
+     * @param $containerPath
+     */
     public function syncVolume($localPath, $container, $containerPath)
     {
         if (!$this->isActive()) {
@@ -99,6 +110,11 @@ class Mutagen
         $this->cli->passthru("mutagen sync create --symlink-mode=ignore --ignore-vcs --ignore=['node_modules'] {$localPath} \docker://porter_{$container}_1{$containerPath}");
     }
 
+    /**
+     * Check that the command is running on MacOS
+     *
+     * @throws CannotInstallMutagen
+     */
     protected function checkForMacOs(): void
     {
         if (get_class($this->mechanic) !== MacOs::class) {
@@ -106,6 +122,13 @@ class Mutagen
         }
     }
 
+    /**
+     * Remove the synced volumes from docker-compose.yaml
+     *
+     * @param  string  $file
+     *
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     */
     public function removeVolumesFromDockerCompose(string $file)
     {
         if (!$this->isActive()) {
@@ -114,35 +137,36 @@ class Mutagen
 
         $yaml = $this->getYaml($file);
 
-//        if (setting('use_mysql') === 'on') {
-//            unset($yaml['services']['mysql']['volumes'][0]);
-//            $yaml['services']['mysql']['volumes'] = array_values($yaml['services']['mysql']['volumes']);
-//        }
-
-//        if (setting('use_redis') === 'on') {
-//            unset($yaml['services']['redis']['volumes']);
-//        }
-
         foreach (PhpVersion::active()->get() as $version) {
-//            unset($yaml['services'][$version->cli_name]['volumes'][0]);
             unset($yaml['services'][$version->fpm_name]['volumes'][0]);
-//            $yaml['services'][$version->cli_name]['volumes'] = array_values($yaml['services'][$version->cli_name]['volumes']);
             $yaml['services'][$version->fpm_name]['volumes'] = array_values($yaml['services'][$version->fpm_name]['volumes']);
         }
 
-//        unset($yaml['services']['node']['volumes'][0]);
         unset($yaml['services']['nginx']['volumes'][0]);
-//        $yaml['services']['node']['volumes'] = array_values($yaml['services']['node']['volumes']);
         $yaml['services']['nginx']['volumes'] = array_values($yaml['services']['nginx']['volumes']);
 
         $this->putYaml($file, $yaml);
     }
 
+    /**
+     * Get the yaml from the file
+     *
+     * @param  string  $file
+     *
+     * @return mixed
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     */
     public function getYaml(string $file)
     {
-        return Yaml::parseFile($file);
+        return Yaml::parse($this->files->get($file));
     }
 
+    /**
+     * Save array to yaml file
+     *
+     * @param  string  $file
+     * @param  array   $yaml
+     */
     public function putYaml(string $file, array $yaml)
     {
         $this->files->put($file, Yaml::dump($yaml, 5, 2));

@@ -30,11 +30,20 @@ class DockerSync
         $this->library = $library;
     }
 
+    /**
+     * Check if docker-sync is active
+     * @return bool
+     */
     public function isActive()
     {
         return setting('use_docker-sync') === 'on';
     }
 
+    /**
+     * Install docker-sync
+     *
+     * @throws CannotInstallDockerSync
+     */
     public function install()
     {
         $this->checkForMacOs();
@@ -42,6 +51,10 @@ class DockerSync
         $this->cli->passthru('gem install --user-install docker-sync');
     }
 
+    /**
+     * Check this command is running on MacOS
+     * @throws CannotInstallDockerSync
+     */
     protected function checkForMacOs(): void
     {
         if (get_class($this->mechanic) !== MacOs::class) {
@@ -49,6 +62,15 @@ class DockerSync
         }
     }
 
+    /**
+     * Adjust the docker-compose file to point to sync volumes, create docker-sync.yaml
+     *
+     * MySQL and Redis usage not explored as yet.
+     *
+     * @param  string  $composeFile
+     *
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     */
     public function adjustDockerComposeSetup(string $composeFile)
     {
         if (!$this->isActive()) {
@@ -61,14 +83,6 @@ class DockerSync
             'version' => 2,
             'syncs'   => $this->getSyncs(),
         ];
-
-//        if (setting('use_mysql') === 'on') {
-//            $composeYaml['services']['mysql']['volumes'][0] = $this->replaceSync($composeYaml['services']['mysql']['volumes'][0], 'mysql-data');
-//        }
-//
-//        if (setting('use_redis') === 'on') {
-//            $composeYaml['services']['redis']['volumes'][0] = $this->replaceSync($composeYaml['services']['redis']['volumes'][0], 'redis-data');
-//        }
 
         foreach (PhpVersion::active()->get() as $version) {
             $composeYaml['services'][$version->cli_name]['volumes'][0] = $this->replaceSync($composeYaml['services'][$version->cli_name]['volumes'][0]);
@@ -83,7 +97,6 @@ class DockerSync
         }, $this->getSyncs());
 
         $this->putYaml($composeFile, $composeYaml);
-//        $this->putYaml(str_replace('docker-compose', 'docker-compose-dev', $composeFile), $composeYaml);
         $this->putYaml($syncYamlFile, $syncYaml);
     }
 
@@ -94,8 +107,6 @@ class DockerSync
                 'src'           => setting('home'),
                 'watch_excludes'=> ['.*/.git', '.*/node_modules'],
             ],
-//            'mysql-data' => $this->library->path().'/data/mysql',
-//            'redis-data' => $this->library->path().'/data/redis',
         ];
     }
 
@@ -105,7 +116,6 @@ class DockerSync
 
         $source = $pathParts[0];
         $target = $pathParts[1];
-        // $settings = $pathParts[2] ?? '';
 
         $syncPath = $this->getSyncs()[$sync]['src'];
 
@@ -114,24 +124,35 @@ class DockerSync
         }
 
         return implode(':', [$sync, $target, 'nocopy']);
-//        return [
-//            'type' => 'volume',
-//            'source' => $sync,
-//            'target' => $target,
-//            'volume' => ['nocopy' => true],
-//        ];
     }
 
+    /**
+     * Get the yaml from the file
+     *
+     * @param  string  $file
+     *
+     * @return mixed
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     */
     public function getYaml(string $file)
     {
-        return Yaml::parseFile($file);
+        return Yaml::parse($this->files->get($file));
     }
 
+    /**
+     * Save array to yaml file
+     *
+     * @param  string  $file
+     * @param  array   $yaml
+     */
     public function putYaml(string $file, array $yaml)
     {
         $this->files->put($file, Yaml::dump($yaml, 5, 2));
     }
 
+    /**
+     * Start the docker-syn daemon
+     */
     public function startDaemon()
     {
         if (!$this->isActive()) {
@@ -141,6 +162,9 @@ class DockerSync
         $this->cli->execRealTime($this->getPath().'docker-sync start --config="'.$this->library->path().'/docker-sync.yml"');
     }
 
+    /**
+     * Stop the docker-sync daemon
+     */
     public function stopDaemon()
     {
         if (!$this->isActive()) {
@@ -150,6 +174,11 @@ class DockerSync
         $this->cli->execRealTime($this->getPath().'docker-sync stop --config="'.$this->library->path().'/docker-sync.yml"');
     }
 
+    /**
+     * Get the path for docker-sync
+     *
+     * @return string
+     */
     public function getPath()
     {
         return str_replace("\n", '', $this->cli->exec("ruby -r rubygems -e 'puts Gem.user_dir'")).'/bin/';
