@@ -18,7 +18,7 @@ Contributions are welcome.  We are a small company, so please be patient if your
 
  - Docker 18.06+
  - Docker Compose (1.22+)
- - PHP 7.1+ on host machine
+ - PHP 7.2+ on host machine
 
 ## Installation
 
