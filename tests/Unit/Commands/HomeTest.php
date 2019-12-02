@@ -4,19 +4,17 @@ namespace Tests\Unit\Commands;
 
 use App\Commands\MakeFiles;
 use App\Models\Setting;
-use Illuminate\Support\Facades\Artisan;
 use Tests\BaseTestCase;
 
 class HomeTest extends BaseTestCase
 {
     /** @test */
-    public function it_outputs_the_current_home()
+    public function it_outputs_the_current_home(): void
     {
         Setting::updateOrCreate('home', 'home');
 
-        $this->artisan('home', ['--show' => true]);
-
-        $this->assertRegExp('/Home is currently: home/', Artisan::output());
+        $this->artisan('home', ['--show' => true])
+            ->expectsOutput('Home is currently: home');
     }
 
     /** @test */
@@ -27,9 +25,8 @@ class HomeTest extends BaseTestCase
         Setting::updateOrCreate('home', 'old_home');
         $home = base_path('tests/TestWebRoot');
 
-        $this->artisan('home', ['path' => $home]);
-
-        $this->assertRegExp('/Setting home to '.preg_quote($home, '/').'/', Artisan::output());
+        $this->artisan('home', ['path' => $home])
+            ->expectsOutput('Setting home to '.$home);
 
         $this->assertEquals($home, setting('home'));
     }

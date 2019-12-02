@@ -57,11 +57,6 @@ return [
         Illuminate\Console\Scheduling\ScheduleFinishCommand::class,
         Illuminate\Foundation\Console\VendorPublishCommand::class,
 
-        \LaravelZero\Framework\Commands\App\Builder::class,
-        \LaravelZero\Framework\Commands\App\Installer::class,
-        \LaravelZero\Framework\Commands\App\Renamer::class,
-        \LaravelZero\Framework\Commands\App\CommandMaker::class,
-
         \Intonate\TinkerZero\Console\TinkerZeroCommand::class,
 
         \Illuminate\Database\Console\Migrations\InstallCommand::class,

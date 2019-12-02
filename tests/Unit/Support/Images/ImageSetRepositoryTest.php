@@ -60,7 +60,7 @@ class ImageSetRepositoryTest extends BaseTestCase
         ]);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
 

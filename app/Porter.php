@@ -2,6 +2,15 @@
 
 namespace App;
 
+use App\Events\BuiltDockerCompose;
+use App\Events\StartedPorter;
+use App\Events\StartedPorterService;
+use App\Events\StartingPorter;
+use App\Events\StartingPorterService;
+use App\Events\StoppedPorter;
+use App\Events\StoppedPorterService;
+use App\Events\StoppingPorter;
+use App\Events\StoppingPorterService;
 use App\Models\PhpVersion;
 use App\Models\Setting;
 use App\Support\Console\DockerCompose\CliCommandFactory;
@@ -77,7 +86,9 @@ class Porter
      */
     public function compose()
     {
-        $this->yamlBuilder->build($this->getDockerImageSet());
+        $filePath = $this->yamlBuilder->build($this->getDockerImageSet());
+
+        event(new BuiltDockerCompose($filePath));
     }
 
     /**
@@ -90,7 +101,11 @@ class Porter
     {
         $recreate = $recreate ? '--force-recreate ' : '';
 
+        event(is_null($service) ? new StartingPorter() : new StartingPorterService($service));
+
         $this->dockerCompose->command("up -d {$recreate}--remove-orphans {$service}")->realTime()->perform();
+
+        event(is_null($service) ? new StartedPorter() : new StartedPorterService($service));
     }
 
     /**
@@ -100,13 +115,17 @@ class Porter
      */
     public function stop($service = null)
     {
+        event(is_null($service) ? new StoppingPorter() : new StoppingPorterService($service));
+
         if ($service) {
             $this->dockerCompose->command("stop {$service}")->realTime()->perform();
+            event(new StoppedPorterService($service));
 
             return;
         }
 
         $this->dockerCompose->command('down --remove-orphans')->realTime()->perform();
+        event(new StoppedPorter());
     }
 
     /**

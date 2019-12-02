@@ -27,13 +27,19 @@ class YamlBuilder
      * @param $imageSet
      *
      * @throws \Throwable
+     *
+     * @return string
      */
     public function build(ImageRepository $imageSet)
     {
+        $path = $this->porterLibrary->dockerComposeFile();
+
         $this->files->put(
-            $this->porterLibrary->dockerComposeFile(),
+            $path,
             $this->renderDockerComposeFile($imageSet)
         );
+
+        return $path;
     }
 
     /**

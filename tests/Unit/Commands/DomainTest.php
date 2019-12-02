@@ -6,7 +6,6 @@ use App\Commands\MakeFiles;
 use App\Commands\Site\RenewCertificates;
 use App\Models\Setting;
 use App\Support\Dnsmasq\Config;
-use Illuminate\Support\Facades\Artisan;
 use Tests\BaseTestCase;
 
 class DomainTest extends BaseTestCase
@@ -16,9 +15,8 @@ class DomainTest extends BaseTestCase
     {
         Setting::updateOrCreate('domain', 'test');
 
-        $this->artisan('domain');
-
-        $this->assertRegExp('/\'test\'/', Artisan::output());
+        $this->artisan('domain')
+            ->expectsOutput('The current domain is \'test\'');
     }
 
     /** @test */

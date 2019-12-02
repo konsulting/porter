@@ -235,6 +235,29 @@ Porter include a `~/.porter/config/user/ssh` directory which is linked to the ro
 
 This means you can add the ssh keys you want to use in your dev environment specifically (if any).
  
+## Docker Sync and Mutagen (consider early Alpha)
+
+Very early stage work has begun on including [mutagen](https://mutagen.io) and [docker-sync](https://docker-sync.io) in order to attempt to speed up some disk usage.  There are issues with the amount of time it takes either to set up these solutions, or the amount of storage required in containers for them.
+We do not recommend using them at the moment, due to the way Porter is set up, they are attempting to use far too many files in the home code directory for initial set up to be satisfactory.
+
+### Docker Sync
+- `porter docker-sync:install`
+- `porter docker-sync:on`
+- `porter docker-sync:off`
+
+### Mutagen
+ - `porter mutagen:install`
+ - `porter mutagen:on`
+ - `porter mutagen:off`
+  
+Adding these items required the addition of some core events to allow intercepting the docker-compose.yaml file production process and the starting/stopping of containers. To do this a number of events were introduced.
+
+ - `App\Events\StartingPorter`
+ - `App\Events\StartingPorterService($service)`
+ - `App\Events\StoppingPorter`
+ - `App\Events\StoppingPorterService($service)`
+ - `App\Events\BuiltDockerCompose($dockerComposeFilePath)` 
+  
 ## Tweaking things
 
 As Porter is based on Docker, it is easy to add new containers as required or to adjust the way the existing containers are built. 
