@@ -243,7 +243,7 @@ class PorterLibrary
      */
     protected function updateAppConfig(Application $app)
     {
-        $app['config']->set('database.connections.default.database', $this->databaseFile());
+        $app['config']->set('database.connections.sqlite.database', $this->databaseFile());
         $app['config']->set('porter.library_path', $this->path);
     }
 

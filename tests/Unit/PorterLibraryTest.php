@@ -131,8 +131,7 @@ class PorterLibraryTest extends BaseTestCase
 
         $lib->setUp($this->app, true);
 
-        $this->assertEquals(config('database.connections.default.database'), '/Users/test/.porter/database.sqlite');
-        $this->assertEquals(config('database.connections.default.database'), '/Users/test/.porter/database.sqlite');
+        $this->assertEquals(config('database.connections.sqlite.database'), '/Users/test/.porter/database.sqlite');
 
         $artisan->shouldHaveReceived('call')->with('migrate:fresh');
         $artisan->shouldHaveReceived('call')->with('db:seed');
@@ -157,8 +156,7 @@ class PorterLibraryTest extends BaseTestCase
 
         $lib->setUp($this->app);
 
-        $this->assertEquals(config('database.connections.default.database'), '/Users/test/.porter/database.sqlite');
-        $this->assertEquals(config('database.connections.default.database'), '/Users/test/.porter/database.sqlite');
+        $this->assertEquals(config('database.connections.sqlite.database'), '/Users/test/.porter/database.sqlite');
 
         $artisan->shouldNotHaveReceived('call');
 
