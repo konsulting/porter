@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\Commands\DockerSync;
 
-use Tests\BaseTestCase;
 use App\Support\DockerSync\DockerSync;
+use Tests\BaseTestCase;
 
 class InstallTest extends BaseTestCase
 {
