@@ -1,5 +1,5 @@
-#VERSION: 1.3.0
-FROM ubuntu:18.04
+#VERSION: 2.0.0
+FROM ubuntu:20.04
 
 RUN apt-get update \
     && apt-get install -y locales \
@@ -51,10 +51,7 @@ RUN sed -i -e "s|xdebug.so|/usr/lib/php/20160303/xdebug.so|" /etc/php/7.1/mods-a
 # Install pdftk
 # based on (https://gitlab.com/pdftk-java/pdftk)
 RUN apt-get update \
-    && apt-get install -y software-properties-common \
-    && add-apt-repository ppa:malteworld/ppa \
         && apt-get -y install pdftk \
-    && apt-get remove -y --purge software-properties-common \
         && apt-get autoremove -y \
         && apt-get clean \
         && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*

@@ -1,5 +1,5 @@
-#VERSION: 1.0.0
-FROM ubuntu:18.04
+#VERSION: 2.0.0
+FROM ubuntu:20.04
 
 RUN apt-get update \
     && apt-get install -y locales \
@@ -50,10 +50,7 @@ RUN curl -sSL "https://github.com/mailhog/mhsendmail/releases/download/v0.2.0/mh
 # Install pdftk
 # based on (https://gitlab.com/pdftk-java/pdftk)
 RUN apt-get update \
-    && apt-get install -y software-properties-common \
-    && add-apt-repository ppa:malteworld/ppa \
         && apt-get -y install pdftk \
-    && apt-get remove -y --purge software-properties-common \
         && apt-get autoremove -y \
         && apt-get clean \
         && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*

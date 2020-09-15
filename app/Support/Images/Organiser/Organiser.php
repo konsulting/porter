@@ -29,18 +29,21 @@ class Organiser
     /**
      * Build the current images.
      *
-     * @param string|null $service
+     * @param  string|null  $service
      *
-     * @throws \Exception
+     * @param  bool  $fresh
+     *
+     * @throws FileNotFoundException
      */
-    public function buildImages($service = null)
+    public function buildImages($service = null, $fresh = false)
     {
         foreach ($this->repository->findByServiceName($service, $firstPartyOnly = true) as $image) {
             /** @var Image $image */
             $version = $this->findBuildVersion($image);
             $name = $image->getUnVersionedName();
+            $freshen = $fresh ? ' --pull --no-cache' : '';
 
-            $this->cli->passthru("docker build -t {$name}:{$version} -t {$name}:latest --rm {$image->getLocalPath()} --");
+            $this->cli->passthru("docker build{$freshen} -t {$name}:{$version} -t {$name}:latest --rm {$image->getLocalPath()} --");
 
             $this->updateConfigVersionForImage($image, $version);
         }

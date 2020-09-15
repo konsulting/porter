@@ -112,6 +112,15 @@ class OrganiserTest extends BaseTestCase
     }
 
     /** @test */
+    public function it_builds_a_fresh_single_first_party_image_ignoring_cache()
+    {
+        $cliPath = $this->imageRepo->getDockerContext().'php_cli';
+
+        $this->expectCommand("docker build --pull --no-cache -t test/repo-php_cli:1.0.0 -t test/repo-php_cli:latest --rm {$cliPath} --", 'passthru');
+        $this->organiser->buildImages('php_cli', $fresh = true);
+    }
+
+    /** @test */
     public function it_does_not_build_third_party_images()
     {
         $this->cli->shouldNotReceive('passthru');
