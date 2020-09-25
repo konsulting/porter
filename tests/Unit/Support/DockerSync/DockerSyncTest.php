@@ -103,7 +103,8 @@ class DockerSyncTest extends BaseTestCase
         $v = factory(PhpVersion::class)->create(['version_number' => '7.1']);
         factory(Site::class)->create(['php_version_id' => $v->id]);
 
-        $files->shouldReceive('get')->with('dcdir/dc.yaml')->andReturn(<<<'EOB'
+        $files->shouldReceive('get')->with('dcdir/dc.yaml')->andReturn(
+            <<<'EOB'
 services:
   php_cli_7-1:
     volumes:
@@ -126,8 +127,10 @@ services:
       - volume1:/srv/app
       - volume2
 EOB
-)->once();
-        $files->shouldReceive('put')->with('dcdir/dc.yaml', <<<EOB
+        )->once();
+        $files->shouldReceive('put')->with(
+            'dcdir/dc.yaml',
+            <<<EOB
 services:
   php_cli_7-1:
     volumes:
@@ -153,9 +156,11 @@ volumes:
   home:
     external: true\n
 EOB
-)->once();
+        )->once();
 
-        $files->shouldReceive('put')->with('dcdir/docker-sync.yml', <<<EOB
+        $files->shouldReceive('put')->with(
+            'dcdir/docker-sync.yml',
+            <<<EOB
 version: 2
 syncs:
   home:
