@@ -29,9 +29,8 @@ class Organiser
     /**
      * Build the current images.
      *
-     * @param  string|null  $service
-     *
-     * @param  bool  $fresh
+     * @param string|null $service
+     * @param bool        $fresh
      *
      * @throws FileNotFoundException
      */

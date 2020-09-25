@@ -92,7 +92,8 @@ class MutagenTest extends BaseTestCase
         $v = factory(PhpVersion::class)->create(['version_number' => '7.1']);
         factory(Site::class)->create(['php_version_id' => $v->id]);
 
-        $files->shouldReceive('get')->with('dc.yaml')->andReturn(<<<'EOB'
+        $files->shouldReceive('get')->with('dc.yaml')->andReturn(
+            <<<'EOB'
 services:
   php_fpm_7-1:
     volumes:
@@ -107,8 +108,10 @@ services:
       - volume1
       - volume2
 EOB
-)->once();
-        $files->shouldReceive('put')->with('dc.yaml', <<<EOB
+        )->once();
+        $files->shouldReceive('put')->with(
+            'dc.yaml',
+            <<<EOB
 services:
   php_fpm_7-1:
     volumes:
@@ -121,7 +124,7 @@ services:
       - volume1
       - volume2\n
 EOB
-)->once();
+        )->once();
         $mutagen->removeVolumesFromDockerCompose('dc.yaml');
     }
 

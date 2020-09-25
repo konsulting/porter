@@ -58,8 +58,10 @@ class CliCommandFactoryTest extends BaseTestCase
         $command = $this->cf->runContainer('mysql');
 
         $this->assertInstanceOf(CliCommand::class, $command);
-        $this->assertSame('docker-compose -f file -p porter run --rm --service-ports mysql',
-            $command->prepare());
+        $this->assertSame(
+            'docker-compose -f file -p porter run --rm --service-ports mysql',
+            $command->prepare()
+        );
     }
 
     /** @test */
@@ -71,7 +73,9 @@ class CliCommandFactoryTest extends BaseTestCase
         $command = $this->cf->runContainer('mysql');
 
         $this->assertInstanceOf(CliCommand::class, $command);
-        $this->assertSame('docker-compose -f file -p porter run -w /srv/app/site --rm --service-ports mysql',
-            $command->prepare());
+        $this->assertSame(
+            'docker-compose -f file -p porter run -w /srv/app/site --rm --service-ports mysql',
+            $command->prepare()
+        );
     }
 }
