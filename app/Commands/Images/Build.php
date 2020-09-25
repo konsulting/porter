@@ -12,7 +12,7 @@ class Build extends BaseCommand
      *
      * @var string
      */
-    protected $signature = 'images:build {service?}';
+    protected $signature = 'images:build {service?} {--fresh}';
 
     /**
      * The description of the command.
@@ -30,6 +30,6 @@ class Build extends BaseCommand
      */
     public function handle(): void
     {
-        app(Organiser::class)->buildImages((string) $this->argument('service'));
+        app(Organiser::class)->buildImages((string) $this->argument('service'), (string) $this->option('fresh'));
     }
 }

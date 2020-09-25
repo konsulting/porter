@@ -105,7 +105,11 @@ class CertificateBuilder
 
         $this->cli->exec(sprintf(
             'openssl req -new -newkey rsa:2048 -days 730 -nodes -x509 -subj "/C=GB/ST=Berks/O=%s/localityName=Reading/commonName=%s/organizationalUnitName=Developers/emailAddress=%s/" -keyout %s -out %s',
-            $this->oName, $this->cName, $this->email, $paths->key, $paths->pem
+            $this->oName,
+            $this->cName,
+            $this->email,
+            $paths->key,
+            $paths->pem
         ));
 
         $this->mechanic->trustCA($paths->pem);
@@ -134,7 +138,12 @@ class CertificateBuilder
 
         $this->cli->exec(sprintf(
             'openssl x509 -req -sha256 -days 730 -CA %s -CAkey %s%s -in %s -out %s -extensions v3_req -extfile %s',
-            $caPaths->pem, $caPaths->key, $caSrlParam, $paths->csr, $paths->crt, $paths->conf
+            $caPaths->pem,
+            $caPaths->key,
+            $caSrlParam,
+            $paths->csr,
+            $paths->crt,
+            $paths->conf
         ));
 
         // Trusting the certificate shouldn't be necessary once the CA is trusted.
@@ -178,7 +187,13 @@ class CertificateBuilder
     {
         $this->cli->exec(sprintf(
             'openssl req -new -key %s -out %s -subj "/C=GB/ST=Berks/O=%s/localityName=Reading/commonName=%s/organizationalUnitName=Developers/emailAddress=%s%s/" -config %s',
-            $keyPath, $csrPath, $this->domain, $url, $url, '@'.$this->domain, $confPath
+            $keyPath,
+            $csrPath,
+            $this->domain,
+            $url,
+            $url,
+            '@'.$this->domain,
+            $confPath
         ));
     }
 

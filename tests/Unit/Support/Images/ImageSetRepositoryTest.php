@@ -15,7 +15,7 @@ class ImageSetRepositoryTest extends BaseTestCase
     /** @var ImageSetRepository */
     protected $repo;
 
-    protected function setUp() : void
+    protected function setUp(): void
     {
         parent::setUp();
 

@@ -11,7 +11,7 @@ class LiveTestCase extends BaseTestCase
     /** @var Porter */
     protected $porter;
 
-    public function setUp() :void
+    public function setUp(): void
     {
         parent::setUp();
 
