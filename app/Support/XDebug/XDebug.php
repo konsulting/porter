@@ -5,7 +5,6 @@ namespace App\Support\XDebug;
 use App\Models\PhpVersion;
 use App\Models\Setting;
 use App\Porter;
-use Illuminate\Support\Str;
 use App\Support\Console\DockerCompose\CliCommandFactory;
 
 class XDebug
