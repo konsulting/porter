@@ -4,11 +4,11 @@ namespace Tests\Unit\Support\Valet;
 
 use App\Models\Site;
 use App\Support\Console\Cli;
-use App\Support\Valet\Valet;
 use App\Support\Console\ConsoleWriter;
+use App\Support\Valet\Valet;
 use Illuminate\Support\Facades\Artisan;
-use Tests\Unit\Support\Concerns\MocksPorter;
 use Tests\BaseTestCase;
+use Tests\Unit\Support\Concerns\MocksPorter;
 
 class ValetTest extends BaseTestCase
 {
