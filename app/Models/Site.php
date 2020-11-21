@@ -4,6 +4,9 @@ namespace App\Models;
 
 use App\Porter;
 use App\PorterLibrary;
+use App\Events\SiteSecured;
+use App\Events\SiteRemoved;
+use App\Events\SiteUnsecured;
 use App\Support\Contracts\Cli;
 use App\Support\Nginx\SiteConfBuilder;
 use App\Support\Ssl\CertificateBuilder;
@@ -135,6 +138,8 @@ class Site extends Model
 
         $this->buildFiles();
 
+        event(new SiteSecured($this));
+
         $this->getPorter()->restartServing();
     }
 
@@ -148,6 +153,8 @@ class Site extends Model
         $this->update(['secure' => false]);
 
         $this->buildFiles();
+
+        event(new SiteUnsecured($this));
 
         $this->getPorter()->restartServing();
     }
@@ -165,6 +172,8 @@ class Site extends Model
         $this->getSiteConfigBuilder()->destroy($this);
 
         $this->delete();
+
+        event(new SiteRemoved($this));
 
         $this->getPorter()->restartServing();
     }
