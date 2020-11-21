@@ -18,23 +18,29 @@ class EventSubscriber
 
     public function siteSecured(SiteSecured $event)
     {
-        if (setting('use_valet') === 'off') {
+        if (setting('use_valet', 'off') === 'off') {
             return;
         }
+
+        $this->valet->addSite($event->site);
     }
 
     public function siteUnsecured(SiteUnsecured $event)
     {
-        if (setting('use_valet') === 'off') {
+        if (setting('use_valet', 'off') === 'off') {
             return;
         }
+
+        $this->valet->addSite($event->site);
     }
 
     public function siteRemoved(SiteRemoved $event)
     {
-        if (setting('use_valet') === 'off') {
+        if (setting('use_valet', 'off') === 'off') {
             return;
         }
+
+        $this->valet->removeSite($event->site);
     }
 
     /**
