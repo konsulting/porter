@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
+use App\Events\SiteRemoved;
+use App\Events\SiteSecured;
+use App\Events\SiteUnsecured;
 use App\Porter;
 use App\PorterLibrary;
-use App\Events\SiteSecured;
-use App\Events\SiteRemoved;
-use App\Events\SiteUnsecured;
 use App\Support\Contracts\Cli;
 use App\Support\Nginx\SiteConfBuilder;
 use App\Support\Ssl\CertificateBuilder;

@@ -2,8 +2,8 @@
 
 namespace App\Commands\Valet;
 
-use App\Support\Valet\Valet;
 use App\Commands\BaseCommand;
+use App\Support\Valet\Valet;
 
 class On extends BaseCommand
 {

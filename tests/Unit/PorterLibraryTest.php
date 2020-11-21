@@ -52,8 +52,11 @@ class PorterLibraryTest extends BaseTestCase
      */
     protected function makeLibrary($path, $filePublisher = null, $mechanic = null)
     {
-        return new PorterLibrary($filePublisher ?: $this->filePublisher,
-            $mechanic ?: $this->mechanic, $path);
+        return new PorterLibrary(
+            $filePublisher ?: $this->filePublisher,
+            $mechanic ?: $this->mechanic,
+            $path
+        );
     }
 
     /** @test */
