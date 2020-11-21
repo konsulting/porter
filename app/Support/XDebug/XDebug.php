@@ -74,7 +74,7 @@ class XDebug
     }
 
     /**
-     * Move the ini file, If it fails to move, return false;
+     * Move the ini file, If it fails to move, return false;.
      *
      * @param PhpVersion $version
      * @param $from
@@ -96,6 +96,6 @@ class XDebug
             ->perform();
         ob_end_clean();
 
-        return ! (bool) $exitCode;
+        return !(bool) $exitCode;
     }
 }

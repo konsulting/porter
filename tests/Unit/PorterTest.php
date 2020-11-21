@@ -6,12 +6,12 @@ use App\Models\PhpVersion;
 use App\Models\Setting;
 use App\Porter;
 use App\PorterLibrary;
-use Illuminate\Support\Facades\Event;
 use App\Support\Console\DockerCompose\CliCommandFactory;
 use App\Support\Console\DockerCompose\YamlBuilder;
 use App\Support\Contracts\Cli;
 use App\Support\Images\ImageSetRepository;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\Event;
 use Mockery\MockInterface;
 use Tests\BaseTestCase;
 

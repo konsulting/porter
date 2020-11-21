@@ -3,21 +3,11 @@
 namespace Tests\Unit\Support\Xdebug;
 
 use App\Models\PhpVersion;
-use App\Models\Setting;
-use App\Models\Site;
-use App\Support\Console\Cli;
-use App\Support\XDebug\XDebug;
-use App\Support\Mechanics\Linux;
-use App\Support\Mechanics\MacOs;
-use App\Support\Mechanics\Windows;
-use Tests\Unit\Support\Concerns\MocksPorter;
-use App\Support\Mutagen\CannotInstallMutagen;
-use App\Support\Mutagen\Mutagen;
-use Illuminate\Filesystem\Filesystem;
-use Mockery;
-use Tests\BaseTestCase;
 use App\Support\Console\DockerCompose\CliCommand;
+use App\Support\XDebug\XDebug;
+use Tests\BaseTestCase;
 use Tests\Unit\Support\Concerns\MocksDockerCompose;
+use Tests\Unit\Support\Concerns\MocksPorter;
 
 class XdebugTest extends BaseTestCase
 {
@@ -36,7 +26,6 @@ class XdebugTest extends BaseTestCase
     {
         $version = factory(PhpVersion::class)
             ->create(['version_number' => '7.4', 'default' => true]);
-
 
         $command = \Mockery::mock(CliCommand::class);
 
@@ -76,7 +65,6 @@ class XdebugTest extends BaseTestCase
         $version = factory(PhpVersion::class)
             ->create(['version_number' => '7.4', 'default' => true]);
 
-
         $command = \Mockery::mock(CliCommand::class);
 
         $xdebug = new XDebug($this->porter, $this->dockerCompose);
@@ -113,7 +101,6 @@ class XdebugTest extends BaseTestCase
     {
         $version = factory(PhpVersion::class)
             ->create(['version_number' => '7.4', 'default' => true]);
-
 
         $command = \Mockery::mock(CliCommand::class);
 
@@ -152,7 +139,6 @@ class XdebugTest extends BaseTestCase
     {
         $version = factory(PhpVersion::class)
             ->create(['version_number' => '7.4', 'default' => true]);
-
 
         $command = \Mockery::mock(CliCommand::class);
 
