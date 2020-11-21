@@ -144,6 +144,17 @@ class Porter
     }
 
     /**
+     * Soft restart Porter containers.
+     * Restart without getting config changes.
+     *
+     * @param string|null $service
+     */
+    public function softRestart($service = null)
+    {
+        $this->dockerCompose->command("restart {$service}")->realTime()->perform();
+    }
+
+    /**
      * Restart serving, picking up changes in used PHP versions and NGiNX.
      */
     public function restartServing()

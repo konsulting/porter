@@ -97,6 +97,16 @@ class PorterTest extends BaseTestCase
     }
 
     /** @test */
+    public function it_soft_restarts_the_porter_containers()
+    {
+        $this->expectCommand('docker-compose -f '.$this->composeFile.' -p porter restart', 'execRealTime');
+        $this->porter->softRestart();
+
+        $this->expectCommand('docker-compose -f '.$this->composeFile.' -p porter restart myService', 'execRealTime');
+        $this->porter->softRestart('myService');
+    }
+
+    /** @test */
     public function it_restarts_serving()
     {
         factory(PhpVersion::class)->create([
