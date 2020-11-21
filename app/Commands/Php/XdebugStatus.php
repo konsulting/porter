@@ -30,7 +30,7 @@ class XdebugStatus extends BaseCommand
      */
     public function handle(): void
     {
-        $status = strtolower($this->argument('status'));
+        $status = strtolower(/** @scrutinizer ignore-type */ $this->argument('status'));
 
         if (!in_array($status, ['on', 'off'])) {
             throw new \Exception('Xdebug can only be turned on or off.');

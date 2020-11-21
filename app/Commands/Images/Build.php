@@ -30,6 +30,6 @@ class Build extends BaseCommand
      */
     public function handle(): void
     {
-        app(Organiser::class)->buildImages((string) $this->argument('service'), (string) $this->option('fresh'));
+        app(Organiser::class)->buildImages((string) $this->argument('service'), (bool) $this->option('fresh'));
     }
 }

@@ -27,7 +27,7 @@ class Open extends BaseCommand
      */
     public function handle(): void
     {
-        if (setting('use_mysql') !== 'on') {
+        if (setting('use_mysql', 'on') !== 'on') {
             $this->error('Not using docker mysql');
 
             return;

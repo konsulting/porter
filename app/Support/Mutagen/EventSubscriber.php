@@ -19,24 +19,24 @@ class EventSubscriber
         $this->mutagen = $mutagen;
     }
 
-    public function startAll(StartedPorter $event)
+    public function startAll()
     {
         $this->mutagen->startDaemon();
         $this->mutagen->syncVolumes();
     }
 
-    public function startForService(StartedPorterService $event)
+    public function startForService()
     {
         $this->mutagen->startDaemon();
         $this->mutagen->syncVolumes();
     }
 
-    public function stopAll(StoppedPorter $event)
+    public function stopAll()
     {
         $this->mutagen->stopDaemon();
     }
 
-    public function stopForService(StoppedPorterService $event)
+    public function stopForService()
     {
         $this->mutagen->stopDaemon();
     }

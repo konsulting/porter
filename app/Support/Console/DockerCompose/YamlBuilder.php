@@ -53,7 +53,7 @@ class YamlBuilder
      */
     public function renderDockerComposeFile(ImageRepository $imageSet)
     {
-        return view("{$imageSet->getName()}::base")->with([
+        return (string) view("{$imageSet->getName()}::base")->with([
             'home'              => setting('home'),
             'host_machine_name' => setting('host_machine_name'),
             'activePhpVersions' => PhpVersion::active()->get(),

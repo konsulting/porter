@@ -15,7 +15,7 @@ class EventSubscriber
         $this->xdebug = $xdebug;
     }
 
-    public function setXDebug($event)
+    public function setXDebug()
     {
         if (setting('use_xdebug') === 'off') {
             $this->xdebug->turnOff();
