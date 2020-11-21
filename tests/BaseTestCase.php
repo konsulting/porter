@@ -17,7 +17,9 @@ use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
 abstract class BaseTestCase extends IlluminateTestCase
 {
-    use CreatesApplication, MockeryPHPUnitIntegration, DatabaseTransactions;
+    use CreatesApplication;
+    use MockeryPHPUnitIntegration;
+    use DatabaseTransactions;
 
     /**
      * Holds an application instance.

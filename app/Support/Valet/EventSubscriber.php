@@ -2,8 +2,8 @@
 
 namespace App\Support\Valet;
 
-use App\Events\SiteSecured;
 use App\Events\SiteRemoved;
+use App\Events\SiteSecured;
 use App\Events\SiteUnsecured;
 
 class EventSubscriber
@@ -21,7 +21,6 @@ class EventSubscriber
         if (setting('use_valet') === 'off') {
             return;
         }
-
     }
 
     public function siteUnsecured(SiteUnsecured $event)
@@ -29,7 +28,6 @@ class EventSubscriber
         if (setting('use_valet') === 'off') {
             return;
         }
-
     }
 
     public function siteRemoved(SiteRemoved $event)
@@ -37,7 +35,6 @@ class EventSubscriber
         if (setting('use_valet') === 'off') {
             return;
         }
-
     }
 
     /**

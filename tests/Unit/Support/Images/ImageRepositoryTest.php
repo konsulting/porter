@@ -18,7 +18,7 @@ class ImageRepositoryTest extends BaseTestCase
     /** @var Filesystem */
     protected $fileSystem;
 
-    protected function setUp() : void
+    protected function setUp(): void
     {
         parent::setUp();
 

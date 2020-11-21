@@ -1,16 +1,14 @@
 <?php
 
-
 namespace App\Support\Valet;
 
-
-use App\Porter;
-use App\Models\Site;
 use App\Models\Setting;
-use Illuminate\Support\Str;
+use App\Models\Site;
+use App\Porter;
 use App\Support\Console\Cli;
 use App\Support\Console\ConsoleWriter;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Str;
 
 class Valet
 {
@@ -54,7 +52,7 @@ class Valet
 
         // Run through all the porter sites and set up a proxy though valet...
         Site::all()->each(function (Site $site) {
-           $this->addSite($site);
+            $this->addSite($site);
         });
 
         $this->writer->line('Completed setting up valet compatibility');
@@ -112,7 +110,7 @@ class Valet
     {
         $this->sudoWarning();
 
-        return $this->cli->exec("valet proxies");
+        return $this->cli->exec('valet proxies');
     }
 
     public function isProxied(Site $site)
