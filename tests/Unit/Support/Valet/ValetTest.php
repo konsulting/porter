@@ -96,6 +96,8 @@ class ValetTest extends BaseTestCase
     /** @test */
     public function it_will_turn_off_valet_compat()
     {
+        Setting::updateOrCreate('use_valet', 'on');
+
         factory(Site::class)->create(['name' => 'dummy']);
 
         $valet = new Valet($this->porter, $this->cli, $this->writer);
