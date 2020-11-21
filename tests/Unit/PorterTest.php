@@ -11,6 +11,7 @@ use App\Support\Console\DockerCompose\YamlBuilder;
 use App\Support\Contracts\Cli;
 use App\Support\Images\ImageSetRepository;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\Event;
 use Mockery\MockInterface;
 use Tests\BaseTestCase;
 
@@ -97,8 +98,20 @@ class PorterTest extends BaseTestCase
     }
 
     /** @test */
+    public function it_soft_restarts_the_porter_containers()
+    {
+        $this->expectCommand('docker-compose -f '.$this->composeFile.' -p porter restart', 'execRealTime');
+        $this->porter->softRestart();
+
+        $this->expectCommand('docker-compose -f '.$this->composeFile.' -p porter restart myService', 'execRealTime');
+        $this->porter->softRestart('myService');
+    }
+
+    /** @test */
     public function it_restarts_serving()
     {
+        Event::fake();
+
         factory(PhpVersion::class)->create([
             'version_number' => '7.2',
             'default'        => true,

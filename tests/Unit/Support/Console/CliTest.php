@@ -19,7 +19,7 @@ class CliTest extends BaseTestCase
             $this->assertSame(config('porter.process_timeout'), $args['timeout']);
 
             return Mockery::mock(Process::class)
-                ->shouldReceive('run', 'mustRun', 'getOutput', 'setTty')
+                ->shouldReceive('run', 'mustRun', 'getOutput', 'setTty', 'getExitCode')
                 ->getMock();
         });
 

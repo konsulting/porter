@@ -53,7 +53,7 @@ class YamlBuilder
      */
     public function renderDockerComposeFile(ImageRepository $imageSet)
     {
-        return view("{$imageSet->getName()}::base")->with([
+        return (string) view("{$imageSet->getName()}::base")->with([
             'home'              => setting('home'),
             'host_machine_name' => setting('host_machine_name'),
             'activePhpVersions' => PhpVersion::active()->get(),
@@ -61,6 +61,8 @@ class YamlBuilder
             'useRedis'          => setting('use_redis') === 'on',
             'useBrowser'        => setting('use_browser') === 'on',
             'useDns'            => setting('use_dns') === 'on' || setting_missing('use_dns'),
+            'httpPort'          => setting('http_port', 80),
+            'httpsPort'         => setting('https_port', 443),
             'imageSet'          => $imageSet,
             'libraryPath'       => $this->porterLibrary->path(),
         ])->render();

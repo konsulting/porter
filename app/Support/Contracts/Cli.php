@@ -18,7 +18,7 @@ interface Cli
      *
      * @param string $command
      *
-     * @return string
+     * @return int
      */
     public function execRealTime($command);
 
@@ -27,7 +27,7 @@ interface Cli
      *
      * @param string $command
      *
-     * @return void
+     * @return int
      */
     public function passthru($command);
 

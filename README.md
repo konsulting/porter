@@ -43,21 +43,34 @@ Contributions are welcome.  We are a small company, so please be patient if your
  
  - Set up DNS resolution... you have some options.
    
-   1. Use the DNS container shipped with Porter.  Update your machine's network DNS settings to point to 127.0.0.1 before other name servers. The container will resolve the domain for Porter. You will need to turn off locally any installed DNSmasq since the DNS container opens to port 53 on localhost. (e.g. `brew services stop dnsmasq`)
-   
-   2. Use your existing Laravel Valet domain - which uses DNSmasq installed locally on a Mac.
+   1. If you want to use Porter alongside Laravel Valet, you can use DNSmasq installed by Valet.
+      Do nothing here. Make sure that the same TLD is used for Porter and Valet.
+
+   2. Use the DNS container shipped with Porter.
+      Update your machine's network DNS settings to point to 127.0.0.1 before other name servers. 
+      The container will resolve the domain for Porter. 
+      You will need to turn off locally any installed DNSmasq since the DNS container opens to port 53 on localhost. 
+      (e.g. `brew services stop dnsmasq`)
    
    3. Manually edit your `/etc/hosts` file for each domain.
    
    4. Roll your own solution.
 
- - Porter binds to ports 80 and 443, so you need to turn Valet off (`valet stop`) or any other services that are bound to them before using it.
- 
+> If you choose options ii, iii or iv, you will need to turn Valet off (`valet stop`) 
+> or any other services that are bound to them before using it. 
+> Porter will bind it's Nginx container to ports 80 and 443.
+
  - In your terminal `cd` to the directory where your sites are located, and run `porter begin`. 
  
     This command will ask for your home directory (the root of your sites) and will generate a CA Certificate (and ask your permission to trust it on Mac).
  
  - Finally run `porter start`
+
+> If you intend to run Porter alongside Valet, you need to let Porter know. 
+> 
+> Run `porter valet:on` and it will adjust it's settings to make this happen. 
+> 
+> Porter will then set up and maintain 'proxy' records with Valet so that traffic for Porter sites ends up in the right place.
  
 ## Usage
 
@@ -92,6 +105,15 @@ We have deliberately chosen not to make this automatic, nor permanent to avoid d
  - `porter stop`
  - `porter restart` - Restart existing containers (e.g. pick up config changes for PHP FPM)
  - `porter logs {service}` - Show container logs, optionally pass in the service
+   
+
+ - `porter valet:on` - Let Porter know it is running alongside Laravel Valet
+ - `porter valet:off` - Let Porter know it is NOT running alongside Laravel Valet
+
+> When running alongside Valet:
+> * Porter turns off its DNS container
+> * It binds the Nginx container to alternative ports (http 8008 and https 8443)
+> * It maintains a list of `proxies` on Valet for Porter sites
   
 ### Basic settings
 
@@ -123,10 +145,23 @@ In Firefox, you will need to manually add the certificate, which is located in `
  - `porter php:list` - List the available PHP versions
  - `porter php:open {run?} {--p|php-version?}` - Open the PHP cli for the project, if run from a project directory, it will select the associated version. Otherwise, you can select a version or use the default. Optionally run a command, such as `vendor/bin/phpunit` (if you need to pass arguments, wrap in quotes). 
  - `porter php:tinker` - Run Artisan Tinker in the project directory
+ - `porter php:xdebug {on/off}` - Turn xdebug on/off in the container (by enabling/disabling the extension) - enabled by default.
   
 `php.ini` files are stored in `~/.porter/config` by PHP version. If you change one, you'll need to run `porter php:restart` for changes to be picked up. 
 
-We currently ship with containers for PHP 5.6, 7.0, 7.1, 7.2 and 7.3.
+We currently ship with containers for PHP 5.6, 7.0, 7.1, 7.2, 7.3 and 7.4.
+
+## PHP Extensions
+
+We have added a number of PHP extensions to the containers that we use frequently. Notable ones are Imagick and Xdebug.
+
+### Xdebug
+
+Xdebug is available on each PHP container. `xdebug.ini` files are stored in `storage/config` by PHP version.
+
+It is set up for use with PhpStorm, and on demand - you can use an extension such as Xdebug helper in Chrome to send the Cookie required to activate a debugging session ([Jetbrains article](https://confluence.jetbrains.com/display/PhpStorm/Configure+Xdebug+Helper+for+Chrome+to+be+used+with+PhpStorm)).
+
+Xdebug is set up to communicate with the host machine on port 9001 to avoid clashes with any locally installed PHP-fpm.
 
 ### Node (npm/yarn)
  - `porter node:open {run?}` - Open Node cli, run in project dir. Optionally run a command, such as `npm run production` (if you need to pass arguments, wrap in quotes). 
@@ -201,18 +236,6 @@ We have a [MailHog](https://github.com/mailhog/MailHog) container; all emails ar
 
 You can review received emails in MailHog's UI at [http://localhost:8025](http://localhost:8025/). Or, you can use the MailHog API to inspect received emails.
 
-## PHP Extensions
-
-We have added a number of PHP extensions to the containers that we use frequently. Notable ones are Imagick and Xdebug. 
-
-### Xdebug
-
-Xdebug is available on each PHP container. `xdebug.ini` files are stored in `storage/config` by PHP version.
-
-It is set up for use with PhpStorm, and on demand - you can use an extension such as Xdebug helper in Chrome to send the Cookie required to activate a debugging session ([Jetbrains article](https://confluence.jetbrains.com/display/PhpStorm/Configure+Xdebug+Helper+for+Chrome+to+be+used+with+PhpStorm)).
-
-Xdebug is set up to communicate with the host machine on port 9001 to avoid clashes with any locally installed PHP-fpm.
-
 ## Browser Testing
 
 We like [Laravel Dusk](https://laravel.com/docs/5.6/dusk), and also help with [Orchestra Testbench Dusk](https://github.com/orchestral/testbench-dusk) for package development. Porter provides a browser container with Chrome and Chromedriver for browser testing.
@@ -250,14 +273,6 @@ We do not recommend using them at the moment, due to the way Porter is set up, t
  - `porter mutagen:on`
  - `porter mutagen:off`
   
-Adding these items required the addition of some core events to allow intercepting the docker-compose.yaml file production process and the starting/stopping of containers. To do this a number of events were introduced.
-
- - `App\Events\StartingPorter`
- - `App\Events\StartingPorterService($service)`
- - `App\Events\StoppingPorter`
- - `App\Events\StoppingPorterService($service)`
- - `App\Events\BuiltDockerCompose($dockerComposeFilePath)` 
-  
 ## Tweaking things
 
 As Porter is based on Docker, it is easy to add new containers as required or to adjust the way the existing containers are built. 
@@ -282,3 +297,16 @@ We store personal config in the `.porter` directory in your home directory - kee
  - `ssl` - the generated SSL certificates used by Porter
  - `views` - allows the override and addition of views for building NGiNX configurations for example
  - an `image_sets` directory can be added to include alternative docker scripts similar to the original `konsulting/porter-ubuntu` in the project's `resources/image_sets` directory, and the `docker-compose.yaml` views
+
+### Events
+
+Porter emits certain events as it performs actions. We use these to hook in for the DockerSync, Mutagen, Valet and Xdebug - using event subscribers.
+
+- `App\Events\StartingPorter`
+- `App\Events\StartingPorterService($service)`
+- `App\Events\StoppingPorter`
+- `App\Events\StoppingPorterService($service)`
+- `App\Events\BuiltDockerCompose($dockerComposeFilePath)`
+- `App\Events\SiteSecured($site)`
+- `App\Events\SiteUnsecured($site)`
+- `App\Events\SiteRemoved($site)`

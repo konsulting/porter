@@ -6,8 +6,8 @@
     networks:
       - porter
     ports:
-      - 80:80
-      - 443:443
+      - {{ $httpPort }}:80
+      - {{ $httpsPort }}:443
     volumes:
       - {{ $home }}:/srv/app:delegated
       - {{ $libraryPath }}/config/nginx/nginx.conf:/etc/nginx/nginx.conf

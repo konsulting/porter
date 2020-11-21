@@ -19,22 +19,22 @@ class EventSubscriber
         $this->dockerSync = $dockerSync;
     }
 
-    public function startAll(StartingPorter $event)
+    public function startAll()
     {
         $this->dockerSync->startDaemon();
     }
 
-    public function startForService(StartingPorterService $event)
+    public function startForService()
     {
         $this->dockerSync->startDaemon();
     }
 
-    public function stopAll(StoppingPorter $event)
+    public function stopAll()
     {
         $this->dockerSync->stopDaemon();
     }
 
-    public function stopForService(StoppingPorterService $event)
+    public function stopForService()
     {
         $this->dockerSync->stopDaemon();
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\Support\Nginx;
 
 use App\Support\Nginx\AvailableConfigurations;
 use Tests\BaseTestCase;

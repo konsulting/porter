@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\Support\DockerSync\EventSubscriber as DockerSyncSubscriber;
 use App\Support\Mutagen\EventSubscriber as MutagenSubscriber;
+use App\Support\Valet\EventSubscriber as ValetSubscriber;
+use App\Support\XDebug\EventSubscriber as XdebugSubscriber;
 
 class EventServiceProvider extends \Illuminate\Foundation\Support\Providers\EventServiceProvider
 {
@@ -20,7 +22,9 @@ class EventServiceProvider extends \Illuminate\Foundation\Support\Providers\Even
      * @var array
      */
     protected $subscribe = [
-        MutagenSubscriber::class,
         DockerSyncSubscriber::class,
+        MutagenSubscriber::class,
+        ValetSubscriber::class,
+        XdebugSubscriber::class,
     ];
 }
