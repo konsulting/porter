@@ -26,7 +26,7 @@ class XDebug
         Setting::updateOrCreate('use_xdebug', 'on');
 
         foreach (PhpVersion::active()->get() as $version) {
-            if (! $this->enable($version)) {
+            if (!$this->enable($version)) {
                 // If enable fails it's because it was already enabled
                 continue;
             }
@@ -40,7 +40,7 @@ class XDebug
         Setting::updateOrCreate('use_xdebug', 'off');
 
         foreach (PhpVersion::active()->get() as $version) {
-            if (! $this->disable($version)) {
+            if (!$this->disable($version)) {
                 // If disable fails it's because it was already disabled
                 continue;
             }
@@ -50,9 +50,9 @@ class XDebug
     }
 
     /**
-     * Move the ini file to .ini to enable
+     * Move the ini file to .ini to enable.
      *
-     * @param  PhpVersion  $version
+     * @param PhpVersion $version
      *
      * @return bool
      */
@@ -62,9 +62,9 @@ class XDebug
     }
 
     /**
-     * Move the ini file to .bak to disable
+     * Move the ini file to .bak to disable.
      *
-     * @param  PhpVersion  $version
+     * @param PhpVersion $version
      *
      * @return bool
      */
@@ -74,12 +74,12 @@ class XDebug
     }
 
     /**
-     * Move the ini file
+     * Move the ini file.
      *
      * If there was any output captured it's because it failed - the file wasn't able to be moved
      * Most likely because it was moved before
      *
-     * @param  PhpVersion  $version
+     * @param PhpVersion $version
      * @param $from
      * @param $to
      *
