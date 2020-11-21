@@ -38,6 +38,11 @@ class Valet
 
     public function turnOn()
     {
+        if (setting('use_valet', 'off') === 'on') {
+            $this->writer->info('Valet compatibility already complete');
+            return;
+        }
+
         $this->sudoWarning();
 
         Setting::updateOrCreate('valet', 'on');
@@ -60,6 +65,11 @@ class Valet
 
     public function turnOff()
     {
+        if (setting('use_valet', 'off') === 'off') {
+            $this->writer->info('Valet compatibility already off');
+            return;
+        }
+
         $this->sudoWarning();
 
         // Run through all the porter sites and set up a proxy though valet...
@@ -72,6 +82,7 @@ class Valet
         Setting::updateOrCreate('https_port', static::HTTPS_PORT);
 
         $this->cli->execRealTime('valet stop');
+        $this->cli->execRealTime('sudo brew services stop dnsmasq');
 
         Artisan::call('dns:on');
 

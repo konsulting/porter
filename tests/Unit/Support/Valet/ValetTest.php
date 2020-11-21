@@ -3,6 +3,7 @@
 namespace Tests\Unit\Support\Valet;
 
 use App\Models\Site;
+use App\Models\Setting;
 use App\Support\Console\Cli;
 use App\Support\Console\ConsoleWriter;
 use App\Support\Valet\Valet;
@@ -65,6 +66,34 @@ class ValetTest extends BaseTestCase
     }
 
     /** @test */
+    public function it_will_not_turn_on_valet_if_already_on()
+    {
+        Setting::updateOrCreate('use_valet', 'on');
+
+        $valet = new Valet($this->porter, $this->cli, $this->writer);
+
+        $this->writer->shouldReceive('info')
+            ->with('Valet compatibility already complete')
+            ->once();
+
+        $valet->turnOn();
+    }
+
+    /** @test */
+    public function it_will_not_turn_off_valet_if_already_off()
+    {
+        Setting::updateOrCreate('use_valet', 'off');
+
+        $valet = new Valet($this->porter, $this->cli, $this->writer);
+
+        $this->writer->shouldReceive('info')
+            ->with('Valet compatibility already off')
+            ->once();
+
+        $valet->turnOff();
+    }
+
+    /** @test */
     public function it_will_turn_off_valet_compat()
     {
         factory(Site::class)->create(['name' => 'dummy']);
@@ -85,6 +114,10 @@ class ValetTest extends BaseTestCase
 
         $this->cli->shouldReceive('execRealTime')
             ->with('valet stop')
+            ->once();
+
+        $this->cli->shouldReceive('execRealTime')
+            ->with('sudo brew services stop dnsmasq')
             ->once();
 
         Artisan::shouldReceive('call')->with('dns:on')->once();
