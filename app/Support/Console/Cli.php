@@ -27,7 +27,7 @@ class Cli implements CliContract
         $process = $this->getProcess($command);
         $process->run();
 
-        return $process->getOutput() ?: $process->getErrorOutput();
+        return $process->getOutput();
     }
 
     /**
