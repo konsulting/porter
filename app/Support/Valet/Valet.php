@@ -40,6 +40,7 @@ class Valet
     {
         if (setting('use_valet', 'off') === 'on') {
             $this->writer->info('Valet compatibility already complete');
+
             return;
         }
 
@@ -67,6 +68,7 @@ class Valet
     {
         if (setting('use_valet', 'off') === 'off') {
             $this->writer->info('Valet compatibility already off');
+
             return;
         }
 
