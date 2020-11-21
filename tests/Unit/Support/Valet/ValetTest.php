@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\Support\Valet;
 
-use App\Models\Site;
 use App\Models\Setting;
+use App\Models\Site;
 use App\Support\Console\Cli;
 use App\Support\Console\ConsoleWriter;
 use App\Support\Valet\Valet;
