@@ -141,14 +141,12 @@ class CliCommand
     /**
      * Execute the command.
      *
-     * @return string|null
+     * @return string|int
      */
     public function perform()
     {
         if ($this->isInteractive()) {
-            $this->cli->passthru($this->prepare());
-
-            return;
+            return $this->cli->passthru($this->prepare());
         }
 
         if ($this->isRealTime()) {

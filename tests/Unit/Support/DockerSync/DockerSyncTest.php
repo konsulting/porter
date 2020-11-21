@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Support;
+namespace Tests\Unit\Support\DockerSync;
 
 use App\Models\PhpVersion;
 use App\Models\Setting;

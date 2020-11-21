@@ -74,10 +74,7 @@ class XDebug
     }
 
     /**
-     * Move the ini file.
-     *
-     * If there was any output captured it's because it failed - the file wasn't able to be moved
-     * Most likely because it was moved before
+     * Move the ini file, If it fails to move, return false;
      *
      * @param PhpVersion $version
      * @param $from
@@ -89,12 +86,16 @@ class XDebug
     {
         $move = "mv /etc/php/{$version->version_number}/mods-available/{$from} /etc/php/{$version->version_number}/mods-available/{$to}";
 
+        // We wrap in a buffer because we don't want everything output to the screen.
+        // If exit code !== 0, its because the move failed since the starting file
+        // didn't exist
         ob_start();
-        $this->dockerCompose->execContainer($version->getFpmNameAttribute())->append($move)->interactive()->perform();
-        if (ob_get_clean()) {
-            return false;
-        }
+        $exitCode = $this->dockerCompose->execContainer($version->getFpmNameAttribute())
+            ->append($move)
+            ->interactive()
+            ->perform();
+        ob_end_clean();
 
-        return true;
+        return ! (bool) $exitCode;
     }
 }

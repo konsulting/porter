@@ -35,7 +35,7 @@ class Cli implements CliContract
      *
      * @param string $command
      *
-     * @return string
+     * @return int
      */
     public function execRealTime($command)
     {
@@ -48,6 +48,8 @@ class Cli implements CliContract
         } catch (ProcessFailedException $e) {
             echo $e->getMessage();
         }
+
+        return $process->getExitCode();
     }
 
     /**
@@ -55,7 +57,7 @@ class Cli implements CliContract
      *
      * @param string $command
      *
-     * @return void
+     * @return int
      */
     public function passthru($command)
     {
@@ -69,6 +71,8 @@ class Cli implements CliContract
         } catch (ProcessFailedException $e) {
             echo $e->getMessage();
         }
+
+        return $process->getExitCode();
     }
 
     /**

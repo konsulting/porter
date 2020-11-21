@@ -6,6 +6,7 @@ use App\Models\PhpVersion;
 use App\Models\Setting;
 use App\Porter;
 use App\PorterLibrary;
+use Illuminate\Support\Facades\Event;
 use App\Support\Console\DockerCompose\CliCommandFactory;
 use App\Support\Console\DockerCompose\YamlBuilder;
 use App\Support\Contracts\Cli;
@@ -109,6 +110,8 @@ class PorterTest extends BaseTestCase
     /** @test */
     public function it_restarts_serving()
     {
+        Event::fake();
+
         factory(PhpVersion::class)->create([
             'version_number' => '7.2',
             'default'        => true,

@@ -118,7 +118,7 @@ class Valet
         return Str::contains($this->listSites(), $site->name);
     }
 
-    public function sudoWarning()
+    protected function sudoWarning()
     {
         if ($this->hasWarned) {
             return;
