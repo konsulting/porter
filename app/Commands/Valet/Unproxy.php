@@ -33,7 +33,7 @@ class Unproxy extends BaseCommand
             ? Site::all()
             : [Site::resolveFromPathOrCurrentWorkingDirectoryOrFail((string) $this->argument('site'))];
 
-        foreach($sites as $site) {
+        foreach ($sites as $site) {
             app(Valet::class)->removeSite($site);
         }
     }
