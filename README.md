@@ -105,21 +105,23 @@ We have deliberately chosen not to make this automatic, nor permanent to avoid d
  - `porter stop`
  - `porter restart` - Restart existing containers (e.g. pick up config changes for PHP FPM)
  - `porter logs {service}` - Show container logs, optionally pass in the service
-   
 
- - `porter valet:on` - Let Porter know it is running alongside Laravel Valet
- - `porter valet:off` - Let Porter know it is NOT running alongside Laravel Valet
+### Basic settings
+
+ - `porter domain {domain}` - Set TLD ('test' is the default for domains such as sample.test)
+ - `porter home {dir?} {--show}` - Set the home dir for sites, run in the dir to use it directly - or set it specifically. Use `--show` to see the current setting.
+
+### Valet Compatibility
+- `porter valet:on` - Let Porter know it is running alongside Laravel Valet
+- `porter valet:off` - Let Porter know it is NOT running alongside Laravel Valet
+- `porter valet:proxy {site?} {--all}` - Make Porter proxy a single site, or all, through Valet
+- `porter valet:unproxy {site?} {--all}` - Make Porter unproxy a single site, or all, through Valet
 
 > When running alongside Valet:
 > * Porter turns off its DNS container
 > * It binds the Nginx container to alternative ports (http 8008 and https 8443)
 > * It maintains a list of `proxies` on Valet for Porter sites
-  
-### Basic settings
 
- - `porter domain {domain}` - Set TLD ('test' is the default for domains such as sample.test)
- - `porter home {dir?} {--show}` - Set the home dir for sites, run in the dir to use it directly - or set it specifically. Use `--show` to see the current setting.
- 
 ### Site settings
 
 Site commands will pick up the current working directory automatically.  They also allow you to specify the site by the directory name.
