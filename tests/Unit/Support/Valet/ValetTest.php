@@ -63,6 +63,10 @@ class ValetTest extends BaseTestCase
             ->once();
 
         $valet->turnOn();
+
+        $this->assertEquals('on', setting('use_valet'));
+        $this->assertEquals(8008, setting('http_port'));
+        $this->assertEquals(8443, setting('https_port'));
     }
 
     /** @test */
@@ -132,6 +136,10 @@ class ValetTest extends BaseTestCase
             ->once();
 
         $valet->turnOff();
+
+        $this->assertEquals('off', setting('use_valet'));
+        $this->assertEquals(80, setting('http_port'));
+        $this->assertEquals(443, setting('https_port'));
     }
 
     /** @test */

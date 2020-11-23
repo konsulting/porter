@@ -46,7 +46,7 @@ class Valet
 
         $this->sudoWarning();
 
-        Setting::updateOrCreate('valet', 'on');
+        Setting::updateOrCreate('use_valet', 'on');
         Setting::updateOrCreate('http_port', static::COMPAT_HTTP_PORT);
         Setting::updateOrCreate('https_port', static::COMPAT_HTTPS_PORT);
 
@@ -79,7 +79,7 @@ class Valet
             $this->removeSite($site);
         });
 
-        Setting::updateOrCreate('valet', 'off');
+        Setting::updateOrCreate('use_valet', 'off');
         Setting::updateOrCreate('http_port', static::HTTP_PORT);
         Setting::updateOrCreate('https_port', static::HTTPS_PORT);
 
