@@ -20,14 +20,11 @@
             <directory suffix="Test.php">./tests/Unit</directory>
         </testsuite>
     </testsuites>
-    <listeners>
-        <listener class="NunoMaduro\Collision\Adapters\Phpunit\Listener"/>
-    </listeners>
-    <filter>
-        <whitelist processUncoveredFilesFromWhitelist="true">
+    <coverage processUncoveredFiles="true">
+        <include>
             <directory suffix=".php">./app</directory>
-        </whitelist>
-    </filter>
+        </include>
+    </coverage>
     <php>
         <env name="RUNNING_TESTS" value="true"/>
         <env name="CACHE_DRIVER" value="array"/>
