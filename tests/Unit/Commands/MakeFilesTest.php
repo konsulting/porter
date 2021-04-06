@@ -25,7 +25,7 @@ class MakeFilesTest extends BaseTestCase
         $conf = $this->mockSiteConfigBuilder();
         $cert = $this->mockCertificateBuilder();
 
-        factory(Site::class, 2)->create([]);
+        Site::factory(2)->create([]);
 
         $this->porter->shouldReceive('isUp')->once()->andReturn(false);
         $this->porter->shouldReceive('compose')->once();
@@ -45,7 +45,7 @@ class MakeFilesTest extends BaseTestCase
         $conf = $this->mockSiteConfigBuilder();
         $cert = $this->mockCertificateBuilder();
 
-        factory(Site::class, 2)->create([]);
+        Site::factory(2)->create([]);
 
         $this->porter->shouldReceive('isUp')->once()->andReturn(true);
         $this->porter->shouldReceive('compose')->once();

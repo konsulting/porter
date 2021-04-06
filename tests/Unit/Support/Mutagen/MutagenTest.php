@@ -89,8 +89,8 @@ class MutagenTest extends BaseTestCase
         $files = Mockery::mock(Filesystem::class);
         $mutagen = new Mutagen(app(MacOs::class), $this->cli, $files);
         Setting::updateOrCreate('use_mutagen', 'on');
-        $v = factory(PhpVersion::class)->create(['version_number' => '7.1']);
-        factory(Site::class)->create(['php_version_id' => $v->id]);
+        $v = PhpVersion::factory()->create(['version_number' => '7.1']);
+        Site::factory()->create(['php_version_id' => $v->id]);
 
         $files->shouldReceive('get')->with('dc.yaml')->andReturn(
             <<<'EOB'
@@ -134,8 +134,8 @@ EOB
         $files = Mockery::mock(Filesystem::class);
         $mutagen = new Mutagen(app(MacOs::class), $this->cli, $files);
 
-        $v = factory(PhpVersion::class)->create(['version_number' => '7.1']);
-        factory(Site::class)->create(['php_version_id' => $v->id]);
+        $v = PhpVersion::factory()->create(['version_number' => '7.1']);
+        Site::factory()->create(['php_version_id' => $v->id]);
 
         $this->cli->shouldNotReceive('passthru');
         $mutagen->syncVolumes();

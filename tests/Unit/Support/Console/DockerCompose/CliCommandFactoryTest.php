@@ -67,7 +67,7 @@ class CliCommandFactoryTest extends BaseTestCase
     /** @test */
     public function it_will_create_a_run_container_command_for_a_specific_site()
     {
-        factory(Site::class)->create(['name' => 'site']);
+        Site::factory()->create(['name' => 'site']);
         Setting::updateOrCreate('home', '/home');
         $this->cli->shouldReceive('currentWorkingDirectory')->andReturn('/home/site');
         $command = $this->cf->runContainer('mysql');

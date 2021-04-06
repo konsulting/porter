@@ -29,7 +29,7 @@ class ValetTest extends BaseTestCase
     /** @test */
     public function it_will_turn_on_valet_compat()
     {
-        factory(Site::class)->create(['name' => 'dummy']);
+        Site::factory()->create(['name' => 'dummy']);
 
         $valet = new Valet($this->porter, $this->cli, $this->writer);
 
@@ -98,7 +98,7 @@ class ValetTest extends BaseTestCase
     {
         Setting::updateOrCreate('use_valet', 'on');
 
-        factory(Site::class)->create(['name' => 'dummy']);
+        Site::factory()->create(['name' => 'dummy']);
 
         $valet = new Valet($this->porter, $this->cli, $this->writer);
 
@@ -137,7 +137,7 @@ class ValetTest extends BaseTestCase
     /** @test */
     public function it_will_add_a_secure_site()
     {
-        $site = factory(Site::class)->create(['name' => 'dummy', 'secure' => 1]);
+        $site = Site::factory()->create(['name' => 'dummy', 'secure' => 1]);
 
         $valet = new Valet($this->porter, $this->cli, $this->writer);
 
@@ -163,7 +163,7 @@ class ValetTest extends BaseTestCase
     /** @test */
     public function it_will_remove_an_existing_proxy_when_adding_a_site()
     {
-        $site = factory(Site::class)->create(['name' => 'dummy', 'secure' => 1]);
+        $site = Site::factory()->create(['name' => 'dummy', 'secure' => 1]);
 
         $valet = new Valet($this->porter, $this->cli, $this->writer);
 
@@ -198,7 +198,7 @@ class ValetTest extends BaseTestCase
     /** @test */
     public function it_will_remove_a_proxy()
     {
-        $site = factory(Site::class)->create(['name' => 'dummy', 'secure' => 1]);
+        $site = Site::factory()->create(['name' => 'dummy', 'secure' => 1]);
 
         $valet = new Valet($this->porter, $this->cli, $this->writer);
 
@@ -237,7 +237,7 @@ class ValetTest extends BaseTestCase
     /** @test */
     public function it_can_check_if_a_site_is_proxied()
     {
-        $site = factory(Site::class)->create(['name' => 'dummy', 'secure' => 1]);
+        $site = Site::factory()->create(['name' => 'dummy', 'secure' => 1]);
         $valet = new Valet($this->porter, $this->cli, $this->writer);
 
         $this->writer->shouldReceive('info')

@@ -100,8 +100,8 @@ class DockerSyncTest extends BaseTestCase
         Setting::updateOrCreate('use_docker-sync', 'on');
         Setting::updateOrCreate('home', 'volume1');
 
-        $v = factory(PhpVersion::class)->create(['version_number' => '7.1']);
-        factory(Site::class)->create(['php_version_id' => $v->id]);
+        $v = PhpVersion::factory()->create(['version_number' => '7.1']);
+        Site::factory()->create(['php_version_id' => $v->id]);
 
         $files->shouldReceive('get')->with('dcdir/dc.yaml')->andReturn(
             <<<'EOB'

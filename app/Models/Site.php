@@ -10,11 +10,14 @@ use App\PorterLibrary;
 use App\Support\Contracts\Cli;
 use App\Support\Nginx\SiteConfBuilder;
 use App\Support\Ssl\CertificateBuilder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 class Site extends Model
 {
+    use HasFactory;
+
     protected $guarded = [];
     protected $casts = ['secure' => 'boolean'];
 
