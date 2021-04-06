@@ -9,8 +9,8 @@ use App\Porter;
 use App\Support\Contracts\Cli;
 use App\Support\Nginx\SiteConfBuilder;
 use App\Support\Ssl\CertificateBuilder;
-use Tests\BaseTestCase;
 use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
+use Tests\BaseTestCase;
 
 class SiteTest extends BaseTestCase
 {
