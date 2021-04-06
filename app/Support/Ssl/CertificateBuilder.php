@@ -6,6 +6,7 @@ use App\Support\Contracts\Cli;
 use App\Support\Mechanics\Mechanic;
 use Illuminate\Filesystem\Filesystem;
 use Symfony\Component\Finder\SplFileInfo;
+use League\Flysystem\FileNotFoundException;
 
 class CertificateBuilder
 {
@@ -111,6 +112,12 @@ class CertificateBuilder
             $paths->key,
             $paths->pem
         ));
+
+        if (! $this->filesystem->exists($paths->pem)) {
+            throw new FileNotFoundException($paths->pem);
+        }
+
+
 
         $this->mechanic->trustCA($paths->pem);
     }
