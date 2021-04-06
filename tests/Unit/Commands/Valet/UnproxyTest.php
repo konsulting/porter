@@ -13,7 +13,7 @@ class UnproxyTest extends BaseTestCase
     {
         app()->instance(Valet::class, $valet = \Mockery::mock(Valet::class));
 
-        factory(Site::class, 2)->create(['secure' => true]);
+        Site::factory(2)->create(['secure' => true]);
 
         $valet->shouldReceive('removeSite')->times(2);
 
@@ -26,7 +26,7 @@ class UnproxyTest extends BaseTestCase
         $this->withoutExceptionHandling();
         app()->instance(Valet::class, $valet = \Mockery::mock(Valet::class));
 
-        $site = factory(Site::class)->create(['secure' => true, 'name' => 'dummy']);
+        $site = Site::factory()->create(['secure' => true, 'name' => 'dummy']);
 
         $valet->shouldReceive('removeSite')->once()->with(
             \Mockery::on(function ($arg) use ($site) {

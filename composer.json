@@ -23,14 +23,14 @@
         "php": "^7.4",
         "ext-json": "*",
         "fzaninotto/faker": "^1.8",
-        "illuminate/database": "^7.0",
-        "illuminate/view": "^7.0",
+        "illuminate/database": "^8.0",
+        "illuminate/view": "^8.0",
         "intonate/tinker-zero": "^1.0",
-        "laravel-zero/framework": "^7.0",
+        "laravel-zero/framework": "^8.0",
         "league/flysystem": "^1.0",
-        "nunomaduro/laravel-console-menu": "^2.1",
+        "nunomaduro/laravel-console-menu": "^3.1",
         "symfony/yaml": "^5.0",
-        "vlucas/phpdotenv": "^4.0"
+        "vlucas/phpdotenv": "^5.0"
     },
     "require-dev": {
         "dms/phpunit-arraysubset-asserts": "^0.2.1",
@@ -39,7 +39,9 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "app/"
+            "App\\": "app/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/"
         },
         "files": ["app/Support/helpers.php"]
     },

@@ -24,7 +24,7 @@ class XdebugTest extends BaseTestCase
     /** @test */
     public function it_turns_xdebug_on()
     {
-        $version = factory(PhpVersion::class)
+        $version = PhpVersion::factory()
             ->create(['version_number' => '7.4', 'default' => true]);
 
         $command = \Mockery::mock(CliCommand::class);
@@ -62,7 +62,7 @@ class XdebugTest extends BaseTestCase
     /** @test */
     public function if_xdebug_is_already_on_we_dont_restart_the_containers()
     {
-        $version = factory(PhpVersion::class)
+        $version = PhpVersion::factory()
             ->create(['version_number' => '7.4', 'default' => true]);
 
         $command = \Mockery::mock(CliCommand::class);
@@ -99,7 +99,7 @@ class XdebugTest extends BaseTestCase
     /** @test */
     public function it_turns_xdebug_off()
     {
-        $version = factory(PhpVersion::class)
+        $version = PhpVersion::factory()
             ->create(['version_number' => '7.4', 'default' => true]);
 
         $command = \Mockery::mock(CliCommand::class);
@@ -137,7 +137,7 @@ class XdebugTest extends BaseTestCase
     /** @test */
     public function if_xdebug_is_already_off_we_dont_restart_the_containers()
     {
-        $version = factory(PhpVersion::class)
+        $version = PhpVersion::factory()
             ->create(['version_number' => '7.4', 'default' => true]);
 
         $command = \Mockery::mock(CliCommand::class);

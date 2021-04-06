@@ -112,7 +112,7 @@ class PorterTest extends BaseTestCase
     {
         Event::fake();
 
-        factory(PhpVersion::class)->create([
+        PhpVersion::factory()->create([
             'version_number' => '7.2',
             'default'        => true,
         ]);

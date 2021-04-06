@@ -11,7 +11,7 @@ class PhpVersionTest extends BaseTestCase
     /** @test */
     public function it_returns_a_safe_version_number()
     {
-        $version = factory(PhpVersion::class)->create([
+        $version = PhpVersion::factory()->create([
             'version_number' => '7.2',
         ]);
 
@@ -21,7 +21,7 @@ class PhpVersionTest extends BaseTestCase
     /** @test */
     public function it_returns_a_major_version_number()
     {
-        $version = factory(PhpVersion::class)->create([
+        $version = PhpVersion::factory()->create([
             'version_number' => '7.2',
         ]);
 
@@ -31,7 +31,7 @@ class PhpVersionTest extends BaseTestCase
     /** @test */
     public function it_returns_a_short_form_version_number()
     {
-        $version = factory(PhpVersion::class)->create([
+        $version = PhpVersion::factory()->create([
             'version_number' => '7.2',
         ]);
 
@@ -41,7 +41,7 @@ class PhpVersionTest extends BaseTestCase
     /** @test */
     public function it_returns_the_cli_container_name()
     {
-        $version = factory(PhpVersion::class)->create([
+        $version = PhpVersion::factory()->create([
             'version_number' => '7.2',
         ]);
 
@@ -51,7 +51,7 @@ class PhpVersionTest extends BaseTestCase
     /** @test */
     public function it_returns_the_fpm_container_name()
     {
-        $version = factory(PhpVersion::class)->create([
+        $version = PhpVersion::factory()->create([
             'version_number' => '7.2',
         ]);
 
@@ -61,7 +61,7 @@ class PhpVersionTest extends BaseTestCase
     /** @test */
     public function we_can_set_the_default_version()
     {
-        factory(PhpVersion::class, 4)->create();
+        PhpVersion::factory(4)->create();
 
         PhpVersion::setDefaultVersion(2);
 
@@ -74,7 +74,7 @@ class PhpVersionTest extends BaseTestCase
     /** @test */
     public function it_finds_a_version_with_user_input()
     {
-        factory(PhpVersion::class)->create([
+        PhpVersion::factory()->create([
             'version_number' => '7.2',
         ]);
 
@@ -84,12 +84,12 @@ class PhpVersionTest extends BaseTestCase
     /** @test */
     public function it_returns_the_active_versions()
     {
-        $v5 = factory(PhpVersion::class)->create(['version_number' => '5.6']);
+        $v5 = PhpVersion::factory()->create(['version_number' => '5.6']);
 
-        $v7 = factory(PhpVersion::class)->states(['default'])
+        $v7 = PhpVersion::factory()->default()
             ->create(['version_number' => '7.0']);
 
-        factory(Site::class)->create(['php_version_id' => $v5->id]);
+        Site::factory()->create(['php_version_id' => $v5->id]);
 
         $active = PhpVersion::active()->get();
 
@@ -101,9 +101,9 @@ class PhpVersionTest extends BaseTestCase
     /** @test */
     public function it_returns_a_list_of_versions()
     {
-        $v5 = factory(PhpVersion::class)->create(['version_number' => '5.6']);
+        $v5 = PhpVersion::factory()->create(['version_number' => '5.6']);
 
-        $v7 = factory(PhpVersion::class)->states(['default'])
+        $v7 = PhpVersion::factory()->default()
             ->create(['version_number' => '7.0']);
 
         $this->assertEquals([
@@ -115,9 +115,9 @@ class PhpVersionTest extends BaseTestCase
     /** @test */
     public function it_returns_a_list_of_versions_and_highlights_one()
     {
-        $v5 = factory(PhpVersion::class)->create(['version_number' => '5.6']);
+        $v5 = PhpVersion::factory()->create(['version_number' => '5.6']);
 
-        $v7 = factory(PhpVersion::class)->states(['default'])
+        $v7 = PhpVersion::factory()->default()
             ->create(['version_number' => '7.0']);
 
         $this->assertEquals([
