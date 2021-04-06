@@ -111,10 +111,10 @@ class CertificateBuilderBaseTest extends BaseTestCase
 
     protected function assertNoCertificates($url = 'klever.test')
     {
-        $this->assertFileNotExists($this->dir."/{$url}.conf");
-        $this->assertFileNotExists($this->dir."/{$url}.crt");
-        $this->assertFileNotExists($this->dir."/{$url}.csr");
-        $this->assertFileNotExists($this->dir."/{$url}.key");
+        $this->assertFileDoesNotExist($this->dir."/{$url}.conf");
+        $this->assertFileDoesNotExist($this->dir."/{$url}.crt");
+        $this->assertFileDoesNotExist($this->dir."/{$url}.csr");
+        $this->assertFileDoesNotExist($this->dir."/{$url}.key");
     }
 
     protected function assertHasCaCertificates()
@@ -126,8 +126,8 @@ class CertificateBuilderBaseTest extends BaseTestCase
 
     protected function assertNoCaCertificates()
     {
-        $this->assertFileNotExists($this->dir.'/KleverPorterCASelfSigned.key');
-        $this->assertFileNotExists($this->dir.'/KleverPorterCASelfSigned.pem');
-        $this->assertFileNotExists($this->dir.'/KleverPorterCASelfSigned.srl');
+        $this->assertFileDoesNotExist($this->dir.'/KleverPorterCASelfSigned.key');
+        $this->assertFileDoesNotExist($this->dir.'/KleverPorterCASelfSigned.pem');
+        $this->assertFileDoesNotExist($this->dir.'/KleverPorterCASelfSigned.srl');
     }
 }

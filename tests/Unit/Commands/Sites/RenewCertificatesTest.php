@@ -12,7 +12,7 @@ class RenewCertificatesTest extends BaseTestCase
     /** @test */
     public function it_renews_the_certificates()
     {
-        factory(Site::class)->create(['secure' => true]);
+        Site::factory()->create(['secure' => true]);
 
         $builder = $this->mockCertificateBuilder();
         $builder->shouldReceive('clearCertificates')->with(false)->once();

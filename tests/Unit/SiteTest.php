@@ -19,7 +19,7 @@ class SiteTest extends BaseTestCase
     /** @test */
     public function it_builds_nginx_config()
     {
-        $site = factory(Site::class)->create(['name' => 'klever']);
+        $site = Site::factory()->create(['name' => 'klever']);
 
         $site->buildFiles();
 
@@ -29,13 +29,13 @@ class SiteTest extends BaseTestCase
     /** @test */
     public function it_returns_additional_attributes()
     {
-        factory(Setting::class)->create(['name' => 'domain', 'value' => 'test']);
+        Setting::factory()->create(['name' => 'domain', 'value' => 'test']);
 
-        $site = factory(Site::class)->create(['name' => 'klever']);
+        $site = Site::factory()->create(['name' => 'klever']);
 
         $this->assertEquals('klever.test', $site->url);
         $this->assertEquals('http://', $site->scheme);
-        $this->assertRegExp('/klever.conf/', $site->nginx_conf_path);
+        $this->assertMatchesRegularExpression('/klever.conf/', $site->nginx_conf_path);
         $this->assertEquals('nginx.default.domain', $site->nginx_conf_template);
 
         $site->secure = true;
@@ -43,7 +43,7 @@ class SiteTest extends BaseTestCase
 
         $this->assertEquals('klever.test', $site->url);
         $this->assertEquals('https://', $site->scheme);
-        $this->assertRegExp('/klever.conf/', $site->nginx_conf_path);
+        $this->assertMatchesRegularExpression('/klever.conf/', $site->nginx_conf_path);
         $this->assertEquals('nginx.default.domain_secure', $site->nginx_conf_template);
     }
 
@@ -53,7 +53,7 @@ class SiteTest extends BaseTestCase
         $this->shouldBuildNginxFiles();
         $this->shouldRestartServing();
 
-        $site = factory(Site::class)->create();
+        $site = Site::factory()->create();
 
         $site->setNginxType('my type');
         $this->assertSame('my type', $site->nginx_conf);
@@ -70,7 +70,7 @@ class SiteTest extends BaseTestCase
             return $mock;
         });
 
-        $site = factory(Site::class)->create();
+        $site = Site::factory()->create();
         $site->destroyFiles();
     }
 
@@ -80,8 +80,8 @@ class SiteTest extends BaseTestCase
         $this->shouldBuildNginxFiles();
         $this->shouldRestartServing();
 
-        $site = factory(Site::class)->create();
-        $version = factory(PhpVersion::class)->create();
+        $site = Site::factory()->create();
+        $version = PhpVersion::factory()->create();
 
         $site->setPhpVersion($version->id);
         $this->assertEquals($version->fresh(), $site->php_version);
@@ -93,8 +93,8 @@ class SiteTest extends BaseTestCase
         $this->shouldBuildNginxFiles();
         $this->shouldRestartServing();
 
-        $site = factory(Site::class)->create();
-        $defaultVersion = factory(PhpVersion::class)->create(['default' => true]);
+        $site = Site::factory()->create();
+        $defaultVersion = PhpVersion::factory()->create(['default' => true]);
 
         $site->setPhpVersion();
         $this->assertEquals($defaultVersion->fresh(), $site->php_version);
@@ -143,7 +143,7 @@ class SiteTest extends BaseTestCase
     {
         Setting::updateOrCreate('home', '/Users/keoghan/Code');
 
-        $site = factory(Site::class)->create(['name' => 'sample']);
+        $site = Site::factory()->create(['name' => 'sample']);
 
         $this->assertEquals(
             $site->getKey(),
@@ -156,7 +156,7 @@ class SiteTest extends BaseTestCase
     {
         Setting::updateOrCreate('home', '/Users/keoghan/Code');
 
-        $site = factory(Site::class)->create(['name' => 'sample']);
+        $site = Site::factory()->create(['name' => 'sample']);
 
         $this->assertEquals(
             $site->getKey(),
@@ -179,7 +179,7 @@ class SiteTest extends BaseTestCase
     {
         Setting::updateOrCreate('home', '/Users/keoghan/Code');
 
-        $site = factory(Site::class)->create(['name' => 'sample']);
+        $site = Site::factory()->create(['name' => 'sample']);
 
         app()->instance(Cli::class, \Mockery::mock(Cli::class));
 
@@ -198,7 +198,7 @@ class SiteTest extends BaseTestCase
     {
         Setting::updateOrCreate('home', '/Users/keoghan/Code');
 
-        $site = factory(Site::class)->create(['name' => 'sample']);
+        $site = Site::factory()->create(['name' => 'sample']);
 
         $this->assertEquals(
             $site->getKey(),
@@ -216,7 +216,7 @@ class SiteTest extends BaseTestCase
     /** @test */
     public function it_will_create_a_site_from_only_a_name()
     {
-        $version = factory(PhpVersion::class)->state('default')->create();
+        $version = PhpVersion::factory()->default()->create();
 
         $site = Site::createForName('sample');
 
@@ -231,7 +231,7 @@ class SiteTest extends BaseTestCase
     /** @test */
     public function it_will_create_a_site_from_a_name_if_it_doesnt_exist()
     {
-        $version = factory(PhpVersion::class)->state('default')->create();
+        $version = PhpVersion::factory()->default()->create();
 
         $site = Site::firstOrCreateForName('sample');
 
@@ -252,7 +252,7 @@ class SiteTest extends BaseTestCase
     {
         Setting::updateOrCreate('domain', 'test');
 
-        $site = factory(Site::class)->create(['name' => 'sample']);
+        $site = Site::factory()->create(['name' => 'sample']);
 
         $this->shouldAddCertificate('sample.test');
 
@@ -264,7 +264,7 @@ class SiteTest extends BaseTestCase
     {
         Setting::updateOrCreate('domain', 'test');
 
-        $site = factory(Site::class)->create(['name' => 'sample']);
+        $site = Site::factory()->create(['name' => 'sample']);
 
         $this->shouldRemoveCertificate('sample.test');
 
@@ -276,7 +276,7 @@ class SiteTest extends BaseTestCase
     {
         Setting::updateOrCreate('domain', 'test');
 
-        $site = factory(Site::class)->create(['name' => 'sample']);
+        $site = Site::factory()->create(['name' => 'sample']);
 
         $this->shouldAddCertificate('sample.test');
         $this->shouldBuildNginxFiles();
@@ -292,7 +292,7 @@ class SiteTest extends BaseTestCase
     {
         Setting::updateOrCreate('domain', 'test');
 
-        $site = factory(Site::class)->create(['name' => 'sample', 'secure' => true]);
+        $site = Site::factory()->create(['name' => 'sample', 'secure' => true]);
 
         $this->shouldRemoveCertificate('sample.test');
         $this->shouldBuildNginxFiles();
@@ -308,7 +308,7 @@ class SiteTest extends BaseTestCase
     {
         Setting::updateOrCreate('domain', 'test');
 
-        $site = factory(Site::class)->create(['name' => 'sample', 'secure' => true]);
+        $site = Site::factory()->create(['name' => 'sample', 'secure' => true]);
 
         $this->shouldRemoveCertificate('sample.test');
         $this->shouldRemoveNginxFiles();
