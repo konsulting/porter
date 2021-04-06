@@ -168,7 +168,7 @@ class OrganiserTest extends BaseTestCase
     public function it_will_throw_on_invalid_version()
     {
         $this->expectException(\Exception::class);
-        $this->expectExceptionMessageRegExp('/#VERSION: x\.y\.z/');
+        $this->expectExceptionMessageMatches('/#VERSION: x\.y\.z/');
 
         $this->organiser->readVersion('Something else');
     }

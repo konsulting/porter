@@ -2,6 +2,7 @@
 /.idea
 /.vscode
 /.vagrant
+/.phpunit.result.cache
 
 /docker-compose.yaml
 /database/database.sqlite

@@ -20,20 +20,22 @@
         }
     ],
     "require": {
-        "php": "^7.2",
+        "php": "^7.4",
+        "ext-json": "*",
         "fzaninotto/faker": "^1.8",
-        "illuminate/database": "^6.0",
-        "illuminate/view": "^6.0",
+        "illuminate/database": "^7.0",
+        "illuminate/view": "^7.0",
         "intonate/tinker-zero": "^1.0",
-        "laravel-zero/framework": "dev-stable#fca1a38",
+        "laravel-zero/framework": "^7.0",
         "league/flysystem": "^1.0",
         "nunomaduro/laravel-console-menu": "^2.1",
-        "symfony/yaml": "^4.3",
-        "vlucas/phpdotenv": "^3.0"
+        "symfony/yaml": "^5.0",
+        "vlucas/phpdotenv": "^4.0"
     },
     "require-dev": {
+        "dms/phpunit-arraysubset-asserts": "^0.2.1",
         "mockery/mockery": "^1.1",
-        "phpunit/phpunit": "^7.1"
+        "phpunit/phpunit": "^9.3"
     },
     "autoload": {
         "psr-4": {

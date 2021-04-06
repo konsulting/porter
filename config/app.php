@@ -36,7 +36,7 @@ return [
     | services your application utilizes. Should be true in production.
     |
     */
-    'production' => false,
+    'env' => 'development',
 
     /*
     |--------------------------------------------------------------------------

@@ -119,7 +119,7 @@ class ImageRepositoryTest extends BaseTestCase
         $this->fileSystem->delete($this->path.'/config.json');
 
         $this->expectException(\Exception::class);
-        $this->expectExceptionMessageRegExp('/Failed loading config for image set/');
+        $this->expectExceptionMessageMatches('/Failed loading config for image set/');
         $this->repo = new ImageRepository($this->path);
     }
 
@@ -130,7 +130,7 @@ class ImageRepositoryTest extends BaseTestCase
         $this->fileSystem->put($this->path.'/config.json', '{}');
 
         $this->expectException(\Exception::class);
-        $this->expectExceptionMessageRegExp('/There is no name specified/');
+        $this->expectExceptionMessageMatches('/There is no name specified/');
 
         $this->repo = new ImageRepository($this->path);
     }
@@ -146,7 +146,7 @@ class ImageRepositoryTest extends BaseTestCase
     public function it_doesnt_find_the_first_image_with_no_service_name()
     {
         $this->expectException(\Exception::class);
-        $this->expectExceptionMessageRegExp('/A service name must be provided/');
+        $this->expectExceptionMessageMatches('/A service name must be provided/');
         $this->repo->firstByServiceName(null);
     }
 
@@ -159,7 +159,7 @@ class ImageRepositoryTest extends BaseTestCase
         );
 
         $this->expectException(\Exception::class);
-        $this->expectExceptionMessageRegExp('/Service not found/');
+        $this->expectExceptionMessageMatches('/Service not found/');
         $this->repo->firstByServiceName('mysql', $firstPartyonly = true);
     }
 }

@@ -38,7 +38,7 @@ class YamlBuilderTest extends BaseTestCase
 
         $output = $this->builder->renderDockerComposeFile($this->images);
 
-        $this->assertContains('pathtodotporter', $output);
+        $this->assertStringContainsString('pathtodotporter', $output);
     }
 
     /** @test */
@@ -53,11 +53,11 @@ class YamlBuilderTest extends BaseTestCase
 
         $output = $this->builder->renderDockerComposeFile($this->images);
 
-        $this->assertContains('browser:', $output);
-        $this->assertContains('dns:', $output);
-        $this->assertContains('redis:', $output);
-        $this->assertContains('mysql:', $output);
-        $this->assertContains('pathtodotporter', $output);
+        $this->assertStringContainsString('browser:', $output);
+        $this->assertStringContainsString('dns:', $output);
+        $this->assertStringContainsString('redis:', $output);
+        $this->assertStringContainsString('mysql:', $output);
+        $this->assertStringContainsString('pathtodotporter', $output);
     }
 
     /** @test */
@@ -72,11 +72,11 @@ class YamlBuilderTest extends BaseTestCase
 
         $output = $this->builder->renderDockerComposeFile($this->images);
 
-        $this->assertNotContains('browser:', $output);
-        $this->assertNotContains('dns:', $output);
-        $this->assertNotContains('redis:', $output);
-        $this->assertNotContains('mysql:', $output);
-        $this->assertContains('pathtodotporter', $output);
+        $this->assertStringNotContainsString('browser:', $output);
+        $this->assertStringNotContainsString('dns:', $output);
+        $this->assertStringNotContainsString('redis:', $output);
+        $this->assertStringNotContainsString('mysql:', $output);
+        $this->assertStringContainsString('pathtodotporter', $output);
     }
 
     /** @test */
@@ -86,7 +86,7 @@ class YamlBuilderTest extends BaseTestCase
 
         $output = $this->builder->renderDockerComposeFile($this->images);
 
-        $this->assertContains('dns:', $output);
+        $this->assertStringContainsString('dns:', $output);
         $this->assertNull(setting('use_dns'));
     }
 

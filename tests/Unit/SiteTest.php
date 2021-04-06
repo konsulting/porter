@@ -9,10 +9,13 @@ use App\Porter;
 use App\Support\Contracts\Cli;
 use App\Support\Nginx\SiteConfBuilder;
 use App\Support\Ssl\CertificateBuilder;
+use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
 use Tests\BaseTestCase;
 
 class SiteTest extends BaseTestCase
 {
+    use ArraySubsetAsserts;
+
     /** @test */
     public function it_builds_nginx_config()
     {
@@ -217,7 +220,7 @@ class SiteTest extends BaseTestCase
 
         $site = Site::createForName('sample');
 
-        $this->assertArraySubset([
+        self::assertArraySubset([
             'name'           => 'sample',
             'nginx_conf'     => 'default',
             'php_version_id' => $version->getKey(),
@@ -232,7 +235,7 @@ class SiteTest extends BaseTestCase
 
         $site = Site::firstOrCreateForName('sample');
 
-        $this->assertArraySubset([
+        self::assertArraySubset([
             'name'           => 'sample',
             'nginx_conf'     => 'default',
             'php_version_id' => $version->getKey(),
