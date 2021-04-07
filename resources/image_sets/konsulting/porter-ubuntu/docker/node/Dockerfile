@@ -1,5 +1,5 @@
-#VERSION: 1.1.0
-FROM alpine:3.10
+#VERSION: 1.3.0
+FROM alpine:3.13
 
 ARG uid=1000
 

@@ -1,4 +1,4 @@
-#VERSION: 1.0.1
+#VERSION: 1.0.2
 FROM ubuntu:20.04
 
 RUN apt-get update \
