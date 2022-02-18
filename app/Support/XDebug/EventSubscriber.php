@@ -15,8 +15,12 @@ class EventSubscriber
         $this->xdebug = $xdebug;
     }
 
-    public function setXDebug()
+    public function setXDebug($event)
     {
+        if (($event->service ?? false) && strpos('php_fpm', $event->service) === false) {
+            return;
+        }
+
         if (setting('use_xdebug', 'on') === 'off') {
             $this->xdebug->turnOff();
         }

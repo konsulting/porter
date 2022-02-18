@@ -60,6 +60,8 @@ class YamlBuilder
             'useMysql'          => setting('use_mysql') === 'on',
             'useRedis'          => setting('use_redis') === 'on',
             'useBrowser'        => setting('use_browser') === 'on',
+            'useMeilisearch'    => setting('use_meilisearch') === 'on',
+            'useElasticsearch'  => setting('use_elasticsearch') === 'on',
             'useDns'            => setting('use_dns') === 'on' || setting_missing('use_dns'),
             'httpPort'          => setting('http_port', 80),
             'httpsPort'         => setting('https_port', 443),

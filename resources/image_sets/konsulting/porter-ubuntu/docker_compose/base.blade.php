@@ -31,3 +31,7 @@ services:
   @includeWhen($useRedis, "{$imageSet->getName()}::redis")
 
   @includeWhen($useBrowser, "{$imageSet->getName()}::browser")
+
+  @includeWhen($useMeilisearch, "{$imageSet->getName()}::meilisearch")
+
+  @includeWhen($useElasticsearch, "{$imageSet->getName()}::elasticsearch")

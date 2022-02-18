@@ -34,6 +34,8 @@
         "redis": "redis:alpine",
         "dns": "andyshinn\/dnsmasq",
         "mailhog": "mailhog\/mailhog:v1.0.0",
-        "ngrok": "wernight\/ngrok"
+        "ngrok": "wernight\/ngrok",
+        "meilisearch": "getmeili/meilisearch",
+        "elasticsearch": "docker.elastic.co/elasticsearch/elasticsearch:7.12.0"
     }
 }
