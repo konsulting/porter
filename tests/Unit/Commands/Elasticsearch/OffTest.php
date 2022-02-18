@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Commands\Meilisearch;
+namespace Tests\Unit\Commands\Elasticsearch;
 
 use Tests\BaseTestCase;
 use Tests\Unit\Support\Concerns\MocksPorter;
@@ -10,10 +10,10 @@ class OffTest extends BaseTestCase
     use MocksPorter;
 
     /** @test */
-    public function it_turns_the_browser_on()
+    public function it_turns_elasticsearch_off()
     {
-        $this->porter->shouldReceive('turnOffService')->with('meilisearch')->once();
+        $this->porter->shouldReceive('turnOffService')->with('elasticsearch')->once();
 
-        $this->artisan('meilisearch:off');
+        $this->artisan('elasticsearch:off');
     }
 }

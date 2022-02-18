@@ -10,7 +10,7 @@ class OnTest extends BaseTestCase
     use MocksPorter;
 
     /** @test */
-    public function it_turns_the_browser_on()
+    public function it_turns_elasticsearch_on()
     {
         $this->porter->shouldReceive('turnOnService')->with('elasticsearch')->once();
 
