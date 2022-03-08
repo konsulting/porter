@@ -46,7 +46,7 @@ class Valet
 
         $this->sudoWarning();
 
-        Setting::updateOrCreate('valet', 'on');
+        Setting::updateOrCreate('use_valet', 'on');
         Setting::updateOrCreate('http_port', static::COMPAT_HTTP_PORT);
         Setting::updateOrCreate('https_port', static::COMPAT_HTTPS_PORT);
 
@@ -79,7 +79,7 @@ class Valet
             $this->removeSite($site);
         });
 
-        Setting::updateOrCreate('valet', 'off');
+        Setting::updateOrCreate('use_valet', 'off');
         Setting::updateOrCreate('http_port', static::HTTP_PORT);
         Setting::updateOrCreate('https_port', static::HTTPS_PORT);
 
@@ -104,14 +104,20 @@ class Valet
 
         $port = $site->secure ? static::COMPAT_HTTPS_PORT : static::COMPAT_HTTP_PORT;
         $protocol = $site->secure ? 'https://' : 'http://';
+        $secure = $site->secure ? ' --secure ' : '';
 
-        $this->cli->exec("valet proxy {$site->name} {$protocol}127.0.0.1:{$port}");
+        $this->cli->exec("valet proxy{$secure}{$site->name} {$protocol}127.0.0.1:{$port}");
 
         $this->writer->line("Added {$site->name} proxy for Valet");
     }
 
     public function removeSite(Site $site)
     {
+        if (! $this->isProxied($site)) {
+            $this->writer->line("No proxy for {$site->name}");
+            return;
+        }
+
         $this->sudoWarning();
 
         $this->cli->exec("valet unproxy {$site->name}");

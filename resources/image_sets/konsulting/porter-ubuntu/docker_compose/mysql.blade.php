@@ -1,4 +1,5 @@
   mysql:
+    platform: linux/x86_64
     image: {{ $imageSet->firstByServiceName('mysql')->getName() }}
     ports:
       - 13306:3306
