@@ -41,7 +41,6 @@ interface Cli
     /**
      * Set the timeout for the wrapping PHP Process.
      *
-     * @param int $seconds
      *
      * @return Cli
      */

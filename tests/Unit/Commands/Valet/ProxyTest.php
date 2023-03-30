@@ -29,9 +29,7 @@ class ProxyTest extends BaseTestCase
         $site = Site::factory()->create(['secure' => true, 'name' => 'dummy']);
 
         $valet->shouldReceive('addSite')->once()->with(
-            \Mockery::on(function ($arg) use ($site) {
-                return $arg->is($site);
-            })
+            \Mockery::on(fn($arg) => $arg->is($site))
         );
 
         $this->artisan('valet:proxy', ['site' => 'dummy']);

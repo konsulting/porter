@@ -36,47 +36,35 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(CertificateBuilder::class, function () {
-            return new CertificateBuilder(
-                app(CliContract::class),
-                app(Filesystem::class),
-                app(Mechanic::class),
-                app(PorterLibrary::class)->sslPath()
-            );
-        });
+        $this->app->singleton(CertificateBuilder::class, fn() => new CertificateBuilder(
+            app(CliContract::class),
+            app(Filesystem::class),
+            app(Mechanic::class),
+            app(PorterLibrary::class)->sslPath()
+        ));
 
         $this->app->bind(ConsoleWriter::class);
 
         $this->app->bind(CliContract::class, Cli::class);
-        $this->app->bind(Cli::class, function () {
-            return (new Cli())->setTimeout(config('porter.process_timeout'));
-        });
+        $this->app->bind(Cli::class, fn() => (new Cli())->setTimeout(config('porter.process_timeout')));
 
-        $this->app->bind(ImageSetRepositoryContract::class, function () {
-            return new ImageSetRepository([
-                resource_path('image_sets'),
-                app(PorterLibrary::class)->dockerImagesPath(),
-            ]);
-        });
+        $this->app->bind(ImageSetRepositoryContract::class, fn() => new ImageSetRepository([
+            resource_path('image_sets'),
+            app(PorterLibrary::class)->dockerImagesPath(),
+        ]));
 
-        $this->app->bind(Organiser::class, function () {
-            return new Organiser(
-                app(Porter::class)->getDockerImageSet(),
-                app(CliContract::class),
-                app(FileSystem::class)
-            );
-        });
+        $this->app->bind(Organiser::class, fn() => new Organiser(
+            app(Porter::class)->getDockerImageSet(),
+            app(CliContract::class),
+            app(FileSystem::class)
+        ));
 
         $this->app->singleton(Porter::class);
 
-        $this->app->singleton(PorterLibrary::class, function (Application $app) {
-            return new PorterLibrary($app->make(FilePublisher::class), $app->make(Mechanic::class), config('porter.library_path'));
-        });
+        $this->app->singleton(PorterLibrary::class, fn(Application $app) => new PorterLibrary($app->make(FilePublisher::class), $app->make(Mechanic::class), config('porter.library_path')));
 
         $this->app->singleton(ServerBag::class);
 
-        $this->app->bind(Mechanic::class, function () {
-            return ChooseMechanic::forOS();
-        });
+        $this->app->bind(Mechanic::class, fn() => ChooseMechanic::forOS());
     }
 }

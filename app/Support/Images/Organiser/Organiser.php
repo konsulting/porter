@@ -29,12 +29,10 @@ class Organiser
     /**
      * Build the current images.
      *
-     * @param string|null $service
      * @param bool        $fresh
-     *
      * @throws FileNotFoundException
      */
-    public function buildImages($service = null, $fresh = false)
+    public function buildImages(?string $service = null, $fresh = false)
     {
         foreach ($this->repository->findByServiceName($service, $firstPartyOnly = true) as $image) {
             /** @var Image $image */
@@ -52,10 +50,8 @@ class Organiser
      * Find the build version for an image.
      * Look in the first line of the Dockerfile.
      *
-     * @param Image $image
      *
      * @throws FileNotFoundException
-     *
      * @return string
      */
     public function findBuildVersion(Image $image)
@@ -88,17 +84,15 @@ class Organiser
     /**
      * Update the version stored in the config.json file.
      *
-     * @param Image $image
      * @param $version
-     *
      * @throws FileNotFoundException
      */
     public function updateConfigVersionForImage(Image $image, $version)
     {
         $configFile = $this->repository->getPath().'/config.json';
-        $config = json_decode($this->filesystem->get($configFile), true);
+        $config = json_decode($this->filesystem->get($configFile), true, 512, JSON_THROW_ON_ERROR);
 
-        $serviceName = substr($image->getUnVersionedName(), strlen($config['name']) + 1);
+        $serviceName = substr($image->getUnVersionedName(), strlen((string) $config['name']) + 1);
 
         $config['firstParty'][$serviceName] = $version;
 
@@ -108,11 +102,10 @@ class Organiser
     /**
      * Push the current images.
      *
-     * @param string|null $service
      *
      * @throws \Exception
      */
-    public function pushImages($service = null)
+    public function pushImages(?string $service = null)
     {
         foreach ($this->repository->findByServiceName($service, $firstPartyOnly = true) as $image) {
             /* @var Image $image */
@@ -123,11 +116,10 @@ class Organiser
     /**
      * Pull our docker images.
      *
-     * @param string|null $service
      *
      * @throws \Exception
      */
-    public function pullImages($service = null)
+    public function pullImages(?string $service = null)
     {
         foreach ($this->repository->findByServiceName($service) as $image) {
             /** @var Image $image */
@@ -142,7 +134,6 @@ class Organiser
     /**
      * Check if we already have the image.
      *
-     * @param Image $image
      *
      * @return bool
      */
@@ -150,6 +141,6 @@ class Organiser
     {
         $output = $this->cli->exec("docker image inspect {$image->getName()}");
 
-        return strpos($output, "Error: No such image: {$image->getName()}") === false;
+        return !str_contains($output, "Error: No such image: {$image->getName()}");
     }
 }

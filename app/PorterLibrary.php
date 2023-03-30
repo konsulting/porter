@@ -12,13 +12,6 @@ use Illuminate\Support\Facades\Artisan;
 class PorterLibrary
 {
     /**
-     * The path of the Porter library directory (e.g. ~/.porter on Mac).
-     *
-     * @var string
-     */
-    protected $path;
-
-    /**
      * The system's filesystem.
      *
      * @var Filesystem
@@ -33,23 +26,22 @@ class PorterLibrary
     protected $filePublisher;
 
     protected $shouldMigrateAndSeedDatabase = true;
-    /**
-     * @var Mechanic
-     */
-    private $mechanic;
 
-    public function __construct(FilePublisher $filePublisher, Mechanic $mechanic, $path)
+    /**
+     * @param string $path
+     */
+    public function __construct(FilePublisher $filePublisher, private Mechanic $mechanic, /**
+     * The path of the Porter library directory (e.g. ~/.porter on Mac).
+     */
+    protected $path)
     {
         $this->filePublisher = $filePublisher;
         $this->files = $filePublisher->getFilesystem();
-        $this->path = $path;
-        $this->mechanic = $mechanic;
     }
 
     /**
      * Set the Mechanic instance.
      *
-     * @param Mechanic $mechanic
      *
      * @return $this
      */
@@ -146,9 +138,7 @@ class PorterLibrary
      * Set up the library, by creating files, storing the path in .env
      * creating the sqlite database and updating the app config.
      *
-     * @param Application $app
      * @param bool        $force
-     *
      * @throws PorterSetupFailed
      */
     public function setUp(Application $app, $force = false)
@@ -194,7 +184,7 @@ class PorterLibrary
     {
         try {
             $this->filePublisher->publish(base_path('.env.example'), base_path('.env'));
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             throw new PorterSetupFailed('Failed publishing the .env file');
         }
     }
@@ -238,8 +228,6 @@ class PorterLibrary
 
     /**
      * Update core parts of the app config.
-     *
-     * @param Application $app
      */
     protected function updateAppConfig(Application $app)
     {
@@ -256,7 +244,7 @@ class PorterLibrary
     {
         try {
             $this->filePublisher->publish(resource_path('stubs/config'), $this->configPath());
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             throw new PorterSetupFailed('Failed publishing the container configuration files');
         }
     }

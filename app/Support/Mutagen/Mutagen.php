@@ -117,7 +117,7 @@ class Mutagen
      */
     protected function checkForMacOs(): void
     {
-        if (get_class($this->mechanic) !== MacOs::class) {
+        if ($this->mechanic::class !== MacOs::class) {
             throw new CannotInstallMutagen('The OS must be MacOs');
         }
     }
@@ -125,7 +125,6 @@ class Mutagen
     /**
      * Remove the synced volumes from docker-compose.yaml.
      *
-     * @param string $file
      *
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
@@ -151,10 +150,8 @@ class Mutagen
     /**
      * Get the yaml from the file.
      *
-     * @param string $file
      *
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
-     *
      * @return mixed
      */
     public function getYaml(string $file)
@@ -164,9 +161,6 @@ class Mutagen
 
     /**
      * Save array to yaml file.
-     *
-     * @param string $file
-     * @param array  $yaml
      */
     public function putYaml(string $file, array $yaml)
     {

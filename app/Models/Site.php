@@ -34,16 +34,14 @@ class Site extends Model
     /**
      * Resolve the site from the current working directory.
      *
-     * @param string|null $path
      *
-     * @return Site|null
      */
-    public static function resolveFromPathOrCurrentWorkingDirectory($path = null)
+    public static function resolveFromPathOrCurrentWorkingDirectory(?string $path = null): ?\App\Models\Site
     {
         $name = static::nameFromPath($path ?: app(Cli::class)->currentWorkingDirectory());
 
         if (!$name) {
-            return;
+            return null;
         }
 
         return static::where('name', $name)->first();
@@ -53,13 +51,11 @@ class Site extends Model
      * Resolve the site from the current working directory
      * Fail if not found.
      *
-     * @param string|null $path
      *
      * @throws \Exception
      *
-     * @return Site|null
      */
-    public static function resolveFromPathOrCurrentWorkingDirectoryOrFail($path = null)
+    public static function resolveFromPathOrCurrentWorkingDirectoryOrFail(?string $path = null): ?\App\Models\Site
     {
         $site = static::resolveFromPathOrCurrentWorkingDirectory($path);
 
@@ -184,11 +180,10 @@ class Site extends Model
     /**
      * Set the PHP version for the site.
      *
-     * @param int|null $phpVersionId
      *
      * @throws \Throwable
      */
-    public function setPhpVersion($phpVersionId = null)
+    public function setPhpVersion(?int $phpVersionId = null)
     {
         $this->update(['php_version_id' => $phpVersionId ?: PhpVersion::defaultVersion()->id]);
 
@@ -313,19 +308,17 @@ class Site extends Model
      * home directory.
      *
      * @param $path
-     *
-     * @return null|string
      */
-    public static function nameFromPath($path)
+    public static function nameFromPath($path): ?string
     {
         $home = setting('home');
 
-        if (strpos($path, DIRECTORY_SEPARATOR) === false) {
+        if (!str_contains((string) $path, DIRECTORY_SEPARATOR)) {
             return $path;
         }
 
-        if (strpos($path, $home) !== 0) {
-            return;
+        if (!str_starts_with((string) $path, (string) $home)) {
+            return null;
         }
 
         $path = trim(Str::after($path, $home), DIRECTORY_SEPARATOR);

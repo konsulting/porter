@@ -31,8 +31,6 @@ class Open extends BaseCommand
 
     /**
      * Execute the console command.
-     *
-     * @return void
      */
     public function handle(): void
     {
@@ -80,7 +78,7 @@ class Open extends BaseCommand
 
                 return false;
             }
-        } catch (UnableToRetrieveIP $e) {
+        } catch (UnableToRetrieveIP) {
             $this->info('Please run porter dns:flush and try again. You may need to give it a little while.');
 
             return false;
@@ -91,8 +89,6 @@ class Open extends BaseCommand
 
     /**
      * Remove SSL from the site if it was secured.
-     *
-     * @param Site $site
      */
     protected function removeSSLIfNeeded(Site $site): void
     {
@@ -107,8 +103,6 @@ class Open extends BaseCommand
 
     /**
      * Add SSL back to the site if it was previously secured.
-     *
-     * @param Site $site
      */
     protected function restoreSSLIfNeeded(Site $site): void
     {
@@ -123,9 +117,7 @@ class Open extends BaseCommand
     /**
      * Construct the ngrok command.
      *
-     * @param Site $site
      *
-     * @return string
      */
     protected function constructNgrokCommand(Site $site): string
     {

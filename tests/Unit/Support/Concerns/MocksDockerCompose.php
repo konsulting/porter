@@ -14,8 +14,6 @@ trait MocksDockerCompose
     {
         $this->dockerCompose = \Mockery::mock(CliCommandFactory::class);
 
-        $this->app->extend(CliCommandFactory::class, function () {
-            return $this->dockerCompose;
-        });
+        $this->app->extend(CliCommandFactory::class, fn() => $this->dockerCompose);
     }
 }

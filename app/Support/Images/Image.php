@@ -6,22 +6,14 @@ use Illuminate\Support\Str;
 
 class Image
 {
-    /** @var string */
-    protected $name;
-
-    /** @var string|null */
-    protected $localPath;
-
     /**
      * Image constructor.
      *
      * @param $name
-     * @param string|null $localPath
+     * @param string $name
      */
-    public function __construct($name, $localPath = null)
+    public function __construct(protected $name, protected ?string $localPath = null)
     {
-        $this->name = $name;
-        $this->localPath = $localPath;
     }
 
     /**
@@ -46,10 +38,8 @@ class Image
 
     /**
      * Return the local path for the image, if it is local.
-     *
-     * @return string|null
      */
-    public function getLocalPath()
+    public function getLocalPath(): ?string
     {
         return $this->localPath;
     }

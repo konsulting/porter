@@ -14,8 +14,6 @@ trait MocksPorter
     {
         $this->porter = \Mockery::mock(Porter::class);
 
-        $this->app->extend(Porter::class, function () {
-            return $this->porter;
-        });
+        $this->app->extend(Porter::class, fn() => $this->porter);
     }
 }

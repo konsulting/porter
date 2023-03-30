@@ -27,8 +27,6 @@ class Php extends BaseCommand
      *
      * @throws \Exception
      * @throws \Throwable
-     *
-     * @return void
      */
     public function handle(): void
     {

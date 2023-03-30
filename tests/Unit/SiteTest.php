@@ -321,8 +321,6 @@ class SiteTest extends BaseTestCase
 
     /**
      * Ensure that the site config builder is asked to build files.
-     *
-     * @return void
      */
     protected function shouldBuildNginxFiles(): void
     {
@@ -337,8 +335,6 @@ class SiteTest extends BaseTestCase
 
     /**
      * Ensure that the site config builder is asked to build files.
-     *
-     * @return void
      */
     protected function shouldRemoveNginxFiles(): void
     {
@@ -371,8 +367,6 @@ class SiteTest extends BaseTestCase
      * Ensure that the certificate builder is asked to build a certificate.
      *
      * @param $forUrl
-     *
-     * @return void
      */
     protected function shouldAddCertificate($forUrl): void
     {
@@ -390,8 +384,6 @@ class SiteTest extends BaseTestCase
      * Ensure that the certificate builder is asked to remove a certificate.
      *
      * @param $forUrl
-     *
-     * @return void
      */
     protected function shouldRemoveCertificate($forUrl): void
     {

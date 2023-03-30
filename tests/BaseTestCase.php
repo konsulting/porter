@@ -55,14 +55,12 @@ abstract class BaseTestCase extends IlluminateTestCase
      */
     protected function remakePorter()
     {
-        $this->app->extend(Porter::class, function ($porter, $app) {
-            return new Porter(
-                $app[ImageSetRepository::class],
-                $app[Cli::class],
-                $app[CliCommandFactory::class],
-                new YamlBuilder($app[Filesystem::class], $app[PorterLibrary::class])
-            );
-        });
+        $this->app->extend(Porter::class, fn($porter, $app) => new Porter(
+            $app[ImageSetRepository::class],
+            $app[Cli::class],
+            $app[CliCommandFactory::class],
+            new YamlBuilder($app[Filesystem::class], $app[PorterLibrary::class])
+        ));
     }
 
     /**

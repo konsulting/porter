@@ -23,8 +23,6 @@ class ListVersions extends BaseCommand
 
     /**
      * Execute the console command.
-     *
-     * @return void
      */
     public function handle(): void
     {
@@ -34,13 +32,11 @@ class ListVersions extends BaseCommand
 
         $versions = PhpVersion::orderBy('name', 'asc')
             ->get()
-            ->map(function ($version) use ($activeVersions) {
-                return [
-                    $version->version_number,
-                    $version->default ? 'yes' : '-',
-                    $activeVersions->contains($version) ? 'yes' : '-',
-                ];
-            });
+            ->map(fn($version) => [
+                $version->version_number,
+                $version->default ? 'yes' : '-',
+                $activeVersions->contains($version) ? 'yes' : '-',
+            ]);
 
         $this->table($headers, $versions);
     }

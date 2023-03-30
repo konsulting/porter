@@ -22,16 +22,13 @@ class AvailableConfigurations
     /**
      * Get the list of conf files, indicating current.
      *
-     * @param string|null $highlight
      *
      * @return mixed
      */
-    public function getList($highlight = null)
+    public function getList(?string $highlight = null)
     {
         return $this->getFileNames()
-            ->mapWithKeys(function ($name) use ($highlight) {
-                return [$name => $name.($name == $highlight ? ' (current)' : '')];
-            })->toArray();
+            ->mapWithKeys(fn($name) => [$name => $name.($name == $highlight ? ' (current)' : '')])->toArray();
     }
 
     /**
@@ -52,9 +49,7 @@ class AvailableConfigurations
     protected function locationsFromViewFinder()
     {
         return collect(view()->getFinder()->getPaths())
-            ->map(function ($location) {
-                return $location.'/nginx';
-            })->toArray();
+            ->map(fn($location) => $location.'/nginx')->toArray();
     }
 
     /**
@@ -66,8 +61,6 @@ class AvailableConfigurations
     {
         return collect(iterator_to_array(
             Finder::create()->in($this->locations)->directories()
-        ))->map(function (SplFileInfo $file) {
-            return $file->getFilename();
-        })->sort();
+        ))->map(fn(SplFileInfo $file) => $file->getFilename())->sort();
     }
 }

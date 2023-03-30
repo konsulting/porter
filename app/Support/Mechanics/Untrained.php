@@ -25,10 +25,6 @@ class Untrained implements Mechanic
 
     /**
      * Untrained constructor.
-     *
-     * @param Cli           $cli
-     * @param ConsoleWriter $consoleWriter
-     * @param ServerBag     $serverBag
      */
     public function __construct(Cli $cli, ConsoleWriter $consoleWriter, ServerBag $serverBag)
     {

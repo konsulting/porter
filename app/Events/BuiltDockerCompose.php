@@ -9,8 +9,6 @@ class BuiltDockerCompose
 
     /**
      * BuiltDockerCompose constructor.
-     *
-     * @param string $filePath
      */
     public function __construct(string $filePath)
     {

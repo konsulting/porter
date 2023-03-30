@@ -18,9 +18,7 @@ class BeginTest extends BaseTestCase
         $this->organiser->expects('pullImages');
 
         $this->afterApplicationCreated(function () {
-            app()->bind(Organiser::class, function () {
-                return $this->organiser;
-            });
+            app()->bind(Organiser::class, fn() => $this->organiser);
         });
     }
 

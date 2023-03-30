@@ -51,11 +51,6 @@ class Porter
 
     /**
      * Porter constructor.
-     *
-     * @param ImageSetRepository $imageSets
-     * @param Cli                $cli
-     * @param CliCommandFactory  $commandFactory
-     * @param YamlBuilder        $yamlBuilder
      */
     public function __construct(
         ImageSetRepository $imageSets,
@@ -72,11 +67,10 @@ class Porter
     /**
      * Check if the Porter containers are running.
      *
-     * @param string|null $service
      *
      * @return bool
      */
-    public function isUp($service = null)
+    public function isUp(?string $service = null)
     {
         return (bool) stristr($this->dockerCompose->command('ps')->perform(), "porter_{$service}");
     }
@@ -94,10 +88,9 @@ class Porter
     /**
      * Start Porter containers, optionally start a specific service, and force them to be recreated.
      *
-     * @param string|null $service
      * @param bool        $recreate
      */
-    public function start($service = null, $recreate = false)
+    public function start(?string $service = null, $recreate = false)
     {
         $recreate = $recreate ? '--force-recreate ' : '';
 
@@ -110,10 +103,8 @@ class Porter
 
     /**
      * Stop Porter containers.
-     *
-     * @param string|null $service
      */
-    public function stop($service = null)
+    public function stop(?string $service = null)
     {
         event(is_null($service) ? new StoppingPorter() : new StoppingPorterService($service));
 
@@ -130,10 +121,8 @@ class Porter
 
     /**
      * Restart Porter containers.
-     *
-     * @param string|null $service
      */
-    public function restart($service = null)
+    public function restart(?string $service = null)
     {
         if ($this->isUp($service)) {
             $this->stop($service);
@@ -146,10 +135,8 @@ class Porter
     /**
      * Soft restart Porter containers.
      * Restart without getting config changes.
-     *
-     * @param string|null $service
      */
-    public function softRestart($service = null)
+    public function softRestart(?string $service = null)
     {
         $this->dockerCompose->command("restart {$service}")->realTime()->perform();
     }
@@ -168,9 +155,7 @@ class Porter
 
         PhpVersion::active()
             ->get()
-            ->reject(function ($phpVersion) {
-                return $this->isUp($phpVersion->fpm_name);
-            })
+            ->reject(fn($phpVersion) => $this->isUp($phpVersion->fpm_name))
             ->each(function ($phpVersion) {
                 $this->start($phpVersion->fpm_name);
                 $this->start($phpVersion->cli_name);
@@ -248,10 +233,8 @@ class Porter
 
     /**
      * Show container logs.
-     *
-     * @param string|null $service
      */
-    public function logs($service = null)
+    public function logs(?string $service = null)
     {
         echo $this->dockerCompose->command("logs {$service}")->perform();
     }

@@ -74,13 +74,11 @@ class ImageSetRepository implements ImageSetRepositoryContract
                     return iterator_to_array(
                         Finder::create()->in($location)->depth(1)->directories()
                     );
-                } catch (\InvalidArgumentException $e) {
+                } catch (\InvalidArgumentException) {
                     return;
                 }
             })->filter()
-            ->map(function (SplFileInfo $directory) {
-                return $directory->getRelativePathname();
-            })->unique();
+            ->map(fn(SplFileInfo $directory) => $directory->getRelativePathname())->unique();
     }
 
     /**

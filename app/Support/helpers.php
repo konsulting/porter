@@ -5,12 +5,10 @@ use App\Models\Setting;
 /**
  * Get a setting, or all settings.
  *
- * @param string|null $key
- * @param string|null $default
  *
  * @return mixed|\Illuminate\Support\Collection
  */
-function setting($key = null, $default = null)
+function setting(?string $key = null, ?string $default = null)
 {
     if (!$key) {
         return Setting::all()->pluck('value', 'name');

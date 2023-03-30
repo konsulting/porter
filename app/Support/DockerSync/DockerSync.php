@@ -18,15 +18,12 @@ class DockerSync
     protected $cli;
     /** @var FileSystem */
     protected $files;
-    /** @var PorterLibrary */
-    private $library;
 
-    public function __construct(Mechanic $mechanic, Cli $cli, Filesystem $files, PorterLibrary $library)
+    public function __construct(Mechanic $mechanic, Cli $cli, Filesystem $files, private readonly PorterLibrary $library)
     {
         $this->mechanic = $mechanic;
         $this->cli = $cli;
         $this->files = $files;
-        $this->library = $library;
     }
 
     /**
@@ -58,7 +55,7 @@ class DockerSync
      */
     protected function checkForMacOs(): void
     {
-        if (get_class($this->mechanic) !== MacOs::class) {
+        if ($this->mechanic::class !== MacOs::class) {
             throw new CannotInstallDockerSync('The OS must be MacOs');
         }
     }
@@ -93,9 +90,7 @@ class DockerSync
         $composeYaml['services']['node']['volumes'][0] = $this->replaceSync($composeYaml['services']['node']['volumes'][0]);
         $composeYaml['services']['nginx']['volumes'][0] = $this->replaceSync($composeYaml['services']['nginx']['volumes'][0]);
 
-        $composeYaml['volumes'] = array_map(function () {
-            return ['external' => true];
-        }, $this->getSyncs());
+        $composeYaml['volumes'] = array_map(fn() => ['external' => true], $this->getSyncs());
 
         $this->putYaml($composeFile, $composeYaml);
         $this->putYaml($syncYamlFile, $syncYaml);
@@ -113,7 +108,7 @@ class DockerSync
 
     protected function replaceSync($string, $sync = 'home')
     {
-        $pathParts = explode(':', $string);
+        $pathParts = explode(':', (string) $string);
 
         $source = $pathParts[0];
         $target = $pathParts[1];
@@ -130,10 +125,8 @@ class DockerSync
     /**
      * Get the yaml from the file.
      *
-     * @param string $file
      *
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
-     *
      * @return mixed
      */
     public function getYaml(string $file)
@@ -143,9 +136,6 @@ class DockerSync
 
     /**
      * Save array to yaml file.
-     *
-     * @param string $file
-     * @param array  $yaml
      */
     public function putYaml(string $file, array $yaml)
     {

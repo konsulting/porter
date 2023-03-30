@@ -16,7 +16,7 @@ class CliCommand
      */
     protected $cli;
 
-    public function __construct(Cli $cli, $command)
+    public function __construct(Cli $cli, string $command)
     {
         $this->command = trim($command);
         $this->cli = $cli;
@@ -25,11 +25,10 @@ class CliCommand
     /**
      * Append a bash command, optionally with a further call.
      *
-     * @param string|null $command
      *
      * @return $this
      */
-    public function bash($command = null)
+    public function bash(string $command = '')
     {
         $this->interactive();
         $this->append('bash');
@@ -44,11 +43,10 @@ class CliCommand
     /**
      * Append to a command.
      *
-     * @param string|null $string
      *
      * @return $this
      */
-    public function append($string = null)
+    public function append(string $string = '')
     {
         $this->command = trim($this->command." {$string}");
 
@@ -140,10 +138,8 @@ class CliCommand
 
     /**
      * Execute the command.
-     *
-     * @return string|int
      */
-    public function perform()
+    public function perform(): string|int|null
     {
         if ($this->isInteractive()) {
             return $this->cli->passthru($this->prepare());
@@ -169,7 +165,6 @@ class CliCommand
     /**
      * Set the timeout for the Cli instance.
      *
-     * @param int $seconds
      *
      * @return CliCommand
      */

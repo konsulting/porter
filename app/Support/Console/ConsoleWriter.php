@@ -42,11 +42,10 @@ class ConsoleWriter
      * Write a string as information output.
      *
      * @param string          $string
-     * @param null|int|string $verbosity
      *
      * @return void
      */
-    public function info($string, $verbosity = null)
+    public function info($string, null|int|string $verbosity = null)
     {
         $this->line($string, 'info', $verbosity);
     }
@@ -56,11 +55,10 @@ class ConsoleWriter
      *
      * @param string          $string
      * @param string          $style
-     * @param null|int|string $verbosity
      *
      * @return void
      */
-    public function line($string, $style = null, $verbosity = null)
+    public function line($string, $style = null, null|int|string $verbosity = null)
     {
         $styled = $style ? "<$style>$string</$style>" : $string;
 
@@ -70,11 +68,10 @@ class ConsoleWriter
     /**
      * Get the verbosity level in terms of Symfony's OutputInterface level.
      *
-     * @param string|int|null $level
      *
      * @return int
      */
-    protected function parseVerbosity($level = null)
+    protected function parseVerbosity(string|int|null $level = null)
     {
         if (isset($this->verbosityMap[$level])) {
             $level = $this->verbosityMap[$level];
@@ -89,11 +86,10 @@ class ConsoleWriter
      * Write a string as comment output.
      *
      * @param string          $string
-     * @param null|int|string $verbosity
      *
      * @return void
      */
-    public function comment($string, $verbosity = null)
+    public function comment($string, null|int|string $verbosity = null)
     {
         $this->line($string, 'comment', $verbosity);
     }
@@ -102,11 +98,10 @@ class ConsoleWriter
      * Write a string as question output.
      *
      * @param string          $string
-     * @param null|int|string $verbosity
      *
      * @return void
      */
-    public function question($string, $verbosity = null)
+    public function question($string, null|int|string $verbosity = null)
     {
         $this->line($string, 'question', $verbosity);
     }
@@ -115,11 +110,10 @@ class ConsoleWriter
      * Write a string as error output.
      *
      * @param string          $string
-     * @param null|int|string $verbosity
      *
      * @return void
      */
-    public function error($string, $verbosity = null)
+    public function error($string, null|int|string $verbosity = null)
     {
         $this->line($string, 'error', $verbosity);
     }
@@ -128,11 +122,10 @@ class ConsoleWriter
      * Write a string as warning output.
      *
      * @param string          $string
-     * @param null|int|string $verbosity
      *
      * @return void
      */
-    public function warn($string, $verbosity = null)
+    public function warn($string, null|int|string $verbosity = null)
     {
         if (!$this->output->getFormatter()->hasStyle('warning')) {
             $style = new OutputFormatterStyle('yellow');

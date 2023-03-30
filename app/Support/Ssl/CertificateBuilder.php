@@ -12,7 +12,6 @@ class CertificateBuilder
 {
     protected $cli;
     protected $filesystem;
-    protected $certificatesPath;
     protected $oName;
     protected $cName;
     protected $domain;
@@ -25,12 +24,11 @@ class CertificateBuilder
      */
     protected $mechanic;
 
-    public function __construct(Cli $cli, Filesystem $filesystem, Mechanic $mechanic, $certificatesPath)
+    public function __construct(Cli $cli, Filesystem $filesystem, Mechanic $mechanic, protected $certificatesPath)
     {
         $this->cli = $cli;
         $this->filesystem = $filesystem;
         $this->mechanic = $mechanic;
-        $this->certificatesPath = $certificatesPath;
 
         $this->oName = 'Klever Porter CA Self Signed Organization';
         $this->cName = 'Klever Porter CA Self Signed CN';

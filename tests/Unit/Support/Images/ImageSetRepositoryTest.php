@@ -57,7 +57,7 @@ class ImageSetRepositoryTest extends BaseTestCase
                 'dns'     => 'andyshinn/dnsmasq',
                 'mailhog' => 'mailhog/mailhog:v1.0.0',
             ],
-        ]);
+        ], JSON_THROW_ON_ERROR);
     }
 
     public function tearDown(): void

@@ -25,11 +25,9 @@ class SetHostTest extends BaseTestCase
         $this->app->instance(Mechanic::class, $mechanicMock);
         $this->app->get(PorterLibrary::class)->setMechanic($mechanicMock);
 
-        $this->app->extend(Config::class, function () {
-            return Mockery::mock(Config::class)
-                ->shouldReceive('updateIp')->with('1.1.1.1')->once()
-                ->getMock();
-        });
+        $this->app->extend(Config::class, fn() => Mockery::mock(Config::class)
+            ->shouldReceive('updateIp')->with('1.1.1.1')->once()
+            ->getMock());
 
         $this->porter->shouldReceive('restart')->with('dns')->once();
 
@@ -46,11 +44,9 @@ class SetHostTest extends BaseTestCase
         $this->app->instance(Mechanic::class, $mechanicMock);
         $this->app->get(PorterLibrary::class)->setMechanic($mechanicMock);
 
-        $this->app->extend(Config::class, function () {
-            return Mockery::mock(Config::class)
-                ->shouldReceive('updateIp')->with('127.0.0.1')->once()
-                ->getMock();
-        });
+        $this->app->extend(Config::class, fn() => Mockery::mock(Config::class)
+            ->shouldReceive('updateIp')->with('127.0.0.1')->once()
+            ->getMock());
 
         $this->porter->shouldReceive('restart')->with('dns')->once();
 

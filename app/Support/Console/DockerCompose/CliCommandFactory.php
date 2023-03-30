@@ -32,11 +32,10 @@ class CliCommandFactory
     /**
      * Construct a docker-compose exec {$container} command.
      *
-     * @param string|null $container
      *
      * @return CliCommand
      */
-    public function execContainer($container = null)
+    public function execContainer(?string $container = null)
     {
         return new CliCommand($this->cli, "exec {$container}");
     }
@@ -44,11 +43,10 @@ class CliCommandFactory
     /**
      * Construct a docker-compose run {$container} command.
      *
-     * @param string|null $container
      *
      * @return CliCommand
      */
-    public function runContainer($container = null)
+    public function runContainer(?string $container = null)
     {
         $site = Site::resolveFromPathOrCurrentWorkingDirectory();
         $workingDir = $site ? ' -w /srv/app/'.$site->name : '';

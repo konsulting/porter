@@ -26,8 +26,6 @@ class Remove extends BaseCommand
      *
      * @throws \Exception
      * @throws \Throwable
-     *
-     * @return void
      */
     public function handle(): void
     {

@@ -101,7 +101,6 @@ class Cli implements CliContract
     /**
      * Set the timeout for the wrapping PHP Process.
      *
-     * @param int $seconds
      *
      * @return Cli
      */
@@ -126,10 +125,8 @@ class Cli implements CliContract
 
     /**
      * Return the timeout for the wrapping PHP Process.
-     *
-     * @return int|null
      */
-    public function getTimeout()
+    public function getTimeout(): ?int
     {
         return $this->timeout;
     }

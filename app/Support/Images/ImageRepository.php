@@ -8,9 +8,6 @@ use Exception;
 class ImageRepository implements ImageRepositoryContract
 {
     /** @var string */
-    protected $path;
-
-    /** @var string */
     protected $name;
 
     protected $firstPartyImages = [];
@@ -23,11 +20,10 @@ class ImageRepository implements ImageRepositoryContract
      * @param $path
      *
      * @throws Exception
+     * @param string $path
      */
-    public function __construct($path)
+    public function __construct(protected $path)
     {
-        $this->path = $path;
-
         $this->loadConfig();
     }
 
@@ -67,9 +63,7 @@ class ImageRepository implements ImageRepositoryContract
     public function firstParty()
     {
         return collect($this->firstPartyImages)
-            ->map(function ($version, $name) {
-                return new Image($this->name.'-'.$name.':'.$version, $this->getDockerContext().$name);
-            })->values()->toArray();
+            ->map(fn($version, $name) => new Image($this->name.'-'.$name.':'.$version, $this->getDockerContext().$name))->values()->toArray();
     }
 
     /**
@@ -80,9 +74,7 @@ class ImageRepository implements ImageRepositoryContract
     public function thirdParty()
     {
         return collect($this->thirdPartyImages)
-            ->map(function ($image) {
-                return new Image($image);
-            })->toArray();
+            ->map(fn($image) => new Image($image))->toArray();
     }
 
     /**
@@ -139,16 +131,14 @@ class ImageRepository implements ImageRepositoryContract
      */
     public function findByServiceName($service, $firstPartyOnly = false)
     {
-        $service = preg_replace('/[^a-zA-Z0-9\-\_]/', '-', $service);
+        $service = preg_replace('/[^a-zA-Z0-9\-\_]/', '-', (string) $service);
         $images = $firstPartyOnly ? $this->firstParty() : $this->all();
 
         if (!$service) {
             return $images;
         }
 
-        return array_values(array_filter($images, function (Image $image) use ($service) {
-            return strpos($image->getName(), $service) !== false;
-        }));
+        return array_values(array_filter($images, fn(Image $image) => str_contains($image->getName(), $service)));
     }
 
     /**

@@ -74,8 +74,8 @@ class LiveTestCase extends BaseTestCase
 
     protected function buildResolveOption($url)
     {
-        $scheme = parse_url($url, PHP_URL_SCHEME);
-        $host = parse_url($url, PHP_URL_HOST);
+        $scheme = parse_url((string) $url, PHP_URL_SCHEME);
+        $host = parse_url((string) $url, PHP_URL_HOST);
 
         $port = $scheme == 'http' ? 80 : 443;
 

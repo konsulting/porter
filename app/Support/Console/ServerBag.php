@@ -36,6 +36,6 @@ class ServerBag
      */
     public function get($key)
     {
-        return $this->server[strtolower($key)];
+        return $this->server[strtolower((string) $key)];
     }
 }

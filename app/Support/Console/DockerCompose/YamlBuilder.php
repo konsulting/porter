@@ -12,13 +12,9 @@ class YamlBuilder
     /** @var Filesystem */
     protected $files;
 
-    /** @var PorterLibrary */
-    private $porterLibrary;
-
-    public function __construct(Filesystem $files, PorterLibrary $porterLibrary)
+    public function __construct(Filesystem $files, private readonly PorterLibrary $porterLibrary)
     {
         $this->files = $files;
-        $this->porterLibrary = $porterLibrary;
     }
 
     /**
@@ -45,10 +41,8 @@ class YamlBuilder
     /**
      * Render the docker compose file.
      *
-     * @param ImageRepository $imageSet
      *
      * @throws \Throwable
-     *
      * @return string
      */
     public function renderDockerComposeFile(ImageRepository $imageSet)

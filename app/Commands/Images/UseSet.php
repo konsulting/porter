@@ -25,8 +25,6 @@ class UseSet extends BaseCommand
 
     /**
      * Execute the console command.
-     *
-     * @return void
      */
     public function handle(): void
     {
@@ -40,9 +38,7 @@ class UseSet extends BaseCommand
 
         $sets = app(ImageSetRepository::class)
             ->availableImageSets()
-            ->mapWithKeys(function ($set) use ($current) {
-                return [$set => $set.($current == $set ? ' (current)' : '')];
-            })->toArray();
+            ->mapWithKeys(fn($set) => [$set => $set.($current == $set ? ' (current)' : '')])->toArray();
 
         $option = $this->menu(
             'Available Image Sets',

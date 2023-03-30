@@ -22,8 +22,6 @@ class Logs extends BaseCommand
 
     /**
      * Execute the console command.
-     *
-     * @return void
      */
     public function handle(): void
     {

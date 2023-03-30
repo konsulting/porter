@@ -6,10 +6,9 @@ class NullCliCommand extends CliCommand
 {
     /**
      * Execute the command.
-     *
-     * @return string|null
      */
-    public function perform()
+    public function perform(): string|int|null
     {
+        return null;
     }
 }

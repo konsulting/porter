@@ -19,8 +19,6 @@ class FilePublisher
 
     /**
      * FilePublisher constructor.
-     *
-     * @param Filesystem $files
      */
     public function __construct(Filesystem $files)
     {

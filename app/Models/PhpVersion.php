@@ -36,64 +36,51 @@ class PhpVersion extends Model
     /**
      * Return a list of PHP versions and optionally highlight one.
      *
-     * @param string|null $highlight
      *
      * @return mixed
      */
-    public static function getList($highlight = null)
+    public static function getList(?string $highlight = null)
     {
         return static::pluck('version_number', 'id')
-            ->map(function ($version) use ($highlight) {
-                return $version.($version == $highlight ? ' (current)' : '');
-            })->toArray();
+            ->map(fn($version) => $version.($version == $highlight ? ' (current)' : ''))->toArray();
     }
 
     /**
      * Get a safe version of the version number to use in paths.
-     *
-     * @return null|string
      */
-    public function getSafeAttribute()
+    public function getSafeAttribute(): ?string
     {
         return static::cleanVersionNumber($this->version_number);
     }
 
     /**
      * Get a major version number.
-     *
-     * @return null|string
      */
-    public function getMajorAttribute()
+    public function getMajorAttribute(): ?string
     {
         return Str::before($this->version_number, '.');
     }
 
     /**
      * Get a short form version number with no separators.
-     *
-     * @return null|string
      */
-    public function getShortFormAttribute()
+    public function getShortFormAttribute(): ?string
     {
         return static::cleanVersionNumber($this->version_number, '');
     }
 
     /**
      * Get cli container name.
-     *
-     * @return null|string
      */
-    public function getCliNameAttribute()
+    public function getCliNameAttribute(): ?string
     {
         return 'php_cli_'.$this->safe;
     }
 
     /**
      * Get fpm container name.
-     *
-     * @return null|string
      */
-    public function getFpmNameAttribute()
+    public function getFpmNameAttribute(): ?string
     {
         return 'php_fpm_'.$this->safe;
     }
@@ -105,7 +92,7 @@ class PhpVersion extends Model
      *
      * @return static|null
      */
-    public static function findByDirtyVersionNumber($number)
+    public static function findByDirtyVersionNumber($number): ?static
     {
         return static::where('version_number', static::cleanVersionNumber($number, '.'))->first();
     }
@@ -127,11 +114,9 @@ class PhpVersion extends Model
      *
      * @param $number
      * @param string $separator
-     *
-     * @return null|string
      */
-    public static function cleanVersionNumber($number, $separator = '-')
+    public static function cleanVersionNumber($number, $separator = '-'): ?string
     {
-        return preg_replace('/[^\d]/', $separator, $number);
+        return preg_replace('/[^\d]/', $separator, (string) $number);
     }
 }

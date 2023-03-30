@@ -17,7 +17,7 @@ class EventSubscriber
 
     public function setXDebug($event)
     {
-        if (($event->service ?? false) && strpos('php_fpm', $event->service) === false) {
+        if (($event->service ?? false) && !str_contains('php_fpm', (string) $event->service)) {
             return;
         }
 

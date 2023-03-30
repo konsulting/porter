@@ -15,11 +15,9 @@ class YamlBuilderTest extends BaseTestCase
     /** @var Filesystem|MockInterface */
     protected $files;
     /** @var PorterLibrary|MockInterface */
-    private $lib;
-    /** @var ImageRepository */
-    private $images;
-    /** @var YamlBuilder */
-    private $builder;
+    private \Mockery\LegacyMockInterface $lib;
+    private \App\Support\Images\ImageRepository $images;
+    private \App\Support\Console\DockerCompose\YamlBuilder $builder;
 
     public function setUp(): void
     {

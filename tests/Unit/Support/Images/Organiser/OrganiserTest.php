@@ -39,12 +39,10 @@ class OrganiserTest extends BaseTestCase
     /**
      * Set the command expectation.
      *
-     * @param array|string $commands
      * @param string       $method
-     *
      * @return \Mockery\Expectation
      */
-    protected function expectCommand($commands, $method = 'exec')
+    protected function expectCommand(array|string $commands, $method = 'exec')
     {
         return $this->cli->shouldReceive($method)
             ->withArgs((array) $commands)

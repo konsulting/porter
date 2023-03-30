@@ -19,9 +19,10 @@ class ConfigTest extends BaseTestCase
         $config = new Config($files, $porterLibrary);
 
         $files->shouldReceive('get')->once()->andReturn('/0.0.0.0');
+        $files->shouldReceive('makeDirectory')->once();
         $files->shouldReceive('put')->with('/dnsmasq/dnsmasq.conf', '/1.1.1.1')->once();
 
-        $porterLibrary->shouldReceive('configPath')->twice()->andReturn('');
+        $porterLibrary->shouldReceive('configPath')->times(3)->andReturn('');
 
         $config->updateIp('1.1.1.1');
     }
@@ -35,9 +36,10 @@ class ConfigTest extends BaseTestCase
         $config = new Config($files, $porterLibrary);
 
         $files->shouldReceive('get')->once()->andReturn('/.dev/0.0.0.0');
+        $files->shouldReceive('makeDirectory')->once();
         $files->shouldReceive('put')->with('/dnsmasq/dnsmasq.conf', '/.test/0.0.0.0')->once();
 
-        $porterLibrary->shouldReceive('configPath')->twice()->andReturn('');
+        $porterLibrary->shouldReceive('configPath')->times(3)->andReturn('');
 
         $config->updateDomain('dev', 'test');
     }

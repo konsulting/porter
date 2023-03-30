@@ -52,7 +52,6 @@ class XDebug
     /**
      * Move the ini file to .ini to enable.
      *
-     * @param PhpVersion $version
      *
      * @return bool
      */
@@ -64,7 +63,6 @@ class XDebug
     /**
      * Move the ini file to .bak to disable.
      *
-     * @param PhpVersion $version
      *
      * @return bool
      */
@@ -76,10 +74,8 @@ class XDebug
     /**
      * Move the ini file, If it fails to move, return false;.
      *
-     * @param PhpVersion $version
      * @param $from
      * @param $to
-     *
      * @return bool
      */
     protected function moveIniFile(PhpVersion $version, $from, $to)
