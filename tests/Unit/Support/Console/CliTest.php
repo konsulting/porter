@@ -16,7 +16,7 @@ class CliTest extends BaseTestCase
     public function it_sets_the_timeout_on_the_process_object($method)
     {
         $this->app->bind(Process::class, function ($app, $args) {
-            $this->assertSame(config('porter.process_timeout'), $args['timeout']);
+            $this->assertSame((int) config('porter.process_timeout'), (int) $args['timeout']);
 
             return Mockery::mock(Process::class)
                 ->shouldReceive('run', 'mustRun', 'getOutput', 'setTty', 'getExitCode')
@@ -53,7 +53,7 @@ class CliTest extends BaseTestCase
     /** @test */
     public function a_cli_instance_made_by_the_app_has_the_default_timeout()
     {
-        $this->assertSame(config('porter.process_timeout'), app()->make(Cli::class)->getTimeout());
+        $this->assertSame((int) config('porter.process_timeout'), (int) app()->make(Cli::class)->getTimeout());
     }
 
     /** @test */

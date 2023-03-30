@@ -107,6 +107,11 @@ class ValetTest extends BaseTestCase
             ->once();
 
         $this->cli->shouldReceive('exec')
+            ->with('valet proxies')
+            ->andReturn('dummy')
+            ->once();
+
+        $this->cli->shouldReceive('exec')
             ->with('valet unproxy dummy')
             ->once();
 
@@ -150,7 +155,7 @@ class ValetTest extends BaseTestCase
             ->once();
 
         $this->cli->shouldReceive('exec')
-            ->with('valet proxy dummy https://127.0.0.1:8443')
+            ->with('valet proxy --secure dummy https://127.0.0.1:8443')
             ->once();
 
         $this->writer->shouldReceive('line')
@@ -173,7 +178,7 @@ class ValetTest extends BaseTestCase
 
         $this->cli->shouldReceive('exec')
             ->with('valet proxies')
-            ->once()
+            ->twice()
             ->andReturn('dummy');
 
         $this->cli->shouldReceive('exec')
@@ -185,7 +190,7 @@ class ValetTest extends BaseTestCase
             ->once();
 
         $this->cli->shouldReceive('exec')
-            ->with('valet proxy dummy https://127.0.0.1:8443')
+            ->with('valet proxy --secure dummy https://127.0.0.1:8443')
             ->once();
 
         $this->writer->shouldReceive('line')
@@ -205,6 +210,11 @@ class ValetTest extends BaseTestCase
         $this->writer->shouldReceive('info')
             ->with('Requires Sudo permissions for Valet')
             ->once();
+
+        $this->cli->shouldReceive('exec')
+            ->with('valet proxies')
+            ->once()
+            ->andReturn('dummy');
 
         $this->cli->shouldReceive('exec')
             ->with('valet unproxy dummy')

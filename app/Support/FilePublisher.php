@@ -4,7 +4,8 @@ namespace App\Support;
 
 use Exception;
 use Illuminate\Filesystem\Filesystem;
-use League\Flysystem\Adapter\Local as LocalAdapter;
+use League\Flysystem\StorageAttributes;
+use League\Flysystem\Local\LocalFilesystemAdapter as LocalAdapter;
 use League\Flysystem\Filesystem as Flysystem;
 use League\Flysystem\MountManager;
 
@@ -117,9 +118,10 @@ class FilePublisher
      */
     protected function moveManagedFiles($manager)
     {
-        foreach ($manager->listContents('from://', true) as $file) {
-            if ($file['type'] === 'file' && (!$manager->has('to://'.$file['path']) || $this->force)) {
-                $manager->put('to://'.$file['path'], (string) $manager->read('from://'.$file['path']));
+        foreach ($manager->listContents('from://', true) as $item) {
+            /** @var StorageAttributes $item */
+            if ($item->isFile() === 'file' && (!$manager->has('to://'.$item->path()) || $this->force)) {
+                $manager->write('to://'.$item->path(), (string) $manager->read('from://'.$item->path()));
             }
         }
     }

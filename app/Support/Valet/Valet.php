@@ -104,7 +104,7 @@ class Valet
 
         $port = $site->secure ? static::COMPAT_HTTPS_PORT : static::COMPAT_HTTP_PORT;
         $protocol = $site->secure ? 'https://' : 'http://';
-        $secure = $site->secure ? ' --secure ' : '';
+        $secure = $site->secure ? ' --secure ' : ' ';
 
         $this->cli->exec("valet proxy{$secure}{$site->name} {$protocol}127.0.0.1:{$port}");
 

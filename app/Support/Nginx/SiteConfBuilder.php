@@ -23,6 +23,7 @@ class SiteConfBuilder
      */
     public function build(Site $site)
     {
+        $this->files->makeDirectory(dirname($site->nginx_conf_path), 0755, true, true);
         $this->files->put(
             $site->nginx_conf_path,
             view($site->nginx_conf_template)->with([

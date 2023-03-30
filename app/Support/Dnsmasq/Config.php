@@ -51,6 +51,7 @@ class Config
 
     protected function putConfig($content)
     {
+        $this->files->makeDirectory(dirname($this->getPath()), 0755, true, true);
         $this->files->put($this->getPath(), $content);
     }
 }
