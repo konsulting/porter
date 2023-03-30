@@ -20,16 +20,16 @@
         }
     ],
     "require": {
-        "php": "^7.3|^8.0",
+        "php": "^8.2",
         "ext-json": "*",
         "fzaninotto/faker": "^1.8",
-        "illuminate/database": "^8.0",
-        "illuminate/view": "^8.0",
+        "illuminate/database": "^10.0",
+        "illuminate/view": "^10.0",
         "intonate/tinker-zero": "^1.0",
-        "laravel-zero/framework": "^8.0",
-        "league/flysystem": "^1.0",
-        "nunomaduro/laravel-console-menu": "^3.1",
-        "symfony/yaml": "^5.0",
+        "laravel-zero/framework": "^10.0",
+        "league/flysystem": "^3.0",
+        "nunomaduro/laravel-console-menu": "^3.4",
+        "symfony/yaml": "^6.0",
         "vlucas/phpdotenv": "^5.0"
     },
     "require-dev": {
